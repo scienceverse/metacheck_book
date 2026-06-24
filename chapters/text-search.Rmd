@@ -1,0 +1,164 @@
+---
+title: "Text Search"
+vignette: >
+  %\VignetteIndexEntry{Text Search}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>"
+)
+library(metacheck)
+library(dplyr)
+```
+
+Most metacheck modules are built on top of one core operation: searching the text of a paper for sentences that match a pattern. The `text_search()` function gives you direct access to that operation, so you can explore a paper, prototype a new check, or build a corpus of sentences to code by hand.
+
+We use a single paper from the built-in `psychsci` dataset for the small examples, and the whole dataset of 250 papers for the corpus-scale examples.
+
+```{r}
+paper <- read(demofile("json"))
+```
+
+## Searching a paper
+
+You can access a parsed table of the full text of the paper via `paper$text`, but you may find it more convenient to use the function `text_search()`. The defaults return a data table of each sentence, with the section type, header, div, paragraph and sentence numbers, and file name. (The section type is a best guess from the headers, so may not always be accurate.)
+
+```{r}
+text <- text_search(paper)
+```
+
+```{r, echo = FALSE}
+head(text) |>
+  knitr::kable()
+```
+
+## Pattern
+
+You can search for a specific word or phrase by setting the `pattern` argument. The pattern is a regex string by default; set `fixed = TRUE` if you want to find exact text matches.
+
+```{r}
+text <- text_search(paper, pattern = "metacheck")
+```
+
+```{r, echo = FALSE}
+knitr::kable(text)
+```
+
+## Return
+
+Set `return` to one of "sentence", "paragraph", "section", or "match" to control what gets returned.
+
+```{r}
+text <- text_search(paper, "GitHub",
+                    return = "paragraph")
+```
+
+```{r, echo = FALSE}
+knitr::kable(text)
+```
+
+### Regex matches
+
+You can also return just the matched text from a regex search by setting `return = "match"`. The extra `...` arguments in `text_search()` are passed to `grep()`, so `perl = TRUE` allows you to use more complex regex, like below.
+
+```{r}
+pattern <- "[a-zA-Z]\\S*\\s*(=|<)\\s*[0-9\\.,-]*\\d"
+text <- text_search(paper, pattern, return = "match", perl = TRUE)
+```
+
+```{r, echo = FALSE}
+knitr::kable(text)
+```
+
+## Expand Text
+
+You can expand the text returned by `text_search()` or a module with `text_expand()`. This is useful when a matched sentence only makes sense together with the sentences around it.
+
+```{r}
+marginal <- text_search(paper, "marginal") |>
+  text_expand(paper, plus = 1, minus = 1)
+
+marginal[, c("text", "expanded")]
+```
+
+## Refining a search across a corpus
+
+When you want to find every sentence about a concept across many papers — for example, to study how often a practice appears, or to build a set of sentences to code by hand — you usually develop the search **iteratively**: start broad, look at what you catch, then tighten the pattern to remove false positives. The example below uses the full `psychsci` dataset to find sentences about statistical *power*.
+
+### Start with a fixed term
+
+The most specific search is a fixed phrase:
+
+```{r}
+power_analysis <- text_search(psychsci, "power analysis")
+nrow(power_analysis)
+```
+
+This is precise but probably misses sentences that discuss power without using that exact phrase. Broadening to just "power" catches far more:
+
+```{r}
+power <- text_search(psychsci, "power")
+nrow(power)
+```
+
+### Tighten with regex
+
+Skimming the broad results shows false positives like "powerful" and "PowerPoint", which never describe a power analysis. A negative lookahead (which needs `perl = TRUE`) excludes them while keeping "power" and "powered":
+
+```{r}
+power_specific <- text_search(psychsci, "power(?!ful|point)",
+                              perl = TRUE, ignore.case = TRUE)
+nrow(power_specific)
+```
+
+Before trusting a pattern, it is worth testing it on a few handmade examples:
+
+```{r}
+pattern <- "power(?!ful|point)"
+yes <- c("power", "power analysis", "powered")
+no  <- c("powerful", "PowerPoint")
+grepl(pattern, yes, perl = TRUE, ignore.case = TRUE)
+grepl(pattern, no,  perl = TRUE, ignore.case = TRUE)
+```
+
+### Chain searches to exclude irrelevant sentences
+
+Piping one `text_search()` into another lets you progressively narrow the set. A whole-sentence negative lookahead drops sentences about a different sense of the word — here, "power" in the sense of EEG oscillation power:
+
+```{r}
+power_clean <- text_search(psychsci, "power", ignore.case = TRUE) |>
+  text_search("^(?!.*oscillat).*$", perl = TRUE)
+nrow(power_clean)
+```
+
+### Check what you excluded
+
+When you make a pattern more specific, use `dplyr::anti_join()` to see which sentences dropped out, so you can confirm you are not losing relevant text (false negatives):
+
+```{r}
+excluded <- anti_join(power, power_clean,
+                      by = c("paper_id", "text_id"))
+head(excluded[, c("paper_id", "text")]) |>
+  knitr::kable()
+```
+
+### Find outlier papers
+
+A paper that mentions a term very often is often using it in a different sense. Counting matches per paper helps you spot these:
+
+```{r}
+count(power, paper_id, sort = TRUE) |>
+  filter(n > 10) |>
+  head() |>
+  knitr::kable()
+```
+
+You can repeat this cycle — broaden, inspect, tighten, check exclusions — until you are satisfied that the pattern catches the relevant text without too much noise. This iterative search is the foundation for [writing your own module](creating-modules.qmd): once you have a pattern you trust, you can wrap it in a module and validate it against hand-coded ground truth.
+
+## Querying with an LLM
+
+For questions that a regular expression cannot answer — for example, "does this sentence describe an *a priori* power analysis?" — you can pass the searched text to a large language model. Narrow the text with `text_search()` first, then call `llm()`. See the [Using Large Language Models](llms.qmd) chapter for details.

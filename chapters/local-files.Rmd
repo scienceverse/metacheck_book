@@ -375,3 +375,73 @@ Key columns in `code_check`'s `$table`:
 | `loaded_files_missing_names` | The names of those missing files |
 | `code_abs_path` | Number of absolute file paths detected |
 | `library_max_between` | Largest gap in lines between consecutive `library()` calls |
+
+---
+
+## Downloading OSF files to check locally
+
+Often the files you want to check live in an OSF project rather than on your own disk. You can download them first, then point `repo_check` / `code_check` at the downloaded folder using the local-file options above.
+
+OSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.
+
+The function `osf_file_download()` does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than `max_file_size` (defaults to 10 MB) up to a total size of `max_download_size` (defaults to 100 MB).
+
+```{r}
+#| eval: false
+osf_file_download(osf_id = "pngda",
+                  download_to = ".",
+                  max_file_size = 1,
+                  max_download_size = 10)
+```
+
+```
+Starting retrieval for pngda
+- omitting metacheck.png (1.5MB)
+Downloading files [=====================] 24/24 00:00:35
+```
+
+The files are written into a folder named after the OSF id, preserving the project's nested structure:
+
+```{r}
+#| eval: false
+list.files("pngda", recursive = TRUE)
+```
+
+```{r}
+#| echo: false
+#| eval: true
+
+# list.files("pngda", recursive = TRUE)
+c(
+  "Data/Individual/data-01.csv",
+  "Data/Individual/data-02.csv",
+  "Data/Individual/data-03.csv",
+  "Data/Individual/data-04.csv",
+  "Data/Individual/data-05.csv",
+  "Data/Individual/data-06.csv",
+  "Data/Individual/data-07.csv",
+  "Data/Individual/data-08.csv",
+  "Data/Individual/data-09.csv",
+  "Data/Individual/data-10.csv",
+  "Data/Individual/data-11.csv",
+  "Data/Individual/data-12.csv",
+  "Data/Individual/data-13.csv",
+  "Data/Individual/data-14.csv",
+  "Data/Processed Data/processed-data.csv",
+  "Data/Raw Data/data.xlsx",
+  "Data/Raw Data/nest-1/nest-2/nest-3/nest-4/test-4.txt",
+  "Data/Raw Data/nest-1/nest-2/nest-3/test-3.txt",
+  "Data/Raw Data/nest-1/nest-2/test-2.txt",
+  "Data/Raw Data/nest-1/README",
+  "Data/Raw Data/nest-1/test-1.txt",
+  "Data/Raw Data/README",
+  "README"
+)
+```
+
+Once downloaded, you can run the checks on that folder exactly as shown earlier:
+
+```{r}
+#| eval: false
+module_run(test_paper(), "code_check", local_path = "pngda", local_only = TRUE)
+```
