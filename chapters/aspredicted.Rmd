@@ -1,0 +1,293 @@
+---
+title: "Retrieving Planned Sample Sizes from AsPredicted Preregistrations"
+vignette: >
+  %\VignetteIndexEntry{Retrieving Planned Sample Sizes from AsPredicted Preregistrations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r setup}
+#| include: false
+
+library(metacheck)
+library(dplyr)
+llm_use(TRUE)
+```
+
+
+It is increasingly common for researchers to preregister their studies [@spitzer_registered_2023; @imai_preregistration_2025]. As it is a new practice, and not all researchers are trained in how to preregister, it is not surprising that the quality of preregistration is not always sufficient to allow others to identify opportunistic flexibility in the data analysis [@vandenakker_potential_2024]. Reviewers could check whether researchers adhere to the preregistration, but this requires some effort. Automation can provide a partial solution be making information more easily available, and perhaps even performing automated checks.
+
+Here we demonstrate how [metacheck](https://scienceverse.github.io/metacheck/), our software to perform automated checks on scientific manuscripts, can also retrieve the content of a preregistration. The preregistration can then be presented alongside the relevant information in the manuscript. This makes it easier for peer reviewers to compare the information. 
+
+We will illustrate code that automatically retrieves and presents preregistrations in this blog post. We focus on AsPredicted preregistrations. Their structured format makes it especially easy to retrieve information, but the same can be achieved for OSF preregistrations, especially those that use a template. We can easily search for AsPredicted links in all 250 open access papers from psychological science. The metacheck package conveniently includes these in xml format in the `psychsci` object.
+
+## Find AsPredicted Links
+
+Extracting links is a bit trickier than just searching for "aspredicted.org", so we provide a convenient function for extracting them from papers: `aspredicted_links()`. It cleans up the links when they are incorrectly formatted, such as splitting "https://aspredicted.org/blind.php?x=nq4xa3" across two sentences at the question mark. 
+
+This function returns a table with a row for each link found that indicates the location of the link in each paper. Many papers include the same link in multiple places, so we will just show you the unique links here, returned in the "href" column.
+
+```{r}
+links <- aspredicted_links(psychsci)
+
+unique(links$href)
+```
+
+## Retrieve Link Info
+
+We can then use the function `aspredicted_info()` to get structured information from AsPredicted. You can try to run the function on all `r length(unique(links$href))` links above, but AsPredicted will eventually make you complete a captcha before each access (we're working on a way to log into the site to prevent this). But for demonstration purposes, let's just look at one paper.
+
+Below we provide an example where we analyze the paper "[The Evolution of Cognitive Control in Lemurs](https://journals.sagepub.com/doi/10.1177/09567976221082938)", which contains a single preregistration on AsPredicted.
+
+```{r}
+paper <- psychsci$`09567976221082938`
+
+links <- aspredicted_links(paper)
+
+prereg <- aspredicted_info(links, id_col = "href")
+```
+
+```{r}
+# get just the AsPredicted columns
+cols <- names(prereg)
+ap_cols <- cols[grepl("^AP_", cols)]
+# transpose for easier reading
+prereg[1, ap_cols] |> t()
+```
+
+## Sample Size
+
+Recent studies into how preregistrations are performed [@vandenakker_potential_2024] have shown that one of the most common deviations from a preregistration is a difference in the planned sample size, and the achieved sample size. This is not necessarily problematic, as a difference might be only a single datapoint. Nevertheless, researchers should discuss the deviation, and evaluate whether the deviation impacts the severity of the test [@lakens_when_2024].
+
+Checking the sample size of a study against the preregistration is some effort, as the preregistration document needs to be opened, the correct entry located, and the corresponding text in the manuscript needs to be identified. Recently, a fully automatic comparison tool, ([RegCheck](https://regcheck.app/)) has been created by Jamie Cummins from the University of Bern, that relies on large language models and AI where users upload the manuscript, the preregistration, and receive an automated comparison. We take a slightly different approach. We retrieve the preregistration from AsPredicted automatically, and present users with the information about the preregistered sample size (which is straightforward given the structured approach of the AsPredicted template). We then recommend users to compare this information against the method section in the manuscript.
+
+### Preregistration Sample Size Plan
+
+You can access the sample size plan from the results of `aspredicted_info()` under the column name `AP_sample_size`.
+
+```{r}
+#| results: 'asis'
+# get the sample size section from AsPredicted
+prereg_sample_size <- unique(prereg$AP_sample_size)
+
+# use cat("> ", x = _) with #| results: 'asis' in the code chunk
+# to print out results with markdown quotes
+prereg_sample_size |> cat("> ", x = _)
+```
+
+### Paper Sample size
+
+Now we need to check what the achieved sample size in the paper is.
+
+To facilitate this comparison, we can retrieve all paragraphs that contain words such as 'sample' or 'participants' from the manuscript, in the hope that this contains the relevant text. A more advanced version of this tool could attempt to identify the relevant information in the manuscript with a search for specific words used in the preregistration, but we also show how AI can be used to identify the related text in the manuscript.
+
+A metacheck module could automatically print the information from the preregistration, and possible relevant text from the manuscript. Our main goal is to increase the ease with which important information from the preregistration is available to the authors and peer reviewers, and remind users that they need to discuss deviations from their preregistration.
+
+It might in addition be useful to retrieve the corresponding section in the article. A simple attempt to achieve this would be to search for words related to 'sample' or 'participants', and retrieve that paragraph. We can use metacheck's inbuilt `text_search()` function. For this paper, we see this simple approach works well.
+
+```{r}
+#| results: 'asis'
+# match "sample" or "# particip..."
+regex_sample <- "\\bsample\\b|\\d+\\s+particip\\w+"
+
+# get full paragraphs 
+sample <- text_search(paper, regex_sample,
+                      return= "paragraph")
+
+sample$text |> cat("> ", x = _)
+```
+
+We see that the the authors planned to test 10 mongoose lemurs, but one didn't feel like participating. This can happen, and it does not really impact the severity of the test, but the statistical power is slightly lower than desired, and it is a deviation form the original plan - both deserve to be discussed.
+
+::: center
+![Mongoose Lemurs](https://lemur.duke.edu/wordpress/wp-content/uploads/2025/01/12-Mongoose-Lemurs_w.jpg){width="300"}
+:::
+
+### LLM Comparison
+
+Alternatively, we can use an LLM to compare the preregistration with the text in the manuscript. This is more costly (both financially and ecologically) but it is possible and might work better, given the flexible ways people discuss sample sizes in manuscripts. 
+
+We can use an overinclusive search for any paragraphs that contain the strings "sample", "subject" or "particip". We can further narrow this down by including only paragraphs that contain a number (including the word forms for small numbers).
+
+```{r}
+regex_sample <- "subject|sample|particip"
+regex_numbers <- "[0-9]|one|two|three|four|five|six|seven|eight|nine|ten"
+methres <- text_search(paper, regex_sample,
+                       return = "paragraph") |>
+  text_search(regex_numbers, return = "paragraph")
+```
+
+This gives us `r nrow(methres)` paragraphs to deal with. We can then send them to an LLM, and ask which paragraph is most closely related to the text in the preregistration. 
+
+Metacheck has a custom function to send text and a system prompt to an LLM.
+
+```{r}
+#| results: 'asis'
+system_prompt_template <- "The following text is part of a scientific article. It describes a performed study. Part of this text should correspond to what researchers planned to do. Before data collection, the researchers stated they would:
+
+%s
+
+Your task is to retrieve the sentence(s) in the article that correspond to this plan, and evaluate based on the text in the manuscript whether researchers followed their plan with respect to the sample size. Start your answer with a 'The authors deviated from their preregistration' if there is any deviation."
+
+# insert prereg text into template
+system_prompt <- sprintf(system_prompt_template, prereg_sample_size)
+
+# combine all relevant paragraphs
+text <- paste(methres$text, collapse = "\n\n")
+
+# run system_prompt
+llm_response <- llm(text, system_prompt)
+
+llm_response$answer |> cat("> ", x = _)
+```
+
+As we see, the LLM does a very good job evaluating whether the authors adhered to their preregistration in terms of the sample size. The long-run performance of this automated evaluation needs to be validated in future research - this is just a proof of principle - but it has potential for editors who want to automatically check if authors followed their preregistration, and for meta-scientists who want to examine preregistration adherence across a large number of papers. **For such meta-scientific use-cases, however, the code needs to be extensively validated and error rates should be acceptably low (i.e., comparable to human coders).**
+
+## AI Results Always Need Checking!
+
+The use of AI to interpret deviations is convenient, but **can't replace human judgment**. The following article, [Exploring the Facets of Emotional Episodic Memory: Remembering “What,” “When,” and “Which”](https://journals.sagepub.com/doi/10.1177/0956797621991548) is categorized by the large language model as a deviation from the preregistration. However, it misses that the authors explicitly say that Cohort B was not preregistered, and therefore, falling short of the planned sample size of 60 in that cohort should not be seen as a deviation from the preregistration. Manually checking the sentences in the method section that contain the words 'sample' or 'particip...' reveal the misclassification by the LLM.
+
+```{r}
+#| results: 'asis'
+paper <- psychsci$`0956797621991548`
+links <- aspredicted_links(paper)
+prereg <- aspredicted_info(links, id_col = "href")
+
+#sample size
+prereg_sample_size <- unique(prereg$AP_sample_size)
+prereg_sample_size |> cat("> ", x = _)
+```
+
+
+```{r}
+#| results: 'asis'
+# LLM workflow - send potentially relevant paragraphs
+regex_sample <- "subject|sample|particip"
+regex_numbers <- "[0-9]|one|two|three|four|five|six|seven|eight|nine|ten"
+methres <- text_search(paper, regex_sample,
+                       return = "paragraph") |>
+  text_search(regex_numbers, return = "paragraph")
+
+text <- paste(methres$text, collapse = "\n\n")
+system_prompt <- sprintf(system_prompt_template, prereg_sample_size)
+llm_response <- llm(text, system_prompt)
+
+llm_response$answer |> cat("> ", x = _)
+```
+
+
+```{r}
+#| results: 'asis'
+# manual check - no LLM
+regex_sample <- "\\bsample\\b|\\d+\\s+particip\\w+"
+
+sample <- text_search(paper, regex_sample, 
+                      return= "paragraph")
+
+sample$text |> cat("> ", x = _)
+```
+
+
+## Putting it All Together
+
+metacheck does not yet contain this module, as it is still under development, but you could [create you own local module](https://scienceverse.github.io/metacheck/articles/creating_modules.html) by using (or improving) the following code:
+
+```{r}
+# save to a file aspredicted_sample.R
+# and use like module_run(paper, "aspredicted_sample.R")
+
+aspredicted_sample <- function(paper, use_llm = FALSE) {
+  # check paper for AsPredicted links
+  links <- aspredicted_links(paper)
+  if (nrow(links) == 0) return(list())
+  
+  # get prereg data from AsPredicted
+  prereg <- aspredicted_info(links, id_col = "href")
+  if (nrow(prereg) == 0 | is.null(prereg$AP_sample_size)) {
+    return(list())
+  }
+  
+  prereg_sample_size <- unique(prereg$AP_sample_size)
+  
+  # check paper for possible sample paragraphs
+  regex_sample <- "\\bsample\\b|\\d+\\s+particip\\w+"
+  sample <- text_search(paper, regex_sample, 
+                        return= "paragraph")
+  
+  # check LLM only if requested
+  llm_answer <- "LLM not run"
+  if (use_llm) {
+    system_prompt_template <- "The following text is part of a scientific article. It describes a performed study. Part of this text should correspond to what researchers planned to do. Before data collection, the researchers stated they would:
+  
+  %s
+  
+  Your task is to retrieve the sentence(s) in the article that correspond to this plan, and evaluate based on the text in the manuscript whether researchers followed their plan with respect to the sample size. Start your answer with a 'The authors deviated from their preregistration' if there is any deviation."
+    
+    regex_sample <- "subject|sample|particip"
+    regex_numbers <- "[0-9]|one|two|three|four|five|six|seven|eight|nine|ten"
+    methres <- text_search(paper, regex_sample,
+                           return = "paragraph") |>
+      text_search(regex_numbers, return = "paragraph")
+    
+    text <- paste(methres$text, collapse = "\n\n")
+    system_prompt <- sprintf(system_prompt_template, prereg_sample_size)
+    
+    # fails gracefully if is API key not available
+    llm_answer <- tryCatch({
+      llm_response <- llm(text, system_prompt)
+      llm_response$answer
+    }, error = \(e) { return(NULL) })
+  }
+    
+  # print out messages?
+  cat("Sample Size Preregistration:\n\n")
+  cat(prereg_sample_size)
+  cat("\n\nSample Size Text in Paper:\n\n")
+  cat(sample$text)
+  cat("\n\nLLM Assessment:\n\n")
+  cat(llm_answer)
+  
+  # return structured info
+  list(
+    table = prereg,
+    prereg_sample_size = prereg_sample_size,
+    paper_sample_size = sample,
+    llm_answer = llm_answer
+  )
+}
+```
+
+Test on the paper from above.
+
+```{r}
+#| results: 'asis'
+paper <- psychsci$`0956797621991548`
+ap <- aspredicted_sample(paper)
+```
+
+
+```{r}
+#| results: 'asis'
+paper <- psychsci$`0956797621991548`
+ap_with_llm <- aspredicted_sample(paper, use_llm = TRUE)
+```
+
+It fails gracefully if there are no links.
+
+```{r}
+paper <- psychsci[[1]]
+ap_no_links <- aspredicted_sample(paper)
+```
+
+
+The extent to which making information from the preregistration more available will lead to more peers checking for deviations from the preregistration remains to be seen, but we believe it has potential to reduce the workload of peer reviewers, and it might remind authors to discuss deviations from the preregistration. 
+
+This code can be substantially improved before we include it as a built-in metacheck module, and also needs to be further developed to work well with multi-study papers that contain multiple preregistrations. If you are interested in developing this metacheck module further, or performing such a validation study, do reach out to us.

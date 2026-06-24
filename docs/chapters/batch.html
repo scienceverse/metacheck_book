@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
+<title>7&nbsp; Batch Processing – The metacheck Book</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/local-files.html" rel="next">
+<link href="../chapters/jars.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2ba038287b8416a85275a829d41e9991.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-e86f8a212565eb69fb543cc01c7f280b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><link href="../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="../site_libs/datatables-binding-0.34.0/datatables.js"></script><script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><link href="../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+<script src="../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+</head>
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/batch.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The metacheck Book</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/scienceverse/metacheck_book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Modules</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working with Papers</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Integrations &amp; Sources</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Drafts &amp; Work in Progress</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About these drafts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#convert-pdfs" id="toc-convert-pdfs" class="nav-link active" data-scroll-target="#convert-pdfs"><span class="header-section-number">7.1</span> Convert PDFs</a>
+  <ul class="collapse">
+<li><a href="#using-bibr" id="toc-using-bibr" class="nav-link" data-scroll-target="#using-bibr"><span class="header-section-number">7.1.1</span> Using Bibr</a></li>
+  <li><a href="#using-grobid" id="toc-using-grobid" class="nav-link" data-scroll-target="#using-grobid"><span class="header-section-number">7.1.2</span> Using Grobid</a></li>
+  <li><a href="#read-in-converted-files" id="toc-read-in-converted-files" class="nav-link" data-scroll-target="#read-in-converted-files"><span class="header-section-number">7.1.3</span> Read in converted files</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#paper-objects" id="toc-paper-objects" class="nav-link" data-scroll-target="#paper-objects"><span class="header-section-number">7.2</span> Paper Objects</a>
+  <ul class="collapse">
+<li><a href="#paper-id" id="toc-paper-id" class="nav-link" data-scroll-target="#paper-id"><span class="header-section-number">7.2.1</span> Paper ID</a></li>
+  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">7.2.2</span> Authors</a></li>
+  <li><a href="#info" id="toc-info" class="nav-link" data-scroll-target="#info"><span class="header-section-number">7.2.3</span> Info</a></li>
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography"><span class="header-section-number">7.2.4</span> Bibliography</a></li>
+  <li><a href="#cross-references" id="toc-cross-references" class="nav-link" data-scroll-target="#cross-references"><span class="header-section-number">7.2.5</span> Cross References</a></li>
+  <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text"><span class="header-section-number">7.2.6</span> Text</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">7.2.7</span> Section</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#text-search" id="toc-text-search" class="nav-link" data-scroll-target="#text-search"><span class="header-section-number">7.3</span> Text Search</a>
+  <ul class="collapse">
+<li><a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">7.3.1</span> Pattern</a></li>
+  <li><a href="#chaining" id="toc-chaining" class="nav-link" data-scroll-target="#chaining"><span class="header-section-number">7.3.2</span> Chaining</a></li>
+  <li><a href="#regex" id="toc-regex" class="nav-link" data-scroll-target="#regex"><span class="header-section-number">7.3.3</span> Regex</a></li>
+  <li><a href="#match" id="toc-match" class="nav-link" data-scroll-target="#match"><span class="header-section-number">7.3.4</span> Match</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/batch.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/batch.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span> <span class="co"># for data wrangling</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span> <span class="co"># reading and writing CSV files</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In this vignette, we will process 250 open access papers from Psychological Science.</p>
+<section id="convert-pdfs" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="convert-pdfs">
+<span class="header-section-number">7.1</span> Convert PDFs</h2>
+<p>To use smart defaults, read in all of the PDF files from a directory called “pdf”, and save the converted files in JSON format a directory called “converted”.</p>
+<p>This function will use a local version of grobid or bibr if available, and then check a <a href="https://www.scienceverse.org/metacheck/convert.json">list of currently available free servers</a> and check those in order for accessibility (some require API keys).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"pdf"</span>, </span>
+<span>        save_path <span class="op">=</span> <span class="st">"converted"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The returned JSON files will contain infomations about how they were converted (with grogib or bibr, which version, and which server), but if you want more control, you can specific the bibr or grobid server to use.</p>
+<section id="using-bibr" class="level3" data-number="7.1.1"><h3 data-number="7.1.1" class="anchored" data-anchor-id="using-bibr">
+<span class="header-section-number">7.1.1</span> Using Bibr</h3>
+<p>Bibr is a bibliographic metadata extractor, which has been developed specifically for metacheck. It uses OCR, regular expressions, machine learning, and limited LLMs to extract the contents of research papers in PDFs or Word format into structured metadata.</p>
+<p>Currently, you need an API key to use bibr while we work out how to afford this resource, but we hope this will change soon.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"pdf"</span>, </span>
+<span>        save_path <span class="op">=</span> <span class="st">"converted"</span>, </span>
+<span>        method <span class="op">=</span> <span class="st">"bibr"</span>,</span>
+<span>        api_url <span class="op">=</span> <span class="st">"https://platform.metacheck.app"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="using-grobid" class="level3" data-number="7.1.2"><h3 data-number="7.1.2" class="anchored" data-anchor-id="using-grobid">
+<span class="header-section-number">7.1.2</span> Using Grobid</h3>
+<p>An alternate way to process PDFs is with the machine-learning library grobid, and then convert the resulting XML files to bibr format. This will have most, but not all, of the features of a paper processed by bibr.</p>
+<p>Read in all of the PDF files from a directory called “pdf”, process them with a local version of grobid, and save the JSON files in a directory called “converted”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"pdf"</span>, </span>
+<span>        save_path <span class="op">=</span> <span class="st">"converted"</span>, </span>
+<span>        method <span class="op">=</span> <span class="st">"grobid"</span>,</span>
+<span>        api_url <span class="op">=</span> <span class="st">"http://localhost:8070"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If you have existing grobid XML files, you can convert them to bibr format by setting the method to “xml” (this is the auto default if the file_path only contains XML files). Save them in a directory called “converted”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert</a></span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"xml"</span>, </span>
+<span>        save_path <span class="op">=</span> <span class="st">"converted"</span>,</span>
+<span>        method <span class="op">=</span> <span class="st">"xml"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="read-in-converted-files" class="level3" data-number="7.1.3"><h3 data-number="7.1.3" class="anchored" data-anchor-id="read-in-converted-files">
+<span class="header-section-number">7.1.3</span> Read in converted files</h3>
+<p>After you convert your papers to JSON format, read in the files to metacheck and save in an object called <code>papers</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/read.html">read</a></span><span class="op">(</span><span class="st">"converted"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>These steps can take some time if you are processing a lot of papers, and only needs to happen once, so it is often useful to save the <code>papers</code> object as an Rds file, comment out the code above, and load <code>papers</code> from this object on future runs of your script.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load from RDS for efficiency</span></span>
+<span><span class="co"># saveRDS(papers, "psysci_oa.Rds")</span></span>
+<span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"psysci_oa.Rds"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section></section><section id="paper-objects" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="paper-objects">
+<span class="header-section-number">7.2</span> Paper Objects</h2>
+<p>Now <code>papers</code> is a list of metacheck paper objects, each of which contains structured information about the paper.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">papers</span><span class="op">[[</span><span class="fl">10</span><span class="op">]</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="paper-id" class="level3" data-number="7.2.1"><h3 data-number="7.2.1" class="anchored" data-anchor-id="paper-id">
+<span class="header-section-number">7.2.1</span> Paper ID</h3>
+<p>The <code>paper_id</code> is taken from the name of the original file.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">paper_id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "0956797615588467"</code></pre>
+</div>
+</div>
+</section><section id="authors" class="level3" data-number="7.2.2"><h3 data-number="7.2.2" class="anchored" data-anchor-id="authors">
+<span class="header-section-number">7.2.2</span> Authors</h3>
+<p>The <code>author</code> table contains information for each author.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">author</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;   author_id     given   family              affiliation                 email
+#&gt; 1         1 Alexander Genevsky Department of Psychology genevsky@stanford.edu
+#&gt; 2         2     Brian  Knutson Department of Psychology                      
+#&gt;   corresponding orcid role
+#&gt; 1         FALSE       NULL
+#&gt; 2         FALSE       NULL</code></pre>
+</div>
+</div>
+<p>You can get the authors as a table for a paper object or list of papers. Use the <code><a href="https://scienceverse.github.io/metacheck/reference/paper_table.html">paper_table()</a></code> function to extract and combine tables from a paper list.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/paper_table.html">paper_table</a></span><span class="op">(</span><span class="va">papers</span>, <span class="st">"author"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Glasgow"</span>, <span class="va">affiliation</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">given</span>, <span class="va">family</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 14 × 3
+#&gt;    given     family          n
+#&gt;    &lt;chr&gt;     &lt;chr&gt;       &lt;int&gt;
+#&gt;  1 Anthony   Lee             1
+#&gt;  2 Benedict  Jones           2
+#&gt;  3 Chengyang Han             1
+#&gt;  4 Claire    Fisher          1
+#&gt;  5 Danielle  Morrison        1
+#&gt;  6 Hongyi    Wang            1
+#&gt;  7 Iris      Holzleitner     1
+#&gt;  8 Kieran    O'shea          1
+#&gt;  9 Lisa      Debruine        2
+#&gt; 10 Martin    Lages           1
+#&gt; 11 Michal    Kandrik         1
+#&gt; 12 Philippe  Schyns          1
+#&gt; 13 Stephanie Boyle           1
+#&gt; 14 Vanessa   Fasolt          2</code></pre>
+</div>
+</div>
+</section><section id="info" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="info">
+<span class="header-section-number">7.2.3</span> Info</h3>
+<p>The <code>info</code> table lists the filename, title, keywords, doi, and other info. The import sometimes makes mistakes with the DOI, so be cautious about using this.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">info</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;                                                           title     keywords
+#&gt; 1 Neural Affective Mechanisms Predict Market-Level Microlending c("affec....
+#&gt;                        doi        file_hash input_format
+#&gt; 1 10.1177/0956797615588467 c484f85b4211b469 grobid 0.9.0
+#&gt;                                                 file_name bibr_version
+#&gt; 1 data-raw/psychsci/grobid_0.9.0-crf/0956797615588467.xml         10.0
+#&gt;   paper_type paper_type_confidence oecd_l1 oecd_l2 oecd_confidence
+#&gt; 1    unknown                     0    &lt;NA&gt;    &lt;NA&gt;              NA</code></pre>
+</div>
+</div>
+<p>You can get this as a table for a batch of papers using <code><a href="https://scienceverse.github.io/metacheck/reference/paper_table.html">paper_table()</a></code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/paper_table.html">paper_table</a></span><span class="op">(</span><span class="va">papers</span>, <span class="st">"info"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">doi</span>, <span class="va">title</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 6 × 2
+#&gt;   doi                      title                                                
+#&gt;   &lt;chr&gt;                    &lt;chr&gt;                                                
+#&gt; 1 10.1177/0956797613520608 Mirror neurons, originally discovered in macaque mon…
+#&gt; 2 10.1177/0956797614522816 Beyond Gist: Strategic and Incremental Information A…
+#&gt; 3 10.1177/0956797614527830 Serotonin and Social Norms: Tryptophan Depletion Imp…
+#&gt; 4 10.1177/0956797614557697 Action-Specific Disruption of Perceptual Confidence  
+#&gt; 5 10.1177/0956797614560771 Emotional Vocalizations Are Recognized Across Cultur…
+#&gt; 6 10.1177/0956797614566469 Conspiracist Ideation as a Predictor of Climate-Scie…</code></pre>
+</div>
+</div>
+</section><section id="bibliography" class="level3" data-number="7.2.4"><h3 data-number="7.2.4" class="anchored" data-anchor-id="bibliography">
+<span class="header-section-number">7.2.4</span> Bibliography</h3>
+<p>The <code>bib</code> table contains the items in the reference list, including an id to link them to cross references (bib_id), the text ID for the full reference text (text_id), and the reference parsed by doi, title, author, year, etc.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">bib</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 'data.frame':    1 obs. of  15 variables:
+#&gt;  $ bib_type   : chr "article"
+#&gt;  $ doi        : chr ""
+#&gt;  $ title      : chr "Impure altruism and donations to public goods: A theory of warm-glow giving"
+#&gt;  $ authors    : chr "Andreoni, J"
+#&gt;  $ editors    : chr ""
+#&gt;  $ publisher  : chr ""
+#&gt;  $ year       : int 1990
+#&gt;  $ volume     : chr "100"
+#&gt;  $ issue      : chr ""
+#&gt;  $ first_page : chr "464"
+#&gt;  $ last_page  : chr "477"
+#&gt;  $ container  : chr "The Economic Journal"
+#&gt;  $ bib_id     : int 0
+#&gt;  $ year_suffix: chr ""
+#&gt;  $ text_id    : int 243</code></pre>
+</div>
+</div>
+<p>The <code>bib_match</code> table contains CrossRef or DataCite entries for each item in the reference list, if a match was found. In this table, the authors and editors columns are list columns containing tables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bib_match_1</span> <span class="op">&lt;-</span> <span class="va">paper</span><span class="op">$</span><span class="va">bib_match</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">bib_match_1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 'data.frame':    1 obs. of  20 variables:
+#&gt;  $ bib_id    : int 0
+#&gt;  $ service   : chr "crossref"
+#&gt;  $ service_id: chr NA
+#&gt;  $ score     : num 96.9
+#&gt;  $ bib_type  : chr "article"
+#&gt;  $ doi       : chr "10.2307/2234133"
+#&gt;  $ title     : chr "Impure Altruism and Donations to Public Goods: A Theory of Warm-Glow Giving"
+#&gt;  $ authors   :List of 1
+#&gt;   ..$ :'data.frame': 1 obs. of  2 variables:
+#&gt;   .. ..$ given : chr "James"
+#&gt;   .. ..$ family: chr "Andreoni"
+#&gt;  $ editors   :List of 1
+#&gt;   ..$ :'data.frame': 0 obs. of  2 variables:
+#&gt;   .. ..$ given : chr 
+#&gt;   .. ..$ family: chr 
+#&gt;  $ publisher : chr "Oxford University Press (OUP)"
+#&gt;  $ year      : int 1990
+#&gt;  $ date      : chr NA
+#&gt;  $ container : chr "The Economic Journal"
+#&gt;  $ volume    : chr "100"
+#&gt;  $ issue     : chr "401"
+#&gt;  $ first_page: chr "464"
+#&gt;  $ last_page : chr NA
+#&gt;  $ edition   : chr NA
+#&gt;  $ version   : chr NA
+#&gt;  $ url       : chr "https://doi.org/10.2307/2234133"</code></pre>
+</div>
+</div>
+<p>The function <code>ref_table</code> is a helper function that lets you combine info from the bib and bib_match tables with the text table and returns the paper_id, bib_id, DOI, and the text of the reference.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/ref_table.html">ref_table</a></span><span class="op">(</span><span class="va">paper</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 6 × 4
+#&gt;   paper_id         bib_id doi                                text               
+#&gt;   &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;                              &lt;chr&gt;              
+#&gt; 1 0956797615588467      0 10.2307/2234133                    Andreoni, J. (1990…
+#&gt; 2 0956797615588467      1 10.2307/2118508                    Andreoni, J. (1995…
+#&gt; 3 0956797615588467      2 10.1037/0022-3514.61.3.413         Batson, C. D., Bat…
+#&gt; 4 0956797615588467      3 10.1037/0022-3514.40.2.290         Batson, C. D., Dun…
+#&gt; 5 0956797615588467      4 10.1016/b978-0-12-374176-9.00009-9 Bernheim, B. D. (2…
+#&gt; 6 0956797615588467      5 10.1016/j.jcps.2011.05.001         Berns, G. S., &amp; Mo…</code></pre>
+</div>
+</div>
+</section><section id="cross-references" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="cross-references">
+<span class="header-section-number">7.2.5</span> Cross References</h3>
+<p>The <code>xref</code> table contains each cross-reference to the bibliography, tables or figures. It includes an id to link them to a table (<code>xref_id</code>), whether the cross-reference is to a bib, table, or figure (<code>xref_type</code>), the contents of the reference (<code>contents</code>), and the ID of the sentence that it is cited in (<code>text_id</code>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xref</span> <span class="op">&lt;-</span> <span class="va">paper</span><span class="op">$</span><span class="va">xref</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">xref</span>, <span class="va">xref_id</span> <span class="op">==</span> <span class="fl">5</span>, <span class="va">xref_type</span> <span class="op">==</span> <span class="st">"bib"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] xref_id   xref_type contents  text_id  
+#&gt; &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+</div>
+</div>
+</section><section id="text" class="level3" data-number="7.2.6"><h3 data-number="7.2.6" class="anchored" data-anchor-id="text">
+<span class="header-section-number">7.2.6</span> Text</h3>
+<p>The <code>text</code> item is a table containing each sentence from the main text (<code>text</code>). Each sentence has a unique sequential <code>text_id</code> number, and each paragraph and section are also sequentially numbered. The page_number is the page of the original document, starting with 1, that this sentence starts on.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">text</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;                                                                                                                                                                                                                                                                                                   text
+#&gt; 1                                                                                                                                                                              Humans sometimes share with others whom they may never meet or know, in violation of the dictates of pure selfinterest.
+#&gt; 2                                                                                                               Research has not established which neuropsychological mechanisms support lending decisions, nor whether their influence extends to markets involving significant financial incentives.
+#&gt; 3                                                                                                                                                                                          In two studies, we found that neural affective mechanisms influence the success of requests for microloans.
+#&gt; 4                                                                                                                                    In a large Internet database of microloan requests (N = 13,500), we found that positive affective features of photographs promoted the success of those requests.
+#&gt; 5 We then established that neural activity (i.e., in the nucleus accumbens) and self-reported positive arousal in a neuroimaging sample (N = 28) predicted the success of loan requests on the Internet, above and beyond the effects of the neuroimaging sample's own choices (i.e., to lend or not).
+#&gt; 6                                                                                                                                                    These findings suggest that elicitation of positive arousal can promote the success of loan requests, both in the laboratory and on the Internet.
+#&gt;   text_id paragraph_id section_id page_number formatted
+#&gt; 1       1            1          0          NA      &lt;NA&gt;
+#&gt; 2       2            1          0          NA      &lt;NA&gt;
+#&gt; 3       3            1          0          NA      &lt;NA&gt;
+#&gt; 4       4            1          0          NA      &lt;NA&gt;
+#&gt; 5       5            1          0          NA      &lt;NA&gt;
+#&gt; 6       6            1          0          NA      &lt;NA&gt;</code></pre>
+</div>
+</div>
+</section><section id="section" class="level3" data-number="7.2.7"><h3 data-number="7.2.7" class="anchored" data-anchor-id="section">
+<span class="header-section-number">7.2.7</span> Section</h3>
+<p>The <code>section</code> table supplements the text table to help group and search text. The <code>section_id</code> matches that in the text table, and <code>parent_section_id</code> is the ID of the section this one is nested under in the case of subsections. The <code>header</code> is the section header. The <code>section_type</code> is our best guess based on the header of the section type and the <code>classification_score</code> is a confidence rating of this guess (this is under development and currently not very accurate). Papers read in with grobid will not have a parent_section_id or classification_score.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">section</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;   section_id                          header parent_section_id section_type
+#&gt; 1          0                        Abstract                NA     abstract
+#&gt; 2          1                Research Article                NA        intro
+#&gt; 3          2                          Method                NA       method
+#&gt; 4          3                  Internet study                NA       method
+#&gt; 5          4              Neuroimaging study                NA       method
+#&gt; 6          5 Power analysis and sample size.                NA       method
+#&gt;   classification_score
+#&gt; 1                   NA
+#&gt; 2                   NA
+#&gt; 3                   NA
+#&gt; 4                   NA
+#&gt; 5                   NA
+#&gt; 6                   NA</code></pre>
+</div>
+</div>
+</section></section><section id="text-search" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="text-search">
+<span class="header-section-number">7.3</span> Text Search</h2>
+<p>The <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> function helps you search the text of a paper or list of papers.</p>
+<p>The default arguments give you a data frame containing a row for every sentence in every paper in the set. The data frame has the same column structure as the <code>text</code> table above, so that you can easily chain text searches.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">all_sentences</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div id="tbl-sentences" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sentences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.1: 10 random values from all the papers
+</figcaption><div aria-describedby="tbl-sentences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-6df800d8529c5d1799ed" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-6df800d8529c5d1799ed">{"x":{"filter":"none","vertical":false,"data":[["Two seconds later, the value of the participant's harvest was added to his or her accumulated total points.","We explored this possibility.","Our findings therefore suggest that word comprehension can induce activity in nonlinguistic visual brain areas, and can even trigger involuntary responses (e.g., a pupillary response) that correspond to the word's meaning.","These t values were saved for each participant and predictor and tested against zero at the group level using two-tailed, repeated-measures t tests.","Further, the direction of the bias depends on the comparison value: Distant values attract judgments, whereas nearby values repulse judgments.","The coefficient we were most interested in was b 1, which measured how a 1-standard-deviation increase in the proportion of peers who believe that boys have innately superior math ability than girls differentially impacted girls' and boys' outcomes.","The descriptive statistics given above do not include these excluded values.","Three participants were excluded: 1 whose feeling ratings showed no variation at all, 1 whose data from the gambling task were lost, and 1 who failed to complete more than 50% of the trials in the gambling task.","Error bars represent ±1 within-subjects SEM.","Results for all the variables are shown in Table 3 and Figure 3."],[72,172,122,116,5,92,63,46,202,188],["0956797614527830","0956797620965536","0956797617702699","09567976241246561","09567976221089599","09567976231180881","0956797618760197","0956797616634654","0956797617693326","09567976211040803"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>You can customise <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> to return paragraphs or sections instead of sentences.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paragraphs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, return <span class="op">=</span> <span class="st">"paragraph"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A paragraph from the first paper.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "According to the direct-matching model, activation of the PMC during action observation constitutes a covert simulation of the observed action, which enables the observer to match it with an action in his or her own repertoire of intentional actions and thereby to identify the goal of the action (Gallese et al., 2004). The directmatching model therefore holds that somatotopically organized regions of PMC play a causal role in understanding observed actions. The predictive-coding model (Kilner, Friston, &amp; Frith, 2007) is based on the conception of a hierarchy of reciprocally connected models. Each model generates predictions about the representations at the immediately subordinate level. These predictions are compared with the actual state of the subordinate-level model, and a prediction error is returned to the superordinate-level model, which is revised and then generates a new prediction. By this process, the interconnected models are continuously updated and prediction errors minimized. Thus, according to the predictive-coding model, premotor activation and higher-level representations reciprocally modulate each other. Like the directmatching model, then, the predictive-coding model holds that somatotopically organized regions of PMC play a causal role in action understanding, with the mechanisms for action understanding overlapping with those for the production of actions."</code></pre>
+</div>
+</div>
+<section id="pattern" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="pattern">
+<span class="header-section-number">7.3.1</span> Pattern</h3>
+<p>You can just code every sentence or paragraph in a set of papers, but this is usually not very efficient, so we can use a search pattern to filter the text.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, pattern <span class="op">=</span> <span class="st">"Scotland"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here we have 9 results. We’ll just show the text columns along with text_id and paper_id of the returned table, but the table also provides the papgraph_id, section_id, page_number, header, and section_type.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-4bd115fc6dbc05dccaaf" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4bd115fc6dbc05dccaaf">{"x":{"filter":"none","vertical":false,"data":[["We gratefully acknowledge funding support from the Economic and Social Research Council (ES/L010437/1, ESRC Future Leaders grant to M. Daly), from Skills Development Scotland (Ph.D. scholarship funding to M. Egan), and from the European Commission Marie Curie Initiative (Grant Agreement PCIG10-GA-2011-303833 awarded to L. Delaney).","The two surveys used identical sampling and interview methods and were administered to nationally representative samples of people who were older than 16 years and resided in England, Scotland, or Wales.","The study protocol was approved by the Multi-Centre Research Ethics Committee for Scotland (MREC/01/0/56; 07/MRE00/58) and by the Lothian Research Ethics Committee (LREC/2003/2/29).","We thank the Lothian Birth Cohort 1936 research team, participants, and staff at the Wellcome Trust Clinical Research Facility, Edinburgh, Scotland.","To start, we tested whether neuroticism's bifactor structure replicated in two independent data sets: 8,158 participants in Generation Scotland (Smith et al., 2006) and the 1,434 participants used to develop the EPQ-R (Eysenck et al., 1985).","Generation Scotland was funded by the Scottish Government Chief Scientist Office (CZD/16/6) and Scottish Funding Council (HR03006).","Note that crime data were not available for Scotland.","For one, historian David Hackett Fischer (1991) argued that Scotland's history of frequent warfare led to a short-term cultural orientation, such as not wanting to invest in building more costly houses.","Our study focused only on survey participants living in England, because of the lack of contextual-level information for the Wales, Scotland, and Northern Ireland subsamples."],[248,43,46,197,40,80,115,306,87],["0956797615569001","0956797615615584","0956797618804501","0956797618804501","0956797619833325","0956797619833325","0956797619866627","09567976231172500","09567976241243370"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="chaining" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="chaining">
+<span class="header-section-number">7.3.2</span> Chaining</h3>
+<p>You can chain together searches to iteratively narrow down results. The following example first finds all sentences with “DeBruine” and then searches only that set for “2006”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="va">papers</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="st">"DeBruine"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="st">"2006"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-9b4044d3df5a3b30e7c5" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9b4044d3df5a3b30e7c5">{"x":{"filter":"none","vertical":false,"data":[["Responses to stimuli manufactured using these methods predict women's actual partner choices (DeBruine et al., 2006).","They have also been shown to be very similar to responses to stimuli manufactured using other methods for manipulating sexually dimorphic characteristics in face images (DeBruine et al., 2006)."],[27,28],["0956797618760197","0956797618760197"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>If you want to do a search for any of a set of words, you can set the pattern to a vector of terms to search.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chicago Face Database"</span>, </span>
+<span>             <span class="st">"Face Research Lab London"</span><span class="op">)</span></span>
+<span><span class="va">search</span> <span class="op">&lt;-</span> <span class="va">papers</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e0225d4b52ef7b3e0fe7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e0225d4b52ef7b3e0fe7">{"x":{"filter":"none","vertical":false,"data":[["Each participant was also randomly assigned to see one of 40 different faces (20 male, 20 female) selected from the Chicago Face Database (Ma, Correll, &amp; Wittenbrink, 2015).","The 120 faces were drawn from the Chicago Face Database (Ma et al., 2015) and evenly divided across ethnicity (Asian, Black, Latinx, White) and gender (female, male).","Participants completed four trials in which they rated neutrally posed faces from the Chicago Face Database (White, Black, Latinx, East Asian; Ma et al., 2015) and the Bogazici Face Database (Turkish; Saribay et al., 2018).","The participants who reported face impressions rated real facial stimuli from a variety of standardized databases, including the Chicago Face Database (Ma et al., 2015) and the Face Research Lab London Set (DeBruine &amp; Jones, 2017).","To test generalizability and that any effects were artifacts of these different databases, we had participants in Study 2 rate color frontal photographs of faces with neutral expressions from only the Chicago Face Database (Ma et al., 2015).","We used 30 face identities, 15 women and 15 men, with neutral expressions taken from the Chicago Face Database (Ma et al., 2015).","In contrast, Gwinn and colleagues sampled a large set of 64 highly controlled faces from the Chicago Face Database (CFD; Ma et al., 2015; note, however, that neither the article itself nor our personal communication with the author could establish which exact stimuli were used). If this reasoning was correct, the different results between the two reports should be attributable to the greater memorability of less standardized images employed by Ackerman et al., compared with images from databases in which photos are taken under controlled conditions and standardized instructions to models employed by Gwinn and colleagues.","Difference in recognition sensitivity (White -Black) separately for each target expression (A = angry, N = neutral) for the Ackerman stimuli without announcement (left side; a) and for the Chicago Face Database (CFD) stimuli with announcement as in the study by Gwinn et al. (2015; right side; b).","Results for the stimuli used by Ackerman et al. (2006) without announcement (left side; a) and for the Chicago Face Database stimuli with announcement as in the study by Gwinn et al. (2015; right side; b).","CFD = Chicago Face Database."],[137,57,117,80,186,54,32,138,219,222],["0956797620960011","09567976211019950","09567976211019950","09567976211024259","09567976211024259","09567976221147259","09567976231218640","09567976231218640","09567976231218640","09567976231218640"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="regex" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="regex">
+<span class="header-section-number">7.3.3</span> Regex</h3>
+<p>You can also use regular expressions to refine your search. The pattern below returns every sentence that contains a word that contains text with p &gt; ###, regardless of the spaces.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, pattern <span class="op">=</span> <span class="st">"p\\s*&gt;\\s*0?\\.[0-9]+\\b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-365729e60308d4703458" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-365729e60308d4703458">{"x":{"filter":"none","vertical":false,"data":[["No main effects or interactions with time were found (p &gt; .29), which indicates that the action-specific effects of TMS on confidence are not specific to its delivery before or after a perceptual decision.","There was a significant interactive effect of time and political orientation, b = 0.10, SE = 0.04, 95% CI = [0.03, 0.17], t(1922) = 2.72, p = .007, on endorsement of the fairness foundation (see Table S2 CI = [-0.14, -0.04], t(1922) = -3.59, p &lt; .001, disappeared after 7/7, b = 0.004, SE = 0.02, 95% CI = [-0.04, 0.05], t(1922) = 0.17, p &gt; .250 (see Fig 2).","Contrary to expectations, our results revealed no significant main effect of time, b = -0.13, SE = 0.22, 95% CI = [-0.55, 0.30], t(1922) = -0.58, p &gt; .250, political orientation, b = 0.05, SE = 0.10, 95% CI = [-0.15, 0.24], t(1922) = 0.47, p &gt; .250, or their interaction, b = 0.04, SE = 0.06, 95% CI = [-0.08, 0.16], t(1922) = 0.67, p &gt; .250, on endorsement of the authority foundation.","Again, contrary to expectations, our results revealed no significant main effect of time, b = -0.18, SE = 0.14, 95% CI = [-0.46, 0.10], t(1922) = -1.26, p = .208, political orientation, b = -0.08, SE = 0.06, 95% CI = [-0.20, 0.04], t(1922) = -1.26, p = .209, or their interaction, b = 0.04, SE = 0.04, 95% CI = [-0.04, 0.12], t(1922) = 1.05, p &gt; .250, on endorsement of the harm foundation.","Time increased negative attitudes among liberal participants, b = 0.13, SE = 0.06, 95% CI = [0.02, 0.24], t(1922) = 2.34, p = .020, but did not affect attitudes among conservative participants, b = -0.04, SE = 0.06, 95% CI = [-0.15, 0.07], t(1922) = -0.64, p &gt; .250.","Time increased negative attitudes among liberal participants, b = 0.22, SE = 0.06, 95% CI = [0.10, 0.33], t(1922) = 3.63, p &lt; .001, but did not affect attitudes among conservative participants, b = 0.03, SE = 0.06, 95% CI = [-0.09, 0.14], t(1922) = 0.45, p &gt; .250."],[99,87,89,91,93,96],["0956797614557697","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="match" class="level3" data-number="7.3.4"><h3 data-number="7.3.4" class="anchored" data-anchor-id="match">
+<span class="header-section-number">7.3.4</span> Match</h3>
+<p>You can return just the matching text for a regular expression by setting the results to “match”.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">match</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, </span>
+<span>                     pattern <span class="op">=</span> <span class="st">"p\\s*&gt;\\s*0?\\.[0-9]+\\b"</span>, </span>
+<span>                     return <span class="op">=</span> <span class="st">"match"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-39ada395e621a0fa5176" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-39ada395e621a0fa5176">{"x":{"filter":"none","vertical":false,"data":[["p &gt; .29","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .23","p &gt; .250","p &gt; .250","p &gt; .250","p &gt;.250","p &gt;.250","p &gt;.250","p &gt; .250","p &gt;.25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt; .25","p &gt;.25","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .250","p &gt; .01","p &gt; .1","p &gt; .05","p &gt; .05","p &gt; .05","p &gt; .05","p &gt; .05","p &gt; .05","p &gt;.05","p &gt; .05","p &gt; .15","p &gt; .05","p &gt; .05","p &gt;.11","p &gt; .6","p &gt; .352","p &gt; .999","p &gt; .05","p &gt; .05","p &gt; .05","p &gt; .25","p &gt; .15","p &gt; .3","p &gt; .27","p &gt; .12","p &gt; .15","p &gt; .08","p &gt; .1","p &gt; .110","p &gt; .059","p &gt; .33","p &gt; .290","p &gt; .265","p &gt; .103","p &gt; .05","p &gt; .80","p &gt; .28","p &gt; .60","p &gt; .13","p &gt; .40","p &gt; .05"],[99,87,89,89,89,91,93,96,158,159,153,113,89,173,193,196,198,207,75,82,147,182,184,243,246,102,126,147,159,104,153,117,117,60,72,118,119,286,137,81,90,96,98,117,101,101,125,139,145,109,146,176,176,109,112,123,123,131,182,183,189,197,110,120,181,184,185,174,73,73,140,223,136,199],["0956797614557697","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797616634654","0956797616634665","0956797616657319","0956797616661199","0956797616667447","0956797616667447","0956797616667447","0956797616667447","0956797617692000","0956797617692000","0956797617692000","0956797617692000","0956797617692000","0956797617692000","0956797617692000","0956797617693326","0956797617693326","0956797617693326","0956797617693326","0956797617705667","0956797617705667","0956797617716922","0956797617716922","0956797617744542","0956797619830326","0956797619830326","0956797619830326","0956797619830329","0956797619881134","0956797620929297","0956797620929297","0956797620929297","0956797620929297","0956797620939054","0956797620954815","0956797620954815","0956797620954815","0956797620954815","0956797620965520","09567976211018618","09567976221079633","09567976221083219","09567976221083219","09567976231156413","09567976231156413","09567976231156413","09567976231156413","09567976231156413","09567976231156413","09567976231156413","09567976231156413","09567976231156413","09567976231179378","09567976231179378","09567976231179378","09567976231179378","09567976231179378","09567976231180881","09567976231192241","09567976231192241","09567976231192241","09567976231192241","09567976231218640","09567976241263344"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>You can expand this to the whole sentence, paragraph, or +/- some number of sentences around the match using <code><a href="https://scienceverse.github.io/metacheck/reference/text_expand.html">text_expand()</a></code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">expand</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_expand.html">text_expand</a></span><span class="op">(</span>results_table <span class="op">=</span> <span class="va">match</span>, </span>
+<span>                      paper <span class="op">=</span> <span class="va">papers</span>,</span>
+<span>                      expand_to <span class="op">=</span> <span class="st">"sentence"</span>,</span>
+<span>                      plus <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>                      minus <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">expand</span><span class="op">$</span><span class="va">expanded</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "No main effects or interactions with time were found (p &gt; .29), which indicates that the action-specific effects of TMS on confidence are not specific to its delivery before or after a perceptual decision."</code></pre>
+</div>
+</div>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/scienceverse\.github\.io\/metacheck_book\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="../chapters/jars.html" class="pagination-link" aria-label="Journal Article Reporting Standards">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/local-files.html" class="pagination-link" aria-label="Checking Local Files with repo_check and code_check">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/batch.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://scienceverse.github.io/metacheck/">metacheck package</a></p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

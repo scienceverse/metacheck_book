@@ -1,0 +1,330 @@
+---
+title: "Batch Processing"
+vignette: >
+  %\VignetteIndexEntry{Batch Processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>"
+)
+
+mytable <- function(tbl) {
+  DT::datatable(tbl[, c("text", "text_id", "paper_id")], 
+                rownames = FALSE,
+                filter = "none",
+                options = list(pageLength = 5, dom = "tip")
+  )
+}
+```
+
+```{r}
+#| label: setup
+#| message: false
+library(metacheck)
+library(dplyr) # for data wrangling
+library(readr) # reading and writing CSV files
+```
+
+In this vignette, we will process 250 open access papers from Psychological Science.
+
+## Convert PDFs
+
+To use smart defaults, read in all of the PDF files from a directory called "pdf", and save the converted files in JSON format a directory called "converted". 
+
+This function will use a local version of grobid or bibr if available, and then check a [list of currently available free servers](https://www.scienceverse.org/metacheck/convert.json) and check those in order for accessibility (some require API keys). 
+
+```{r}
+#| eval: false
+
+convert(file_path = "pdf", 
+        save_path = "converted")
+```
+
+The returned JSON files will contain infomations about how they were converted (with grogib or bibr, which version, and which server), but if you want more control, you can specific the bibr or grobid server to use.
+
+### Using Bibr
+
+Bibr is a bibliographic metadata extractor, which has been developed specifically for metacheck. It uses OCR, regular expressions, machine learning, and limited LLMs to extract the contents of research papers in PDFs or Word format into structured metadata.
+
+Currently, you need an API key to use bibr while we work out how to afford this resource, but we hope this will change soon.
+
+```{r}
+#| eval: false
+
+convert(file_path = "pdf", 
+        save_path = "converted", 
+        method = "bibr",
+        api_url = "https://platform.metacheck.app")
+```
+
+
+### Using Grobid
+
+An alternate way to process PDFs is with the machine-learning library grobid, and then convert the resulting XML files to bibr format. This will have most, but not all, of the features of a paper processed by bibr. 
+
+Read in all of the PDF files from a directory called "pdf", process them with a local version of grobid, and save the JSON files in a directory called "converted". 
+
+```{r}
+#| eval: false
+
+convert(file_path = "pdf", 
+        save_path = "converted", 
+        method = "grobid",
+        api_url = "http://localhost:8070")
+```
+
+If you have existing grobid XML files, you can convert them to bibr format by setting the method to "xml" (this is the auto default if the file_path only contains XML files). Save them in a directory called "converted".
+
+```{r}
+#| eval: false
+convert(file_path = "xml", 
+        save_path = "converted",
+        method = "xml")
+```
+
+### Read in converted files
+
+After you convert your papers to JSON format, read in the files to metacheck and save in an object called `papers`. 
+
+```{r}
+#| eval: false
+papers <- read("converted")
+```
+
+
+These steps can take some time if you are processing a lot of papers, and only needs to happen once, so it is often useful to save the `papers` object as an Rds file, comment out the code above, and load `papers` from this object on future runs of your script.
+
+```{r}
+#| eval: false
+# load from RDS for efficiency
+# saveRDS(papers, "psysci_oa.Rds")
+papers <- readRDS("psysci_oa.Rds")
+```
+
+```{r}
+#| include: false
+papers <- psychsci
+```
+
+
+## Paper Objects
+
+Now `papers` is a list of metacheck paper objects, each of which contains structured information about the paper.
+
+```{r}
+paper <- papers[[10]]
+```
+
+### Paper ID
+
+The `paper_id` is taken from the name of the original file.
+
+```{r}
+paper$paper_id
+```
+
+### Authors
+
+The `author` table contains information for each author.
+
+```{r}
+paper$author
+```
+
+You can get the authors as a table for a paper object or list of papers. Use the `paper_table()` function to extract and combine tables from a paper list.
+
+```{r}
+paper_table(papers, "author") |> 
+  dplyr::filter(grepl("Glasgow", affiliation)) |>
+  count(given, family)
+```
+
+
+### Info 
+
+The `info` table lists the filename, title, keywords, doi, and other info. The import sometimes makes mistakes with the DOI, so be cautious about using this.
+
+```{r}
+paper$info
+```
+
+You can get this as a table for a batch of papers using `paper_table()`.
+
+```{r}
+paper_table(papers, "info") |> 
+  select(doi, title) |>
+  head()
+```
+
+
+### Bibliography
+
+The `bib` table contains the items in the reference list, including an id to link them to cross references (bib_id), the text ID for the full reference text (text_id), and the reference parsed by doi, title, author, year, etc.
+
+```{r}
+paper$bib[1, ] |> str()
+```
+
+
+The `bib_match` table contains CrossRef or DataCite entries for each item in the reference list, if a match was found. In this table, the authors and editors columns are list columns containing tables. 
+
+```{r}
+bib_match_1 <- paper$bib_match[1, ]
+str(bib_match_1)
+```
+
+The function `ref_table` is a helper function that lets you combine info from the bib and bib_match tables with the text table and returns the paper_id, bib_id, DOI, and the text of the reference. 
+
+```{r}
+ref_table(paper) |> head()
+```
+
+
+### Cross References
+
+The `xref` table contains each cross-reference to the bibliography, tables or figures. It includes an id to link them to a table (`xref_id`), whether the cross-reference is to a bib, table, or figure (`xref_type`), the contents of the reference (`contents`), and the ID of the sentence that it is cited in (`text_id`).
+
+```{r}
+xref <- paper$xref
+filter(xref, xref_id == 5, xref_type == "bib")
+```
+
+### Text
+
+The `text` item is a table containing each sentence from the main text (`text`). Each sentence has a unique sequential `text_id` number, and each paragraph and section are also sequentially numbered. The page_number is the page of the original document, starting with 1, that this sentence starts on. 
+
+```{r}
+paper$text |> head()
+```
+
+
+### Section
+
+The `section` table supplements the text table to help group and search text. The `section_id` matches that in the text table, and `parent_section_id` is the ID of the section this one is nested under in the case of subsections. The `header` is the section header. The `section_type` is our best guess based on the header of the section type and the `classification_score` is a confidence rating of this guess (this is under development and currently not very accurate). Papers read in with grobid will not have a parent_section_id or classification_score. 
+
+```{r}
+paper$section |> head()
+```
+
+
+## Text Search
+
+The `text_search()` function helps you search the text of a paper or list of papers.
+
+The default arguments give you a data frame containing a row for every sentence in every paper in the set. The data frame has the same column structure as the `text` table above, so that you can easily chain text searches.
+
+```{r}
+all_sentences <- text_search(papers)
+```
+
+```{r}
+#| echo: false
+#| label: tbl-sentences
+#| tbl-cap: 10 random values from all the papers 
+rows <- sample(1:nrow(all_sentences), 10)
+mytable(all_sentences[rows, ])
+```
+
+You can customise `text_search()` to return paragraphs or sections instead of sentences. 
+
+```{r}
+paragraphs <- text_search(papers, return = "paragraph")
+```
+
+A paragraph from the first paper.
+
+```{r}
+#| echo: false
+paragraphs$text[3]
+```
+
+### Pattern
+
+You can just code every sentence or paragraph in a set of papers, but this is usually not very efficient, so we can use a search pattern to filter the text.
+
+```{r}
+search <- text_search(papers, pattern = "Scotland")
+```
+
+Here we have `r nrow(search)` results. We'll just show the text columns along with text_id and paper_id of the returned table, but the table also provides the papgraph_id, section_id, page_number, header, and section_type.
+
+```{r}
+#| echo: false
+mytable(search)
+```
+
+### Chaining
+
+You can chain together searches to iteratively narrow down results. The following example first finds all sentences with "DeBruine" and then searches only that set for "2006".
+
+```{r}
+search <- papers |>
+  text_search("DeBruine") |>
+  text_search("2006")
+```
+
+```{r}
+#| echo: false
+mytable(search)
+```
+
+If you want to do a search for any of a set of words, you can set the pattern to a vector of terms to search.
+
+```{r}
+pattern <- c("Chicago Face Database", 
+             "Face Research Lab London")
+search <- papers |>
+  text_search(pattern)
+```
+
+```{r}
+#| echo: false
+mytable(search)
+```
+
+
+### Regex
+
+You can also use regular expressions to refine your search. The pattern below returns every sentence that contains a word that contains text with p > ###, regardless of the spaces.
+
+```{r}
+search <- text_search(papers, pattern = "p\\s*>\\s*0?\\.[0-9]+\\b")
+```
+
+```{r}
+#| echo: false
+mytable(head(search))
+```
+
+
+### Match
+
+You can return just the matching text for a regular expression by setting the results to "match".  
+
+```{r}
+match <- text_search(papers, 
+                     pattern = "p\\s*>\\s*0?\\.[0-9]+\\b", 
+                     return = "match")
+```
+
+```{r}
+#| echo: false
+mytable(match)
+```
+
+You can expand this to the whole sentence, paragraph, or +/- some number of sentences around the match using `text_expand()`.
+
+```{r}
+expand <- text_expand(results_table = match, 
+                      paper = papers,
+                      expand_to = "sentence",
+                      plus = 0,
+                      minus = 0)
+
+expand$expanded[1]
+```
+

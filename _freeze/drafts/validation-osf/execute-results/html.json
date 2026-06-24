@@ -1,0 +1,15 @@
+{
+  "hash": "5f4a98f55ebd7d95728a5372a37171bd",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"osf\"\nformat: html\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(metacheck)\nlibrary(tidyverse)\n```\n:::\n\n\n\n## One paper\n\n\n::: {.cell}\n\n```{.r .cell-code}\npaper <- psychsci[10:20]\nlinks <- osf_links(paper)\ncontents <- osf_info(links,\n                         recursive = TRUE, \n                         find_project = TRUE)\nsummary <- file_category(contents)\n\nsummary |> filter(kind == \"file\") |> select(name, filetype, file_category)\n```\n:::\n\n\n## Fix the summary table\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# code to fix any problems\nexpected <- summary |>\n  select(id, text, osf_id, name, osf_type, kind, filetype, file_category) |>\n  mutate(file_category = ifelse(name == \"data_experiment1'.txt\", \"data\", file_category))\n\nexpected\n```\n:::\n\n\n\n### Make Module\n\nPaste code below into osf_module.R file\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# very basic module\n\nosf_module <- function(paper) {\n  links <- osf_links(paper)\n  contents <- osf_info(links,\n                           recursive = TRUE, \n                           find_project = TRUE)\n  summary <- file_category(contents)\n  \n  #return\n  list(\n    check = 1,\n    summary = summary\n  )\n}\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# test module\nmod_output <- module_run(paper, \"osf_module.R\")\n```\n:::\n\n\n## Validate\n\n\n::: {.cell}\n\n```{.r .cell-code}\nv <- validate(paper, \"osf_module.R\", \n              summary = expected,\n              check = 1)\n\nv$observed\n```\n:::\n\n\n\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

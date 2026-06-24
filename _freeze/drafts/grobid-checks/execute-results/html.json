@@ -1,0 +1,15 @@
+{
+  "hash": "67ea5cbd03b691627116d9692f46e29c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"grobid-checks\"\nformat: html\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(metacheck)\n```\n:::\n\n\n## Abstracts\n\nAre all the abstracts being retrieved correctly by grobid?\n\n\n::: {.cell}\n\n```{.r .cell-code}\nabstracts <- info_table(psychsci, c(\"doi\", \"description\"))\n\nabstracts$doi <- gsub(\"[^0-9]*$\", \"\", abstracts$doi)\n\ncat(abstracts$description[[1]])\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntext_search(psychsci[[4]], section = \"abstract\")\n```\n:::\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(pdftools)\npdf <- \"../data-raw/pdf/0956797613520608.pdf\"\ntext <- pdf_text(pdf)\n\ntext[[1]] |>\n  strsplit(\"\\n\")\n```\n:::\n\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,631 @@
+---
+title: "metacheck"
+df-print: paged
+vignette: >
+  %\VignetteIndexEntry{metacheck}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>"
+)
+library(metacheck)
+```
+
+
+## Installation
+
+You can install the metacheck from [GitHub](https://github.com/scienceverse/metacheck) with:
+
+``` r
+pak::pkg_install("scienceverse/metacheck")
+```
+
+Metacheck is under active development. If you install the development version of Metacheck, you will often be able to use new modules or functions, but the development version might als have more bugs. 
+You can install the development version of Metacheck from [GitHub](https://github.com/scienceverse/metacheck) with [TODO]:
+
+``` r
+pak::pkg_install("scienceverse/metacheck")
+```
+
+After installation, you can load the metacheck library.
+
+```{r}
+#| eval: false
+library(metacheck)
+```
+
+You can launch a simple shiny app that creates a report from a PDF, with options to control what information is sent to or retrieved from external servers. This shiny app will run a fixed number of validated modules. It also provides R code to transition to R, where you can use more functions of Metacheck. The shiny app is the best way to get started with Metacheck.
+
+``` r
+metacheck::report_app()
+```
+
+### Optional use of external servers
+
+Metacheck has been developed so that it can run locally, without sending any information anywhere. This requires a bit more technical expertise, but it makes the tool available to editors or peer reviewers who are not allowed to upload submitted manuscripts to an external server. When such privacy concerns are not an issue (for example when running Metacheck on a publicly available preprint) you can use online servers for specific tasks, such as converting a pdf to xml. This offers an easier user experience.
+
+The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, Metacheck will use a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology tht meets GDPR requirements.
+
+You can also supplement the reference section created by GROBID with information retrieved from Crossref. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, an can take some time. You can always add this information later with the `add_bibmatch()` function.
+
+```{r, eval = FALSE}
+pdf_file <- demofile("pdf")
+json_file <- convert(file_path = pdf_file, 
+                     save_path = "converted",
+                     crossref_lookup = TRUE)
+```
+
+```{r, include = FALSE}
+# doesn't require a call to the grobid server
+json_file <- demofile("json")
+```
+
+
+You can set up your own local grobid server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0.
+
+``` bash
+docker run --rm --init --ulimit core=0 -p 8070:8070 lfoppiano/grobid:0.9.0
+```
+
+If you set the `api_url` to the local path <http://localhost:8070> the `convert()` function will default to the local GRBOID server. Metacheck will also by default use the local GROBID server if it is automatically detected.
+
+```{r, eval = FALSE}
+json_file <- convert(file_path = pdf_file, 
+                     save_path = "converted",
+                     method = "grobid",
+                     api_url = "http://localhost:8070")
+```
+
+
+### Load from JSON
+
+The function `read()` can read converted JSON files created by the `convert` function.
+
+```{r}
+paper <- read(json_file)
+```
+
+
+### Load from non-PDF document
+
+To take advantage of GROBID's ability to parse references and other aspects of papers, for now the best way is to convert your papers to PDF. We are developing our own custom backend called `bibr` which will also be able to convert DOC and DOCX files directly.
+
+### Batch Processing
+
+The functions `convert()` and `read()` also work on a folder of files, or a vector of paths, returning a list of JSON file paths or paper objects, respectively. 
+
+## Paper Components
+
+Paper objects contain structured information retrieved from the converted document. This in, including info, references, and citations.
+
+### Info
+
+```{r}
+paper$info
+```
+
+
+### References
+
+The references are provided in a tabular format.
+
+```{r, eval = FALSE}
+paper$bib
+```
+
+```{r, echo = FALSE}
+isna <- paper$bib |> lapply(is.na) |> sapply(all)
+knitr::kable(paper$bib[, !isna])
+```
+
+### Cross-References
+
+Cross-references are also provided in a tabular format, with `xref_id` to match the bibliography table.
+
+```{r, eval = FALSE}
+paper$xref
+```
+
+```{r, echo = FALSE}
+knitr::kable(paper$xref)
+```
+
+### Batch
+
+The `psychsci` built-in dataset contains all 250 open-access articles published in *Psychological Science* from 2004 to 2014. *Psychological Science* is the flagship journal of the Association for Psychological Science and publishes empirical research from all subfields of psychology. The PDFs were converted to metacheck paper objects using `convert()` and stored in the package. This dataset is used throughout the documentation to demonstrate how to work with a list of papers.
+
+There are functions to combine the information from a list of papers, like `psychsci`.
+
+```{r}
+paper_table(psychsci[1:5], "info", c("title", "doi"))
+```
+
+```{r}
+paper_table(psychsci[1:5], "bib") |>
+  dplyr::filter(!is.na(doi), doi != "")
+```
+
+
+## Search Text
+
+You can access a parsed table of the full text of the paper via `paper$text`, but you may find it more convenient to use the function `text_search()`. The defaults return a data table of each sentence, with the section type, header, div, paragraph and sentence numbers, and file name. (The section type is a best guess from the headers, so may not always be accurate.)
+
+```{r}
+text <- text_search(paper)
+```
+
+```{r, echo = FALSE}
+head(text) |>
+  knitr::kable()
+```
+
+
+### Pattern
+
+You can search for a specific word or phrase by setting the `pattern` argument. The pattern is a regex string by default; set `fixed = TRUE` if you want to find exact text matches.
+
+```{r}
+text <- text_search(paper, pattern = "metacheck")
+```
+
+```{r, echo = FALSE}
+knitr::kable(text)
+```
+
+
+### Return
+
+Set `return` to one of "sentence", "paragraph", "section", or "match" to control what gets returned.
+
+```{r}
+text <- text_search(paper, "GitHub", 
+                    return = "paragraph")
+```
+
+```{r, echo = FALSE}
+knitr::kable(text)
+```
+
+
+
+### Regex matches
+
+You can also return just the matched text from a regex search by setting `return = "match"`. The extra `...` arguments in `text_search()` are passed to `grep()`, so `perl = TRUE` allows you to use more complex regex, like below.
+
+```{r}
+pattern <- "[a-zA-Z]\\S*\\s*(=|<)\\s*[0-9\\.,-]*\\d"
+text <- text_search(paper, pattern, return = "match", perl = TRUE)
+```
+
+```{r, echo = FALSE}
+knitr::kable(text)
+```
+
+
+### Expand Text
+
+You can expand the text returned by `text_search()` or a module with `text_expand()`.
+
+```{r}
+marginal <- text_search(paper, "marginal") |>
+  text_expand(paper, plus = 1, minus = 1)
+
+marginal[, c("text", "expanded")]
+```
+
+
+
+
+## Large Language Models
+
+**LLM use is entirely optional.** Metacheck follows the principle that AI should be opt-in, restricted to classification of existing text, and used only where it provides clear benefits that cannot be achieved with other methods such as regular expressions. The vast majority of modules work without any LLM at all.
+
+Currently, the only module that will unlock substantial extra functionality when an lmm is used is the **`power` module**, which can read sentences about power analyses and extract structured information (test type, sample size, effect size, etc.) that would be difficult to capture reliably with regular expressions alone.
+
+### Option 1: Run a model locally with Ollama (recommended)
+
+The recommended approach is to run an AI model on your own computer using [Ollama](https://ollama.com), a free open-source tool. This means:
+
+- No API key or account required
+- No data leaves your computer
+- No usage costs or rate limits
+
+The trade-off is speed — your computer does the processing, so it is slower than a cloud API, especially the first time a model loads. See the dedicated [Local AI with Ollama](ollama.html) article for full setup instructions. In brief:
+
+1. Download and install Ollama from <https://ollama.com/download>
+2. Pull a model, e.g. `ollama pull llama3.2` in a terminal
+3. In R, set metacheck to use it:
+
+```{r}
+#| eval: false
+llm_model("ollama/llama3.2")
+llm_use(TRUE)
+```
+
+
+### Option 2: Use a cloud API
+
+You can also use any model supported by [ellmer](https://ellmer.tidyverse.org/) via a cloud API. This is faster but requires an account and API key with a provider, and sends text to an external service.
+
+Get an API key from your preferred provider (e.g. <https://console.groq.com/keys>) and add it to your `.Renviron` file (use `usethis::edit_r_environ()` to open it):
+
+``` bash
+GROQ_API_KEY="sk-proj-abcdefghijklmnopqrs0123456789ABCDEFGHIJKLMNOPQRS"
+```
+
+When metacheck starts it checks for API keys in `.Renviron` and sets the model automatically. You can also set it manually:
+
+```{r}
+#| eval: false
+llm_model()                              # check which model is currently set
+llm_model("groq")                        # use ellmer's default Groq model
+llm_model("groq/llama-3.3-70b-versatile") # use a specific model
+```
+
+
+A list of available models for a provider:
+
+```{r, echo = FALSE}
+modlist <- llm_model_list("groq")
+
+knitr::kable(modlist[1:5,])
+```
+
+
+
+### LLM Queries
+
+You can query the extracted text of papers with LLMs. See `?llm` for details of how to get and set up your API key, choose an LLM, and adjust settings. 
+
+Use `text_search()` first to narrow down the text into what you want to query. Below, we limited search to the first ten papers, and returned sentences that contains the word "power" and at least one number. Then we asked an LLM to determine if this is an a priori power analysis, and if so, to return some relevant values in a JSON-structured format.
+
+```{r}
+#| eval: false
+power <- psychsci[1:10] |>
+  # sentences containing the word power
+  text_search("power") |>
+  # and containing at least one number
+  text_search("[0-9]") 
+
+# ask a specific question with specific response format
+system_prompt <- 'Does this sentence report an a priori power analysis? If so, return the test, sample size, critical alpha criterion, power level, effect size and effect size metric plus any other relevant parameters, in JSON format like:
+
+{
+  "apriori": true, 
+  "test": "paired samples t-test", 
+  "sample": 20, 
+  "alpha": 0.05, 
+  "power": 0.8, 
+  "es": 0.4, 
+  "es_metric": "cohen\'s D"
+}
+
+If not, return {"apriori": false}
+
+Answer only in valid JSON format, starting with { and ending with }.'
+
+llm_power <- llm(power, system_prompt)
+```
+
+```{r}
+#| echo: false
+# dput(llm_power)
+llm_power <- structure(list(text_id = c(170L, 38L, 29L, 30L, 71L, 154L, 207L, 
+40L, 84L, 88L, 89L, 148L, 209L), paragraph_id = c(41L, 11L, 11L, 
+11L, 18L, 38L, 58L, 11L, 20L, 20L, 20L, 36L, 49L), section_id = c(9L, 
+3L, 3L, 3L, 5L, 9L, 17L, 3L, 5L, 5L, 5L, 7L, 9L), text = c("It is possible that less-consistent effects were observed on trials with errors because of reduced power to detect an effect on these trials, which by design were less numerous (~25%).", 
+"Figure 1 shows that CY had very little predictive power for CLIM, but the fit in the transposed plot has an obvious bell-shaped curve.", 
+"Sample size was calculated with an a priori power analysis, using the effect sizes reported by Küpper et al. (2014), who used identical procedures, materials, and dependent measures.", 
+"We determined that a minimum sample size of 7 per group would be necessary for 95% power to detect an effect.", 
+"For the first part of the task, 11 static visual images, one from each of the scenes in the film were presented once each on a black background for 2 s using Power-Point.", 
+"A sample size of 26 per group was required to ensure 80% power to detect this difference at the 5% significance level.", 
+"A sample size of 18 per condition was required in order to ensure an 80% power to detect this difference at the 5% significance level.", 
+"The 13,500 selected loan requests conservatively achieved a power of .98 for an effect size of .07 at an alpha level of .05.", 
+"On the basis of simulations over a range of expected effect sizes for contrasts of fMRI activity, we estimated that a sample size of 24 would provide .80 power at a conservative brainwide alpha threshold of .002 (although such thresholds ideally should be relaxed for detecting activity in regions where an effect is predicted).", 
+"Stimulus sample size was determined via power analysis of the sole existing similar study, which used neural activity to predict Internet downloads of music (Berns & Moore, 2012).", 
+"The effect size from that study implied that a sample size of 72 loan requests would be required to achieve .80 power at an alpha level of .05.", 
+"Categorical ratings of the emotional expressions in the loan photographs had a similarly powerful impact on loan-request success; requests with \"happy\" photographs received $5.15 more per hour than requests with \"sad\" photographs, on average; they achieved full funding in 7.6% less time.", 
+"Although previous research has provided mixed evidence about the impact of positive versus negative affect on charitable giving (Andreoni, 1990;Small & Verrochi, 2009), by simultaneously assessing affect at both Internet-aggregate and laboratory-sample levels of analysis, our studies provide consistent evidence that photograph-elicited positive arousal most powerfully promoted lending rates and outcomes (Tables 1 and 2, Fig. 2a, and Fig."
+), page_number = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_, 
+NA_integer_, NA_integer_, NA_integer_, NA_integer_, NA_integer_, 
+NA_integer_, NA_integer_, NA_integer_, NA_integer_), paper_id = c("0956797614557697", 
+"0956797614566469", "0956797615569889", "0956797615569889", "0956797615583071", 
+"0956797615583071", "0956797615583071", "0956797615588467", "0956797615588467", 
+"0956797615588467", "0956797615588467", "0956797615588467", "0956797615588467"
+), header = c("General Discussion", "Analysis and Results", "Participants", 
+"Participants", "Memory-reactivation task.", "Statistical analysis.", 
+"Statistical analysis.", "Internet study", "Power analysis and sample size.", 
+"Power analysis and sample size.", "Power analysis and sample size.", 
+"Internet study", "Discussion"), section_type = c("discussion", 
+"results", "method", "method", "method", "method", "method", 
+"method", "method", "method", "method", "results", "discussion"
+), answer = structure(c("{\"apriori\": false}", "{\"apriori\": false}", 
+"{\n  \"apriori\": true\n}", "{\n  \"apriori\": true, \n  \"test\": \"t-test\", \n  \"sample\": 7, \n  \"alpha\": 0.05, \n  \"power\": 0.95\n}", 
+"{\"apriori\": false}", "{\n  \"apriori\": true, \n  \"test\": \"two-sample t-test\", \n  \"sample\": 26, \n  \"alpha\": 0.05, \n  \"power\": 0.8\n}", 
+"{\n  \"apriori\": true, \n  \"test\": \"t-test\", \n  \"sample\": 18, \n  \"alpha\": 0.05, \n  \"power\": 0.8\n}", 
+"{\n  \"apriori\": true, \n  \"test\": null, \n  \"sample\": 13500, \n  \"alpha\": 0.05, \n  \"power\": 0.98, \n  \"es\": 0.07, \n  \"es_metric\": null\n}", 
+"{\n  \"apriori\": true, \n  \"test\": \"fMRI activity contrast\", \n  \"sample\": 24, \n  \"alpha\": 0.002, \n  \"power\": 0.8\n}", 
+"{\"apriori\": true}", "{\n  \"apriori\": true, \n  \"test\": null, \n  \"sample\": 72, \n  \"alpha\": 0.05, \n  \"power\": 0.8, \n  \"es\": null, \n  \"es_metric\": null\n}", 
+"{\"apriori\": false}", "{\"apriori\": false}"), class = "ellmer_output")), row.names = c(NA, 
+-13L), class = c("metacheck_llm", "data.frame"), llm = list(system_prompt = "Does this sentence report an a priori power analysis? If so, return the test, sample size, critical alpha criterion, power level, effect size and effect size metric plus any other relevant parameters, in JSON format like:\n{\n  \"apriori\": true, \n  \"test\": \"paired samples t-test\", \n  \"sample\": 20, \n  \"alpha\": 0.05, \n  \"power\": 0.8, \n  \"es\": 0.4, \n  \"es_metric\": \"cohen's D\"\n}\nIf not, return {\"apriori\": false}\nAnswer only in valid JSON format, starting with { and ending with }.", 
+    model = "groq/llama-3.3-70b-versatile", type = NULL))
+```
+
+
+### Expand JSON
+
+It is useful to ask an LLM to return data in JSON structured format, but can be frustrating to extract the data, especially where the LLM makes syntax mistakes. The function `json_expand()` tries to expand a column with a JSON-formatted response into columns and deals with it gracefully (sets an 'error' column to "parsing error") if there are errors. It also fixes column data types, if possible. 
+
+```{r}
+llm_response <- json_expand(llm_power, "answer") |>
+  dplyr::select(text, apriori:es_metric)
+```
+
+```{r}
+#| echo: false
+
+knitr::kable(llm_response)
+```
+
+
+### Rate Limiting
+
+The `llm()` function makes a separate query for each row in a data frame from `text_search()`. (Using parallel functions in ellmer can be more efficient but currently does not associate structured output correctly when inputs may have 0 or more outputs.) To prevent accidentally making too many calls because of errors in your code, a default limit of 30 queries is set, which you can change:
+
+```{r}
+llm_max_calls(30)
+```
+
+## Repository Functions
+
+Metacheck can find links to research repositories in a paper, retrieve the list of files they contain, and download those files for further checking. Four online services are supported, as well as local folders on your own computer.
+
+| Repository | Link function | Info / file list | Download |
+|---|---|---|---|
+| OSF | `osf_links()` | `osf_info()` | `osf_file_download()` |
+| GitHub | `github_links()` | `github_files()`, `github_info()` | — |
+| ResearchBox | `rbox_links()` | `rbox_info()` | `rbox_file_download()` |
+| Zenodo | `zenodo_links()` | `zenodo_info()` | `zenodo_file_download()` |
+| Local folder | — | `local_files()` | — |
+
+The `repo_check` and `code_check` modules use all of these automatically: `repo_check` finds all repository links in a paper and builds a unified file list, and `code_check` then analyses any code files in that list. See the [GitHub](github.html) and [Local Files](local-files.html) articles for more detail on those two sources.
+
+### OSF Links and IDs
+
+Get any OSF links from a paper or list of papers.
+
+```{r}
+links <- osf_links(psychsci)
+
+links$href |> unique() |> head()
+```
+
+
+You can see that some of them have rogue spaces or view-only links. The function `osf_check_id()` takes most formats of OSF links (with or without https:// and osf.io/, as well as the 25-character waterbutler IDs) and converts them to short IDs. 
+
+```{r}
+osf_ids <- osf_check_id(links$href) |> unique()
+
+head(osf_ids)
+```
+
+
+However, all of the `osf_***()` functions fix IDs for you and handle duplicate IDs without making extra API calls, so you don't need to add this step to most workflows.
+
+### OSF Info
+
+Get basic information about OSF links, such as the name, description, osf_type (nodes, files, preprints, registrations, users, set to "private" if you don't have authorisation to view it, and "invalid" if the ), whether it is public
+
+```{r}
+#| eval: false
+info <- osf_info(links[1:6, "href"])
+
+info[, c("href","osf_id", "osf_type", "public", "category")]
+```
+
+```{r}
+#| echo: false
+info <- structure(list(href = c("https://osf.io/e2aks/", "https://osf.io/tvyxz/wiki/view/", 
+"https://osf.io/tvyxz/wiki/view/", "https://osf.io/t9j8e/?view_only=f171281f212f4435917b16a9e581a73b", 
+"https://osf.io/tvyxz/wiki/1.%20View%20the%20Badges/", "https://osf.io/eky4s/"
+), osf_id = c("e2aks", "tvyxz", "tvyxz", "t9j8e?view_only=f171281f212f4435917b16a9e581a73b", 
+"tvyxz", "eky4s"), name = c("Action-specific disruption of perceptual confidence", 
+"Badges to Acknowledge Open Practices", "Badges to Acknowledge Open Practices", 
+"PSICI-14-1362 - Failing to forget: Inhibitory control deficits compromise memory suppression in post-traumatic stress disorder", 
+"Badges to Acknowledge Open Practices", "Wearing a Bicycle Helmet Can Increase Risk Taking and Sensation Seeking in Adults"
+), description = c("Data and analysis scripts for:\nFleming, S.M., Manisaclco, B., Ko, Y., Amendi, N., Ro, T. &amp; Lau, H. (2015) Action-specific disruption of perceptual confidence. Psychological Science https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4361353/", 
+"The aim is to specify a standard by which we can say that a scientific study has been conducted in accordance with open-science principles and provide visual icons to allow advertising of such good behaviours.", 
+"The aim is to specify a standard by which we can say that a scientific study has been conducted in accordance with open-science principles and provide visual icons to allow advertising of such good behaviours.", 
+"Open materials for Psychological Science paper: Failing to forget: Inhibitory control deficits compromise memory suppression in post-traumatic stress disorder", 
+"The aim is to specify a standard by which we can say that a scientific study has been conducted in accordance with open-science principles and provide visual icons to allow advertising of such good behaviours.", 
+""), osf_type = c("nodes", "nodes", "nodes", "nodes", "nodes", 
+"nodes"), public = c(TRUE, TRUE, TRUE, FALSE, TRUE, TRUE), category = c("project", 
+"project", "project", "project", "project", "project"), registration = c(FALSE, 
+FALSE, FALSE, FALSE, FALSE, FALSE), preprint = c(FALSE, FALSE, 
+FALSE, FALSE, FALSE, FALSE), self = c("https://api.osf.io/v2/nodes/e2aks/", 
+"https://api.osf.io/v2/nodes/tvyxz/", "https://api.osf.io/v2/nodes/tvyxz/", 
+"https://api.osf.io/v2/nodes/t9j8e/?view_only=f171281f212f4435917b16a9e581a73b", 
+"https://api.osf.io/v2/nodes/tvyxz/", "https://api.osf.io/v2/nodes/eky4s/"
+), children = c("https://api.osf.io/v2/nodes/e2aks/children/", 
+"https://api.osf.io/v2/nodes/tvyxz/children/", "https://api.osf.io/v2/nodes/tvyxz/children/", 
+"https://api.osf.io/v2/nodes/t9j8e/children/?view_only=f171281f212f4435917b16a9e581a73b", 
+"https://api.osf.io/v2/nodes/tvyxz/children/", "https://api.osf.io/v2/nodes/eky4s/children/"
+), files = c("https://api.osf.io/v2/nodes/e2aks/files/", "https://api.osf.io/v2/nodes/tvyxz/files/", 
+"https://api.osf.io/v2/nodes/tvyxz/files/", "https://api.osf.io/v2/nodes/t9j8e/files/?view_only=f171281f212f4435917b16a9e581a73b", 
+"https://api.osf.io/v2/nodes/tvyxz/files/", "https://api.osf.io/v2/nodes/eky4s/files/"
+), parent = c(NA_character_, NA_character_, NA_character_, NA_character_, 
+NA_character_, NA_character_), project = c("e2aks", "tvyxz", 
+"tvyxz", "t9j8e", "tvyxz", "eky4s")), row.names = c(NA, -6L), class = c("tbl_df", 
+"tbl", "data.frame"))
+
+knitr::kable(info[, c("href","osf_id", "osf_type", "public", "category")])
+```
+
+
+
+View-only links may be listed in the table as public = FALSE if they haven't been made publicly available. This means they are not searchable and only accessible with the view_only link.
+
+You can set the argument `recursive = TRUE` to also retrieve information about all nodes and files that are contained by the OSF link.
+
+```{r}
+#| eval: false
+all_contents <- osf_info(links$href[1], recursive = TRUE)
+
+all_contents[, c("osf_id", "name")]
+```
+
+
+```{r}
+#| echo: false
+structure(list(
+  osf_id = c("e2aks", "7jh5v", "pj4e8", "553e66b48c5e4a219919e0e7", 
+"553e58658c5e4a219919a627", "553e7e168c5e4a21991a4dab", "553e58658c5e4a219919a628", 
+"553e58658c5e4a219919a629", "553e58658c5e4a219919a62a", "553e58658c5e4a219919a62b", 
+"553e58658c5e4a219919a62c", "553e7e168c5e4a21991a4dac"), 
+  name = c("Action-specific disruption of perceptual confidence", 
+"Data", "Analysis scripts", "osfstorage", "osfstorage", "osfstorage", 
+"Mratio_all.txt", "allData_orientation.txt", "allData_contrast_M1.txt", 
+"allData_contrast_PMC.txt", "Mratio_contrast_M1.txt", "tms_analysis.R"
+)), 
+  class = "data.frame", row.names = c(NA, -12L)) |>
+  knitr::kable()
+```
+
+
+### Download OSF Files
+
+OSF projects let you organise information into nested components, and files within those components. Therefore, to retrieve all of the files associate with a project, you may need to navigate to several components and download zip files for the files from each components, then reorganise and rename the downloaded folders. 
+
+The function `osf_file_download()` does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than `max_file_size` (defaults to 10 MB) up to a total size of `max_download_size` (defaults to 100 MB).
+
+```{r}
+#| eval: false
+osf_file_download(osf_id = "pngda",
+                  download_to = ".", 
+                  max_file_size = 1, 
+                  max_download_size = 10)
+```
+
+```
+Starting retrieval for pngda
+- omitting metacheck.png (1.5MB)
+Downloading files [=====================] 24/24 00:00:35
+```
+
+```{r}
+#| eval: false
+list.files("pngda", recursive = TRUE)
+```
+
+```{r}
+#| echo: false
+
+# list.files("articles/pngda/", recursive = TRUE) |> dput()
+c(
+  "Data/Individual/data-01.csv",
+  "Data/Individual/data-02.csv",
+  "Data/Individual/data-03.csv",
+  "Data/Individual/data-04.csv",
+  "Data/Individual/data-05.csv",
+  "Data/Individual/data-06.csv",
+  "Data/Individual/data-07.csv",
+  "Data/Individual/data-08.csv",
+  "Data/Individual/data-09.csv",
+  "Data/Individual/data-10.csv",
+  "Data/Individual/data-11.csv",
+  "Data/Individual/data-12.csv",
+  "Data/Individual/data-13.csv",
+  "Data/Individual/data-14.csv",
+  "Data/Processed Data/processed-data.csv",
+  "Data/Raw Data/data.xlsx",
+  "Data/Raw Data/nest-1/nest-2/nest-3/nest-4/test-4.txt",
+  "Data/Raw Data/nest-1/nest-2/nest-3/test-3.txt",
+  "Data/Raw Data/nest-1/nest-2/test-2.txt",
+  "Data/Raw Data/nest-1/README",
+  "Data/Raw Data/nest-1/test-1.txt",
+  "Data/Raw Data/README",
+  "README"
+)
+```
+
+
+
+
+### GitHub, ResearchBox, and Zenodo
+
+The same pattern — find links, retrieve file lists, optionally download — applies to the other three services.
+
+```{r}
+#| eval: false
+# GitHub
+gh_links  <- github_links(paper)
+gh_files  <- github_files(gh_links$href, recursive = TRUE)
+
+# ResearchBox
+rb_links  <- rbox_links(paper)
+rb_info   <- rbox_info(rb_links)
+
+# Zenodo
+z_links   <- zenodo_links(paper)
+z_info    <- zenodo_info(z_links)
+```
+
+See the [GitHub](github.html) article for a detailed walkthrough of the GitHub functions.
+
+### Local files
+
+If files are not in an online repository — for example because you downloaded a zip archive from a reviewer submission, or because the authors used a service not yet supported — you can point metacheck at a local folder instead.
+
+```{r}
+#| eval: false
+result <- module_run(test_paper(), "code_check",
+                     local_path = "path/to/downloaded/files")
+```
+
+See the [Local Files](local-files.html) article for full details, including how to handle cloud-synced folders and multiple paths at once.
+
+## Modules
+
+metacheck is designed modularly, so you can add modules to check for anything. It comes with a set of pre-defined modules, and we hope people will share more modules.
+
+### Module List
+
+You can see the list of built-in modules with the function below.
+
+```{r}
+module_list()
+```
+
+
+### Running modules
+
+To run a built-in module on a paper, you can reference it by name.
+
+```{r}
+p <- module_run(paper, "all_p_values")
+```
+
+```{r, echo = FALSE}
+knitr::kable(p$table)
+```
+
+
+### Creating modules
+
+You can create your own modules using R code. Modules can also contain instructions for reporting, to give "traffic lights" for whether a check passed or failed, and to include appropriate text feedback in a report. See the [modules vignette](modules.html) for more details. 
+
+
+## Reports
+
+You can generate a report from any set of modules. Check the function help for the default set.
+
+```{r, eval = FALSE}
+report(paper, output_format = "qmd")
+```
+
+
+See the [example report](../report-example.html).

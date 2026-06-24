@@ -1,0 +1,433 @@
+---
+title: "Function reference for new users"
+df-print: paged
+vignette: >
+  %\VignetteIndexEntry{Function reference for new users}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+```
+
+```{r}
+#| include: false
+library(metacheck)
+```
+
+This article lists the functions in metacheck with a short, plain-language
+explanation of what each one does and a small example. It is meant for people
+who are starting to use the package and want a map of what is available.
+
+It is organised in two parts:
+
+1. **Public functions** — the functions you call directly, grouped by task.
+2. **Internal functions** — helpers used inside the package, listed for
+   completeness.
+
+Examples that work offline are run when this page is built, so their output is
+real. Examples that need the internet (looking up DOIs, downloading from
+repositories, querying an LLM) are shown but not run; they are marked with a
+comment.
+
+Two example data sets ship with the package and are used throughout:
+
+- `demopaper()` is a single small paper object, good for quick examples.
+- `psychsci` is a list of 250 open-access papers from *Psychological Science*.
+
+```{r}
+paper <- demopaper()
+```
+
+# Public functions
+
+## Getting a paper to work with
+
+Everything in metacheck operates on a *paper object* (or a list of them). These
+functions create or load one.
+
+**`demopaper()`** — returns a ready-made example paper, so you can try things
+without loading a file.
+
+```{r}
+paper <- demopaper()
+class(paper)
+```
+
+**`test_paper(text)`** — builds a minimal paper from a string of text. Handy for
+testing a check on a sentence you type yourself.
+
+```{r}
+tp <- test_paper("There was an effect, t(28) = 2.40, p = .02, d = 0.45.")
+tp$text$text
+```
+
+**`demofile(ext)`** — returns the path to a bundled example file of a given type
+(for trying the import functions).
+
+```{r}
+demofile("pdf")
+```
+
+**`read(file_path)`** — reads a paper from a metacheck JSON file (or a folder of
+them) into a paper object.
+
+```{r}
+#| eval: false
+paper <- read("mypaper.json")
+```
+
+**`paper(id, ...)`** — constructs a paper object from components directly.
+**`paperlist(...)`** — combines several papers into one list that the checks can
+loop over.
+
+```{r}
+pl <- paperlist(demopaper(), test_paper("t(10) = 2.0, d = 0.6."))
+length(pl)
+```
+
+**`paper_id(paper)`** — the paper's identifier.
+**`paper_table(paper, table)`** — pull one of the paper's component tables
+(e.g. `"info"`, `"author"`, `"bib"`).
+**`ref_table(paper)`** — the reference list as a tidy table.
+
+```{r}
+paper_id(paper)
+ref_table(paper)
+```
+
+**`paper_validate(paper)`** — checks a paper object against the expected schema.
+**`paper_write(paper, file_name)`** — saves a paper object to a JSON file.
+**`fig_image_view(paper, figure_id)`** — displays a figure image from the paper.
+
+```{r}
+#| eval: false
+paper_validate(paper)
+paper_write(paper, "mypaper.json")
+```
+
+## Importing papers from PDFs and XML
+
+These convert source documents (usually a PDF) into the metacheck JSON format.
+Most need an external service (a GROBID server or the bibr backend), so they are
+shown but not run here.
+
+**`convert(file_path, save_path)`** — the main entry point: convert a document to
+metacheck JSON, picking a method automatically.
+**`convert_grobid(...)`** / **`convert_bibr(...)`** — convert using a specific
+backend.
+**`grobid_to_bibr(xml_path)`** — turn GROBID TEI XML into the bibr structure.
+**`format_bib_authors(authors)`** — format an author list for a bibliography.
+
+```{r}
+#| eval: false
+# needs a running GROBID server or the bibr backend
+paper <- convert("mypaper.pdf", save_path = "out/")
+```
+
+## Searching the text
+
+**`search_text(paper, pattern)`** (also available as **`text_search()`** — they
+are the same function) — find text matching a regular expression.
+
+```{r}
+search_text(paper, "significant") |> head(3)
+```
+
+Use `return = "match"` to get just the matched pieces, `fixed = TRUE` to match
+literally, and `exclude = TRUE` to get the rows that *don't* match.
+
+```{r}
+search_text(paper, "significant", return = "match")
+search_text(paper, "p = 0.005", fixed = TRUE)
+nrow(search_text(paper, "significant", exclude = TRUE))
+```
+
+**`expand_text(results, paper, expand_to)`** (also **`text_expand()`**) — add a
+column with surrounding context (e.g. the whole sentence or paragraph) to a
+search/extraction result.
+
+```{r}
+pv <- extract_p_values(paper)
+expand_text(pv, paper, expand_to = "sentence")$expanded[1]
+```
+
+## Extracting statistics and links
+
+**`extract_eq(paper)`** — list every "name `<comparator>` value" equation in the
+text (test statistics, means, effect sizes, …). This is the canonical place to
+get statistics; checks should read from here rather than re-scanning the text.
+
+```{r}
+extract_eq(paper) |> head()
+```
+
+**`extract_p_values(paper)`** — the p-values, with comparator and numeric value.
+
+```{r}
+extract_p_values(paper)[, c("text", "p_comp", "p_value")]
+```
+
+**`extract_urls(paper)`** — text rows containing a URL or DOI.
+
+```{r}
+extract_urls(paper)[, c("text_id", "text")] |> head(3)
+```
+
+**`stats(text)`** — run statcheck-style consistency checks on reported
+statistics.
+**`json_expand(table, col)`** — expand a column of JSON strings into columns.
+
+```{r}
+#| eval: false
+stats(paper)
+```
+
+## Running checks (modules)
+
+Checks in metacheck are *modules*. These functions list, describe, and run them.
+
+**`module_list()`** — the available modules.
+
+```{r}
+module_list()[, c("name", "title", "section")] |> head()
+```
+
+**`module_run(paper, module)`** — run a module; returns a list with `table`,
+`summary_table`, `traffic_light`, `summary_text`, and `report`.
+
+```{r}
+out <- module_run(paper, "all_urls")
+out$traffic_light
+```
+
+**`module_help(module)`** / **`module_info(module)`** — documentation and
+metadata for a module.
+**`module_template(module_name)`** — scaffold a new module file.
+**`get_prev_outputs(module, item)`** — inside a module, read the output of a
+module that ran earlier.
+
+```{r}
+module_info("all_urls")$title
+```
+
+## Building a report
+
+**`report(paper, modules)`** — run a set of modules and render a full report
+document.
+**`report_module_run(...)`** — run the modules that make up a report.
+**`module_report(module_output)`** — turn one module's output into its report
+section.
+**`report_qmd(...)`** — produce the Quarto source for a module's section.
+
+```{r}
+report_txt <- module_report(out)
+class(report_txt)
+```
+
+```{r}
+#| eval: false
+report(paper, modules = c("all_urls", "stat_effect_size"),
+       output_file = "report.html")
+```
+
+## Report-building helpers
+
+Small helpers modules use to format their report sections.
+
+**`scroll_table(table)`** / **`report_table(table)`** — render a data frame as an
+HTML table.
+**`collapse_section(text, title)`** — wrap text in a collapsible block.
+**`link(url, text)`** — make an HTML link.
+**`plural(n)`** — `"s"` when `n != 1`, else `""` (for grammatical messages).
+**`format_ref(bib)`** — format a citation from a bibentry.
+
+```{r}
+plural(1)
+plural(2)
+link("https://example.org", "example")
+format_ref(citation("metacheck"))
+```
+
+## Looking up DOIs and metadata
+
+**`doi_clean(doi)`** — normalise a DOI string.
+**`doi_valid_format(doi)`** — does it look like a DOI?
+**`doi_resolves(doi)`** / **`doi_lookup(doi)`** — check/look up a DOI online.
+
+```{r}
+doi_clean("https://doi.org/10.1234/ABC")
+doi_valid_format("10.1234/abc")
+```
+
+```{r}
+#| eval: false
+doi_lookup("10.1234/abc")   # needs internet
+```
+
+**`crossref_doi(doi)`** / **`crossref_query(ref)`** — Crossref metadata lookup.
+**`openalex_doi(doi)`** / **`openalex_query(title)`** — OpenAlex lookup.
+**`datacite_doi(doi)`** — DataCite lookup.
+**`add_bib_match(paper)`** — match a paper's references to online records.
+
+```{r}
+#| eval: false
+crossref_doi("10.1177/0956797614520714")  # needs internet
+```
+
+## Databases of comments, replications, retractions
+
+**`pubpeer_comments(doi)`** — PubPeer comments for a DOI.
+**`FLoRA()`** / **`FLoRA_update()`** / **`FLoRA_date()`** — the FLoRA replication
+database (loaded, refreshed, and dated).
+**`retractionwatch()`** (alias **`rw()`**) / **`rw_update()`** / **`rw_date()`** —
+the Retraction Watch database.
+
+```{r}
+#| eval: false
+pubpeer_comments("10.1177/0956797614520714")  # needs internet
+rw()                                            # downloads the database
+```
+
+## Finding and downloading shared files
+
+Each repository has a `*_links()` function that finds links in a paper, an
+`*_info()` function that fetches metadata, and (where supported) a
+`*_file_download()` function.
+
+**OSF:** `osf_links()`, `osf_info()`, `osf_file_download()`, `osf_type()`,
+`osf_check_id()`, `osf_api_check()`, `osf_delay()`, `osf_get_all_pages()`,
+`osf_preprint_list()`.
+
+**GitHub:** `github_links()`, `github_info()`, `github_repo()`,
+`github_files()`, `github_languages()`, `github_readme()`.
+
+**Zenodo:** `zenodo_links()`, `zenodo_info()`, `zenodo_file_download()`.
+
+**ResearchBox:** `rbox_links()`, `rbox_info()`, `rbox_file_download()`.
+
+**AsPredicted:** `aspredicted_links()`, `aspredicted_info()`.
+
+**Local files:** `local_files(path)` — list files in a local folder.
+
+The `*_links()` functions work offline on an already-loaded paper:
+
+```{r}
+osf_links(paper)[, c("href", "text_id")]
+```
+
+The `*_info()` and download functions need the internet:
+
+```{r}
+#| eval: false
+osf_info("https://osf.io/5tbm9")          # fetch metadata
+osf_file_download("5tbm9", "downloads/")  # download files
+github_readme("scienceverse/metacheck")
+```
+
+## Asking a large language model
+
+**`llm(text, ...)`** — send text to a language model and get a structured
+answer.
+**`llm_use(...)`** — set which model/platform to use.
+**`llm_model(model)`** / **`llm_model_list(platform)`** — pick or list models.
+**`llm_max_calls(n)`** — cap how many calls a run may make.
+
+```{r}
+#| eval: false
+llm_use("ollama")                       # choose a backend
+llm("Summarise this abstract: ...")     # query the model
+```
+
+## Checking shared code
+
+**`code_read(file_path)`** — read a code file.
+**`code_parse_r(file_path)`** — parse R code into a table of calls.
+**`code_remove_comments(code_text, lang)`** — strip comments from code.
+
+```{r}
+code_remove_comments("x <- 1 # set x", lang = "R")
+```
+
+## ORCID and contributor info
+
+**`check_orcid(orcid)`** — validate an ORCID and fetch the person.
+**`get_orcid(family, given)`** — look up an ORCID by name.
+**`orcid_person(orcid)`** — a person's ORCID record.
+**`credit_roles()`** — the CRediT contributor-role taxonomy.
+
+```{r}
+credit_roles() |> head()
+```
+
+```{r}
+#| eval: false
+check_orcid("0000-0002-0247-239X")   # needs internet
+```
+
+## File types
+
+**`filetype(filename)`** — a coarse type for a filename (e.g. data, code,
+document).
+**`file_category(contents)`** — categorise file contents.
+
+```{r}
+filetype("analysis.R")
+filetype("data.csv")
+```
+
+## Validation utilities
+
+**`validate(gt, module)`** — compare a module's current output against a coded
+ground-truth file.
+**`accuracy(expected, observed)`** — accuracy measures (sensitivity,
+specificity, d-prime, …) from two logical vectors.
+
+```{r}
+accuracy(c(TRUE, TRUE, FALSE, FALSE), c(TRUE, FALSE, FALSE, FALSE))
+```
+
+## General utilities
+
+**`email(email)`** — set the contact email used for polite API access.
+**`online(url)`** — is a URL reachable?
+**`verbose(verbose)`** — get/set whether functions print progress.
+**`pb(total)`** — a progress bar.
+**`rep_if(x, y, replace)`** — replace values equal to `y` with `replace`.
+**`path_sanitize(path)`** — make a string safe to use as a file path.
+**`message(...)`** — metacheck's message wrapper.
+**`logger()`, `logpath()`, `lastlog()`** — write and read run logs.
+
+```{r}
+rep_if(c(1, NA, 3), NA, 0)
+path_sanitize("results: study/1?.csv")
+```
+
+```{r}
+#| eval: false
+email("you@example.org")
+online("https://osf.io")
+```
+
+# Internal functions
+
+These are not part of the public interface and may change without notice. They
+are listed so the documentation is complete. Several are exported only for
+testing and begin with a dot.
+
+```{r}
+#| echo: false
+ns <- getNamespace("metacheck")
+is_fun <- function(n) is.function(get(n, envir = ns))
+exported <- getNamespaceExports("metacheck")
+all_fun <- Filter(is_fun, ls(ns, all.names = TRUE))
+internal <- sort(setdiff(all_fun, exported[!grepl("^[.]|^%", exported)]))
+internal <- internal[!grepl("^%", internal)]
+internal
+```
+
+```{r}
+#| echo: false
+cat(length(internal), "internal functions.\n")
+```

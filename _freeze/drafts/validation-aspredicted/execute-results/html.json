@@ -1,0 +1,15 @@
+{
+  "hash": "542c87a42516d7c01da1f017937f5fc1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: AsPredicted functions validation\nformat:\n  html:\n    toc: true\n    embed-resources: true\n---\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# library(metacheck)\nlibrary(tidyverse)\n\n# use local dev version\nlibrary(metacheck)\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlinks <- aspredicted_links(psychsci)\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nap <- aspredicted_info(links)\nsaveRDS(ap, \"aspredicted.Rds\")\n```\n:::\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nap <- readRDS(\"aspredicted.Rds\")\n```\n:::\n\n\n## No info\n\n\n::: {.cell}\n\n```{.r .cell-code}\nfilter(ap, is.na(AP_version))\n```\n:::\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nap_only <- ap[, grepl(\"^AP_\", names(ap))] |> unique()\n```\n:::\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncount(ap_only, AP_data)\n```\n:::\n\n\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
