@@ -63,7 +63,7 @@ Following the summary, you can browse each module. Modules are discussed in more
 
 ### Running locally for privacy
 
-Metacheck has been developed so that it can run locally, without sending any information anywhere. This requires a bit more technical expertise, but it makes the tool available to editors or peer reviewers who are not allowed to upload submitted manuscripts to an external server. When such privacy concerns are not an issue (for example when running Metacheck on a publicly available preprint) you can use online servers for specific tasks, such as converting a pdf to xml. This offers an easier user experience.
+Metacheck has been developed so that it can run locally, without sending any information anywhere. This requires a bit more technical expertise, but it makes the tool available to editors or peer reviewers who are not allowed to upload submitted manuscripts to an external server. When such privacy concerns are not an issue (for example when running Metacheck on a publicly available preprint) you can use online servers for specific tasks, such as converting a pdf to xml. This offers an easier user experience. 
 
 Converting a PDF to text uses a GROBID server. By default Metacheck uses a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and chooses the first available — by default a GROBID server at Eindhoven University of Technology that meets GDPR requirements. If you cannot send manuscripts to an external server, you can run your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0.
 

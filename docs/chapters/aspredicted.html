@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>24&nbsp; Retrieving Planned Sample Sizes from AsPredicted Preregistrations – The metacheck Book</title>
+<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<title>23&nbsp; Retrieving Planned Sample Sizes from AsPredicted Preregistrations – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -131,7 +131,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/github.html">Integrations &amp; Sources</a></li><li class="breadcrumb-item"><a href="../chapters/aspredicted.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/creating-modules.html">Advanced Functions</a></li><li class="breadcrumb-item"><a href="../chapters/aspredicted.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -144,7 +144,7 @@ div.csl-indent {
       <a href="../index.html" class="sidebar-logo-link">
       <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">The metacheck Book</a> 
+      <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/scienceverse/metacheck_book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -209,80 +209,68 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -299,31 +287,31 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -331,7 +319,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Integrations &amp; Sources</span></a>
+ <span class="menu-text">Advanced Functions</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -339,26 +327,32 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -381,55 +375,55 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -459,24 +453,24 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#find-aspredicted-links" id="toc-find-aspredicted-links" class="nav-link active" data-scroll-target="#find-aspredicted-links"><span class="header-section-number">24.1</span> Find AsPredicted Links</a></li>
-  <li><a href="#retrieve-link-info" id="toc-retrieve-link-info" class="nav-link" data-scroll-target="#retrieve-link-info"><span class="header-section-number">24.2</span> Retrieve Link Info</a></li>
+<li><a href="#find-aspredicted-links" id="toc-find-aspredicted-links" class="nav-link active" data-scroll-target="#find-aspredicted-links"><span class="header-section-number">23.1</span> Find AsPredicted Links</a></li>
+  <li><a href="#retrieve-link-info" id="toc-retrieve-link-info" class="nav-link" data-scroll-target="#retrieve-link-info"><span class="header-section-number">23.2</span> Retrieve Link Info</a></li>
   <li>
-<a href="#sample-size" id="toc-sample-size" class="nav-link" data-scroll-target="#sample-size"><span class="header-section-number">24.3</span> Sample Size</a>
+<a href="#sample-size" id="toc-sample-size" class="nav-link" data-scroll-target="#sample-size"><span class="header-section-number">23.3</span> Sample Size</a>
   <ul class="collapse">
-<li><a href="#preregistration-sample-size-plan" id="toc-preregistration-sample-size-plan" class="nav-link" data-scroll-target="#preregistration-sample-size-plan"><span class="header-section-number">24.3.1</span> Preregistration Sample Size Plan</a></li>
-  <li><a href="#paper-sample-size" id="toc-paper-sample-size" class="nav-link" data-scroll-target="#paper-sample-size"><span class="header-section-number">24.3.2</span> Paper Sample size</a></li>
-  <li><a href="#llm-comparison" id="toc-llm-comparison" class="nav-link" data-scroll-target="#llm-comparison"><span class="header-section-number">24.3.3</span> LLM Comparison</a></li>
+<li><a href="#preregistration-sample-size-plan" id="toc-preregistration-sample-size-plan" class="nav-link" data-scroll-target="#preregistration-sample-size-plan"><span class="header-section-number">23.3.1</span> Preregistration Sample Size Plan</a></li>
+  <li><a href="#paper-sample-size" id="toc-paper-sample-size" class="nav-link" data-scroll-target="#paper-sample-size"><span class="header-section-number">23.3.2</span> Paper Sample size</a></li>
+  <li><a href="#llm-comparison" id="toc-llm-comparison" class="nav-link" data-scroll-target="#llm-comparison"><span class="header-section-number">23.3.3</span> LLM Comparison</a></li>
   </ul>
 </li>
-  <li><a href="#ai-results-always-need-checking" id="toc-ai-results-always-need-checking" class="nav-link" data-scroll-target="#ai-results-always-need-checking"><span class="header-section-number">24.4</span> AI Results Always Need Checking!</a></li>
-  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">24.5</span> Putting it All Together</a></li>
+  <li><a href="#ai-results-always-need-checking" id="toc-ai-results-always-need-checking" class="nav-link" data-scroll-target="#ai-results-always-need-checking"><span class="header-section-number">23.4</span> AI Results Always Need Checking!</a></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">23.5</span> Putting it All Together</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/aspredicted.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/github.html">Integrations &amp; Sources</a></li><li class="breadcrumb-item"><a href="../chapters/aspredicted.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/creating-modules.html">Advanced Functions</a></li><li class="breadcrumb-item"><a href="../chapters/aspredicted.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span>
+<span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span>
 </h1>
 </div>
 
@@ -494,8 +488,8 @@ div.csl-indent {
 </header><p>It is increasingly common for researchers to preregister their studies <span class="citation" data-cites="spitzer_registered_2023 imai_preregistration_2025">(<a href="#ref-imai_preregistration_2025" role="doc-biblioref">Imai et al., 2025</a>; <a href="#ref-spitzer_registered_2023" role="doc-biblioref">Spitzer &amp; Mueller, 2023</a>)</span>. As it is a new practice, and not all researchers are trained in how to preregister, it is not surprising that the quality of preregistration is not always sufficient to allow others to identify opportunistic flexibility in the data analysis <span class="citation" data-cites="vandenakker_potential_2024">(<a href="#ref-vandenakker_potential_2024" role="doc-biblioref"><span class="nocase">Akker et al.</span>, 2024</a>)</span>. Reviewers could check whether researchers adhere to the preregistration, but this requires some effort. Automation can provide a partial solution be making information more easily available, and perhaps even performing automated checks.</p>
 <p>Here we demonstrate how <a href="https://scienceverse.github.io/metacheck/">metacheck</a>, our software to perform automated checks on scientific manuscripts, can also retrieve the content of a preregistration. The preregistration can then be presented alongside the relevant information in the manuscript. This makes it easier for peer reviewers to compare the information.</p>
 <p>We will illustrate code that automatically retrieves and presents preregistrations in this blog post. We focus on AsPredicted preregistrations. Their structured format makes it especially easy to retrieve information, but the same can be achieved for OSF preregistrations, especially those that use a template. We can easily search for AsPredicted links in all 250 open access papers from psychological science. The metacheck package conveniently includes these in xml format in the <code>psychsci</code> object.</p>
-<section id="find-aspredicted-links" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="find-aspredicted-links">
-<span class="header-section-number">24.1</span> Find AsPredicted Links</h2>
+<section id="find-aspredicted-links" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="find-aspredicted-links">
+<span class="header-section-number">23.1</span> Find AsPredicted Links</h2>
 <p>Extracting links is a bit trickier than just searching for “aspredicted.org”, so we provide a convenient function for extracting them from papers: <code>aspredicted_links()</code>. It cleans up the links when they are incorrectly formatted, such as splitting “https://aspredicted.org/blind.php?x=nq4xa3” across two sentences at the question mark.</p>
 <p>This function returns a table with a row for each link found that indicates the location of the link in each paper. Many papers include the same link in multiple places, so we will just show you the unique links here, returned in the “href” column.</p>
 <div class="cell">
@@ -554,8 +548,8 @@ div.csl-indent {
 <span><span class="co">#&gt; [50] "https://aspredicted.org/sq22k.pdf"         </span></span>
 <span><span class="co">#&gt; [51] "https://aspredicted.org/u53e3.pdf"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="retrieve-link-info" class="level2" data-number="24.2"><h2 data-number="24.2" class="anchored" data-anchor-id="retrieve-link-info">
-<span class="header-section-number">24.2</span> Retrieve Link Info</h2>
+</section><section id="retrieve-link-info" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="retrieve-link-info">
+<span class="header-section-number">23.2</span> Retrieve Link Info</h2>
 <p>We can then use the function <code>aspredicted_info()</code> to get structured information from AsPredicted. You can try to run the function on all 51 links above, but AsPredicted will eventually make you complete a captcha before each access (we’re working on a way to log into the site to prevent this). But for demonstration purposes, let’s just look at one paper.</p>
 <p>Below we provide an example where we analyze the paper “<a href="https://journals.sagepub.com/doi/10.1177/09567976221082938">The Evolution of Cognitive Control in Lemurs</a>”, which contains a single preregistration on AsPredicted.</p>
 <div class="cell">
@@ -585,12 +579,12 @@ div.csl-indent {
 <span><span class="co">#&gt; AP_anything_else "Nothing else to pre-register."                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </span></span>
 <span><span class="co">#&gt; AP_version       "2.00"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="sample-size" class="level2" data-number="24.3"><h2 data-number="24.3" class="anchored" data-anchor-id="sample-size">
-<span class="header-section-number">24.3</span> Sample Size</h2>
+</section><section id="sample-size" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="sample-size">
+<span class="header-section-number">23.3</span> Sample Size</h2>
 <p>Recent studies into how preregistrations are performed <span class="citation" data-cites="vandenakker_potential_2024">(<a href="#ref-vandenakker_potential_2024" role="doc-biblioref"><span class="nocase">Akker et al.</span>, 2024</a>)</span> have shown that one of the most common deviations from a preregistration is a difference in the planned sample size, and the achieved sample size. This is not necessarily problematic, as a difference might be only a single datapoint. Nevertheless, researchers should discuss the deviation, and evaluate whether the deviation impacts the severity of the test <span class="citation" data-cites="lakens_when_2024">(<a href="#ref-lakens_when_2024" role="doc-biblioref">Lakens, 2024</a>)</span>.</p>
 <p>Checking the sample size of a study against the preregistration is some effort, as the preregistration document needs to be opened, the correct entry located, and the corresponding text in the manuscript needs to be identified. Recently, a fully automatic comparison tool, (<a href="https://regcheck.app/">RegCheck</a>) has been created by Jamie Cummins from the University of Bern, that relies on large language models and AI where users upload the manuscript, the preregistration, and receive an automated comparison. We take a slightly different approach. We retrieve the preregistration from AsPredicted automatically, and present users with the information about the preregistered sample size (which is straightforward given the structured approach of the AsPredicted template). We then recommend users to compare this information against the method section in the manuscript.</p>
-<section id="preregistration-sample-size-plan" class="level3" data-number="24.3.1"><h3 data-number="24.3.1" class="anchored" data-anchor-id="preregistration-sample-size-plan">
-<span class="header-section-number">24.3.1</span> Preregistration Sample Size Plan</h3>
+<section id="preregistration-sample-size-plan" class="level3" data-number="23.3.1"><h3 data-number="23.3.1" class="anchored" data-anchor-id="preregistration-sample-size-plan">
+<span class="header-section-number">23.3.1</span> Preregistration Sample Size Plan</h3>
 <p>You can access the sample size plan from the results of <code>aspredicted_info()</code> under the column name <code>AP_sample_size</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># get the sample size section from AsPredicted</span></span>
 <span><span class="va">prereg_sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">prereg</span><span class="op">$</span><span class="va">AP_sample_size</span><span class="op">)</span></span>
@@ -601,8 +595,8 @@ div.csl-indent {
 <blockquote class="blockquote">
 <p>The study will compare four lemur species: ruffed lemur, Coquerel’s sifakas, ring-tailed lemur and mongoose lemur at the Duke Lemur Center. We will test a minimum of 10 and a maximum of 15 individuals for each species based on availability and individual’s willingness to participate at the time of testing.</p>
 </blockquote>
-</section><section id="paper-sample-size" class="level3" data-number="24.3.2"><h3 data-number="24.3.2" class="anchored" data-anchor-id="paper-sample-size">
-<span class="header-section-number">24.3.2</span> Paper Sample size</h3>
+</section><section id="paper-sample-size" class="level3" data-number="23.3.2"><h3 data-number="23.3.2" class="anchored" data-anchor-id="paper-sample-size">
+<span class="header-section-number">23.3.2</span> Paper Sample size</h3>
 <p>Now we need to check what the achieved sample size in the paper is.</p>
 <p>To facilitate this comparison, we can retrieve all paragraphs that contain words such as ‘sample’ or ‘participants’ from the manuscript, in the hope that this contains the relevant text. A more advanced version of this tool could attempt to identify the relevant information in the manuscript with a search for specific words used in the preregistration, but we also show how AI can be used to identify the related text in the manuscript.</p>
 <p>A metacheck module could automatically print the information from the preregistration, and possible relevant text from the manuscript. Our main goal is to increase the ease with which important information from the preregistration is available to the authors and peer reviewers, and remind users that they need to discuss deviations from their preregistration.</p>
@@ -625,8 +619,8 @@ div.csl-indent {
 <figcaption>Mongoose Lemurs</figcaption></figure>
 </div>
 </div>
-</section><section id="llm-comparison" class="level3" data-number="24.3.3"><h3 data-number="24.3.3" class="anchored" data-anchor-id="llm-comparison">
-<span class="header-section-number">24.3.3</span> LLM Comparison</h3>
+</section><section id="llm-comparison" class="level3" data-number="23.3.3"><h3 data-number="23.3.3" class="anchored" data-anchor-id="llm-comparison">
+<span class="header-section-number">23.3.3</span> LLM Comparison</h3>
 <p>Alternatively, we can use an LLM to compare the preregistration with the text in the manuscript. This is more costly (both financially and ecologically) but it is possible and might work better, given the flexible ways people discuss sample sizes in manuscripts.</p>
 <p>We can use an overinclusive search for any paragraphs that contain the strings “sample”, “subject” or “particip”. We can further narrow this down by including only paragraphs that contain a number (including the word forms for small numbers).</p>
 <div class="cell">
@@ -658,8 +652,8 @@ div.csl-indent {
 <p>The authors deviated from their preregistration. They planned to test a minimum of 10 and a maximum of 15 individuals for each species, but they tested 10 individuals for three species (ruffed lemurs, Coquerel’s sifakas, and ring-tailed lemurs) and 9 individuals for the fourth species (mongoose lemur).</p>
 </blockquote>
 <p>As we see, the LLM does a very good job evaluating whether the authors adhered to their preregistration in terms of the sample size. The long-run performance of this automated evaluation needs to be validated in future research - this is just a proof of principle - but it has potential for editors who want to automatically check if authors followed their preregistration, and for meta-scientists who want to examine preregistration adherence across a large number of papers. <strong>For such meta-scientific use-cases, however, the code needs to be extensively validated and error rates should be acceptably low (i.e., comparable to human coders).</strong></p>
-</section></section><section id="ai-results-always-need-checking" class="level2" data-number="24.4"><h2 data-number="24.4" class="anchored" data-anchor-id="ai-results-always-need-checking">
-<span class="header-section-number">24.4</span> AI Results Always Need Checking!</h2>
+</section></section><section id="ai-results-always-need-checking" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="ai-results-always-need-checking">
+<span class="header-section-number">23.4</span> AI Results Always Need Checking!</h2>
 <p>The use of AI to interpret deviations is convenient, but <strong>can’t replace human judgment</strong>. The following article, <a href="https://journals.sagepub.com/doi/10.1177/0956797621991548">Exploring the Facets of Emotional Episodic Memory: Remembering “What,” “When,” and “Which”</a> is categorized by the large language model as a deviation from the preregistration. However, it misses that the authors explicitly say that Cohort B was not preregistered, and therefore, falling short of the planned sample size of 60 in that cohort should not be seen as a deviation from the preregistration. Manually checking the sentences in the method section that contain the words ‘sample’ or ‘particip…’ reveal the misclassification by the LLM.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797621991548`</span></span>
 <span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu">aspredicted_links</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span>
@@ -696,8 +690,8 @@ div.csl-indent {
 <blockquote class="blockquote">
 <p>In the present preregistered study (https://aspredicted.org/p4ci6.pdf), we built on this prior work using a novel-timeline (“when”) paradigm (for related methodology, see Montchal et al., 2019). To contextualize our results in the broader emotional-memory literature, we simultaneously tested “what” (item recognition) and in “which” (associative recognition for a spatial context) memory within the same paradigm, providing a holistic representation of emotional episodic memories. In a second experiment, we directly replicated our findings in an independent sample. Following prior work, we hypothesized that emotion would augment memory for what emotional content was previously viewed but attenuate memory for which unfolding spatial background that content is placed in. Our novel hypothesis was that emotion would additionally attenuate memory for when that content was viewed. conducted a power analysis based on Madan et al.’s (2017) second experiment. The effect sizes for the impact of emotion on “what” (Cohen’s d = 0.44) and “which” (d = 0.52) memory indicated that a sample size of 56 and 41, respectively, was adequate for detecting an effect on these aspects of memory (α = .05, 1 -β = .90). Here, we sought to collect data from 60 participants in each cohort. In cohort A (n = 60; 42 female), the mean age was 20.89 years (SD = 2.94). One participant’s age was excluded from the mean because they entered an age of “2.” We preregistered the study involving cohort A. We ran a replication study (exact replication), which involved cohort B, that was not preregistered. In cohort B (n = 56; 44 female), our replication sample, the mean age was 20.64 years (SD = 1.96). Cohort B was originally intended to be another 60 participants, but data collection was interrupted because of the COVID-19 pandemic; we shut down all laboratory testing on March 13,2020. An exploratory analysis (not preregistered) in the full sample examined potential associations between performance (difference scores) across the different aspects of memory probed. Because this involved three comparisons, we used a Bonferroni-corrected value (α) of .016. This analysis failed to yield any significant</p>
 </blockquote>
-</section><section id="putting-it-all-together" class="level2" data-number="24.5"><h2 data-number="24.5" class="anchored" data-anchor-id="putting-it-all-together">
-<span class="header-section-number">24.5</span> Putting it All Together</h2>
+</section><section id="putting-it-all-together" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="putting-it-all-together">
+<span class="header-section-number">23.5</span> Putting it All Together</h2>
 <p>metacheck does not yet contain this module, as it is still under development, but you could <a href="https://scienceverse.github.io/metacheck/articles/creating_modules.html">create you own local module</a> by using (or improving) the following code:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># save to a file aspredicted_sample.R</span></span>
@@ -1205,12 +1199,12 @@ Spitzer, L., &amp; Mueller, S. (2023). Registered report: Survey on attitudes an
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/github.html" class="pagination-link" aria-label="Exploring GitHub Repositories">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/osf-schemas.html" class="pagination-link" aria-label="OSF Registration Schemas">
-        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1223,7 +1217,7 @@ Spitzer, L., &amp; Mueller, S. (2023). Registered report: Survey on attitudes an
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/aspredicted.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">metacheck package</a></p>
+<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>21&nbsp; Checking Statistical Reporting – The metacheck Book</title>
+<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<title>19&nbsp; Checking Statistical Reporting – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -131,7 +131,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/stats.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/stats.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -144,7 +144,7 @@ div.csl-indent {
       <a href="../index.html" class="sidebar-logo-link">
       <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">The metacheck Book</a> 
+      <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/scienceverse/metacheck_book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -209,80 +209,68 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -299,31 +287,31 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -331,7 +319,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Integrations &amp; Sources</span></a>
+ <span class="menu-text">Advanced Functions</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -339,26 +327,32 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -381,55 +375,55 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -459,21 +453,21 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#journal-article-reporting-standards" id="toc-journal-article-reporting-standards" class="nav-link active" data-scroll-target="#journal-article-reporting-standards"><span class="header-section-number">21.1</span> Journal Article Reporting Standards</a></li>
-  <li><a href="#a-paper-where-everything-looks-fine" id="toc-a-paper-where-everything-looks-fine" class="nav-link" data-scroll-target="#a-paper-where-everything-looks-fine"><span class="header-section-number">21.2</span> A paper where everything looks fine</a></li>
-  <li><a href="#exact-p-values-stat_p_exact" id="toc-exact-p-values-stat_p_exact" class="nav-link" data-scroll-target="#exact-p-values-stat_p_exact"><span class="header-section-number">21.3</span> Exact p-values (<code>stat_p_exact</code>)</a></li>
-  <li><a href="#missing-effect-sizes-stat_effect_size" id="toc-missing-effect-sizes-stat_effect_size" class="nav-link" data-scroll-target="#missing-effect-sizes-stat_effect_size"><span class="header-section-number">21.4</span> Missing effect sizes (<code>stat_effect_size</code>)</a></li>
-  <li><a href="#non-significant-p-values-stat_p_nonsig" id="toc-non-significant-p-values-stat_p_nonsig" class="nav-link" data-scroll-target="#non-significant-p-values-stat_p_nonsig"><span class="header-section-number">21.5</span> Non-significant p-values (<code>stat_p_nonsig</code>)</a></li>
-  <li><a href="#marginal-significance-marginal" id="toc-marginal-significance-marginal" class="nav-link" data-scroll-target="#marginal-significance-marginal"><span class="header-section-number">21.6</span> Marginal significance (<code>marginal</code>)</a></li>
-  <li><a href="#statistical-consistency-statcheck-stat_check" id="toc-statistical-consistency-statcheck-stat_check" class="nav-link" data-scroll-target="#statistical-consistency-statcheck-stat_check"><span class="header-section-number">21.7</span> Statistical consistency (StatCheck, <code>stat_check</code>)</a></li>
-  <li><a href="#running-all-modules-at-once" id="toc-running-all-modules-at-once" class="nav-link" data-scroll-target="#running-all-modules-at-once"><span class="header-section-number">21.8</span> Running all modules at once</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">21.9</span> References</a></li>
+<li><a href="#journal-article-reporting-standards" id="toc-journal-article-reporting-standards" class="nav-link active" data-scroll-target="#journal-article-reporting-standards"><span class="header-section-number">19.1</span> Journal Article Reporting Standards</a></li>
+  <li><a href="#a-paper-where-everything-looks-fine" id="toc-a-paper-where-everything-looks-fine" class="nav-link" data-scroll-target="#a-paper-where-everything-looks-fine"><span class="header-section-number">19.2</span> A paper where everything looks fine</a></li>
+  <li><a href="#exact-p-values-stat_p_exact" id="toc-exact-p-values-stat_p_exact" class="nav-link" data-scroll-target="#exact-p-values-stat_p_exact"><span class="header-section-number">19.3</span> Exact p-values (<code>stat_p_exact</code>)</a></li>
+  <li><a href="#missing-effect-sizes-stat_effect_size" id="toc-missing-effect-sizes-stat_effect_size" class="nav-link" data-scroll-target="#missing-effect-sizes-stat_effect_size"><span class="header-section-number">19.4</span> Missing effect sizes (<code>stat_effect_size</code>)</a></li>
+  <li><a href="#non-significant-p-values-stat_p_nonsig" id="toc-non-significant-p-values-stat_p_nonsig" class="nav-link" data-scroll-target="#non-significant-p-values-stat_p_nonsig"><span class="header-section-number">19.5</span> Non-significant p-values (<code>stat_p_nonsig</code>)</a></li>
+  <li><a href="#marginal-significance-marginal" id="toc-marginal-significance-marginal" class="nav-link" data-scroll-target="#marginal-significance-marginal"><span class="header-section-number">19.6</span> Marginal significance (<code>marginal</code>)</a></li>
+  <li><a href="#statistical-consistency-statcheck-stat_check" id="toc-statistical-consistency-statcheck-stat_check" class="nav-link" data-scroll-target="#statistical-consistency-statcheck-stat_check"><span class="header-section-number">19.7</span> Statistical consistency (StatCheck, <code>stat_check</code>)</a></li>
+  <li><a href="#running-all-modules-at-once" id="toc-running-all-modules-at-once" class="nav-link" data-scroll-target="#running-all-modules-at-once"><span class="header-section-number">19.8</span> Running all modules at once</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">19.9</span> References</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/stats.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/stats.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/stats.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span>
+<span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span>
 </h1>
 </div>
 
@@ -491,8 +485,8 @@ div.csl-indent {
 </header><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="journal-article-reporting-standards" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="journal-article-reporting-standards">
-<span class="header-section-number">21.1</span> Journal Article Reporting Standards</h2>
+<section id="journal-article-reporting-standards" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="journal-article-reporting-standards">
+<span class="header-section-number">19.1</span> Journal Article Reporting Standards</h2>
 <p>The Journal Article Reporting Standards (JARS) developed by the American Psychological Association provide guidance on what information should be reported in scientific articles to support transparency and reproducibility <span class="citation" data-cites="appelbaum2018">(<a href="#ref-appelbaum2018" role="doc-biblioref">Appelbaum et al., 2018</a>)</span>. Almost every published article would improve if researchers diligently followed JARS, but the guidelines are not widely known, rarely enforced by journals, and time-consuming to check manually. Automation can help.</p>
 <p>Metacheck provides five modules for checking statistical reporting quality. This vignette demonstrates each one using papers from the <code>psychsci</code> built-in dataset — 250 open-access articles published in <em>Psychological Science</em> between 2004 and 2014.</p>
 <table class="caption-top table">
@@ -528,8 +522,8 @@ div.csl-indent {
 </tbody>
 </table>
 <p>All modules return a list with <code>$traffic_light</code> (“green”, “yellow”, “red”, or “na”), <code>$summary_text</code>, and <code>$table</code> with detailed results.</p>
-<hr></section><section id="a-paper-where-everything-looks-fine" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="a-paper-where-everything-looks-fine">
-<span class="header-section-number">21.2</span> A paper where everything looks fine</h2>
+<hr></section><section id="a-paper-where-everything-looks-fine" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="a-paper-where-everything-looks-fine">
+<span class="header-section-number">19.2</span> A paper where everything looks fine</h2>
 <p>We start with a paper that passes all checks. Paper <code>0956797613520608</code> has 6 detected p-values, all exact, all t-tests and F-tests paired with effect sizes, and no consistency errors flagged by StatCheck.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper_clean</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="st">"0956797613520608"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -551,8 +545,8 @@ div.csl-indent {
 <span><span class="co">#&gt; [1] "green"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A green result means the module found no issues. This does not guarantee the paper is free of reporting problems — the modules use regular expressions and have known false negative rates — but it is a good sign.</p>
-<hr></section><section id="exact-p-values-stat_p_exact" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="exact-p-values-stat_p_exact">
-<span class="header-section-number">21.3</span> Exact p-values (<code>stat_p_exact</code>)</h2>
+<hr></section><section id="exact-p-values-stat_p_exact" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="exact-p-values-stat_p_exact">
+<span class="header-section-number">19.3</span> Exact p-values (<code>stat_p_exact</code>)</h2>
 <p>The APA Manual states:</p>
 <blockquote class="blockquote">
 <p>Report exact p values (e.g., <em>p</em> = .031) to two or three decimal places. However, report p values less than .001 as <em>p</em> &lt; .001.</p>
@@ -589,8 +583,8 @@ div.csl-indent {
 <span><span class="co">#&gt; 13 p &lt; .05  &lt;        0.05  Asterisks above the lines indicate significant diffe…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The module returns the sentence containing the imprecise p-value together with the surrounding sentence (the <code>expanded</code> column) to help assess the context.</p>
-<hr></section><section id="missing-effect-sizes-stat_effect_size" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="missing-effect-sizes-stat_effect_size">
-<span class="header-section-number">21.4</span> Missing effect sizes (<code>stat_effect_size</code>)</h2>
+<hr></section><section id="missing-effect-sizes-stat_effect_size" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="missing-effect-sizes-stat_effect_size">
+<span class="header-section-number">19.4</span> Missing effect sizes (<code>stat_effect_size</code>)</h2>
 <p>Reporting an effect size alongside every test result is a core JARS requirement. It helps readers assess practical significance and supports meta-analyses. The <code>stat_effect_size</code> module searches for t-tests and F-tests reported in APA format and checks whether an effect size metric (Cohen’s <em>d</em>, <em>r</em>, partial η², <em>f</em>, etc.) appears in the same sentence.</p>
 <p>The module has been validated on papers from Psychological Science: it detected 100% of t-tests with effect sizes, 99% of t-tests without, 99% of F-tests with, and 100% of F-tests without.</p>
 <p>The same paper as above (<code>0956797619842261</code>) also has one test without an effect size:</p>
@@ -614,8 +608,8 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper_clean</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span><span class="op">$</span><span class="va">summary_text</span></span>
 <span><span class="co">#&gt; [1] "All effect sizes were reported, but some appear inconsistent with the test statistic. This can be because the effect size is not clearly labeled (e.g., d, instead of d_rm), because the effect sizes is not reported with enough precisions (e.g., 0.3 instead of 0.32), or because the effect size is incorrectly reported."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section><section id="non-significant-p-values-stat_p_nonsig" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="non-significant-p-values-stat_p_nonsig">
-<span class="header-section-number">21.5</span> Non-significant p-values (<code>stat_p_nonsig</code>)</h2>
+<hr></section><section id="non-significant-p-values-stat_p_nonsig" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="non-significant-p-values-stat_p_nonsig">
+<span class="header-section-number">19.5</span> Non-significant p-values (<code>stat_p_nonsig</code>)</h2>
 <p>Non-significant results are frequently misinterpreted as evidence that an effect is absent, when in fact they only indicate that the data were insufficient to reject the null hypothesis. The correct approach is to perform an equivalence test against a smallest effect size of interest <span class="citation" data-cites="lakens2018">(<a href="#ref-lakens2018" role="doc-biblioref">Lakens et al., 2018</a>)</span>.</p>
 <p>The <code>stat_p_nonsig</code> module returns all sentences containing non-significant p-values (p ≥ .05). It does not automatically judge the interpretation — it surfaces the sentences so researchers can review them. Paper <code>0956797618772822</code> has 28 such sentences:</p>
 <div class="cell">
@@ -637,8 +631,8 @@ div.csl-indent {
 <span><span class="co">#&gt; 2 "p = .996"    0.996</span></span>
 <span><span class="co">#&gt; 3 "p = .939 "   0.939</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section><section id="marginal-significance-marginal" class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="marginal-significance-marginal">
-<span class="header-section-number">21.6</span> Marginal significance (<code>marginal</code>)</h2>
+<hr></section><section id="marginal-significance-marginal" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="marginal-significance-marginal">
+<span class="header-section-number">19.6</span> Marginal significance (<code>marginal</code>)</h2>
 <p>Describing a result as “marginally significant”, “approaching significance”, or “trending towards significance” implies a gradient of evidence where none exists under null hypothesis significance testing. The <code>marginal</code> module detects these phrases.</p>
 <p>The same paper <code>0956797619842261</code> contains two such sentences:</p>
 <div class="cell">
@@ -657,8 +651,8 @@ div.csl-indent {
 <span><span class="co">#&gt; 1 The Block × CS Type ANOVA on D1 for acquisition revealed a marginally signifi…</span></span>
 <span><span class="co">#&gt; 2 At the cardiac level, the aversive CS+ evoked more cardiac deceleration compa…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section><section id="statistical-consistency-statcheck-stat_check" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="statistical-consistency-statcheck-stat_check">
-<span class="header-section-number">21.7</span> Statistical consistency (StatCheck, <code>stat_check</code>)</h2>
+<hr></section><section id="statistical-consistency-statcheck-stat_check" class="level2" data-number="19.7"><h2 data-number="19.7" class="anchored" data-anchor-id="statistical-consistency-statcheck-stat_check">
+<span class="header-section-number">19.7</span> Statistical consistency (StatCheck, <code>stat_check</code>)</h2>
 <p>StatCheck <span class="citation" data-cites="nuijten2016">(<a href="#ref-nuijten2016" role="doc-biblioref">Nuijten et al., 2016</a>)</span> recalculates the p-value from the reported test statistic and degrees of freedom and checks whether the reported p-value is consistent with the recalculation. It supports t-tests and F-tests in APA format.</p>
 <p><strong>Important caveat:</strong> StatCheck has a known false positive rate of approximately 43% — that is, roughly 43 out of every 100 flagged tests are not actually errors. Use the module to identify tests that warrant a closer look, not as definitive proof of an error. See the <a href="https://osf.io/preprints/psyarxiv/tcxaj_v1/">StatCheck preprint</a> for full validation details.</p>
 <p>The clean paper returns green:</p>
@@ -687,8 +681,8 @@ div.csl-indent {
 <span><span class="co">#&gt; 6 t(116) = -1.712, p = .43       0.43 0.08956887          FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>decision_error</code> column is <code>TRUE</code> when the inconsistency changes the significance conclusion (i.e., the test would be non-significant if the computed p-value were used instead of the reported one, or vice versa). These are higher-priority cases to check manually.</p>
-<hr></section><section id="running-all-modules-at-once" class="level2" data-number="21.8"><h2 data-number="21.8" class="anchored" data-anchor-id="running-all-modules-at-once">
-<span class="header-section-number">21.8</span> Running all modules at once</h2>
+<hr></section><section id="running-all-modules-at-once" class="level2" data-number="19.8"><h2 data-number="19.8" class="anchored" data-anchor-id="running-all-modules-at-once">
+<span class="header-section-number">19.8</span> Running all modules at once</h2>
 <p>You can run multiple modules in sequence by passing the output of one module as the input to the next. The <code>summary_table</code> accumulates across modules:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="st">"0956797619842261"</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -700,8 +694,8 @@ div.csl-indent {
 <span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section><section id="references" class="level2" data-number="21.9"><h2 data-number="21.9" class="anchored" data-anchor-id="references">
-<span class="header-section-number">21.9</span> References</h2>
+<hr></section><section id="references" class="level2" data-number="19.9"><h2 data-number="19.9" class="anchored" data-anchor-id="references">
+<span class="header-section-number">19.9</span> References</h2>
 <p>Appelbaum, M., Cooper, H., Kline, R. B., Mayo-Wilson, E., Nezu, A. M., &amp; Rao, S. M. (2018). Journal article reporting standards for quantitative research in psychology. <em>American Psychologist</em>, <em>73</em>(1), 3–25. <a href="https://doi.org/10.1037/amp0000191" class="uri">https://doi.org/10.1037/amp0000191</a></p>
 <p>Bartoš, F., &amp; Schimmack, U. (2020). Z-curve 2.0: Estimating replication rates and discovery rates. <em>Meta-Psychology</em>. <a href="https://doi.org/10.15626/MP.2021.2720" class="uri">https://doi.org/10.15626/MP.2021.2720</a></p>
 <p>Lakens, D. (2018). Equivalence tests: A practical primer for t-tests, correlations, and meta-analyses. <em>Social Psychological and Personality Science</em>, <em>8</em>(4), 355–362. <a href="https://doi.org/10.1177/1948550617697177" class="uri">https://doi.org/10.1177/1948550617697177</a></p>
@@ -1127,12 +1121,12 @@ Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). P-curve: A key to the
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/papers-databases.html" class="pagination-link" aria-label="Using the Paper Database Corpora">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/jars.html" class="pagination-link" aria-label="Journal Article Reporting Standards">
-        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1145,7 +1139,7 @@ Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). P-curve: A key to the
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/stats.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">metacheck package</a></p>
+<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

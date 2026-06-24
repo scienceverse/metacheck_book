@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>27&nbsp; Using metacheck for MetaScience – The metacheck Book</title>
+<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<title>26&nbsp; Using metacheck for MetaScience – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../drafts/index.html">Drafts &amp; Work in Progress</a></li><li class="breadcrumb-item"><a href="../drafts/metascience.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../drafts/index.html">Drafts &amp; Work in Progress</a></li><li class="breadcrumb-item"><a href="../drafts/metascience.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -124,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <a href="../index.html" class="sidebar-logo-link">
       <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">The metacheck Book</a> 
+      <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/scienceverse/metacheck_book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -189,80 +189,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -279,31 +267,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -311,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Integrations &amp; Sources</span></a>
+ <span class="menu-text">Advanced Functions</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -319,26 +307,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -361,55 +355,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -440,30 +434,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#initial-text-search" id="toc-initial-text-search" class="nav-link active" data-scroll-target="#initial-text-search"><span class="header-section-number">27.1</span> Initial Text Search</a>
+<a href="#initial-text-search" id="toc-initial-text-search" class="nav-link active" data-scroll-target="#initial-text-search"><span class="header-section-number">26.1</span> Initial Text Search</a>
   <ul class="collapse">
-<li><a href="#fixed-terms" id="toc-fixed-terms" class="nav-link" data-scroll-target="#fixed-terms"><span class="header-section-number">27.1.1</span> Fixed Terms</a></li>
-  <li><a href="#regex" id="toc-regex" class="nav-link" data-scroll-target="#regex"><span class="header-section-number">27.1.2</span> Regex</a></li>
-  <li><a href="#refining-the-search" id="toc-refining-the-search" class="nav-link" data-scroll-target="#refining-the-search"><span class="header-section-number">27.1.3</span> Refining the search</a></li>
-  <li><a href="#screening" id="toc-screening" class="nav-link" data-scroll-target="#screening"><span class="header-section-number">27.1.4</span> Screening</a></li>
+<li><a href="#fixed-terms" id="toc-fixed-terms" class="nav-link" data-scroll-target="#fixed-terms"><span class="header-section-number">26.1.1</span> Fixed Terms</a></li>
+  <li><a href="#regex" id="toc-regex" class="nav-link" data-scroll-target="#regex"><span class="header-section-number">26.1.2</span> Regex</a></li>
+  <li><a href="#refining-the-search" id="toc-refining-the-search" class="nav-link" data-scroll-target="#refining-the-search"><span class="header-section-number">26.1.3</span> Refining the search</a></li>
+  <li><a href="#screening" id="toc-screening" class="nav-link" data-scroll-target="#screening"><span class="header-section-number">26.1.4</span> Screening</a></li>
   </ul>
 </li>
   <li>
-<a href="#validating-a-module" id="toc-validating-a-module" class="nav-link" data-scroll-target="#validating-a-module"><span class="header-section-number">27.2</span> Validating a Module</a>
+<a href="#validating-a-module" id="toc-validating-a-module" class="nav-link" data-scroll-target="#validating-a-module"><span class="header-section-number">26.2</span> Validating a Module</a>
   <ul class="collapse">
-<li><a href="#module-creation" id="toc-module-creation" class="nav-link" data-scroll-target="#module-creation"><span class="header-section-number">27.2.1</span> Module Creation</a></li>
-  <li><a href="#set-up-validation-files" id="toc-set-up-validation-files" class="nav-link" data-scroll-target="#set-up-validation-files"><span class="header-section-number">27.2.2</span> Set Up Validation Files</a></li>
-  <li><a href="#validate" id="toc-validate" class="nav-link" data-scroll-target="#validate"><span class="header-section-number">27.2.3</span> Validate</a></li>
-  <li><a href="#refine-and-iterate" id="toc-refine-and-iterate" class="nav-link" data-scroll-target="#refine-and-iterate"><span class="header-section-number">27.2.4</span> Refine and Iterate</a></li>
-  <li><a href="#iterate-again" id="toc-iterate-again" class="nav-link" data-scroll-target="#iterate-again"><span class="header-section-number">27.2.5</span> Iterate again</a></li>
+<li><a href="#module-creation" id="toc-module-creation" class="nav-link" data-scroll-target="#module-creation"><span class="header-section-number">26.2.1</span> Module Creation</a></li>
+  <li><a href="#set-up-validation-files" id="toc-set-up-validation-files" class="nav-link" data-scroll-target="#set-up-validation-files"><span class="header-section-number">26.2.2</span> Set Up Validation Files</a></li>
+  <li><a href="#validate" id="toc-validate" class="nav-link" data-scroll-target="#validate"><span class="header-section-number">26.2.3</span> Validate</a></li>
+  <li><a href="#refine-and-iterate" id="toc-refine-and-iterate" class="nav-link" data-scroll-target="#refine-and-iterate"><span class="header-section-number">26.2.4</span> Refine and Iterate</a></li>
+  <li><a href="#iterate-again" id="toc-iterate-again" class="nav-link" data-scroll-target="#iterate-again"><span class="header-section-number">26.2.5</span> Iterate again</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/drafts/metascience.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../drafts/index.html">Drafts &amp; Work in Progress</a></li><li class="breadcrumb-item"><a href="../drafts/metascience.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../drafts/index.html">Drafts &amp; Work in Progress</a></li><li class="breadcrumb-item"><a href="../drafts/metascience.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span>
+<span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span>
 </h1>
 </div>
 
@@ -484,8 +478,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span> <span class="co"># for data wrangling</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this vignette, we will demonstrate the steps towards creating a module that detects sentences reporting a power analysis. This could be used for metascientific enquiry, or as a first step in a module that aims to give advice about whether a power analysis reports all of the necessary information for interpretation.</p>
-<section id="initial-text-search" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="initial-text-search">
-<span class="header-section-number">27.1</span> Initial Text Search</h2>
+<section id="initial-text-search" class="level2" data-number="26.1"><h2 data-number="26.1" class="anchored" data-anchor-id="initial-text-search">
+<span class="header-section-number">26.1</span> Initial Text Search</h2>
 <p>First, we need to set up the sample of papers we will code for ground truth. See the <a href="batch.html">batch processing vignette</a> for information on how to load multiple PDFs. Here, we will load 250 open access papers from Psychological Science, which have been previously read in to metacheck.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="va">psychsci</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -495,8 +489,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here, that results in [N] sentences. However, we can narrow that down a LOT with some simple text searches.</p>
-<section id="fixed-terms" class="level3" data-number="27.1.1"><h3 data-number="27.1.1" class="anchored" data-anchor-id="fixed-terms">
-<span class="header-section-number">27.1.1</span> Fixed Terms</h3>
+<section id="fixed-terms" class="level3" data-number="26.1.1"><h3 data-number="26.1.1" class="anchored" data-anchor-id="fixed-terms">
+<span class="header-section-number">26.1.1</span> Fixed Terms</h3>
 <p>Let’s start with a fixed search term: “power analysis”. We’ll keep track of our iteratively developed search terms by naming the resulting table <code>text_#</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, pattern <span class="op">=</span> <span class="st">"power analysis"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -507,8 +501,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, pattern <span class="op">=</span> <span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here we have [N] results. Inspect the first 100 rows to see if there are any false positives.</p>
-</section><section id="regex" class="level3" data-number="27.1.2"><h3 data-number="27.1.2" class="anchored" data-anchor-id="regex">
-<span class="header-section-number">27.1.2</span> Regex</h3>
+</section><section id="regex" class="level3" data-number="26.1.2"><h3 data-number="26.1.2" class="anchored" data-anchor-id="regex">
+<span class="header-section-number">26.1.2</span> Regex</h3>
 <p>After a quick skim through the [N] results, we can see that words like “powerful” or “Power-Point” are never reporting a power analysis, so we should try to exclude them.</p>
 <p>We can use regex to make our text search a bit more specific. The following pattern requires that power is followed optionally by “ed” and then by a word border (like a space or full stop), so will match “power” and “powered”, but not “powerful”.</p>
 <div class="cell">
@@ -531,8 +525,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, <span class="va">pattern</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here we have [N] results. Inspect them for false positives again.</p>
-</section><section id="refining-the-search" class="level3" data-number="27.1.3"><h3 data-number="27.1.3" class="anchored" data-anchor-id="refining-the-search">
-<span class="header-section-number">27.1.3</span> Refining the search</h3>
+</section><section id="refining-the-search" class="level3" data-number="26.1.3"><h3 data-number="26.1.3" class="anchored" data-anchor-id="refining-the-search">
+<span class="header-section-number">26.1.3</span> Refining the search</h3>
 <p>You can repeat this process of skimming the results and refining the search term iteratively until you are happy that you have probably caught all of the relevant text and don’t have too many false positives.</p>
 <p>Let’s also have a quick look at any papers that mention power more than 10 times, as they are probably talking about a different sense of power.</p>
 <div class="cell">
@@ -563,8 +557,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">excluded</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">text_3</span>, <span class="va">text_4</span>, </span>
 <span>                      by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"div"</span>, <span class="st">"p"</span>, <span class="st">"s"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="screening" class="level3" data-number="27.1.4"><h3 data-number="27.1.4" class="anchored" data-anchor-id="screening">
-<span class="header-section-number">27.1.4</span> Screening</h3>
+</section><section id="screening" class="level3" data-number="26.1.4"><h3 data-number="26.1.4" class="anchored" data-anchor-id="screening">
+<span class="header-section-number">26.1.4</span> Screening</h3>
 <p>Once you are happy that your search term includes all of the relevant text and not too much irrelevant text (we’ve narrowed our candidate sentences down now to [X]% of the full text!), the next step is to save this data frame so you can open it in a spreadsheet application and code each row for ground truth.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span><span class="op">(</span><span class="va">text_4</span>, <span class="st">"power/power_screening.csv"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -578,10 +572,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">ground_truth</span><span class="op">$</span><span class="va">text</span> <span class="op">&lt;-</span> <span class="va">text_4</span><span class="op">$</span><span class="va">text</span></span>
 <span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span><span class="op">(</span><span class="va">ground_truth</span>, <span class="st">"power/power_screening_coded.csv"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="validating-a-module" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="validating-a-module">
-<span class="header-section-number">27.2</span> Validating a Module</h2>
-<section id="module-creation" class="level3" data-number="27.2.1"><h3 data-number="27.2.1" class="anchored" data-anchor-id="module-creation">
-<span class="header-section-number">27.2.1</span> Module Creation</h3>
+</section></section><section id="validating-a-module" class="level2" data-number="26.2"><h2 data-number="26.2" class="anchored" data-anchor-id="validating-a-module">
+<span class="header-section-number">26.2</span> Validating a Module</h2>
+<section id="module-creation" class="level3" data-number="26.2.1"><h3 data-number="26.2.1" class="anchored" data-anchor-id="module-creation">
+<span class="header-section-number">26.2.1</span> Module Creation</h3>
 <p>To validate a module, you need to write your search term into a module. See the <a href="modules.html">modules vignette</a> for details. Creating a module for a text search is very straightforward. Just save the following text in a file called “power0.R”. You can omit the description in the roxygen section for now.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' Power Analysis v0</span></span>
@@ -607,8 +601,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">mod_test</span><span class="op">$</span><span class="va">table</span>, <span class="va">text_4</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We also returned a summary table, which gives a single row per paper, and the number of matching sentences from the main table.</p>
-</section><section id="set-up-validation-files" class="level3" data-number="27.2.2"><h3 data-number="27.2.2" class="anchored" data-anchor-id="set-up-validation-files">
-<span class="header-section-number">27.2.2</span> Set Up Validation Files</h3>
+</section><section id="set-up-validation-files" class="level3" data-number="26.2.2"><h3 data-number="26.2.2" class="anchored" data-anchor-id="set-up-validation-files">
+<span class="header-section-number">26.2.2</span> Set Up Validation Files</h3>
 <p>Once you have the ground truth coded from your best inclusive search term, you can validate your module and start trying to improve its performance.</p>
 <p>First, let’s use the over-inclusive search term. This will, by definition, have no false negatives, but further refining of your module will start to produce both false positives and negatives.</p>
 <p>You have to set up two files to match the module output. First, a table of the expected text matches. You can get this by filtering your ground truth table to just the rows that are true positives (hand-coded here as the column <code>power_computation</code>).</p>
@@ -630,8 +624,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="co"># count rows with text for each id</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>n_power <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">text</span><span class="op">)</span><span class="op">)</span>, .by <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="validate" class="level3" data-number="27.2.3"><h3 data-number="27.2.3" class="anchored" data-anchor-id="validate">
-<span class="header-section-number">27.2.3</span> Validate</h3>
+</section><section id="validate" class="level3" data-number="26.2.3"><h3 data-number="26.2.3" class="anchored" data-anchor-id="validate">
+<span class="header-section-number">26.2.3</span> Validate</h3>
 <p>Run a validation using the <code><a href="https://scienceverse.github.io/metacheck/reference/validate.html">validate()</a></code> function. Set the first argument to your sample of papers, the second to the path to your module, and the next arguments to the expected values of any items returned by your module (usually <code>table</code> and/or <code>summary</code>).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/validate.html">validate</a></span><span class="op">(</span><span class="va">papers</span>, </span>
@@ -647,8 +641,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v0</span><span class="op">$</span><span class="va">stats</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="refine-and-iterate" class="level3" data-number="27.2.4"><h3 data-number="27.2.4" class="anchored" data-anchor-id="refine-and-iterate">
-<span class="header-section-number">27.2.4</span> Refine and Iterate</h3>
+</section><section id="refine-and-iterate" class="level3" data-number="26.2.4"><h3 data-number="26.2.4" class="anchored" data-anchor-id="refine-and-iterate">
+<span class="header-section-number">26.2.4</span> Refine and Iterate</h3>
 <p>Refine your module to improve it based on your coding of the ground truth. For example, perhaps we decide that almost all instances of real power analyses contain both the strings “power” and “analys”</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"(analys.*power|power.*analys)"</span></span>
@@ -674,8 +668,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">v1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This version has the same overall accuracy by paper, but fewer false positives and more false negatives. False positives in the context of a module that informs scientists about a potential problem are not necessarily undesirable. It may be better to be over-sensitive and catch almost all problems, even if you also catch many non-problems. You will need to evaluate the validation results in the context of what you want your module to do.</p>
-</section><section id="iterate-again" class="level3" data-number="27.2.5"><h3 data-number="27.2.5" class="anchored" data-anchor-id="iterate-again">
-<span class="header-section-number">27.2.5</span> Iterate again</h3>
+</section><section id="iterate-again" class="level3" data-number="26.2.5"><h3 data-number="26.2.5" class="anchored" data-anchor-id="iterate-again">
+<span class="header-section-number">26.2.5</span> Iterate again</h3>
 <p>Let’s try a two-step process for finding sentences with the word power that also have numbers or percents.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">papers</span> <span class="op">|&gt;</span></span>
@@ -1100,7 +1094,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   <div class="nav-page nav-page-next">
       <a href="../drafts/workshop-4m.html" class="pagination-link" aria-label="4M Workshop Metascience with Papercheck">
-        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1113,7 +1107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/drafts/metascience.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">metacheck package</a></p>
+<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

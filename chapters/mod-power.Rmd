@@ -61,9 +61,11 @@ The `power_type` column tells you which statements are a priori (worth keeping) 
 
 ## Options: using an LLM
 
-The regular-expression behaviour above runs with no setup. To also extract structured details, turn on [LLM support](llms.html). The module reads the same switch (`llm_use()`) and model (`llm_model()`) described in the LLM chapter — there is no special module argument. The examples below are shown but not executed here, because they require Ollama or a cloud API key.
+The regular-expression behaviour above runs with no setup. To also **extract structured details** — the statistical test, sample size, alpha, power, and effect size — turn on [LLM support](llms.html). The module reads the same switch (`llm_use()`) and model (`llm_model()`) described in the LLM chapter; there is no special module argument. When an LLM is enabled, the result table gains columns such as `statistical_test`, `sample_size`, `power`, `effect_size`, and `effect_size_metric`.
 
-**No LLM (default)** — detection and classification only:
+Below we run exactly the same call three ways — with no LLM, with a local Ollama model, and with a cloud model on Groq — on `demopaper()`, and compare what each returns. (The LLM outputs shown here were captured from real runs; running the LLM at build time would require Ollama or an API key, so the results are loaded from saved objects.)
+
+### No LLM (default)
 
 ```{r}
 #| eval: false
@@ -71,16 +73,33 @@ llm_use(FALSE)
 module_run(demopaper(), "power")
 ```
 
-**Local LLM with Ollama** — extracts structured details, nothing leaves your machine:
+This is the regex-only behaviour shown earlier: it detects and classifies power statements, but the extraction columns are empty.
+
+### Local LLM with Ollama
+
+This run used `qwen3.5:9b` (a 9.7-billion-parameter model) running locally with Ollama. Nothing leaves your machine, but the model does the work, so it is slower (this call took about **105 seconds**).
 
 ```{r}
 #| eval: false
 llm_use(TRUE)
-llm_model("ollama/qwen2.5:3b")
+llm_model("ollama/qwen3.5:9b")
 module_run(demopaper(), "power")
 ```
 
-**Cloud LLM with Groq** — faster, but sends text to the provider:
+```{r}
+#| echo: false
+ollama_power <- readRDS("_power_ollama.Rds")
+ollama_power$summary_text
+ollama_power$table[, c("power_type", "statistical_test", "sample_size",
+                       "power", "effect_size", "effect_size_metric", "complete")] |>
+  knitr::kable()
+```
+
+The local model found the one genuine power analysis in the demo paper — the sensitivity analysis — and correctly extracted Cohen's *d* = 0.5 and 80% power. It did not flag anything else.
+
+### Cloud LLM with Groq
+
+This run used Groq's default model (`llama-3.1-8b-instant`). It is much faster (about **11 seconds**) but sends the text to an external service.
 
 ```{r}
 #| eval: false
@@ -89,9 +108,28 @@ llm_model("groq")
 module_run(demopaper(), "power")
 ```
 
-With an LLM enabled, the result table gains columns for the extracted test, sample size, alpha, power, and effect size. See the [Local AI with Ollama](ollama.html) chapter for a fully worked LLM example of this module.
+```{r}
+#| echo: false
+groq_power <- readRDS("_power_groq.Rds")
+groq_power$summary_text
+groq_power$table[, c("power_type", "statistical_test", "sample_size",
+                     "power", "effect_size", "effect_size_metric", "software", "complete")] |>
+  knitr::kable()
+```
 
-The `power` module also accepts a `seed` argument (default `8675309`) that is passed to the LLM for reproducibility:
+### Discussing the difference
+
+The two models behaved noticeably differently on the same input:
+
+- **Recall vs. precision.** The local `qwen3.5:9b` returned a single, clean row — the real sensitivity analysis. Groq's smaller, faster `llama-3.1-8b-instant` returned three rows: it caught the same sensitivity analysis, but also flagged the paper's abstract (a **false positive**, with every field `NA`) and a line of `pwr.t.test()` example code (extracting `software = R` and `statistical_test = t-test`).
+- **Extraction detail.** Both correctly pulled Cohen's *d* = 0.5 and power = 0.8 for the sensitivity analysis. Neither marked any analysis as `complete`, because the demo paper does not report every required field.
+- **Speed vs. privacy.** Groq returned in ~11 s versus ~105 s locally, but the local run kept the manuscript on the machine. For unpublished work, the slower local model is usually the right trade-off.
+
+There is no single "correct" answer here — the output depends on the model. A larger or more capable model generally gives cleaner extraction with fewer false positives, which is exactly why the model you choose matters. This is also why module output is meant to **prompt human judgement** rather than serve as a verdict: a person reading these tables quickly sees that the abstract and the code line are not real power analyses. See the [Local AI with Ollama](ollama.html) chapter for more on choosing and running local models.
+
+### Reproducibility
+
+The `power` module accepts a `seed` argument (default `8675309`) passed to the LLM, so repeated runs with the same model are more reproducible:
 
 ```{r}
 #| eval: false

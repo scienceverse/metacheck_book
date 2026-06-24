@@ -14,9 +14,11 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, Metacheck will use a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology tht meets GDPR requirements.
+The first step to using Metacheck is to read in a manuscript. Currently, Metacheck relies on GROBID, which works with PDF files. If you have a manuscript in a different format, save a copy as a PDF. You have two options to convert a PDF to the GROBID xml format. First, you can use a local version of GROBID 
 
-You can also supplement the reference section created by GROBID with information retrieved from Crossref. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, an can take some time. You can always add this information later with the `add_bibmatch()` function.
+The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, Metacheck will use a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology that meets the requirements of the GDPR.
+
+You can also supplement the reference section created by GROBID with information retrieved from CrossRef. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, an can take some time. You can always add this information later with the `add_bibmatch()` function.
 
 ```{r, eval = FALSE}
 pdf_file <- demofile("pdf")
@@ -30,8 +32,9 @@ json_file <- convert(file_path = pdf_file,
 json_file <- demofile("json")
 ```
 
+## Local conversion through GROBID in Docker
 
-You can set up your own local grobid server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0.
+You can set up your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0.
 
 ``` bash
 docker run --rm --init --ulimit core=0 -p 8070:8070 lfoppiano/grobid:0.9.0

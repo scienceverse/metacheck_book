@@ -59,12 +59,22 @@ mo$traffic_light
 ```
 
 
-🟢 no problems detected;  
-🟡 something to check;  
-🔴 possible problems detected;  
-🔵 informational only;  
-⚪️ not applicable;  
-⚫️ check failed
+The value is one of six strings, each shown in a report with an emoji:
+
+| `traffic_light` | Symbol | Meaning |
+|---|:---:|---|
+| `"green"`  | ✅️ | no problems detected |
+| `"yellow"` | 🔍 | something to check |
+| `"red"`    | ⚠️ | possible problems detected |
+| `"info"`   | ℹ️ | informational only |
+| `"na"`     | ⬜ | not applicable |
+| `"fail"`   | ☠️ | check failed |
+
+The symbols come from the exported `emojis` object (the `tl_*` entries), so reports stay consistent with whatever the package defines:
+
+```{r}
+emojis[c("tl_green", "tl_yellow", "tl_red", "tl_info", "tl_na", "tl_fail")]
+```
 
 ### Table
 

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>25&nbsp; OSF Registration Schemas – The metacheck Book</title>
+<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<title>24&nbsp; OSF Registration Schemas – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -76,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/github.html">Integrations &amp; Sources</a></li><li class="breadcrumb-item"><a href="../chapters/osf-schemas.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/creating-modules.html">Advanced Functions</a></li><li class="breadcrumb-item"><a href="../chapters/osf-schemas.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -89,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
       <a href="../index.html" class="sidebar-logo-link">
       <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">The metacheck Book</a> 
+      <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/scienceverse/metacheck_book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -154,80 +154,68 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -244,31 +232,31 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -276,7 +264,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Integrations &amp; Sources</span></a>
+ <span class="menu-text">Advanced Functions</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -284,26 +272,32 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -326,55 +320,55 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -404,65 +398,65 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#why-dispatch-on-schema_id-not-name" id="toc-why-dispatch-on-schema_id-not-name" class="nav-link active" data-scroll-target="#why-dispatch-on-schema_id-not-name"><span class="header-section-number">25.1</span> Why dispatch on <code>schema_id</code>, not name</a></li>
-  <li><a href="#how-many-schema-versions-exist-and-why-we-cant-list-them-all" id="toc-how-many-schema-versions-exist-and-why-we-cant-list-them-all" class="nav-link" data-scroll-target="#how-many-schema-versions-exist-and-why-we-cant-list-them-all"><span class="header-section-number">25.2</span> How many schema versions exist, and why we can’t list them all</a></li>
-  <li><a href="#recommendations-for-preregistration-schema-creators" id="toc-recommendations-for-preregistration-schema-creators" class="nav-link" data-scroll-target="#recommendations-for-preregistration-schema-creators"><span class="header-section-number">25.3</span> Recommendations for preregistration schema creators</a></li>
-  <li><a href="#two-response-formats" id="toc-two-response-formats" class="nav-link" data-scroll-target="#two-response-formats"><span class="header-section-number">25.4</span> Two response formats</a></li>
-  <li><a href="#catalog" id="toc-catalog" class="nav-link" data-scroll-target="#catalog"><span class="header-section-number">25.5</span> Catalog</a></li>
+<li><a href="#why-dispatch-on-schema_id-not-name" id="toc-why-dispatch-on-schema_id-not-name" class="nav-link active" data-scroll-target="#why-dispatch-on-schema_id-not-name"><span class="header-section-number">24.1</span> Why dispatch on <code>schema_id</code>, not name</a></li>
+  <li><a href="#how-many-schema-versions-exist-and-why-we-cant-list-them-all" id="toc-how-many-schema-versions-exist-and-why-we-cant-list-them-all" class="nav-link" data-scroll-target="#how-many-schema-versions-exist-and-why-we-cant-list-them-all"><span class="header-section-number">24.2</span> How many schema versions exist, and why we can’t list them all</a></li>
+  <li><a href="#recommendations-for-preregistration-schema-creators" id="toc-recommendations-for-preregistration-schema-creators" class="nav-link" data-scroll-target="#recommendations-for-preregistration-schema-creators"><span class="header-section-number">24.3</span> Recommendations for preregistration schema creators</a></li>
+  <li><a href="#two-response-formats" id="toc-two-response-formats" class="nav-link" data-scroll-target="#two-response-formats"><span class="header-section-number">24.4</span> Two response formats</a></li>
+  <li><a href="#catalog" id="toc-catalog" class="nav-link" data-scroll-target="#catalog"><span class="header-section-number">24.5</span> Catalog</a></li>
   <li>
-<a href="#fields-per-schema" id="toc-fields-per-schema" class="nav-link" data-scroll-target="#fields-per-schema"><span class="header-section-number">25.6</span> Fields per schema</a>
+<a href="#fields-per-schema" id="toc-fields-per-schema" class="nav-link" data-scroll-target="#fields-per-schema"><span class="header-section-number">24.6</span> Fields per schema</a>
   <ul class="collapse">
-<li><a href="#preregistration-for-waves-1-2-and-3-data" id="toc-preregistration-for-waves-1-2-and-3-data" class="nav-link" data-scroll-target="#preregistration-for-waves-1-2-and-3-data"><span class="header-section-number">25.6.1</span> 1. Preregistration for Waves 1, 2, and 3 Data</a></li>
-  <li><a href="#generalized-systematic-review-registration" id="toc-generalized-systematic-review-registration" class="nav-link" data-scroll-target="#generalized-systematic-review-registration"><span class="header-section-number">25.6.2</span> 2. Generalized Systematic Review Registration</a></li>
-  <li><a href="#osf-preregistration" id="toc-osf-preregistration" class="nav-link" data-scroll-target="#osf-preregistration"><span class="header-section-number">25.6.3</span> 3. OSF Preregistration</a></li>
-  <li><a href="#theory-based-predictions" id="toc-theory-based-predictions" class="nav-link" data-scroll-target="#theory-based-predictions"><span class="header-section-number">25.6.4</span> 4. Theory-Based Predictions</a></li>
-  <li><a href="#eeg-and-erp-methods" id="toc-eeg-and-erp-methods" class="nav-link" data-scroll-target="#eeg-and-erp-methods"><span class="header-section-number">25.6.5</span> 5. EEG and ERP Methods</a></li>
-  <li><a href="#theory-based-predictions-in-social-science" id="toc-theory-based-predictions-in-social-science" class="nav-link" data-scroll-target="#theory-based-predictions-in-social-science"><span class="header-section-number">25.6.6</span> 6. Theory-Based Predictions in Social Science</a></li>
-  <li><a href="#lifecycle-journal-submission" id="toc-lifecycle-journal-submission" class="nav-link" data-scroll-target="#lifecycle-journal-submission"><span class="header-section-number">25.6.7</span> 7. Lifecycle Journal Submission</a></li>
-  <li><a href="#preregistration-for-waves-1-and-2-data" id="toc-preregistration-for-waves-1-and-2-data" class="nav-link" data-scroll-target="#preregistration-for-waves-1-and-2-data"><span class="header-section-number">25.6.8</span> 8. Preregistration for Waves 1 and 2 Data</a></li>
-  <li><a href="#simulation-study-template" id="toc-simulation-study-template" class="nav-link" data-scroll-target="#simulation-study-template"><span class="header-section-number">25.6.9</span> 9. Simulation Study Template</a></li>
-  <li><a href="#pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration" id="toc-pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration" class="nav-link" data-scroll-target="#pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration"><span class="header-section-number">25.6.10</span> 10. Pre-Registration in Social Psychology (van ’t Veer &amp; Giner-Sorolla, 2016): Pre-Registration</a></li>
-  <li><a href="#data-archiving-and-sharing-template" id="toc-data-archiving-and-sharing-template" class="nav-link" data-scroll-target="#data-archiving-and-sharing-template"><span class="header-section-number">25.6.11</span> 11. Data Archiving and Sharing Template</a></li>
-  <li><a href="#platform-registration" id="toc-platform-registration" class="nav-link" data-scroll-target="#platform-registration"><span class="header-section-number">25.6.12</span> 12. Platform Registration</a></li>
-  <li><a href="#services-registration" id="toc-services-registration" class="nav-link" data-scroll-target="#services-registration"><span class="header-section-number">25.6.13</span> 13. Services Registration</a></li>
-  <li><a href="#preregistration-for-sample-and-wave-one-data" id="toc-preregistration-for-sample-and-wave-one-data" class="nav-link" data-scroll-target="#preregistration-for-sample-and-wave-one-data"><span class="header-section-number">25.6.14</span> 14. Preregistration for Sample and Wave One Data</a></li>
-  <li><a href="#services" id="toc-services" class="nav-link" data-scroll-target="#services"><span class="header-section-number">25.6.15</span> 15. Services</a></li>
-  <li><a href="#services-environmentapplication-package" id="toc-services-environmentapplication-package" class="nav-link" data-scroll-target="#services-environmentapplication-package"><span class="header-section-number">25.6.16</span> 16. Services Environment/Application Package</a></li>
-  <li><a href="#platform" id="toc-platform" class="nav-link" data-scroll-target="#platform"><span class="header-section-number">25.6.17</span> 17. Platform</a></li>
-  <li><a href="#global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration" id="toc-global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration" class="nav-link" data-scroll-target="#global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration"><span class="header-section-number">25.6.18</span> 18. Global Flourishing Study Descriptive Meta-analysis Core Team Wave One Preregistration</a></li>
-  <li><a href="#preregistration-template-from-aspredicted.org" id="toc-preregistration-template-from-aspredicted.org" class="nav-link" data-scroll-target="#preregistration-template-from-aspredicted.org"><span class="header-section-number">25.6.19</span> 19. Preregistration Template from AsPredicted.org</a></li>
-  <li><a href="#replication-recipe-brandt-et-al.-2014-pre-registration" id="toc-replication-recipe-brandt-et-al.-2014-pre-registration" class="nav-link" data-scroll-target="#replication-recipe-brandt-et-al.-2014-pre-registration"><span class="header-section-number">25.6.20</span> 20. Replication Recipe (Brandt et al., 2014): Pre-Registration</a></li>
-  <li><a href="#character-lab-registration" id="toc-character-lab-registration" class="nav-link" data-scroll-target="#character-lab-registration"><span class="header-section-number">25.6.21</span> 21. Character Lab Registration</a></li>
-  <li><a href="#secondary-data-preregistration" id="toc-secondary-data-preregistration" class="nav-link" data-scroll-target="#secondary-data-preregistration"><span class="header-section-number">25.6.22</span> 22. Secondary Data Preregistration</a></li>
-  <li><a href="#real-world-evidence-recommended-minimum-study-registration-template" id="toc-real-world-evidence-recommended-minimum-study-registration-template" class="nav-link" data-scroll-target="#real-world-evidence-recommended-minimum-study-registration-template"><span class="header-section-number">25.6.23</span> 23. Real World Evidence Recommended Minimum Study Registration Template</a></li>
-  <li><a href="#predictors-of-global-flourishing-core-team-wave-one-preregistration" id="toc-predictors-of-global-flourishing-core-team-wave-one-preregistration" class="nav-link" data-scroll-target="#predictors-of-global-flourishing-core-team-wave-one-preregistration"><span class="header-section-number">25.6.24</span> 24. Predictors of Global Flourishing Core Team Wave One Preregistration</a></li>
-  <li><a href="#asist-results-registration" id="toc-asist-results-registration" class="nav-link" data-scroll-target="#asist-results-registration"><span class="header-section-number">25.6.25</span> 25. ASIST Results Registration</a></li>
-  <li><a href="#character-lab-registration-1" id="toc-character-lab-registration-1" class="nav-link" data-scroll-target="#character-lab-registration-1"><span class="header-section-number">25.6.26</span> 26. Character Lab Registration</a></li>
-  <li><a href="#sample" id="toc-sample" class="nav-link" data-scroll-target="#sample"><span class="header-section-number">25.6.27</span> 27. Sample</a></li>
-  <li><a href="#other-studies-using-youth-data" id="toc-other-studies-using-youth-data" class="nav-link" data-scroll-target="#other-studies-using-youth-data"><span class="header-section-number">25.6.28</span> 28. Other studies using YOUth data</a></li>
-  <li><a href="#hypothesis-testing-studies-using-youth-data" id="toc-hypothesis-testing-studies-using-youth-data" class="nav-link" data-scroll-target="#hypothesis-testing-studies-using-youth-data"><span class="header-section-number">25.6.29</span> 29. Hypothesis-Testing Studies Using YOUth Data</a></li>
-  <li><a href="#asist-registration-results" id="toc-asist-registration-results" class="nav-link" data-scroll-target="#asist-registration-results"><span class="header-section-number">25.6.30</span> 30. ASIST Registration Results</a></li>
-  <li><a href="#character-lab-long-form-registration" id="toc-character-lab-long-form-registration" class="nav-link" data-scroll-target="#character-lab-long-form-registration"><span class="header-section-number">25.6.31</span> 31. Character Lab Long-Form Registration</a></li>
-  <li><a href="#character-lab-short-form-registration" id="toc-character-lab-short-form-registration" class="nav-link" data-scroll-target="#character-lab-short-form-registration"><span class="header-section-number">25.6.32</span> 32. Character Lab Short-Form Registration</a></li>
-  <li><a href="#hypothesis-testing-studies-using-youth-data-1" id="toc-hypothesis-testing-studies-using-youth-data-1" class="nav-link" data-scroll-target="#hypothesis-testing-studies-using-youth-data-1"><span class="header-section-number">25.6.33</span> 33. Hypothesis-testing studies using YOUth data</a></li>
-  <li><a href="#outdated-egap-registration-do-not-use" id="toc-outdated-egap-registration-do-not-use" class="nav-link" data-scroll-target="#outdated-egap-registration-do-not-use"><span class="header-section-number">25.6.34</span> 34. Outdated EGAP Registration (DO NOT USE)</a></li>
-  <li><a href="#egap-registration" id="toc-egap-registration" class="nav-link" data-scroll-target="#egap-registration"><span class="header-section-number">25.6.35</span> 35. EGAP Registration</a></li>
-  <li><a href="#qualitative-preregistration" id="toc-qualitative-preregistration" class="nav-link" data-scroll-target="#qualitative-preregistration"><span class="header-section-number">25.6.36</span> 36. Qualitative Preregistration</a></li>
-  <li><a href="#registered-report-protocol-preregistration" id="toc-registered-report-protocol-preregistration" class="nav-link" data-scroll-target="#registered-report-protocol-preregistration"><span class="header-section-number">25.6.37</span> 37. Registered Report Protocol Preregistration</a></li>
-  <li><a href="#open-ended-registration" id="toc-open-ended-registration" class="nav-link" data-scroll-target="#open-ended-registration"><span class="header-section-number">25.6.38</span> 38. Open-Ended Registration</a></li>
-  <li><a href="#election-research-preacceptance-competition" id="toc-election-research-preacceptance-competition" class="nav-link" data-scroll-target="#election-research-preacceptance-competition"><span class="header-section-number">25.6.39</span> 39. Election Research Preacceptance Competition</a></li>
-  <li><a href="#prereg-challenge" id="toc-prereg-challenge" class="nav-link" data-scroll-target="#prereg-challenge"><span class="header-section-number">25.6.40</span> 40. Prereg Challenge</a></li>
-  <li><a href="#replication-recipe-brandt-et-al.-2013-post-completion" id="toc-replication-recipe-brandt-et-al.-2013-post-completion" class="nav-link" data-scroll-target="#replication-recipe-brandt-et-al.-2013-post-completion"><span class="header-section-number">25.6.41</span> 41. Replication Recipe (Brandt et al., 2013): Post-Completion</a></li>
-  <li><a href="#replication-recipe-brandt-et-al.-2013-pre-registration" id="toc-replication-recipe-brandt-et-al.-2013-pre-registration" class="nav-link" data-scroll-target="#replication-recipe-brandt-et-al.-2013-pre-registration"><span class="header-section-number">25.6.42</span> 42. Replication Recipe (Brandt et al., 2013): Pre-Registration</a></li>
-  <li><a href="#osf-standard-pre-data-collection-registration" id="toc-osf-standard-pre-data-collection-registration" class="nav-link" data-scroll-target="#osf-standard-pre-data-collection-registration"><span class="header-section-number">25.6.43</span> 43. OSF-Standard Pre-Data Collection Registration</a></li>
+<li><a href="#preregistration-for-waves-1-2-and-3-data" id="toc-preregistration-for-waves-1-2-and-3-data" class="nav-link" data-scroll-target="#preregistration-for-waves-1-2-and-3-data"><span class="header-section-number">24.6.1</span> 1. Preregistration for Waves 1, 2, and 3 Data</a></li>
+  <li><a href="#generalized-systematic-review-registration" id="toc-generalized-systematic-review-registration" class="nav-link" data-scroll-target="#generalized-systematic-review-registration"><span class="header-section-number">24.6.2</span> 2. Generalized Systematic Review Registration</a></li>
+  <li><a href="#osf-preregistration" id="toc-osf-preregistration" class="nav-link" data-scroll-target="#osf-preregistration"><span class="header-section-number">24.6.3</span> 3. OSF Preregistration</a></li>
+  <li><a href="#theory-based-predictions" id="toc-theory-based-predictions" class="nav-link" data-scroll-target="#theory-based-predictions"><span class="header-section-number">24.6.4</span> 4. Theory-Based Predictions</a></li>
+  <li><a href="#eeg-and-erp-methods" id="toc-eeg-and-erp-methods" class="nav-link" data-scroll-target="#eeg-and-erp-methods"><span class="header-section-number">24.6.5</span> 5. EEG and ERP Methods</a></li>
+  <li><a href="#theory-based-predictions-in-social-science" id="toc-theory-based-predictions-in-social-science" class="nav-link" data-scroll-target="#theory-based-predictions-in-social-science"><span class="header-section-number">24.6.6</span> 6. Theory-Based Predictions in Social Science</a></li>
+  <li><a href="#lifecycle-journal-submission" id="toc-lifecycle-journal-submission" class="nav-link" data-scroll-target="#lifecycle-journal-submission"><span class="header-section-number">24.6.7</span> 7. Lifecycle Journal Submission</a></li>
+  <li><a href="#preregistration-for-waves-1-and-2-data" id="toc-preregistration-for-waves-1-and-2-data" class="nav-link" data-scroll-target="#preregistration-for-waves-1-and-2-data"><span class="header-section-number">24.6.8</span> 8. Preregistration for Waves 1 and 2 Data</a></li>
+  <li><a href="#simulation-study-template" id="toc-simulation-study-template" class="nav-link" data-scroll-target="#simulation-study-template"><span class="header-section-number">24.6.9</span> 9. Simulation Study Template</a></li>
+  <li><a href="#pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration" id="toc-pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration" class="nav-link" data-scroll-target="#pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration"><span class="header-section-number">24.6.10</span> 10. Pre-Registration in Social Psychology (van ’t Veer &amp; Giner-Sorolla, 2016): Pre-Registration</a></li>
+  <li><a href="#data-archiving-and-sharing-template" id="toc-data-archiving-and-sharing-template" class="nav-link" data-scroll-target="#data-archiving-and-sharing-template"><span class="header-section-number">24.6.11</span> 11. Data Archiving and Sharing Template</a></li>
+  <li><a href="#platform-registration" id="toc-platform-registration" class="nav-link" data-scroll-target="#platform-registration"><span class="header-section-number">24.6.12</span> 12. Platform Registration</a></li>
+  <li><a href="#services-registration" id="toc-services-registration" class="nav-link" data-scroll-target="#services-registration"><span class="header-section-number">24.6.13</span> 13. Services Registration</a></li>
+  <li><a href="#preregistration-for-sample-and-wave-one-data" id="toc-preregistration-for-sample-and-wave-one-data" class="nav-link" data-scroll-target="#preregistration-for-sample-and-wave-one-data"><span class="header-section-number">24.6.14</span> 14. Preregistration for Sample and Wave One Data</a></li>
+  <li><a href="#services" id="toc-services" class="nav-link" data-scroll-target="#services"><span class="header-section-number">24.6.15</span> 15. Services</a></li>
+  <li><a href="#services-environmentapplication-package" id="toc-services-environmentapplication-package" class="nav-link" data-scroll-target="#services-environmentapplication-package"><span class="header-section-number">24.6.16</span> 16. Services Environment/Application Package</a></li>
+  <li><a href="#platform" id="toc-platform" class="nav-link" data-scroll-target="#platform"><span class="header-section-number">24.6.17</span> 17. Platform</a></li>
+  <li><a href="#global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration" id="toc-global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration" class="nav-link" data-scroll-target="#global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration"><span class="header-section-number">24.6.18</span> 18. Global Flourishing Study Descriptive Meta-analysis Core Team Wave One Preregistration</a></li>
+  <li><a href="#preregistration-template-from-aspredicted.org" id="toc-preregistration-template-from-aspredicted.org" class="nav-link" data-scroll-target="#preregistration-template-from-aspredicted.org"><span class="header-section-number">24.6.19</span> 19. Preregistration Template from AsPredicted.org</a></li>
+  <li><a href="#replication-recipe-brandt-et-al.-2014-pre-registration" id="toc-replication-recipe-brandt-et-al.-2014-pre-registration" class="nav-link" data-scroll-target="#replication-recipe-brandt-et-al.-2014-pre-registration"><span class="header-section-number">24.6.20</span> 20. Replication Recipe (Brandt et al., 2014): Pre-Registration</a></li>
+  <li><a href="#character-lab-registration" id="toc-character-lab-registration" class="nav-link" data-scroll-target="#character-lab-registration"><span class="header-section-number">24.6.21</span> 21. Character Lab Registration</a></li>
+  <li><a href="#secondary-data-preregistration" id="toc-secondary-data-preregistration" class="nav-link" data-scroll-target="#secondary-data-preregistration"><span class="header-section-number">24.6.22</span> 22. Secondary Data Preregistration</a></li>
+  <li><a href="#real-world-evidence-recommended-minimum-study-registration-template" id="toc-real-world-evidence-recommended-minimum-study-registration-template" class="nav-link" data-scroll-target="#real-world-evidence-recommended-minimum-study-registration-template"><span class="header-section-number">24.6.23</span> 23. Real World Evidence Recommended Minimum Study Registration Template</a></li>
+  <li><a href="#predictors-of-global-flourishing-core-team-wave-one-preregistration" id="toc-predictors-of-global-flourishing-core-team-wave-one-preregistration" class="nav-link" data-scroll-target="#predictors-of-global-flourishing-core-team-wave-one-preregistration"><span class="header-section-number">24.6.24</span> 24. Predictors of Global Flourishing Core Team Wave One Preregistration</a></li>
+  <li><a href="#asist-results-registration" id="toc-asist-results-registration" class="nav-link" data-scroll-target="#asist-results-registration"><span class="header-section-number">24.6.25</span> 25. ASIST Results Registration</a></li>
+  <li><a href="#character-lab-registration-1" id="toc-character-lab-registration-1" class="nav-link" data-scroll-target="#character-lab-registration-1"><span class="header-section-number">24.6.26</span> 26. Character Lab Registration</a></li>
+  <li><a href="#sample" id="toc-sample" class="nav-link" data-scroll-target="#sample"><span class="header-section-number">24.6.27</span> 27. Sample</a></li>
+  <li><a href="#other-studies-using-youth-data" id="toc-other-studies-using-youth-data" class="nav-link" data-scroll-target="#other-studies-using-youth-data"><span class="header-section-number">24.6.28</span> 28. Other studies using YOUth data</a></li>
+  <li><a href="#hypothesis-testing-studies-using-youth-data" id="toc-hypothesis-testing-studies-using-youth-data" class="nav-link" data-scroll-target="#hypothesis-testing-studies-using-youth-data"><span class="header-section-number">24.6.29</span> 29. Hypothesis-Testing Studies Using YOUth Data</a></li>
+  <li><a href="#asist-registration-results" id="toc-asist-registration-results" class="nav-link" data-scroll-target="#asist-registration-results"><span class="header-section-number">24.6.30</span> 30. ASIST Registration Results</a></li>
+  <li><a href="#character-lab-long-form-registration" id="toc-character-lab-long-form-registration" class="nav-link" data-scroll-target="#character-lab-long-form-registration"><span class="header-section-number">24.6.31</span> 31. Character Lab Long-Form Registration</a></li>
+  <li><a href="#character-lab-short-form-registration" id="toc-character-lab-short-form-registration" class="nav-link" data-scroll-target="#character-lab-short-form-registration"><span class="header-section-number">24.6.32</span> 32. Character Lab Short-Form Registration</a></li>
+  <li><a href="#hypothesis-testing-studies-using-youth-data-1" id="toc-hypothesis-testing-studies-using-youth-data-1" class="nav-link" data-scroll-target="#hypothesis-testing-studies-using-youth-data-1"><span class="header-section-number">24.6.33</span> 33. Hypothesis-testing studies using YOUth data</a></li>
+  <li><a href="#outdated-egap-registration-do-not-use" id="toc-outdated-egap-registration-do-not-use" class="nav-link" data-scroll-target="#outdated-egap-registration-do-not-use"><span class="header-section-number">24.6.34</span> 34. Outdated EGAP Registration (DO NOT USE)</a></li>
+  <li><a href="#egap-registration" id="toc-egap-registration" class="nav-link" data-scroll-target="#egap-registration"><span class="header-section-number">24.6.35</span> 35. EGAP Registration</a></li>
+  <li><a href="#qualitative-preregistration" id="toc-qualitative-preregistration" class="nav-link" data-scroll-target="#qualitative-preregistration"><span class="header-section-number">24.6.36</span> 36. Qualitative Preregistration</a></li>
+  <li><a href="#registered-report-protocol-preregistration" id="toc-registered-report-protocol-preregistration" class="nav-link" data-scroll-target="#registered-report-protocol-preregistration"><span class="header-section-number">24.6.37</span> 37. Registered Report Protocol Preregistration</a></li>
+  <li><a href="#open-ended-registration" id="toc-open-ended-registration" class="nav-link" data-scroll-target="#open-ended-registration"><span class="header-section-number">24.6.38</span> 38. Open-Ended Registration</a></li>
+  <li><a href="#election-research-preacceptance-competition" id="toc-election-research-preacceptance-competition" class="nav-link" data-scroll-target="#election-research-preacceptance-competition"><span class="header-section-number">24.6.39</span> 39. Election Research Preacceptance Competition</a></li>
+  <li><a href="#prereg-challenge" id="toc-prereg-challenge" class="nav-link" data-scroll-target="#prereg-challenge"><span class="header-section-number">24.6.40</span> 40. Prereg Challenge</a></li>
+  <li><a href="#replication-recipe-brandt-et-al.-2013-post-completion" id="toc-replication-recipe-brandt-et-al.-2013-post-completion" class="nav-link" data-scroll-target="#replication-recipe-brandt-et-al.-2013-post-completion"><span class="header-section-number">24.6.41</span> 41. Replication Recipe (Brandt et al., 2013): Post-Completion</a></li>
+  <li><a href="#replication-recipe-brandt-et-al.-2013-pre-registration" id="toc-replication-recipe-brandt-et-al.-2013-pre-registration" class="nav-link" data-scroll-target="#replication-recipe-brandt-et-al.-2013-pre-registration"><span class="header-section-number">24.6.42</span> 42. Replication Recipe (Brandt et al., 2013): Pre-Registration</a></li>
+  <li><a href="#osf-standard-pre-data-collection-registration" id="toc-osf-standard-pre-data-collection-registration" class="nav-link" data-scroll-target="#osf-standard-pre-data-collection-registration"><span class="header-section-number">24.6.43</span> 43. OSF-Standard Pre-Data Collection Registration</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/osf-schemas.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/github.html">Integrations &amp; Sources</a></li><li class="breadcrumb-item"><a href="../chapters/osf-schemas.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/creating-modules.html">Advanced Functions</a></li><li class="breadcrumb-item"><a href="../chapters/osf-schemas.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span>
+<span class="chapter-number">24</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span>
 </h1>
 </div>
 
@@ -480,12 +474,12 @@ ul.task-list li input[type="checkbox"] {
 </header><p>The <code>prereg_check</code> module retrieves a preregistration from the OSF and organises its contents into a single standardised template so reviewers can compare it against the manuscript. To do this reliably, the module has to recognise <em>which</em> registration template a preregistration uses, because each template stores its answers under different keys.</p>
 <p>This article documents every registration schema currently published by the OSF: how each is identified, the two structural formats they come in, and the fields each one exposes. It is generated from the live OSF API (<code>GET /v2/schemas/registrations/</code>).</p>
 <p><strong>Catalog snapshot:</strong> 2026-06-23 — 43 schemas total (33 blocks-format, 10 pages-format).</p>
-<section id="why-dispatch-on-schema_id-not-name" class="level2" data-number="25.1"><h2 data-number="25.1" class="anchored" data-anchor-id="why-dispatch-on-schema_id-not-name">
-<span class="header-section-number">25.1</span> Why dispatch on <code>schema_id</code>, not name</h2>
+<section id="why-dispatch-on-schema_id-not-name" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="why-dispatch-on-schema_id-not-name">
+<span class="header-section-number">24.1</span> Why dispatch on <code>schema_id</code>, not name</h2>
 <p>Each registration links to its schema at <code>relationships.registration_schema.data.id</code> — a permanent 24-char hex id. The schema <em>name</em> (<code>attributes.registration_supplement</code>) is <strong>not</strong> a reliable key: the OSF revises templates under the same name, and different versions use incompatible response-key formats. The current module’s <code>q25</code>-presence heuristic for telling “OSF Preregistration” versions apart is exactly what fails on the v4 schema (its keys are <code>344-N</code>, not <code>qN</code>), causing every field to extract as <code>NULL</code>.</p>
 <p>The catalog endpoint returns only the <strong>current</strong> version per name. Superseded versions (still used by older registrations) are not listed but remain resolvable by their own <code>schema_id</code> — you only discover those ids from real registrations.</p>
-</section><section id="how-many-schema-versions-exist-and-why-we-cant-list-them-all" class="level2" data-number="25.2"><h2 data-number="25.2" class="anchored" data-anchor-id="how-many-schema-versions-exist-and-why-we-cant-list-them-all">
-<span class="header-section-number">25.2</span> How many schema versions exist, and why we can’t list them all</h2>
+</section><section id="how-many-schema-versions-exist-and-why-we-cant-list-them-all" class="level2" data-number="24.2"><h2 data-number="24.2" class="anchored" data-anchor-id="how-many-schema-versions-exist-and-why-we-cant-list-them-all">
+<span class="header-section-number">24.2</span> How many schema versions exist, and why we can’t list them all</h2>
 <p>There is no single number for “how many registration templates the OSF has.” There are two very different counts:</p>
 <ul>
 <li>
@@ -507,8 +501,8 @@ ul.task-list li input[type="checkbox"] {
        - van 't Veer v2                  5730e99a9ad5a102c5745a8a  (n=22)
        - Open-Ended Registration v2      564d31db8c5e4a7c9694b2be  (n=140)
      => 49 distinct schema_ids known (43 catalog + 6 older). -->
-</section><section id="recommendations-for-preregistration-schema-creators" class="level2" data-number="25.3"><h2 data-number="25.3" class="anchored" data-anchor-id="recommendations-for-preregistration-schema-creators">
-<span class="header-section-number">25.3</span> Recommendations for preregistration schema creators</h2>
+</section><section id="recommendations-for-preregistration-schema-creators" class="level2" data-number="24.3"><h2 data-number="24.3" class="anchored" data-anchor-id="recommendations-for-preregistration-schema-creators">
+<span class="header-section-number">24.3</span> Recommendations for preregistration schema creators</h2>
 <p>The difficulty of extracting preregistration content reliably is largely a consequence of how schemas are designed and versioned. If you create or maintain a registration template on the OSF (or a comparable registry), the following practices make a schema machine-readable and keep it compatible with automated tools like <code>prereg_check</code>. They cost nothing at registration time and dramatically improve reusability of the resulting preregistrations.</p>
 <p><strong>1. Give every field a clear, stable, human-readable label.</strong> <code>prereg_check</code> maps a field to its meaning through the field’s label (<code>display_text</code> in blocks format, <code>title</code> in pages format) — not through its opaque response key (<code>344-2</code>, <code>q17</code>). A label like “Sample size” or “Statistical models” lets any tool recognise the field without bespoke per-schema code. Avoid labels that only make sense relative to neighbouring questions (e.g.&nbsp;a bare “If yes, explain”), and keep a field’s label consistent across versions so the same concept stays recognisable.</p>
 <p><strong>2. Prefer a flat list of labelled fields over deep nesting.</strong> Schemas whose answers live in deeply nested, section-relative keys cannot be interpreted from the field label alone, because the meaningful label is buried and the top-level item is just a section heading. A flat structure — one labelled question, one answer — is unambiguous and extracts cleanly. If grouping is needed, keep the per-field label self-describing regardless of its group.</p>
@@ -521,8 +515,8 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>5. Version transparently, and make versions discoverable.</strong> The single biggest obstacle to complete coverage is that the OSF mints a new <code>schema_id</code> for each revision but provides <strong>no way to enumerate a template’s past versions</strong> — a schema object links to neither its predecessor nor its successor. Exposing version history (a list of all <code>schema_id</code>s for a named template, or previous/next links on each schema) would let tools support every version of a template instead of only the versions they happen to encounter in the wild. Until registries provide this, automated checking is necessarily best-effort for older preregistrations.</p>
 <p><strong>6. Don’t change a field’s meaning without changing its label.</strong> Reusing an existing label/key for a different question across versions is the most damaging change possible: a tool that correctly read the old field will silently extract the wrong content from the new one. If a field’s meaning changes, give it a new label.</p>
 <p>In short: <strong>a preregistration is most useful to future readers — human or machine — when each field is flat, clearly labelled, consistently named, and stably versioned.</strong> These same properties are what let <code>prereg_check</code> map any template, old or new, onto a single comparable structure.</p>
-</section><section id="two-response-formats" class="level2" data-number="25.4"><h2 data-number="25.4" class="anchored" data-anchor-id="two-response-formats">
-<span class="header-section-number">25.4</span> Two response formats</h2>
+</section><section id="two-response-formats" class="level2" data-number="24.4"><h2 data-number="24.4" class="anchored" data-anchor-id="two-response-formats">
+<span class="header-section-number">24.4</span> Two response formats</h2>
 <p>Schemas come in two structural formats, but both expose a human-readable label for every field, so <code>prereg_check</code> reads them with a single, schema-driven extractor rather than per-template code.</p>
 <table class="caption-top table">
 <colgroup>
@@ -558,8 +552,8 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p>For each registration, the extractor fetches its schema, builds a map from every response key to its field label, and maps each label onto a canonical field (see below). Because the label is read from the schema itself, the same code handles every template and every version — old or new, blocks or pages — without bespoke per-schema logic. The one exception is a schema whose answers are nested too deeply to carry a usable label at the response-key level (the original pages version of the van ’t Veer template; see recommendation 2 above), which has a small dedicated extractor.</p>
-</section><section id="catalog" class="level2" data-number="25.5"><h2 data-number="25.5" class="anchored" data-anchor-id="catalog">
-<span class="header-section-number">25.5</span> Catalog</h2>
+</section><section id="catalog" class="level2" data-number="24.5"><h2 data-number="24.5" class="anchored" data-anchor-id="catalog">
+<span class="header-section-number">24.5</span> Catalog</h2>
 <p><code>Fields</code> = number of input blocks (blocks format) or questions (pages format). All schemas are read by the single schema-driven extractor, except the deeply nested van ’t Veer pages version, which has a dedicated extractor (noted below).</p>
 <table class="caption-top table">
 <colgroup>
@@ -1014,11 +1008,11 @@ ul.task-list li input[type="checkbox"] {
 <td>generic</td>
 </tr>
 </tbody>
-</table></section><section id="fields-per-schema" class="level2" data-number="25.6"><h2 data-number="25.6" class="anchored" data-anchor-id="fields-per-schema">
-<span class="header-section-number">25.6</span> Fields per schema</h2>
+</table></section><section id="fields-per-schema" class="level2" data-number="24.6"><h2 data-number="24.6" class="anchored" data-anchor-id="fields-per-schema">
+<span class="header-section-number">24.6</span> Fields per schema</h2>
 <p>Each schema’s fields in document order. For blocks format, <code>pos</code> is the 0-indexed block position (the number after the dash in the response key). For pages format, <code>qid</code> is the response key.</p>
-<section id="preregistration-for-waves-1-2-and-3-data" class="level3" data-number="25.6.1"><h3 data-number="25.6.1" class="anchored" data-anchor-id="preregistration-for-waves-1-2-and-3-data">
-<span class="header-section-number">25.6.1</span> 1. Preregistration for Waves 1, 2, and 3 Data</h3>
+<section id="preregistration-for-waves-1-2-and-3-data" class="level3" data-number="24.6.1"><h3 data-number="24.6.1" class="anchored" data-anchor-id="preregistration-for-waves-1-2-and-3-data">
+<span class="header-section-number">24.6.1</span> 1. Preregistration for Waves 1, 2, and 3 Data</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>69d56f1d27bbc0e45fe3bbc6</code>
@@ -1189,8 +1183,8 @@ ul.task-list li input[type="checkbox"] {
 <td>I confirm that the email address associated with my OSF user account is the address to which to send the data files for me to access. If this is not the case, please add an alternative email address to your OSF profile and make it the primary address for your account. Refer to the help guide to change your email address https://help.osf.io/article/238-add-a-new-email-address-to-your-account</td>
 </tr>
 </tbody>
-</table></section><section id="generalized-systematic-review-registration" class="level3" data-number="25.6.2"><h3 data-number="25.6.2" class="anchored" data-anchor-id="generalized-systematic-review-registration">
-<span class="header-section-number">25.6.2</span> 2. Generalized Systematic Review Registration</h3>
+</table></section><section id="generalized-systematic-review-registration" class="level3" data-number="24.6.2"><h3 data-number="24.6.2" class="anchored" data-anchor-id="generalized-systematic-review-registration">
+<span class="header-section-number">24.6.2</span> 2. Generalized Systematic Review Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>69cbc587cd7e8b69fa11ab52</code>
@@ -1526,8 +1520,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Miscellaneous synthesis details</td>
 </tr>
 </tbody>
-</table></section><section id="osf-preregistration" class="level3" data-number="25.6.3"><h3 data-number="25.6.3" class="anchored" data-anchor-id="osf-preregistration">
-<span class="header-section-number">25.6.3</span> 3. OSF Preregistration</h3>
+</table></section><section id="osf-preregistration" class="level3" data-number="24.6.3"><h3 data-number="24.6.3" class="anchored" data-anchor-id="osf-preregistration">
+<span class="header-section-number">24.6.3</span> 3. OSF Preregistration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>697b72f611a8e98484c6139b</code>
@@ -1693,8 +1687,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Context and additional information</td>
 </tr>
 </tbody>
-</table></section><section id="theory-based-predictions" class="level3" data-number="25.6.4"><h3 data-number="25.6.4" class="anchored" data-anchor-id="theory-based-predictions">
-<span class="header-section-number">25.6.4</span> 4. Theory-Based Predictions</h3>
+</table></section><section id="theory-based-predictions" class="level3" data-number="24.6.4"><h3 data-number="24.6.4" class="anchored" data-anchor-id="theory-based-predictions">
+<span class="header-section-number">24.6.4</span> 4. Theory-Based Predictions</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>697b72e611a8e98484c61367</code>
@@ -1780,8 +1774,8 @@ ul.task-list li input[type="checkbox"] {
 <td>References</td>
 </tr>
 </tbody>
-</table></section><section id="eeg-and-erp-methods" class="level3" data-number="25.6.5"><h3 data-number="25.6.5" class="anchored" data-anchor-id="eeg-and-erp-methods">
-<span class="header-section-number">25.6.5</span> 5. EEG and ERP Methods</h3>
+</table></section><section id="eeg-and-erp-methods" class="level3" data-number="24.6.5"><h3 data-number="24.6.5" class="anchored" data-anchor-id="eeg-and-erp-methods">
+<span class="header-section-number">24.6.5</span> 5. EEG and ERP Methods</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>697b72d3501b1db46ed7fc25</code>
@@ -2097,8 +2091,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Supplementary materials</td>
 </tr>
 </tbody>
-</table></section><section id="theory-based-predictions-in-social-science" class="level3" data-number="25.6.6"><h3 data-number="25.6.6" class="anchored" data-anchor-id="theory-based-predictions-in-social-science">
-<span class="header-section-number">25.6.6</span> 6. Theory-Based Predictions in Social Science</h3>
+</table></section><section id="theory-based-predictions-in-social-science" class="level3" data-number="24.6.6"><h3 data-number="24.6.6" class="anchored" data-anchor-id="theory-based-predictions-in-social-science">
+<span class="header-section-number">24.6.6</span> 6. Theory-Based Predictions in Social Science</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>691779acff80c2762f0da6d2</code>
@@ -2194,8 +2188,8 @@ ul.task-list li input[type="checkbox"] {
 <td>References</td>
 </tr>
 </tbody>
-</table></section><section id="lifecycle-journal-submission" class="level3" data-number="25.6.7"><h3 data-number="25.6.7" class="anchored" data-anchor-id="lifecycle-journal-submission">
-<span class="header-section-number">25.6.7</span> 7. Lifecycle Journal Submission</h3>
+</table></section><section id="lifecycle-journal-submission" class="level3" data-number="24.6.7"><h3 data-number="24.6.7" class="anchored" data-anchor-id="lifecycle-journal-submission">
+<span class="header-section-number">24.6.7</span> 7. Lifecycle Journal Submission</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>690df02b3c4237604cedcc62</code>
@@ -2451,8 +2445,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Author Authorization</td>
 </tr>
 </tbody>
-</table></section><section id="preregistration-for-waves-1-and-2-data" class="level3" data-number="25.6.8"><h3 data-number="25.6.8" class="anchored" data-anchor-id="preregistration-for-waves-1-and-2-data">
-<span class="header-section-number">25.6.8</span> 8. Preregistration for Waves 1 and 2 Data</h3>
+</table></section><section id="preregistration-for-waves-1-and-2-data" class="level3" data-number="24.6.8"><h3 data-number="24.6.8" class="anchored" data-anchor-id="preregistration-for-waves-1-and-2-data">
+<span class="header-section-number">24.6.8</span> 8. Preregistration for Waves 1 and 2 Data</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>688b9aa0c4ce3fffde172fbe</code>
@@ -2688,8 +2682,8 @@ ul.task-list li input[type="checkbox"] {
 <td>I agree to be contacted about participating in a survey about my experience with the GFS project</td>
 </tr>
 </tbody>
-</table></section><section id="simulation-study-template" class="level3" data-number="25.6.9"><h3 data-number="25.6.9" class="anchored" data-anchor-id="simulation-study-template">
-<span class="header-section-number">25.6.9</span> 9. Simulation Study Template</h3>
+</table></section><section id="simulation-study-template" class="level3" data-number="24.6.9"><h3 data-number="24.6.9" class="anchored" data-anchor-id="simulation-study-template">
+<span class="header-section-number">24.6.9</span> 9. Simulation Study Template</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>68828a95c4ce3fffde1728d3</code>
@@ -2810,8 +2804,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Additional Notes for Preregistration</td>
 </tr>
 </tbody>
-</table></section><section id="pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration" class="level3" data-number="25.6.10"><h3 data-number="25.6.10" class="anchored" data-anchor-id="pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration">
-<span class="header-section-number">25.6.10</span> 10. Pre-Registration in Social Psychology (van ’t Veer &amp; Giner-Sorolla, 2016): Pre-Registration</h3>
+</table></section><section id="pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration" class="level3" data-number="24.6.10"><h3 data-number="24.6.10" class="anchored" data-anchor-id="pre-registration-in-social-psychology-van-t-veer-giner-sorolla-2016-pre-registration">
+<span class="header-section-number">24.6.10</span> 10. Pre-Registration in Social Psychology (van ’t Veer &amp; Giner-Sorolla, 2016): Pre-Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>67d063819403e9177dc48d5a</code>
@@ -3092,8 +3086,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Additional Comments</td>
 </tr>
 </tbody>
-</table></section><section id="data-archiving-and-sharing-template" class="level3" data-number="25.6.11"><h3 data-number="25.6.11" class="anchored" data-anchor-id="data-archiving-and-sharing-template">
-<span class="header-section-number">25.6.11</span> 11. Data Archiving and Sharing Template</h3>
+</table></section><section id="data-archiving-and-sharing-template" class="level3" data-number="24.6.11"><h3 data-number="24.6.11" class="anchored" data-anchor-id="data-archiving-and-sharing-template">
+<span class="header-section-number">24.6.11</span> 11. Data Archiving and Sharing Template</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>67aba96c5063d52c94aeb5b1</code>
@@ -3199,8 +3193,8 @@ ul.task-list li input[type="checkbox"] {
 <td>DOI to preregistration, protocol, or method used for preparing the data</td>
 </tr>
 </tbody>
-</table></section><section id="platform-registration" class="level3" data-number="25.6.12"><h3 data-number="25.6.12" class="anchored" data-anchor-id="platform-registration">
-<span class="header-section-number">25.6.12</span> 12. Platform Registration</h3>
+</table></section><section id="platform-registration" class="level3" data-number="24.6.12"><h3 data-number="24.6.12" class="anchored" data-anchor-id="platform-registration">
+<span class="header-section-number">24.6.12</span> 12. Platform Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>6682cde56685d2000a9535b6</code>
@@ -3271,8 +3265,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Links to OGC or Other Standards</td>
 </tr>
 </tbody>
-</table></section><section id="services-registration" class="level3" data-number="25.6.13"><h3 data-number="25.6.13" class="anchored" data-anchor-id="services-registration">
-<span class="header-section-number">25.6.13</span> 13. Services Registration</h3>
+</table></section><section id="services-registration" class="level3" data-number="24.6.13"><h3 data-number="24.6.13" class="anchored" data-anchor-id="services-registration">
+<span class="header-section-number">24.6.13</span> 13. Services Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>6682cdca6685d2000a953586</code>
@@ -3358,8 +3352,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Links to OGC or Other Standards</td>
 </tr>
 </tbody>
-</table></section><section id="preregistration-for-sample-and-wave-one-data" class="level3" data-number="25.6.14"><h3 data-number="25.6.14" class="anchored" data-anchor-id="preregistration-for-sample-and-wave-one-data">
-<span class="header-section-number">25.6.14</span> 14. Preregistration for Sample and Wave One Data</h3>
+</table></section><section id="preregistration-for-sample-and-wave-one-data" class="level3" data-number="24.6.14"><h3 data-number="24.6.14" class="anchored" data-anchor-id="preregistration-for-sample-and-wave-one-data">
+<span class="header-section-number">24.6.14</span> 14. Preregistration for Sample and Wave One Data</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>661ff09ee43c7b00109ee0cd</code>
@@ -3580,8 +3574,8 @@ ul.task-list li input[type="checkbox"] {
 <td>I agree to be contacted about participating in a survey about my experience with the GFS project</td>
 </tr>
 </tbody>
-</table></section><section id="services" class="level3" data-number="25.6.15"><h3 data-number="25.6.15" class="anchored" data-anchor-id="services">
-<span class="header-section-number">25.6.15</span> 15. Services</h3>
+</table></section><section id="services" class="level3" data-number="24.6.15"><h3 data-number="24.6.15" class="anchored" data-anchor-id="services">
+<span class="header-section-number">24.6.15</span> 15. Services</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>661fc65ce43c7b00109ee06d</code>
@@ -3682,8 +3676,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Links to OGC or Other Standards</td>
 </tr>
 </tbody>
-</table></section><section id="services-environmentapplication-package" class="level3" data-number="25.6.16"><h3 data-number="25.6.16" class="anchored" data-anchor-id="services-environmentapplication-package">
-<span class="header-section-number">25.6.16</span> 16. Services Environment/Application Package</h3>
+</table></section><section id="services-environmentapplication-package" class="level3" data-number="24.6.16"><h3 data-number="24.6.16" class="anchored" data-anchor-id="services-environmentapplication-package">
+<span class="header-section-number">24.6.16</span> 16. Services Environment/Application Package</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>661fc58f526abf00143cdd64</code>
@@ -3779,8 +3773,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Links to OGC or Other Standards</td>
 </tr>
 </tbody>
-</table></section><section id="platform" class="level3" data-number="25.6.17"><h3 data-number="25.6.17" class="anchored" data-anchor-id="platform">
-<span class="header-section-number">25.6.17</span> 17. Platform</h3>
+</table></section><section id="platform" class="level3" data-number="24.6.17"><h3 data-number="24.6.17" class="anchored" data-anchor-id="platform">
+<span class="header-section-number">24.6.17</span> 17. Platform</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>661fc4c9e43c7b00109ee034</code>
@@ -3881,8 +3875,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Please provide links to any OGC or other standards e.g.&nbsp;ISO used in your platform. Provide DOIs or other PIDs where possible.</td>
 </tr>
 </tbody>
-</table></section><section id="global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration" class="level3" data-number="25.6.18"><h3 data-number="25.6.18" class="anchored" data-anchor-id="global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration">
-<span class="header-section-number">25.6.18</span> 18. Global Flourishing Study Descriptive Meta-analysis Core Team Wave One Preregistration</h3>
+</table></section><section id="global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration" class="level3" data-number="24.6.18"><h3 data-number="24.6.18" class="anchored" data-anchor-id="global-flourishing-study-descriptive-meta-analysis-core-team-wave-one-preregistration">
+<span class="header-section-number">24.6.18</span> 18. Global Flourishing Study Descriptive Meta-analysis Core Team Wave One Preregistration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>6526adf81127da000abb92eb</code>
@@ -4098,8 +4092,8 @@ ul.task-list li input[type="checkbox"] {
 <td>I agree to be contacted about participating in a survey about my experience with the GFS project</td>
 </tr>
 </tbody>
-</table></section><section id="preregistration-template-from-aspredicted.org" class="level3" data-number="25.6.19"><h3 data-number="25.6.19" class="anchored" data-anchor-id="preregistration-template-from-aspredicted.org">
-<span class="header-section-number">25.6.19</span> 19. Preregistration Template from AsPredicted.org</h3>
+</table></section><section id="preregistration-template-from-aspredicted.org" class="level3" data-number="24.6.19"><h3 data-number="24.6.19" class="anchored" data-anchor-id="preregistration-template-from-aspredicted.org">
+<span class="header-section-number">24.6.19</span> 19. Preregistration Template from AsPredicted.org</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>64bab305769023000d0acdc0</code>
@@ -4170,8 +4164,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Other</td>
 </tr>
 </tbody>
-</table></section><section id="replication-recipe-brandt-et-al.-2014-pre-registration" class="level3" data-number="25.6.20"><h3 data-number="25.6.20" class="anchored" data-anchor-id="replication-recipe-brandt-et-al.-2014-pre-registration">
-<span class="header-section-number">25.6.20</span> 20. Replication Recipe (Brandt et al., 2014): Pre-Registration</h3>
+</table></section><section id="replication-recipe-brandt-et-al.-2014-pre-registration" class="level3" data-number="24.6.20"><h3 data-number="24.6.20" class="anchored" data-anchor-id="replication-recipe-brandt-et-al.-2014-pre-registration">
+<span class="header-section-number">24.6.20</span> 20. Replication Recipe (Brandt et al., 2014): Pre-Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>64b14a08d639e5000d2013a5</code>
@@ -4327,8 +4321,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Successful Replication</td>
 </tr>
 </tbody>
-</table></section><section id="character-lab-registration" class="level3" data-number="25.6.21"><h3 data-number="25.6.21" class="anchored" data-anchor-id="character-lab-registration">
-<span class="header-section-number">25.6.21</span> 21. Character Lab Registration</h3>
+</table></section><section id="character-lab-registration" class="level3" data-number="24.6.21"><h3 data-number="24.6.21" class="anchored" data-anchor-id="character-lab-registration">
+<span class="header-section-number">24.6.21</span> 21. Character Lab Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>64b04e2f5fd73600100c6f03</code>
@@ -4479,8 +4473,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Team Member Role</td>
 </tr>
 </tbody>
-</table></section><section id="secondary-data-preregistration" class="level3" data-number="25.6.22"><h3 data-number="25.6.22" class="anchored" data-anchor-id="secondary-data-preregistration">
-<span class="header-section-number">25.6.22</span> 22. Secondary Data Preregistration</h3>
+</table></section><section id="secondary-data-preregistration" class="level3" data-number="24.6.22"><h3 data-number="24.6.22" class="anchored" data-anchor-id="secondary-data-preregistration">
+<span class="header-section-number">24.6.22</span> 22. Secondary Data Preregistration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>64775783798e08000a70407e</code>
@@ -4631,8 +4625,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Exploratory analysis</td>
 </tr>
 </tbody>
-</table></section><section id="real-world-evidence-recommended-minimum-study-registration-template" class="level3" data-number="25.6.23"><h3 data-number="25.6.23" class="anchored" data-anchor-id="real-world-evidence-recommended-minimum-study-registration-template">
-<span class="header-section-number">25.6.23</span> 23. Real World Evidence Recommended Minimum Study Registration Template</h3>
+</table></section><section id="real-world-evidence-recommended-minimum-study-registration-template" class="level3" data-number="24.6.23"><h3 data-number="24.6.23" class="anchored" data-anchor-id="real-world-evidence-recommended-minimum-study-registration-template">
+<span class="header-section-number">24.6.23</span> 23. Real World Evidence Recommended Minimum Study Registration Template</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>6440191d026cb7000a51926e</code>
@@ -4753,8 +4747,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Upload protocol document</td>
 </tr>
 </tbody>
-</table></section><section id="predictors-of-global-flourishing-core-team-wave-one-preregistration" class="level3" data-number="25.6.24"><h3 data-number="25.6.24" class="anchored" data-anchor-id="predictors-of-global-flourishing-core-team-wave-one-preregistration">
-<span class="header-section-number">25.6.24</span> 24. Predictors of Global Flourishing Core Team Wave One Preregistration</h3>
+</table></section><section id="predictors-of-global-flourishing-core-team-wave-one-preregistration" class="level3" data-number="24.6.24"><h3 data-number="24.6.24" class="anchored" data-anchor-id="predictors-of-global-flourishing-core-team-wave-one-preregistration">
+<span class="header-section-number">24.6.24</span> 24. Predictors of Global Flourishing Core Team Wave One Preregistration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>640f7010226116000a5722bd</code>
@@ -4930,8 +4924,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Instructions</td>
 </tr>
 </tbody>
-</table></section><section id="asist-results-registration" class="level3" data-number="25.6.25"><h3 data-number="25.6.25" class="anchored" data-anchor-id="asist-results-registration">
-<span class="header-section-number">25.6.25</span> 25. ASIST Results Registration</h3>
+</table></section><section id="asist-results-registration" class="level3" data-number="24.6.25"><h3 data-number="24.6.25" class="anchored" data-anchor-id="asist-results-registration">
+<span class="header-section-number">24.6.25</span> 25. ASIST Results Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>639a23498cdd95000bb0868e</code>
@@ -4987,8 +4981,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Results registration</td>
 </tr>
 </tbody>
-</table></section><section id="character-lab-registration-1" class="level3" data-number="25.6.26"><h3 data-number="25.6.26" class="anchored" data-anchor-id="character-lab-registration-1">
-<span class="header-section-number">25.6.26</span> 26. Character Lab Registration</h3>
+</table></section><section id="character-lab-registration-1" class="level3" data-number="24.6.26"><h3 data-number="24.6.26" class="anchored" data-anchor-id="character-lab-registration-1">
+<span class="header-section-number">24.6.26</span> 26. Character Lab Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>637e4641d3713a000d7d9d7e</code>
@@ -5144,8 +5138,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Team Member Role</td>
 </tr>
 </tbody>
-</table></section><section id="sample" class="level3" data-number="25.6.27"><h3 data-number="25.6.27" class="anchored" data-anchor-id="sample">
-<span class="header-section-number">25.6.27</span> 27. Sample</h3>
+</table></section><section id="sample" class="level3" data-number="24.6.27"><h3 data-number="24.6.27" class="anchored" data-anchor-id="sample">
+<span class="header-section-number">24.6.27</span> 27. Sample</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>63587b2d0a7f3800204053f7</code>
@@ -5191,8 +5185,8 @@ ul.task-list li input[type="checkbox"] {
 <td>This is another question label</td>
 </tr>
 </tbody>
-</table></section><section id="other-studies-using-youth-data" class="level3" data-number="25.6.28"><h3 data-number="25.6.28" class="anchored" data-anchor-id="other-studies-using-youth-data">
-<span class="header-section-number">25.6.28</span> 28. Other studies using YOUth data</h3>
+</table></section><section id="other-studies-using-youth-data" class="level3" data-number="24.6.28"><h3 data-number="24.6.28" class="anchored" data-anchor-id="other-studies-using-youth-data">
+<span class="header-section-number">24.6.28</span> 28. Other studies using YOUth data</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>621e39b72b2151000a7c88c4</code>
@@ -5228,8 +5222,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Upload any files or supporting materials</td>
 </tr>
 </tbody>
-</table></section><section id="hypothesis-testing-studies-using-youth-data" class="level3" data-number="25.6.29"><h3 data-number="25.6.29" class="anchored" data-anchor-id="hypothesis-testing-studies-using-youth-data">
-<span class="header-section-number">25.6.29</span> 29. Hypothesis-Testing Studies Using YOUth Data</h3>
+</table></section><section id="hypothesis-testing-studies-using-youth-data" class="level3" data-number="24.6.29"><h3 data-number="24.6.29" class="anchored" data-anchor-id="hypothesis-testing-studies-using-youth-data">
+<span class="header-section-number">24.6.29</span> 29. Hypothesis-Testing Studies Using YOUth Data</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>621e39b72b2151000a7c88c3</code>
@@ -5325,8 +5319,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Exploratory analysis</td>
 </tr>
 </tbody>
-</table></section><section id="asist-registration-results" class="level3" data-number="25.6.30"><h3 data-number="25.6.30" class="anchored" data-anchor-id="asist-registration-results">
-<span class="header-section-number">25.6.30</span> 30. ASIST Registration Results</h3>
+</table></section><section id="asist-registration-results" class="level3" data-number="24.6.30"><h3 data-number="24.6.30" class="anchored" data-anchor-id="asist-registration-results">
+<span class="header-section-number">24.6.30</span> 30. ASIST Registration Results</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>61fb38b069cd64000996875b</code>
@@ -5367,8 +5361,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Results registration</td>
 </tr>
 </tbody>
-</table></section><section id="character-lab-long-form-registration" class="level3" data-number="25.6.31"><h3 data-number="25.6.31" class="anchored" data-anchor-id="character-lab-long-form-registration">
-<span class="header-section-number">25.6.31</span> 31. Character Lab Long-Form Registration</h3>
+</table></section><section id="character-lab-long-form-registration" class="level3" data-number="24.6.31"><h3 data-number="24.6.31" class="anchored" data-anchor-id="character-lab-long-form-registration">
+<span class="header-section-number">24.6.31</span> 31. Character Lab Long-Form Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>6176c9d45e01f100091d4f94</code>
@@ -5574,8 +5568,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Changes Based On Piloting</td>
 </tr>
 </tbody>
-</table></section><section id="character-lab-short-form-registration" class="level3" data-number="25.6.32"><h3 data-number="25.6.32" class="anchored" data-anchor-id="character-lab-short-form-registration">
-<span class="header-section-number">25.6.32</span> 32. Character Lab Short-Form Registration</h3>
+</table></section><section id="character-lab-short-form-registration" class="level3" data-number="24.6.32"><h3 data-number="24.6.32" class="anchored" data-anchor-id="character-lab-short-form-registration">
+<span class="header-section-number">24.6.32</span> 32. Character Lab Short-Form Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>6176c9d45e01f100091d4f93</code>
@@ -5716,8 +5710,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Team member role</td>
 </tr>
 </tbody>
-</table></section><section id="hypothesis-testing-studies-using-youth-data-1" class="level3" data-number="25.6.33"><h3 data-number="25.6.33" class="anchored" data-anchor-id="hypothesis-testing-studies-using-youth-data-1">
-<span class="header-section-number">25.6.33</span> 33. Hypothesis-testing studies using YOUth data</h3>
+</table></section><section id="hypothesis-testing-studies-using-youth-data-1" class="level3" data-number="24.6.33"><h3 data-number="24.6.33" class="anchored" data-anchor-id="hypothesis-testing-studies-using-youth-data-1">
+<span class="header-section-number">24.6.33</span> 33. Hypothesis-testing studies using YOUth data</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>60d39bb7828fc70009b92323</code>
@@ -5818,8 +5812,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Exploratory analysis</td>
 </tr>
 </tbody>
-</table></section><section id="outdated-egap-registration-do-not-use" class="level3" data-number="25.6.34"><h3 data-number="25.6.34" class="anchored" data-anchor-id="outdated-egap-registration-do-not-use">
-<span class="header-section-number">25.6.34</span> 34. Outdated EGAP Registration (DO NOT USE)</h3>
+</table></section><section id="outdated-egap-registration-do-not-use" class="level3" data-number="24.6.34"><h3 data-number="24.6.34" class="anchored" data-anchor-id="outdated-egap-registration-do-not-use">
+<span class="header-section-number">24.6.34</span> 34. Outdated EGAP Registration (DO NOT USE)</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>60b0364269389a0009cc0d20</code>
@@ -6020,8 +6014,8 @@ ul.task-list li input[type="checkbox"] {
 <td>DeclareDesign</td>
 </tr>
 </tbody>
-</table></section><section id="egap-registration" class="level3" data-number="25.6.35"><h3 data-number="25.6.35" class="anchored" data-anchor-id="egap-registration">
-<span class="header-section-number">25.6.35</span> 35. EGAP Registration</h3>
+</table></section><section id="egap-registration" class="level3" data-number="24.6.35"><h3 data-number="24.6.35" class="anchored" data-anchor-id="egap-registration">
+<span class="header-section-number">24.6.35</span> 35. EGAP Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>60b0364269389a0009cc0d1f</code>
@@ -6212,8 +6206,8 @@ ul.task-list li input[type="checkbox"] {
 <td>DeclareDesign</td>
 </tr>
 </tbody>
-</table></section><section id="qualitative-preregistration" class="level3" data-number="25.6.36"><h3 data-number="25.6.36" class="anchored" data-anchor-id="qualitative-preregistration">
-<span class="header-section-number">25.6.36</span> 36. Qualitative Preregistration</h3>
+</table></section><section id="qualitative-preregistration" class="level3" data-number="24.6.36"><h3 data-number="24.6.36" class="anchored" data-anchor-id="qualitative-preregistration">
+<span class="header-section-number">24.6.36</span> 36. Qualitative Preregistration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>5fa0ac510a7f38001c8ae854</code>
@@ -6314,8 +6308,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Reflection on your positionality (optional)</td>
 </tr>
 </tbody>
-</table></section><section id="registered-report-protocol-preregistration" class="level3" data-number="25.6.37"><h3 data-number="25.6.37" class="anchored" data-anchor-id="registered-report-protocol-preregistration">
-<span class="header-section-number">25.6.37</span> 37. Registered Report Protocol Preregistration</h3>
+</table></section><section id="registered-report-protocol-preregistration" class="level3" data-number="24.6.37"><h3 data-number="24.6.37" class="anchored" data-anchor-id="registered-report-protocol-preregistration">
+<span class="header-section-number">24.6.37</span> 37. Registered Report Protocol Preregistration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>5e795fc0d2833800195735cf</code>
@@ -6361,8 +6355,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Other information</td>
 </tr>
 </tbody>
-</table></section><section id="open-ended-registration" class="level3" data-number="25.6.38"><h3 data-number="25.6.38" class="anchored" data-anchor-id="open-ended-registration">
-<span class="header-section-number">25.6.38</span> 38. Open-Ended Registration</h3>
+</table></section><section id="open-ended-registration" class="level3" data-number="24.6.38"><h3 data-number="24.6.38" class="anchored" data-anchor-id="open-ended-registration">
+<span class="header-section-number">24.6.38</span> 38. Open-Ended Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>5df83f7dd28338001ac0ab0d</code>
@@ -6388,8 +6382,8 @@ ul.task-list li input[type="checkbox"] {
 <td>NA</td>
 </tr>
 </tbody>
-</table></section><section id="election-research-preacceptance-competition" class="level3" data-number="25.6.39"><h3 data-number="25.6.39" class="anchored" data-anchor-id="election-research-preacceptance-competition">
-<span class="header-section-number">25.6.39</span> 39. Election Research Preacceptance Competition</h3>
+</table></section><section id="election-research-preacceptance-competition" class="level3" data-number="24.6.39"><h3 data-number="24.6.39" class="anchored" data-anchor-id="election-research-preacceptance-competition">
+<span class="header-section-number">24.6.39</span> 39. Election Research Preacceptance Competition</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>57ace80a594d9000015403c6</code>
@@ -6475,8 +6469,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Other</td>
 </tr>
 </tbody>
-</table></section><section id="prereg-challenge" class="level3" data-number="25.6.40"><h3 data-number="25.6.40" class="anchored" data-anchor-id="prereg-challenge">
-<span class="header-section-number">25.6.40</span> 40. Prereg Challenge</h3>
+</table></section><section id="prereg-challenge" class="level3" data-number="24.6.40"><h3 data-number="24.6.40" class="anchored" data-anchor-id="prereg-challenge">
+<span class="header-section-number">24.6.40</span> 40. Prereg Challenge</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>565fb3678c5e4a66b5582f67</code>
@@ -6617,8 +6611,8 @@ ul.task-list li input[type="checkbox"] {
 <td>Other</td>
 </tr>
 </tbody>
-</table></section><section id="replication-recipe-brandt-et-al.-2013-post-completion" class="level3" data-number="25.6.41"><h3 data-number="25.6.41" class="anchored" data-anchor-id="replication-recipe-brandt-et-al.-2013-post-completion">
-<span class="header-section-number">25.6.41</span> 41. Replication Recipe (Brandt et al., 2013): Post-Completion</h3>
+</table></section><section id="replication-recipe-brandt-et-al.-2013-post-completion" class="level3" data-number="24.6.41"><h3 data-number="24.6.41" class="anchored" data-anchor-id="replication-recipe-brandt-et-al.-2013-post-completion">
+<span class="header-section-number">24.6.41</span> 41. Replication Recipe (Brandt et al., 2013): Post-Completion</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>564d31db8c5e4a7c9694b2c4</code>
@@ -6684,8 +6678,8 @@ ul.task-list li input[type="checkbox"] {
 <td>The limitations of my replication study are</td>
 </tr>
 </tbody>
-</table></section><section id="replication-recipe-brandt-et-al.-2013-pre-registration" class="level3" data-number="25.6.42"><h3 data-number="25.6.42" class="anchored" data-anchor-id="replication-recipe-brandt-et-al.-2013-pre-registration">
-<span class="header-section-number">25.6.42</span> 42. Replication Recipe (Brandt et al., 2013): Pre-Registration</h3>
+</table></section><section id="replication-recipe-brandt-et-al.-2013-pre-registration" class="level3" data-number="24.6.42"><h3 data-number="24.6.42" class="anchored" data-anchor-id="replication-recipe-brandt-et-al.-2013-pre-registration">
+<span class="header-section-number">24.6.42</span> 42. Replication Recipe (Brandt et al., 2013): Pre-Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>564d31db8c5e4a7c9694b2c2</code>
@@ -6846,8 +6840,8 @@ ul.task-list li input[type="checkbox"] {
 <td>A successful replication is defined as</td>
 </tr>
 </tbody>
-</table></section><section id="osf-standard-pre-data-collection-registration" class="level3" data-number="25.6.43"><h3 data-number="25.6.43" class="anchored" data-anchor-id="osf-standard-pre-data-collection-registration">
-<span class="header-section-number">25.6.43</span> 43. OSF-Standard Pre-Data Collection Registration</h3>
+</table></section><section id="osf-standard-pre-data-collection-registration" class="level3" data-number="24.6.43"><h3 data-number="24.6.43" class="anchored" data-anchor-id="osf-standard-pre-data-collection-registration">
+<span class="header-section-number">24.6.43</span> 43. OSF-Standard Pre-Data Collection Registration</h3>
 <ul>
 <li>
 <strong>schema_id:</strong> <code>564d31db8c5e4a7c9694b2c0</code>
@@ -7282,12 +7276,12 @@ ul.task-list li input[type="checkbox"] {
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/aspredicted.html" class="pagination-link" aria-label="Retrieving Planned Sample Sizes from AsPredicted Preregistrations">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/ollama.html" class="pagination-link" aria-label="Local AI with Ollama">
-        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -7300,7 +7294,7 @@ ul.task-list li input[type="checkbox"] {
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/osf-schemas.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">metacheck package</a></p>
+<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

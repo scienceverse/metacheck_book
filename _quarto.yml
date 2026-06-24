@@ -3,14 +3,14 @@ project:
   output-dir: docs
 
 book:
-  title: "The metacheck Book"
+  title: "The Metacheck Manual"
   subtitle: "Automated Checks of Research Outputs for Best Practices"
-  author: "The metacheck Team"
+  author: "Daniel Lakens"
   date: today
   description: >
-    A guide to metacheck, an R package providing a modular, extendable system
-    for checking research outputs for best practices using text search, R code,
-    and optional LLM queries.
+    A guide to Metacheck, an R package providing a module based tool
+    for checking scientific manuscripts and data repositories for best practices using 
+    text search, R code, and optional LLM queries.
   site-url: https://scienceverse.github.io/metacheck_book/
   repo-url: https://github.com/scienceverse/metacheck_book
   repo-branch: main
@@ -21,7 +21,7 @@ book:
     collapse-level: 1
   page-footer:
     left: "Built with [Quarto](https://quarto.org)."
-    right: "[metacheck package](https://scienceverse.github.io/metacheck/)"
+    right: "[Metacheck package](https://scienceverse.github.io/metacheck/)"
   chapters:
     - index.qmd
     - part: "Getting Started"
@@ -32,8 +32,6 @@ book:
         - chapters/llms.Rmd
     - part: "Modules"
       chapters:
-        - chapters/modules.Rmd
-        - chapters/creating-modules.Rmd
         - chapters/mod-power.Rmd
         - chapters/mod-prereg-check.Rmd
         - chapters/mod-marginal.Rmd
@@ -52,8 +50,9 @@ book:
         - chapters/papers-databases.Rmd
         - chapters/stats.Rmd
         - chapters/jars.Rmd
-    - part: "Integrations & Sources"
+    - part: "Advanced Functions"
       chapters:
+        - chapters/creating-modules.Rmd
         - chapters/github.Rmd
         - chapters/aspredicted.Rmd
         - chapters/osf-schemas.Rmd
