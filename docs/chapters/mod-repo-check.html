@@ -378,9 +378,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">19.1</span> What it checks</a></li>
   <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">19.2</span> Running the module</a></li>
   <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">19.3</span> Running on many papers</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">19.4</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">19.5</span> Options</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">19.6</span> Related</a></li>
+  <li><a href="#what-it-checks-for" id="toc-what-it-checks-for" class="nav-link" data-scroll-target="#what-it-checks-for"><span class="header-section-number">19.4</span> What it checks for</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">19.5</span> A clean example and one with problems</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">19.6</span> Options</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">19.7</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-repo-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -525,11 +526,34 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"repo_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">19.4</span> A clean example and one with problems</h2>
-<p>A repository that includes a README and shared data/code is the “good” case; repositories with no README, or no shared files, are surfaced for attention. The summary text reports both:</p>
+</section><section id="what-it-checks-for" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="what-it-checks-for">
+<span class="header-section-number">19.4</span> What it checks for</h2>
+<p>For every repository it finds, <code>repo_check</code> builds a unified file list and then assesses three things:</p>
+<ul>
+<li>
+<strong>A README.</strong> Each repository should document its contents. The module looks for a file whose name contains “readme” (or “read me”). A repository without one is flagged, because readers have no map of what the shared files are.</li>
+<li>
+<strong>Archive (zip) files.</strong> Files bundled into a <code>.zip</code> (or similar archive) are flagged, because their contents cannot be inspected, indexed, or reused without downloading and unpacking them. The module reports the archive names and suggests uploading the files individually.</li>
+<li>
+<strong>What is shared.</strong> It counts the data files, code files, README files, and archives in each repository (the <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, and <code>files_zip</code> columns of the summary table), so you can see at a glance whether data and code were actually shared.</li>
+</ul>
+<p>The traffic light follows from these checks:</p>
+<ul>
+<li>
+<strong>green</strong> — repositories were found, every one has a README, and there are no archive files.</li>
+<li>
+<strong>yellow</strong> — at least one repository is missing a README, or one or more archive files were found.</li>
+<li>
+<strong>na</strong> — no repository links were found in the paper at all.</li>
+</ul></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">19.5</span> A clean example and one with problems</h2>
+<p>The demo paper links to three repositories, and running <code>repo_check</code> on it produces a <strong>yellow</strong> light — there are problems to address. The summary text reports exactly what:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "yellow"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 14 files in 3 repositories.
@@ -537,19 +561,75 @@ Note
 #&gt; -  We found 1 archive file.</code></pre>
 </div>
 </div>
-</section><section id="options" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">19.5</span> Options</h2>
+<p>Here the issues are a <strong>missing README</strong> and an <strong>archive file</strong> whose contents could not be examined. The per-paper summary table counts each file type — note <code>files_readme</code> is 0 (no README was shared) and <code>files_zip</code> is 1 (one archive):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 13%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">paper_id</th>
+<th style="text-align: right;">repo_n</th>
+<th style="text-align: right;">files_n</th>
+<th style="text-align: right;">files_data</th>
+<th style="text-align: right;">files_code</th>
+<th style="text-align: right;">files_readme</th>
+<th style="text-align: right;">files_zip</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">to_err_is_human</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<p>We can see the specific archive file that was flagged in the full file table:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="st">"archive"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_name"</span>, <span class="st">"file_name"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">repo_name</th>
+<th style="text-align: left;">file_name</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">629bx</td>
+<td style="text-align: left;">Archive.zip</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<p>A <strong>clean</strong> result, by contrast, would include a README in every linked repository (<code>files_readme</code> ≥ 1 for each) and share files individually rather than as a zip (<code>files_zip</code> of 0) — producing a green light with no items to address.</p>
+</section><section id="options" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="options">
+<span class="header-section-number">19.6</span> Options</h2>
 <p><code>repo_check</code> accepts arguments for working with <strong>local files</strong> instead of (or in addition to) online repositories:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># also include files from a local folder</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># also include files from a local folder</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/downloaded/files"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># only check a local folder, skip all online lookups</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>local_only = TRUE</code> is useful when you cannot or do not want to contact external services — for example when checking a reviewer submission you downloaded as a zip. See the <a href="../chapters/local-files.html">Local Files</a> chapter for details.</p>
-</section><section id="related" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="related">
-<span class="header-section-number">19.6</span> Related</h2>
+</section><section id="related" class="level2" data-number="19.7"><h2 data-number="19.7" class="anchored" data-anchor-id="related">
+<span class="header-section-number">19.7</span> Related</h2>
 <p>The companion <a href="../chapters/mod-code-check.html">code_check</a> module analyses the actual code files that <code>repo_check</code> discovers.</p>
 
 

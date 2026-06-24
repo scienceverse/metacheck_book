@@ -375,26 +375,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#local-conversion-through-grobid-in-docker" id="toc-local-conversion-through-grobid-in-docker" class="nav-link active" data-scroll-target="#local-conversion-through-grobid-in-docker"><span class="header-section-number">3.0.1</span> Local conversion through GROBID in Docker</a></li>
-  <li><a href="#load-from-json-or-xml" id="toc-load-from-json-or-xml" class="nav-link" data-scroll-target="#load-from-json-or-xml"><span class="header-section-number">3.0.2</span> Load from JSON or XML</a></li>
-  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing"><span class="header-section-number">3.0.3</span> Batch Processing</a></li>
-  <li>
-<a href="#the-paper-object" id="toc-the-paper-object" class="nav-link" data-scroll-target="#the-paper-object"><span class="header-section-number">3.1</span> The paper object</a>
-  <ul class="collapse">
-<li><a href="#paper_id" id="toc-paper_id" class="nav-link" data-scroll-target="#paper_id"><span class="header-section-number">3.1.1</span> paper_id</a></li>
-  <li><a href="#info" id="toc-info" class="nav-link" data-scroll-target="#info"><span class="header-section-number">3.1.2</span> info</a></li>
-  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author"><span class="header-section-number">3.1.3</span> author</a></li>
-  <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text"><span class="header-section-number">3.1.4</span> text</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.1.5</span> section</a></li>
-  <li><a href="#url" id="toc-url" class="nav-link" data-scroll-target="#url"><span class="header-section-number">3.1.6</span> url</a></li>
-  <li><a href="#bib" id="toc-bib" class="nav-link" data-scroll-target="#bib"><span class="header-section-number">3.1.7</span> bib</a></li>
-  <li><a href="#xref" id="toc-xref" class="nav-link" data-scroll-target="#xref"><span class="header-section-number">3.1.8</span> xref</a></li>
-  <li><a href="#figure-and-table" id="toc-figure-and-table" class="nav-link" data-scroll-target="#figure-and-table"><span class="header-section-number">3.1.9</span> figure and table</a></li>
-  <li><a href="#eq" id="toc-eq" class="nav-link" data-scroll-target="#eq"><span class="header-section-number">3.1.10</span> eq</a></li>
-  <li><a href="#bib_match" id="toc-bib_match" class="nav-link" data-scroll-target="#bib_match"><span class="header-section-number">3.1.11</span> bib_match</a></li>
-  <li><a href="#working-with-a-list-of-papers" id="toc-working-with-a-list-of-papers" class="nav-link" data-scroll-target="#working-with-a-list-of-papers"><span class="header-section-number">3.1.12</span> Working with a list of papers</a></li>
-  </ul>
-</li>
+<li><a href="#local-conversion-through-grobid-in-docker" id="toc-local-conversion-through-grobid-in-docker" class="nav-link active" data-scroll-target="#local-conversion-through-grobid-in-docker"><span class="header-section-number">3.1</span> Local conversion through GROBID in Docker</a></li>
+  <li><a href="#load-from-json-or-xml" id="toc-load-from-json-or-xml" class="nav-link" data-scroll-target="#load-from-json-or-xml"><span class="header-section-number">3.2</span> Load from JSON or XML</a></li>
+  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing"><span class="header-section-number">3.3</span> Batch Processing</a></li>
+  <li><a href="#the-paper-object" id="toc-the-paper-object" class="nav-link" data-scroll-target="#the-paper-object"><span class="header-section-number">3.4</span> The paper object</a></li>
+  <li><a href="#working-with-a-list-of-papers" id="toc-working-with-a-list-of-papers" class="nav-link" data-scroll-target="#working-with-a-list-of-papers"><span class="header-section-number">3.5</span> Working with a list of papers</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/reading-a-paper.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -424,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>                     save_path <span class="op">=</span> <span class="st">"converted"</span>,</span>
 <span>                     crossref_lookup <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="local-conversion-through-grobid-in-docker" class="level3" data-number="3.0.1"><h3 data-number="3.0.1" class="anchored" data-anchor-id="local-conversion-through-grobid-in-docker">
-<span class="header-section-number">3.0.1</span> Local conversion through GROBID in Docker</h3>
+<section id="local-conversion-through-grobid-in-docker" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="local-conversion-through-grobid-in-docker">
+<span class="header-section-number">3.1</span> Local conversion through GROBID in Docker</h2>
 <p>You can set up your own local GROBID server following instructions from <a href="https://grobid.readthedocs.io/" class="uri">https://grobid.readthedocs.io/</a>. The easiest way is to use Docker. The following code installs GROBID 0.9.0 if you run it in your system terminal.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">--init</span> <span class="at">--ulimit</span> core=0 <span class="at">-p</span> 8070:8070 lfoppiano/grobid:0.9.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you set the <code>api_url</code> to the local path <a href="http://localhost:8070" class="uri">http://localhost:8070</a> (as illustrated below) the <code>convert()</code> function will default to the local GROBID server. Metacheck will by default use the local GROBID server if it is automatically detected.</p>
@@ -435,8 +420,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>                     method <span class="op">=</span> <span class="st">"grobid"</span>,</span>
 <span>                     api_url <span class="op">=</span> <span class="st">"http://localhost:8070"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="load-from-json-or-xml" class="level3" data-number="3.0.2"><h3 data-number="3.0.2" class="anchored" data-anchor-id="load-from-json-or-xml">
-<span class="header-section-number">3.0.2</span> Load from JSON or XML</h3>
+</section><section id="load-from-json-or-xml" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="load-from-json-or-xml">
+<span class="header-section-number">3.2</span> Load from JSON or XML</h2>
 <p>The function <code>read()</code> reads in papers created by <code>convert()</code>. It accepts both the <strong>bibr JSON</strong> files and the <strong>GROBID XML</strong> (TEI) files that conversion produces, so you can use whichever you have.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read a converted JSON file</span></span>
@@ -446,13 +431,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read a GROBID XML file directly</span></span>
 <span><span class="va">paper_xml</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="fu">demofile</span><span class="op">(</span><span class="st">"xml"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="batch-processing" class="level3" data-number="3.0.3"><h3 data-number="3.0.3" class="anchored" data-anchor-id="batch-processing">
-<span class="header-section-number">3.0.3</span> Batch Processing</h3>
+</section><section id="batch-processing" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="batch-processing">
+<span class="header-section-number">3.3</span> Batch Processing</h2>
 <p>The functions <code>convert()</code> and <code>read()</code> also work on a folder of files, or a vector of paths, returning a list of JSON file paths or paper objects, respectively. Batch processing is especially useful for scientists who want to be able to examine a large number of manuscripts. For example, a metascientist might be interesting in examining the uptake of open science practices over time, and run Metacheck across all articles published in a scientific journal. As part of Metacheck, we have created a paper repository of more than 15.000 open access articles that you can read in through the function <code>papers_load()</code>. See <a href="../chapters/papers-databases.html">Using the Paper Database Corpora</a> for how to load the available corpora.</p>
 <p>When a folder contains both a <code>.json</code> and a <code>.xml</code> file for the same paper, <code>read()</code> uses the JSON and skips the duplicate XML.</p>
-</section><section id="the-paper-object" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="the-paper-object">
-<span class="header-section-number">3.1</span> The paper object</h2>
-<p><code>read()</code> returns a <strong>paper object</strong>: a structured representation of the manuscript, stored as a list of tables. Everything metacheck does — searching text, running modules, checking references — operates on this object, so it is worth understanding what is inside it and how to get at each piece.</p>
+</section><section id="the-paper-object" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="the-paper-object">
+<span class="header-section-number">3.4</span> The paper object</h2>
+<p><code>read()</code> returns a <strong>paper object</strong>: a structured representation of the manuscript, stored as a list of tables. Everything Metacheck does — searching text, running modules, checking references — operates on this object, so it is worth understanding what is inside it and how to get at each piece.</p>
 <p>A paper object has the class <code>scivrs_paper</code>, and you access its parts with the <code>$</code> operator. Here are all the components:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -526,8 +511,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<section id="paper_id" class="level3" data-number="3.1.1"><h3 data-number="3.1.1" class="anchored" data-anchor-id="paper_id">
-<span class="header-section-number">3.1.1</span> paper_id</h3>
+<p><strong>paper_id</strong></p>
 <p>A single string identifying the paper (the user-supplied id, the DOI, or the filename):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">paper_id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -535,8 +519,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "to_err_is_human"</code></pre>
 </div>
 </div>
-</section><section id="info" class="level3" data-number="3.1.2"><h3 data-number="3.1.2" class="anchored" data-anchor-id="info">
-<span class="header-section-number">3.1.2</span> info</h3>
+<p><strong>info</strong></p>
 <p>A one-row data frame of paper-level metadata. Use <code><a href="https://rdrr.io/r/base/t.html">t()</a></code> to read it as a column:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">paper</span><span class="op">$</span><span class="va">info</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -615,8 +598,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "10.32614/10.5281/zenodo.2669586"</code></pre>
 </div>
 </div>
-</section><section id="author" class="level3" data-number="3.1.3"><h3 data-number="3.1.3" class="anchored" data-anchor-id="author">
-<span class="header-section-number">3.1.3</span> author</h3>
+<p><strong>author</strong></p>
 <p>One row per author, in paper order:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">author</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"given"</span>, <span class="st">"family"</span>, <span class="st">"affiliation"</span>, <span class="st">"corresponding"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -652,8 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="text" class="level3" data-number="3.1.4"><h3 data-number="3.1.4" class="anchored" data-anchor-id="text">
-<span class="header-section-number">3.1.4</span> text</h3>
+<p><strong>text</strong></p>
 <p>One row per sentence (excluding the title, headings, and references). This is the table that <code>text_search()</code> searches.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">paper</span><span class="op">$</span><span class="va">text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -709,9 +690,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="section" class="level3" data-number="3.1.5"><h3 data-number="3.1.5" class="anchored" data-anchor-id="section">
-<span class="header-section-number">3.1.5</span> section</h3>
-<p>One row per heading. <code>section_type</code> is metacheck’s best guess at the kind of section, which modules use to focus on (say) only the results:</p>
+<p><strong>section</strong></p>
+<p>One row per heading. <code>section_type</code> is Metacheck’s best guess at the kind of section, which modules use to focus on (say) only the results:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">section</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"section_id"</span>, <span class="st">"header"</span>, <span class="st">"section_type"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -797,8 +777,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="url" class="level3" data-number="3.1.6"><h3 data-number="3.1.6" class="anchored" data-anchor-id="url">
-<span class="header-section-number">3.1.6</span> url</h3>
+<p><strong>url</strong></p>
 <p>Every external link found in the text, with the sentence (<code>text_id</code>) it appeared in:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">url</span> <span class="op">|&gt;</span></span>
@@ -845,8 +824,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="bib" class="level3" data-number="3.1.7"><h3 data-number="3.1.7" class="anchored" data-anchor-id="bib">
-<span class="header-section-number">3.1.7</span> bib</h3>
+<p><strong>bib</strong></p>
 <p>The reference list, parsed into columns:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">bib</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"authors"</span>, <span class="st">"year"</span>, <span class="st">"title"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -900,8 +878,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="xref" class="level3" data-number="3.1.8"><h3 data-number="3.1.8" class="anchored" data-anchor-id="xref">
-<span class="header-section-number">3.1.8</span> xref</h3>
+<p><strong>xref</strong></p>
 <p>Cross-references that link a sentence (<code>text_id</code>) to an item it cites — a bib entry, table, or figure (<code>xref_type</code>):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">xref</span> <span class="op">|&gt;</span></span>
@@ -949,8 +926,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="figure-and-table" class="level3" data-number="3.1.9"><h3 data-number="3.1.9" class="anchored" data-anchor-id="figure-and-table">
-<span class="header-section-number">3.1.9</span> figure and table</h3>
+<p><strong>figure and table</strong></p>
 <p>Figures and tables each get a row, linked to the <code>section</code> table by <code>section_id</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">figure</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"figure_id"</span>, <span class="st">"section_id"</span>, <span class="st">"page_number"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -993,8 +969,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="eq" class="level3" data-number="3.1.10"><h3 data-number="3.1.10" class="anchored" data-anchor-id="eq">
-<span class="header-section-number">3.1.10</span> eq</h3>
+<p><strong>eq</strong></p>
 <p>Statistics and equations extracted from the text, broken into a left-hand side, degrees of freedom, comparator, and right-hand side. Many statistics modules read from this table rather than re-scanning the text:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">paper</span><span class="op">$</span><span class="va">eq</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1062,9 +1037,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="bib_match" class="level3" data-number="3.1.11"><h3 data-number="3.1.11" class="anchored" data-anchor-id="bib_match">
-<span class="header-section-number">3.1.11</span> bib_match</h3>
-<p>When you convert with <code>crossref_lookup = TRUE</code> (or run a reference module), metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by <code>bib_id</code>:</p>
+<p><strong>bib_match</strong></p>
+<p>When you convert with <code>crossref_lookup = TRUE</code> (or run a reference module), Metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by <code>bib_id</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">bib_match</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"service"</span>, <span class="st">"doi"</span>, <span class="st">"title"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1105,8 +1079,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="working-with-a-list-of-papers" class="level3" data-number="3.1.12"><h3 data-number="3.1.12" class="anchored" data-anchor-id="working-with-a-list-of-papers">
-<span class="header-section-number">3.1.12</span> Working with a list of papers</h3>
+</section><section id="working-with-a-list-of-papers" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="working-with-a-list-of-papers">
+<span class="header-section-number">3.5</span> Working with a list of papers</h2>
 <p>A <em>paperlist</em> is simply a list of paper objects — for example the built-in <code>psychsci</code> dataset (250 open-access <em>Psychological Science</em> articles). To pull the same component from every paper into one combined table, use <code>paper_table()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">paper_table</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="st">"info"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"title"</span>, <span class="st">"doi"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1156,7 +1130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Most functions and every module accept either a single paper or a paperlist, so the same code scales from one paper to a whole corpus. See <a href="../chapters/papers-databases.html">Using the Paper Database Corpora</a> for the available corpora.</p>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();

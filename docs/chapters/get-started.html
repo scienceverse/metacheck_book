@@ -405,24 +405,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="installation" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="installation">
 <span class="header-section-number">2.1</span> Installation</h2>
-<p>You can install the metacheck from <a href="https://github.com/scienceverse/metacheck">GitHub</a> with:</p>
+<p>You can install the Metacheck from <a href="https://github.com/scienceverse/metacheck">GitHub</a> with:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Metacheck is under active development. If you install the development version of Metacheck, you will often be able to use new modules or functions, but the development version might als have more bugs. You can install the development version of Metacheck from <a href="https://github.com/scienceverse/metacheck">GitHub</a> with:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck"</span>, ref <span class="op">=</span> <span class="st">"dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>After installation, you can load the metacheck library.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>After installation, you can load the Metacheck library.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can launch a simple shiny app that creates a report from a PDF, with options to control what information is sent to or retrieved from external servers. This shiny app will run a fixed number of validated modules. It also provides R code to transition to R, where you can use more functions of Metacheck. The shiny app is the best way to get started with Metacheck.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">metacheck</span><span class="fu">::</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_app.html">report_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/shiny.png" class="img-fluid figure-img" alt="Screenshot of the metacheck Shiny app"></p>
-<figcaption>The metacheck Shiny app for creating a report from a PDF</figcaption></figure>
+<figure class="figure"><p><img src="../images/shiny.png" class="img-fluid figure-img" alt="Screenshot of the Metacheck Shiny app"></p>
+<figcaption>The Metacheck Shiny app for creating a report from a PDF</figcaption></figure>
 </div>
 <p>In the Shiny app you can upload a local file, and the app will automatically generate a report with the results for all validated modules. The report presents a general introduction about Metacheck, our values, and our approach to module validation. This is followed by a summary of all modules.</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/summary_report.png" class="img-fluid figure-img" alt="Screenshot of the metacheck report summary"></p>
-<figcaption>Summary in the metacheck report</figcaption></figure>
+<figure class="figure"><p><img src="../images/summary_report.png" class="img-fluid figure-img" alt="Screenshot of the Metacheck report summary"></p>
+<figcaption>Summary in the Metacheck report</figcaption></figure>
 </div>
 <p>Following the summary, you can browse each module. Modules are discussed in more detail in later chapters. Each module provides a summary, a dropdown field with detailed feedback, a section that can be expanded explaining how the module works, and information about how the module was validated. An example of this overview in the report for the power module is in the screenshot below:</p>
 <div class="quarto-figure quarto-figure-center">

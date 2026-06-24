@@ -415,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>This article lists the functions in metacheck with a short, plain-language explanation of what each one does and a small example. It is meant for people who are starting to use the package and want a map of what is available.</p>
+</header><p>This article lists the functions in Metacheck with a short, plain-language explanation of what each one does and a small example. It is meant for people who are starting to use the package and want a map of what is available.</p>
 <p>It is organised in two parts:</p>
 <ol type="1">
 <li>
@@ -438,7 +438,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">C</span> Public functions</h1>
 <section id="getting-a-paper-to-work-with" class="level2" data-number="C.1"><h2 data-number="C.1" class="anchored" data-anchor-id="getting-a-paper-to-work-with">
 <span class="header-section-number">C.1</span> Getting a paper to work with</h2>
-<p>Everything in metacheck operates on a <em>paper object</em> (or a list of them). These functions create or load one.</p>
+<p>Everything in Metacheck operates on a <em>paper object</em> (or a list of them). These functions create or load one.</p>
 <p><strong><code>demopaper()</code></strong> — returns a ready-made example paper, so you can try things without loading a file.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "C:/Users/dlakens/AppData/Local/R/win-library/4.5/metacheck/demos/to_err_is_human.pdf"</code></pre>
 </div>
 </div>
-<p><strong><code>read(file_path)</code></strong> — reads a paper from a metacheck JSON file (or a folder of them) into a paper object.</p>
+<p><strong><code>read(file_path)</code></strong> — reads a paper from a Metacheck JSON file (or a folder of them) into a paper object.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="st">"mypaper.json"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -496,8 +496,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="importing-papers-from-pdfs-and-xml" class="level2" data-number="C.2"><h2 data-number="C.2" class="anchored" data-anchor-id="importing-papers-from-pdfs-and-xml">
 <span class="header-section-number">C.2</span> Importing papers from PDFs and XML</h2>
-<p>These convert source documents (usually a PDF) into the metacheck JSON format. Most need an external service (a GROBID server or the bibr backend), so they are shown but not run here.</p>
-<p><strong><code>convert(file_path, save_path)</code></strong> — the main entry point: convert a document to metacheck JSON, picking a method automatically. <strong><code>convert_grobid(...)</code></strong> / <strong><code>convert_bibr(...)</code></strong> — convert using a specific backend. <strong><code>grobid_to_bibr(xml_path)</code></strong> — turn GROBID TEI XML into the bibr structure. <strong><code>format_bib_authors(authors)</code></strong> — format an author list for a bibliography.</p>
+<p>These convert source documents (usually a PDF) into the Metacheck JSON format. Most need an external service (a GROBID server or the bibr backend), so they are shown but not run here.</p>
+<p><strong><code>convert(file_path, save_path)</code></strong> — the main entry point: convert a document to Metacheck JSON, picking a method automatically. <strong><code>convert_grobid(...)</code></strong> / <strong><code>convert_bibr(...)</code></strong> — convert using a specific backend. <strong><code>grobid_to_bibr(xml_path)</code></strong> — turn GROBID TEI XML into the bibr structure. <strong><code>format_bib_authors(authors)</code></strong> — format an author list for a bibliography.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># needs a running GROBID server or the bibr backend</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span><span class="st">"mypaper.pdf"</span>, save_path <span class="op">=</span> <span class="st">"out/"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -587,7 +587,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="running-checks-modules" class="level2" data-number="C.5"><h2 data-number="C.5" class="anchored" data-anchor-id="running-checks-modules">
 <span class="header-section-number">C.5</span> Running checks (modules)</h2>
-<p>Checks in metacheck are <em>modules</em>. These functions list, describe, and run them.</p>
+<p>Checks in Metacheck are <em>modules</em>. These functions list, describe, and run them.</p>
 <p><strong><code>module_list()</code></strong> — the available modules.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_list</span><span class="op">(</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"title"</span>, <span class="st">"section"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -801,7 +801,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="general-utilities" class="level2" data-number="C.16"><h2 data-number="C.16" class="anchored" data-anchor-id="general-utilities">
 <span class="header-section-number">C.16</span> General utilities</h2>
-<p><strong><code>email(email)</code></strong> — set the contact email used for polite API access. <strong><code>online(url)</code></strong> — is a URL reachable? <strong><code>verbose(verbose)</code></strong> — get/set whether functions print progress. <strong><code>pb(total)</code></strong> — a progress bar. <strong><code>rep_if(x, y, replace)</code></strong> — replace values equal to <code>y</code> with <code>replace</code>. <strong><code>path_sanitize(path)</code></strong> — make a string safe to use as a file path. <strong><code>message(...)</code></strong> — metacheck’s message wrapper. <strong><code>logger()</code>, <code>logpath()</code>, <code>lastlog()</code></strong> — write and read run logs.</p>
+<p><strong><code>email(email)</code></strong> — set the contact email used for polite API access. <strong><code>online(url)</code></strong> — is a URL reachable? <strong><code>verbose(verbose)</code></strong> — get/set whether functions print progress. <strong><code>pb(total)</code></strong> — a progress bar. <strong><code>rep_if(x, y, replace)</code></strong> — replace values equal to <code>y</code> with <code>replace</code>. <strong><code>path_sanitize(path)</code></strong> — make a string safe to use as a file path. <strong><code>message(...)</code></strong> — Metacheck’s message wrapper. <strong><code>logger()</code>, <code>logpath()</code>, <code>lastlog()</code></strong> — write and read run logs.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">3</span><span class="op">)</span>, <span class="cn">NA</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">

@@ -381,6 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">23.4</span> Running on many papers</a></li>
   <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">23.5</span> Interpreting the result</a></li>
   <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">23.6</span> Options</a></li>
+  <li><a href="#updating-the-database" id="toc-updating-the-database" class="nav-link" data-scroll-target="#updating-the-database"><span class="header-section-number">23.7</span> Updating the database</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-replication.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -515,7 +516,14 @@ Note
 <td>include the outcome and type of each replication</td>
 </tr>
 </tbody>
-</table>
+</table></section><section id="updating-the-database" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="updating-the-database">
+<span class="header-section-number">23.7</span> Updating the database</h2>
+<p>The module matches references against a data frame called <code>FLoRA</code> that ships with Metacheck. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FLoRA_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
+<span><span class="fu">FLoRA_update</span><span class="op">(</span><span class="op">)</span>   <span class="co"># download the newest version of the FLoRA database</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>FLoRA_update()</code> downloads the latest FLoRA data (&gt;5 MB), summarises it into a compact form, deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally to pick up replications added since your installed version of Metacheck.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

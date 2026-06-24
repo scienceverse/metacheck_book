@@ -375,7 +375,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">11.1</span> What it checks</a></li>
+<li>
+<a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">11.1</span> What it checks</a>
+  <ul class="collapse">
+<li><a href="#how-it-decides-whether-ethics-approval-is-needed" id="toc-how-it-decides-whether-ethics-approval-is-needed" class="nav-link" data-scroll-target="#how-it-decides-whether-ethics-approval-is-needed"><span class="header-section-number">11.1.1</span> How it decides whether ethics approval is needed</a></li>
+  </ul>
+</li>
   <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">11.2</span> Running the module</a></li>
   <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">11.3</span> A clean example and one with problems</a></li>
   <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">11.4</span> Options</a></li>
@@ -416,8 +421,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <strong>Declaration of Helsinki</strong> statements.</li>
 </ul>
-<p>This module is <strong>fully offline</strong> — it uses only regular expressions, so all the code below runs with just the metacheck package.</p>
-</section><section id="running-the-module" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="running-the-module">
+<section id="how-it-decides-whether-ethics-approval-is-needed" class="level3" data-number="11.1.1"><h3 data-number="11.1.1" class="anchored" data-anchor-id="how-it-decides-whether-ethics-approval-is-needed">
+<span class="header-section-number">11.1.1</span> How it decides whether ethics approval is needed</h3>
+<p>Not every paper needs an ethics statement — theoretical work, simulations, reviews, meta-analyses, and secondary analyses of existing data usually do not. So the module does not simply flag every paper that lacks an approval statement. Instead it first judges whether the paper appears to involve <strong>live data collection</strong> from human or animal participants, and only flags a <em>missing</em> statement for those papers.</p>
+<p>This judgment is made by an internal helper that searches the text for sentences signalling that data were collected directly from participants — for example:</p>
+<ul>
+<li>
+<strong>participant actions</strong> — “participants were recruited / randomly assigned / debriefed”, “subjects gave informed consent”;</li>
+<li>
+<strong>researcher actions</strong> — “we recruited / enrolled / ran participants”, “we conducted the study / survey / clinical trial”;</li>
+<li>
+<strong>consent and recruitment</strong> — “informed consent was obtained”, a “participant pool” or “research participation scheme”;</li>
+<li>
+<strong>sample descriptions</strong> — “our participants”, student samples, or participant/patient inclusion and exclusion criteria;</li>
+<li>
+<strong>animal data collection</strong> — equivalent phrasing for animal subjects.</li>
+</ul>
+<p>The patterns are deliberately <strong>conservative</strong>: they require explicit participant- or recruitment-language rather than generic words like “sample”, so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the <code>needs_ethics</code> column of the summary table, and the traffic light only turns red for papers where <code>needs_ethics</code> is <code>TRUE</code> <em>and</em> no approval statement was found.</p>
+<p>This module is <strong>fully offline</strong> — it uses only regular expressions, so all the code below runs with just the Metacheck package.</p>
+</section></section><section id="running-the-module" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">11.2</span> Running the module</h2>
 <p>The module only flags a <em>missing</em> statement when a paper appears to involve <strong>live data collection</strong> (so re-analyses of existing data are not penalised). We run it across the first ten papers of the built-in <code>psychsci</code> dataset.</p>
 <div class="cell">

@@ -390,7 +390,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#free-text-vs.-structured-output" id="toc-free-text-vs.-structured-output" class="nav-link" data-scroll-target="#free-text-vs.-structured-output"><span class="header-section-number">5.5.1</span> Free text vs.&nbsp;structured output</a></li>
   <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">5.5.2</span> A worked example: extracting power analyses</a></li>
-  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">5.5.3</span> Rate limiting</a></li>
+  <li><a href="#sending-a-whole-paper" id="toc-sending-a-whole-paper" class="nav-link" data-scroll-target="#sending-a-whole-paper"><span class="header-section-number">5.5.3</span> Sending a whole paper</a></li>
+  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">5.5.4</span> Rate limiting</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -421,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>metacheck’s philosophy on AI
+<span class="screen-reader-only">Important</span>Metacheck’s philosophy on AI
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -459,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>When Metacheck starts, it checks for known API keys (for example <code>GROQ_API_KEY</code>) in your environment and sets a sensible default model automatically.</p>
 <section id="listing-available-models" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="listing-available-models">
 <span class="header-section-number">5.2.1</span> Listing available models</h3>
-<p><code>llm_model_list()</code> returns the models metacheck can see across all configured providers. Pass a provider name to narrow it down.</p>
+<p><code>llm_model_list()</code> returns the models Metacheck can see across all configured providers. Pass a provider name to narrow it down.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_model_list</span><span class="op">(</span><span class="op">)</span>           <span class="co"># all models from all configured providers</span></span>
 <span><span class="fu">llm_model_list</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>     <span class="co"># just Groq models</span></span>
@@ -467,7 +468,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="supported-providers" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="supported-providers">
 <span class="header-section-number">5.2.2</span> Supported providers</h3>
-<p>metacheck uses <a href="https://ellmer.tidyverse.org/">ellmer</a> under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:</p>
+<p>Metacheck uses <a href="https://ellmer.tidyverse.org/">ellmer</a> under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -543,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen2.5:3b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Other useful models: <code>llama3.2</code> (a good general default) and <code>qwen2.5:7b</code> (more capable, needs more memory). You can see everything you have pulled with <code>ollama list</code>.</p>
 </li>
-<li><p>Point metacheck at it in R:</p></li>
+<li><p>Point Metacheck at it in R:</p></li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
@@ -803,11 +804,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="rate-limiting" class="level3" data-number="5.5.3"><h3 data-number="5.5.3" class="anchored" data-anchor-id="rate-limiting">
-<span class="header-section-number">5.5.3</span> Rate limiting</h3>
-<p><code>llm()</code> makes one query per row of text. To guard against runaway costs from a coding mistake, metacheck caps the number of queries (default 30). Change the cap with <code>llm_max_calls()</code>:</p>
+</section><section id="sending-a-whole-paper" class="level3" data-number="5.5.3"><h3 data-number="5.5.3" class="anchored" data-anchor-id="sending-a-whole-paper">
+<span class="header-section-number">5.5.3</span> Sending a whole paper</h3>
+<p>So far we have sent individual sentences. You can also send an <strong>entire paper</strong> in one call by collapsing all of its sentences into a single string. For example, to ask about the sample size of the demo paper:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="op">)</span>      <span class="co"># check current limit</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="fu">demofile</span><span class="op">(</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">full_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">paper</span><span class="op">$</span><span class="va">text</span><span class="op">$</span><span class="va">text</span>, collapse <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span></span>
+<span><span class="va">answer</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">full_text</span>, <span class="st">"What was the total sample size in this study? Answer with just the number and a brief justification."</span><span class="op">)</span></span>
+<span><span class="va">answer</span><span class="op">$</span><span class="va">answer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "100. \n\nThe total sample size is 100, as the study randomly assigned 50 scientists to a condition where their manuscript was automatically checked for errors, and 50 scientists to a control condition with a checklist."
+#&gt; attr(,"class")
+#&gt; [1] "ellmer_output"</code></pre>
+</div>
+</div>
+<p>Using Groq, this returned in under two seconds.</p>
+<p><strong>Why not do this locally with Ollama?</strong> A whole paper is a large prompt. The demo paper is only about 1,200 tokens, but a typical journal article is closer to 10,000. Sending that to a local model is impractical for two reasons:</p>
+<ul>
+<li>
+<strong>Speed.</strong> A local model processes the entire prompt on your own hardware. Where a short sentence takes a second or two, a full paper can take <em>minutes</em> per call — and running it across many papers quickly becomes hours.</li>
+<li>
+<strong>Context window.</strong> Many local models have a context window of only 4,000–8,000 tokens. A full paper can exceed it, so the model silently sees only part of the text (often missing the discussion and limitations at the end), giving misleading answers.</li>
+</ul>
+<p>Cloud providers like Groq have large context windows and process the prompt on their own fast hardware, so a whole-paper query returns in seconds — at the cost of sending the full manuscript to an external service.</p>
+<p>This is exactly why Metacheck’s design encourages narrowing the text with <code>text_search()</code> first: smaller, targeted queries are faster, fit inside a local model’s context window, and send less data. Reserve whole-paper prompts for short papers or cloud models.</p>
+</section><section id="rate-limiting" class="level3" data-number="5.5.4"><h3 data-number="5.5.4" class="anchored" data-anchor-id="rate-limiting">
+<span class="header-section-number">5.5.4</span> Rate limiting</h3>
+<p><code>llm()</code> makes one query per row of text. To guard against runaway costs from a coding mistake, Metacheck caps the number of queries (default 30). Change the cap with <code>llm_max_calls()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="op">)</span>      <span class="co"># check current limit</span></span>
 <span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>   <span class="co"># raise it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See <code>?llm</code> for the full set of arguments and details.</p>

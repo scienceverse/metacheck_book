@@ -402,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="what-it-checks" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">20.1</span> What it checks</h2>
-<p>The <code>code_check</code> module analyses the <strong>code files</strong> shared with a paper. Building on the file list from <a href="../chapters/mod-repo-check.html">repo_check</a>, it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use <strong>absolute file paths</strong> (which break on other machines), and whether files they try to load are actually present in the repository.</p>
+<p>The <code>code_check</code> module analyses the <strong>code files</strong> shared with a paper. Building on the file list from <a href="../chapters/mod-repo-check.html">repo_check</a>, it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use <strong>absolute file paths</strong> (which break on other machines), whether files they try to load are actually present in the repository, and whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script (loading imports in one place makes a script’s dependencies easy to see).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

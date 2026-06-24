@@ -380,7 +380,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">22.3</span> Running on many papers</a></li>
   <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">22.4</span> Interpreting the result</a></li>
   <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">22.5</span> Options</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">22.6</span> Notes</a></li>
+  <li><a href="#updating-the-database" id="toc-updating-the-database" class="nav-link" data-scroll-target="#updating-the-database"><span class="header-section-number">22.6</span> Updating the database</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">22.7</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-retraction.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -465,9 +466,17 @@ Note
 </section><section id="options" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="options">
 <span class="header-section-number">22.5</span> Options</h2>
 <p><code>ref_retraction</code> takes only the <code>paper</code> argument.</p>
-</section><section id="notes" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">22.6</span> Notes</h2>
-<p>This is the same kind of check that reference managers such as <a href="https://www.zotero.org/blog/retracted-item-notifications/">Zotero</a> perform, brought into the metacheck workflow so it can run alongside the other reference checks.</p>
+</section><section id="updating-the-database" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="updating-the-database">
+<span class="header-section-number">22.6</span> Updating the database</h2>
+<p>The module matches references against a data frame called <code>retractionwatch</code> that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rw_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
+<span><span class="fu">rw_update</span><span class="op">(</span><span class="op">)</span>   <span class="co"># download the newest version from Retraction Watch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>rw_update()</code> downloads the latest Retraction Watch data (&gt;50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.</p>
+</section><section id="notes" class="level2" data-number="22.7"><h2 data-number="22.7" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">22.7</span> Notes</h2>
+<p>This is the same kind of check that reference managers such as <a href="https://www.zotero.org/blog/retracted-item-notifications/">Zotero</a> perform, brought into the Metacheck workflow so it can run alongside the other reference checks.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
