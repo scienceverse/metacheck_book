@@ -26,41 +26,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -361,7 +326,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
   <ul class="collapse">
   <li><a href="#how-this-book-is-organised" id="toc-how-this-book-is-organised" class="nav-link" data-scroll-target="#how-this-book-is-organised">How this book is organised</a></li>
-  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#our-values" id="toc-our-values" class="nav-link" data-scroll-target="#our-values">Our Values</a></li>
   </ul></li>
   </ul>
@@ -410,22 +374,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="welcome" class="level1 unnumbered">
 <h1 class="unnumbered">Welcome</h1>
 <p>This is the online book for <a href="https://scienceverse.github.io/metacheck/"><strong>metacheck</strong></a>, an R package that provides extendable and integrated tools for automated checks of research outputs for best practices.</p>
-<p>Inspired by practices in software development — where automated checks (e.g., CRAN checks for R packages) identify issues before release — metacheck screens scientific manuscripts to flag potential issues or areas for improvement, and guides researchers in adopting best practices. It can also assist with processing large numbers of papers for metascientific enquiry.</p>
-<p>These checks are meant to <strong>assist, not replace, human expertise</strong>. metacheck can identify incorrect citations, add missing DOIs, cross-reference citations against Retraction Watch, PubPeer, and the FLoRA replication database, and flag commonly misreported aspects such as power analyses. Actioning this advice is always up to a human who can interpret it in context.</p>
+<p>Inspired by practices in software development — where automated checks (e.g., CRAN checks for R packages) identify issues before release — Metacheck screens scientific manuscripts to flag potential issues or areas for improvement, and guides researchers in adopting best practices. It can also assist with processing large numbers of papers for metascientific enquiry.</p>
+<p>These checks are meant to <strong>assist, not replace, human expertise</strong>. Metacheck can identify incorrect citations, add missing DOIs, cross-reference citations against Retraction Watch, PubPeer, and the FLoRA replication database, and flag commonly misreported aspects such as power analyses. Actioning this advice is always up to a human who can interpret it in context.</p>
 <section id="how-this-book-is-organised" class="level2">
 <h2 class="anchored" data-anchor-id="how-this-book-is-organised">How this book is organised</h2>
 <ul>
-<li><strong>Getting Started</strong> — installing metacheck and a conceptual overview of what it does and why.</li>
-<li><strong>Modules</strong> — the building blocks of metacheck: using existing modules, writing your own, and worked examples (statistics, JARS reporting standards).</li>
-<li><strong>Working with Papers</strong> — reading papers in, batch processing, checking local files, and the paper database corpora.</li>
-<li><strong>Integrations &amp; Sources</strong> — pulling in data from GitHub, AsPredicted, OSF registration schemas, and running local AI with Ollama.</li>
-<li><strong>Drafts &amp; Appendices</strong> — work-in-progress material, validation reports, and reference documentation. These chapters are less polished and may not render perfectly.</li>
+<li><strong>Getting Started</strong> — a conceptual overview of Metacheck and how to set it up, reading papers in, searching their text, using large language models, the paper database corpora, and writing your own modules.</li>
+<li><strong>Modules</strong> — a chapter for each built-in module that the Shiny app runs, with worked examples on real papers: power analyses, preregistration retrieval and comparison (RegCheck), ethics approval, marginal significance, statistical reporting checks, repository and code checks, and reference checks against PubPeer, Retraction Watch, and the replication database.</li>
+<li><strong>Using Metacheck Locally</strong> — running everything on your own machine without sending data anywhere: checking local files, and running AI models (and RegCheck) locally with Ollama.</li>
+<li><strong>Appendices</strong> — reference material: the OSF registration schemas and a function reference for new users.</li>
 </ul>
-</section>
-<section id="installation" class="level2">
-<h2 class="anchored" data-anchor-id="installation">Installation</h2>
-<p>You can install metacheck from <a href="https://github.com/scienceverse/metacheck">GitHub</a>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pkg_install</span>(<span class="st">"scienceverse/metacheck"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="our-values" class="level2">
 <h2 class="anchored" data-anchor-id="our-values">Our Values</h2>
@@ -437,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>No Automated Evaluation</strong> — we will never support automated quality assessments, rankings, or scoring.</li>
 <li><strong>Data Privacy</strong> — we are transparent about data access and use, minimise data sharing, and meet all EU data privacy regulations.</li>
 </ol>
-<p>You can contact the metacheck team at <a href="mailto:metacheck.scienceverse@gmail.com">metacheck.scienceverse@gmail.com</a>.</p>
+<p>You can contact the Metacheck team at <a href="mailto:metacheck.scienceverse@gmail.com">metacheck.scienceverse@gmail.com</a>.</p>
 
 
 </section>
