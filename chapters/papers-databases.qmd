@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-The [scienceverse/papers](https://github.com/scienceverse/papers) GitHub repository hosts pre-built `paperlist` corpora -- collections of open-access articles already converted to metacheck's internal format with GROBID, ready to load to run modules on a set of papers. The goal of these paper databases is to provide a set of open access scientific papers that modules can be validated against. These databases are useful when developing new modules in Metacheck, but also to test different automated screening tools like MEtacheck against each other. This vignette shows how to discover, download, and use these corpora, and demonstrates three fast text-based modules on real papers from each one.
+The [scienceverse/papers](https://github.com/scienceverse/papers) GitHub repository hosts pre-built `paperlist` corpora -- collections of open-access articles already converted to Metacheck's internal format with GROBID, ready to load to run modules on a set of papers. The goal of these paper databases is to provide a set of open access scientific papers that modules can be validated against. These databases are useful when developing new modules in Metacheck, but also to test different automated screening tools like MEtacheck against each other. This vignette shows how to discover, download, and use these corpora, and demonstrates three fast text-based modules on real papers from each one.
 
 ## Discovering available corpora
 
@@ -125,7 +125,9 @@ result <- module_run(plosmed[1:20], "stat_check")
 result$summary_text
 
 ```
-We see why  it is useful to compare how modules work across literatures. Statcheck only detects statistics written in APA format, but this reporting style is limited to psychological journals. 
+
+We see why it is useful to compare how modules work across literatures. Statcheck only detects statistics written in APA format, but this reporting style is limited to psychological journals.
+
 ### `stat_p_nonsig` across corpora
 
 `stat_p_nonsig` finds every non-significant p-value (p >= .05) so a reader can check whether the surrounding text correctly avoids interpreting it as evidence of no effect. The module makes no judgment on its own -- it only surfaces the sentences.

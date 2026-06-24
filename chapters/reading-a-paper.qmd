@@ -32,7 +32,7 @@ json_file <- convert(file_path = pdf_file,
 json_file <- demofile("json")
 ```
 
-### Local conversion through GROBID in Docker
+## Local conversion through GROBID in Docker
 
 You can set up your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0 if you run it in your system terminal.
 
@@ -49,7 +49,7 @@ json_file <- convert(file_path = pdf_file,
                      api_url = "http://localhost:8070")
 ```
 
-### Load from JSON or XML
+## Load from JSON or XML
 
 The function `read()` reads in papers created by `convert()`. It accepts both the **bibr JSON** files and the **GROBID XML** (TEI) files that conversion produces, so you can use whichever you have.
 
@@ -63,7 +63,7 @@ paper <- read(json_file)
 paper_xml <- read(demofile("xml"))
 ```
 
-### Batch Processing
+## Batch Processing
 
 The functions `convert()` and `read()` also work on a folder of files, or a vector of paths, returning a list of JSON file paths or paper objects, respectively. Batch processing is especially useful for scientists who want to be able to examine a large number of manuscripts. For example, a metascientist might be interesting in examining the uptake of open science practices over time, and run Metacheck across all articles published in a scientific journal. As part of Metacheck, we have created a paper repository of more than 15.000 open access articles that you can read in through the function `papers_load()`. See [Using the Paper Database Corpora](papers-databases.qmd) for how to load the available corpora.
 
@@ -71,7 +71,7 @@ When a folder contains both a `.json` and a `.xml` file for the same paper, `rea
 
 ## The paper object
 
-`read()` returns a **paper object**: a structured representation of the manuscript, stored as a list of tables. Everything metacheck does — searching text, running modules, checking references — operates on this object, so it is worth understanding what is inside it and how to get at each piece.
+`read()` returns a **paper object**: a structured representation of the manuscript, stored as a list of tables. Everything Metacheck does — searching text, running modules, checking references — operates on this object, so it is worth understanding what is inside it and how to get at each piece.
 
 A paper object has the class `scivrs_paper`, and you access its parts with the `$` operator. Here are all the components:
 
@@ -97,7 +97,7 @@ The components are summarised below; the rest of this section shows each one. Mo
 | `eq` | Extracted statistics and equations |
 | `bib_match` | Reference metadata matched from CrossRef and other services |
 
-### paper_id
+**paper_id**
 
 A single string identifying the paper (the user-supplied id, the DOI, or the filename):
 
@@ -105,7 +105,7 @@ A single string identifying the paper (the user-supplied id, the DOI, or the fil
 paper$paper_id
 ```
 
-### info
+**info**
 
 A one-row data frame of paper-level metadata. Use `t()` to read it as a column:
 
@@ -121,7 +121,7 @@ paper$info$title
 paper$info$doi
 ```
 
-### author
+**author**
 
 One row per author, in paper order:
 
@@ -130,7 +130,7 @@ paper$author[, c("given", "family", "affiliation", "corresponding")] |>
   knitr::kable()
 ```
 
-### text
+**text**
 
 One row per sentence (excluding the title, headings, and references). This is the table that `text_search()` searches.
 
@@ -140,16 +140,16 @@ head(paper$text[, c("text", "section_id", "paragraph_id")]) |>
   knitr::kable()
 ```
 
-### section
+**section**
 
-One row per heading. `section_type` is metacheck's best guess at the kind of section, which modules use to focus on (say) only the results:
+One row per heading. `section_type` is Metacheck's best guess at the kind of section, which modules use to focus on (say) only the results:
 
 ```{r}
 paper$section[, c("section_id", "header", "section_type")] |>
   knitr::kable()
 ```
 
-### url
+**url**
 
 Every external link found in the text, with the sentence (`text_id`) it appeared in:
 
@@ -158,7 +158,7 @@ paper$url |>
   knitr::kable()
 ```
 
-### bib
+**bib**
 
 The reference list, parsed into columns:
 
@@ -167,7 +167,7 @@ paper$bib[, c("bib_id", "authors", "year", "title")] |>
   knitr::kable()
 ```
 
-### xref
+**xref**
 
 Cross-references that link a sentence (`text_id`) to an item it cites — a bib entry, table, or figure (`xref_type`):
 
@@ -176,7 +176,7 @@ paper$xref |>
   knitr::kable()
 ```
 
-### figure and table
+**figure and table**
 
 Figures and tables each get a row, linked to the `section` table by `section_id`:
 
@@ -187,7 +187,7 @@ paper$table[, c("table_id", "section_id", "page_number")] |>
   knitr::kable()
 ```
 
-### eq
+**eq**
 
 Statistics and equations extracted from the text, broken into a left-hand side, degrees of freedom, comparator, and right-hand side. Many statistics modules read from this table rather than re-scanning the text:
 
@@ -196,16 +196,16 @@ head(paper$eq) |>
   knitr::kable()
 ```
 
-### bib_match
+**bib_match**
 
-When you convert with `crossref_lookup = TRUE` (or run a reference module), metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by `bib_id`:
+When you convert with `crossref_lookup = TRUE` (or run a reference module), Metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by `bib_id`:
 
 ```{r}
 paper$bib_match[, c("bib_id", "service", "doi", "title")] |>
   knitr::kable()
 ```
 
-### Working with a list of papers
+## Working with a list of papers
 
 A *paperlist* is simply a list of paper objects — for example the built-in `psychsci` dataset (250 open-access *Psychological Science* articles). To pull the same component from every paper into one combined table, use `paper_table()`:
 

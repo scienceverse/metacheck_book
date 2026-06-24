@@ -18,7 +18,13 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-Modules are user-created patterns for checking a paper or set of papers. Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. 
+Modules are user-created patterns for checking a paper or set of papers. Metacheck wants to make it possible for anyone to create their own modules. This makes it possible for toolbuilders to incorporate their automated checks in Metacheck, increases the probability that their automated check will be used. In line with our value to make sure that Metacheck will reflect and respect the needs of a diverse range of research communities, and benefit their research practices, allowing anyone to make a module enables research communities to create checks relevant to their field. If you work in a field where mice and rats are studies, you might need to follow [reporting guidelines specific to the use of mice and rats](https://www.informatics.jax.org/mgihome/nomen/strains.shtml). Any member of that community can build a module that will check if these guidelines are reported. 
+
+If you want to learn more about how to build a module, the information below should be helpful. But if you are mainly interested in using Metacheck, we recommend skipping the rest of this chapter. 
+
+## How to create a Metacheck module
+
+Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. 
 
 ```{r, echo = FALSE, comment = ""}
 code_lines <- system.file("templates/_module.R", package = "metacheck") |>
@@ -26,7 +32,7 @@ code_lines <- system.file("templates/_module.R", package = "metacheck") |>
 cat(paste0(code_lines, collapse = "\n"))
 ```
 
-## Roxygen Documentation
+### Roxygen Documentation
 
 The module file starts with standard function documentation using roxygen2. Roxygen documentation always starts with `#' `.
 
@@ -123,7 +129,7 @@ Technically, you can then use functions from these packages in your function cod
 
 ### Parameters
 
-Each argument should be defined for a function. All metacheck modules require the first argument to be `paper`. The last argument can optionally be `...`. This allows the `module_run()` function to pass any arguments, and your code can use them by name (e.g., `extra_args <- list(...)`).
+Each argument should be defined for a function. All Metacheck modules require the first argument to be `paper`. The last argument can optionally be `...`. This allows the `module_run()` function to pass any arguments, and your code can use them by name (e.g., `extra_args <- list(...)`).
 
 ```{r}
 #' @param paper a paper object or paperlist object
@@ -235,7 +241,7 @@ Most modules will need to structure their output in a table that can be shown in
   table <- text_search(paper, pattern)
 ```
 
-You will need to make sure that your module works with both single paper objects and lists of paper objects. The metacheck functions `text_search()` and `llm()` are already vectorised for paper lists. 
+You will need to make sure that your module works with both single paper objects and lists of paper objects. The Metacheck functions `text_search()` and `llm()` are already vectorised for paper lists. 
 
 ```{r}
 #| eval: false
@@ -491,4 +497,116 @@ Structure the returned values in a list. The names below are reserved for specif
     report = report
   )
 ```
+
+## A complete worked example {#sec-strain-example}
+
+The sections above describe each piece in isolation. Here we put them together into a complete, working module you can run. It is inspired by the `ethics_check` and `coi_check` modules, which scan a paper's sentences for specific terms.
+
+Many fields have reporting guidelines for *how* something should be named or described. In animal research, mouse and rat strains have a strict nomenclature maintained by [MGI and RGD](https://www.informatics.jax.org/mgihome/nomen/strains.shtml): inbred strains are written in uppercase Roman letters and numbers (`C57BL/6J`, `BALB/c`, `DBA/2`), substrains add a laboratory code after a slash (`A/He`), and so on. A simple but useful module is one that flags sentences mentioning a recognised strain, so an author or reviewer can check the nomenclature is correct.
+
+We will call it `strain_check`. Because every module operates on a paper object, we can develop it interactively using `text_search()` (see [Text Search](text-search.qmd)).
+
+### Step 1: build and test the pattern
+
+We start from a list of common strain names and turn it into one regular expression. Testing on a sentence we type ourselves with `test_paper()` confirms the pattern matches what we expect:
+
+```{r}
+strains <- c(
+  "C57BL/6[A-Za-z]*", "C57BL/10[A-Za-z]*", "BALB/c[A-Za-z]*",
+  "DBA/[12][A-Za-z]*", "C3H/[A-Za-z]+", "CBA/[A-Za-z]+",
+  "A/[A-Z][a-z]?", "129[A-Z][0-9A-Za-z]*", "FVB/[A-Za-z]+",
+  "NOD/[A-Za-z]+", "SJL/[A-Za-z]+", "Wistar", "Sprague[- ]Dawley"
+)
+pattern <- paste(strains, collapse = "|")
+
+example <- test_paper(
+  "Subjects were male C57BL/6J mice (n = 20) and BALB/c controls.
+   We also bred DBA/2 and 129S1 lines, and Sprague-Dawley rats."
+)
+
+# return = "match" shows exactly which strings matched
+text_search(example, pattern, return = "match", perl = TRUE)$text
+```
+
+### Step 2: write the module function
+
+Now we wrap the pattern in a function with the standard signature and return list. The structure mirrors `coi_check`: search the text, build a per-paper `summary_table` with `dplyr::summarise(.by = ...)`, set a `traffic_light`, and assemble a `report` with the helper functions `scroll_table()` and `plural()`.
+
+```{r}
+strain_check <- function(paper) {
+  strains <- c(
+    "C57BL/6[A-Za-z]*", "C57BL/10[A-Za-z]*", "BALB/c[A-Za-z]*",
+    "DBA/[12][A-Za-z]*", "C3H/[A-Za-z]+", "CBA/[A-Za-z]+",
+    "A/[A-Z][a-z]?", "129[A-Z][0-9A-Za-z]*", "FVB/[A-Za-z]+",
+    "NOD/[A-Za-z]+", "SJL/[A-Za-z]+", "Wistar", "Sprague[- ]Dawley"
+  )
+  pattern <- paste(strains, collapse = "|")
+
+  # table ----
+  table <- text_search(paper, pattern, perl = TRUE)
+
+  # summary_table ----
+  summary_table <- dplyr::summarise(table,
+    strains_mentioned = dplyr::n(),
+    .by = paper_id
+  )
+
+  # traffic_light ----
+  # "na" when no strains are found (the module simply does not apply)
+  tl <- ifelse(nrow(table) > 0, "green", "na")
+
+  # summary_text and report ----
+  if (tl == "green") {
+    summary_text <- sprintf(
+      "Found %d sentence%s mentioning a recognised mouse or rat strain.",
+      nrow(table), plural(nrow(table))
+    )
+    report <- c(
+      paste(
+        "We detected references to standard mouse or rat strains.",
+        "Check that the nomenclature follows the",
+        "[MGI/RGD guidelines](https://www.informatics.jax.org/mgihome/nomen/strains.shtml)."
+      ),
+      scroll_table(table[, c("text", "header")])
+    )
+  } else {
+    summary_text <- "No recognised mouse or rat strain names were detected."
+    report <- summary_text
+  }
+
+  # return list ----
+  list(
+    table = table,
+    summary_table = summary_table,
+    na_replace = 0,
+    traffic_light = tl,
+    summary_text = summary_text,
+    report = report
+  )
+}
+```
+
+### Step 3: run it
+
+Because the function follows the module template, you can call it directly, or register it and run it through `module_run()`. Calling it on our example paper:
+
+```{r}
+result <- strain_check(example)
+
+result$traffic_light
+result$summary_text
+result$summary_table
+```
+
+On a paper that does not study animals — such as the bundled `demopaper()` — no strains are found and the traffic light is `"na"`, meaning the check simply does not apply:
+
+```{r}
+strain_check(demopaper())$traffic_light
+```
+
+### Going further
+
+This module only checks whether strain names are *present*; a more sophisticated version could validate the nomenclature itself (for example, flagging a missing laboratory code, or a lowercase strain symbol that should be uppercase), or use [an LLM](llms.qmd) to judge whether the strain is described with all the detail the guidelines require. The same pattern — search, summarise, judge, report — applies whatever the check.
+
+Once you are happy with a module, save it as a standalone `.R` file (named to match the function) with the roxygen documentation described earlier, and validate it against hand-coded papers as shown in the validation sections above.
 

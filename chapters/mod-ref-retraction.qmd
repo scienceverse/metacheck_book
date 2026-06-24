@@ -53,6 +53,18 @@ A flagged reference is not automatically a mistake — retractions happen for ma
 
 `ref_retraction` takes only the `paper` argument.
 
+## Updating the database
+
+The module matches references against a data frame called `retractionwatch` that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:
+
+```{r}
+#| eval: false
+rw_date()     # the date the bundled database was last updated
+rw_update()   # download the newest version from Retraction Watch
+```
+
+`rw_update()` downloads the latest Retraction Watch data (>50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.
+
 ## Notes
 
-This is the same kind of check that reference managers such as [Zotero](https://www.zotero.org/blog/retracted-item-notifications/) perform, brought into the metacheck workflow so it can run alongside the other reference checks.
+This is the same kind of check that reference managers such as [Zotero](https://www.zotero.org/blog/retracted-item-notifications/) perform, brought into the Metacheck workflow so it can run alongside the other reference checks.

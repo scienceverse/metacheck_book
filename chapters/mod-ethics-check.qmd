@@ -23,7 +23,21 @@ The module recognises a wide range of committee names and approval phrasing acro
 - **Waivers and exemptions** — "ethics waiver", "deemed exempt", "IRB exemption".
 - **Declaration of Helsinki** statements.
 
-This module is **fully offline** — it uses only regular expressions, so all the code below runs with just the metacheck package.
+### How it decides whether ethics approval is needed
+
+Not every paper needs an ethics statement — theoretical work, simulations, reviews, meta-analyses, and secondary analyses of existing data usually do not. So the module does not simply flag every paper that lacks an approval statement. Instead it first judges whether the paper appears to involve **live data collection** from human or animal participants, and only flags a *missing* statement for those papers.
+
+This judgment is made by an internal helper that searches the text for sentences signalling that data were collected directly from participants — for example:
+
+- **participant actions** — "participants were recruited / randomly assigned / debriefed", "subjects gave informed consent";
+- **researcher actions** — "we recruited / enrolled / ran participants", "we conducted the study / survey / clinical trial";
+- **consent and recruitment** — "informed consent was obtained", a "participant pool" or "research participation scheme";
+- **sample descriptions** — "our participants", student samples, or participant/patient inclusion and exclusion criteria;
+- **animal data collection** — equivalent phrasing for animal subjects.
+
+The patterns are deliberately **conservative**: they require explicit participant- or recruitment-language rather than generic words like "sample", so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the `needs_ethics` column of the summary table, and the traffic light only turns red for papers where `needs_ethics` is `TRUE` *and* no approval statement was found.
+
+This module is **fully offline** — it uses only regular expressions, so all the code below runs with just the Metacheck package.
 
 ## Running the module
 

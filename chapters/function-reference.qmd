@@ -16,7 +16,7 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-This article lists the functions in metacheck with a short, plain-language
+This article lists the functions in Metacheck with a short, plain-language
 explanation of what each one does and a small example. It is meant for people
 who are starting to use the package and want a map of what is available.
 
@@ -44,7 +44,7 @@ paper <- demopaper()
 
 ## Getting a paper to work with
 
-Everything in metacheck operates on a *paper object* (or a list of them). These
+Everything in Metacheck operates on a *paper object* (or a list of them). These
 functions create or load one.
 
 **`demopaper()`** — returns a ready-made example paper, so you can try things
@@ -70,7 +70,7 @@ tp$text$text
 demofile("pdf")
 ```
 
-**`read(file_path)`** — reads a paper from a metacheck JSON file (or a folder of
+**`read(file_path)`** — reads a paper from a Metacheck JSON file (or a folder of
 them) into a paper object.
 
 ```{r}
@@ -109,12 +109,12 @@ paper_write(paper, "mypaper.json")
 
 ## Importing papers from PDFs and XML
 
-These convert source documents (usually a PDF) into the metacheck JSON format.
+These convert source documents (usually a PDF) into the Metacheck JSON format.
 Most need an external service (a GROBID server or the bibr backend), so they are
 shown but not run here.
 
 **`convert(file_path, save_path)`** — the main entry point: convert a document to
-metacheck JSON, picking a method automatically.
+Metacheck JSON, picking a method automatically.
 **`convert_grobid(...)`** / **`convert_bibr(...)`** — convert using a specific
 backend.
 **`grobid_to_bibr(xml_path)`** — turn GROBID TEI XML into the bibr structure.
@@ -186,7 +186,7 @@ stats(paper)
 
 ## Running checks (modules)
 
-Checks in metacheck are *modules*. These functions list, describe, and run them.
+Checks in Metacheck are *modules*. These functions list, describe, and run them.
 
 **`module_list()`** — the available modules.
 
@@ -396,7 +396,7 @@ accuracy(c(TRUE, TRUE, FALSE, FALSE), c(TRUE, FALSE, FALSE, FALSE))
 **`pb(total)`** — a progress bar.
 **`rep_if(x, y, replace)`** — replace values equal to `y` with `replace`.
 **`path_sanitize(path)`** — make a string safe to use as a file path.
-**`message(...)`** — metacheck's message wrapper.
+**`message(...)`** — Metacheck's message wrapper.
 **`logger()`, `logpath()`, `lastlog()`** — write and read run logs.
 
 ```{r}

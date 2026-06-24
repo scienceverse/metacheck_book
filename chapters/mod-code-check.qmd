@@ -13,7 +13,7 @@ library(metacheck)
 
 ## What it checks
 
-The `code_check` module analyses the **code files** shared with a paper. Building on the file list from [repo_check](mod-repo-check.qmd), it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use **absolute file paths** (which break on other machines), and whether files they try to load are actually present in the repository.
+The `code_check` module analyses the **code files** shared with a paper. Building on the file list from [repo_check](mod-repo-check.qmd), it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use **absolute file paths** (which break on other machines), whether files they try to load are actually present in the repository, and whether **libraries are loaded in multiple places** rather than in a single block near the top of the script (loading imports in one place makes a script's dependencies easy to see).
 
 ::: callout-note
 This module makes **live network calls** to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.

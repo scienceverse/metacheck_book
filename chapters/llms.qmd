@@ -19,7 +19,7 @@ Most of Metacheck works entirely with regular expressions and R code, and needs 
 This chapter explains how LLM support works in Metacheck: how to turn it on, how to choose a model, how to run a model locally with Ollama or through a cloud API, and how to query papers directly with `llm()`.
 
 ::: callout-important
-## metacheck's philosophy on AI
+## Metacheck's philosophy on AI
 
 LLM use is **entirely optional and opt-in**. Metacheck restricts LLMs to *classification of existing text*, never evaluation of quality. We prioritise non-LLM methods, and the vast majority of modules work without any LLM. When you do use one, the recommended setup runs the model **locally** so no data leaves your computer.
 :::
@@ -66,7 +66,7 @@ When Metacheck starts, it checks for known API keys (for example `GROQ_API_KEY`)
 
 ### Listing available models
 
-`llm_model_list()` returns the models metacheck can see across all configured providers. Pass a provider name to narrow it down.
+`llm_model_list()` returns the models Metacheck can see across all configured providers. Pass a provider name to narrow it down.
 
 ```{r}
 #| eval: false
@@ -77,7 +77,7 @@ llm_model_list("ollama")   # just the models you have pulled locally
 
 ### Supported providers
 
-metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:
+Metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:
 
 | Provider | Type | Notes |
 |---|---|---|
@@ -105,7 +105,7 @@ metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it sup
    ```
 
    Other useful models: `llama3.2` (a good general default) and `qwen2.5:7b` (more capable, needs more memory). You can see everything you have pulled with `ollama list`.
-3. Point metacheck at it in R:
+3. Point Metacheck at it in R:
 
 ```{r}
 #| eval: false
@@ -265,9 +265,40 @@ llm_response <- json_expand(llm_power, "answer") |>
 knitr::kable(llm_response)
 ```
 
+### Sending a whole paper
+
+So far we have sent individual sentences. You can also send an **entire paper** in one call by collapsing all of its sentences into a single string. For example, to ask about the sample size of the demo paper:
+
+```{r}
+#| eval: false
+paper <- read(demofile("json"))
+full_text <- paste(paper$text$text, collapse = " ")
+
+llm_use(TRUE)
+llm_model("groq")
+answer <- llm(full_text, "What was the total sample size in this study? Answer with just the number and a brief justification.")
+answer$answer
+```
+
+```{r}
+#| echo: false
+readRDS("_llm_fullpaper.Rds")$answer
+```
+
+Using Groq, this returned in under two seconds.
+
+**Why not do this locally with Ollama?** A whole paper is a large prompt. The demo paper is only about 1,200 tokens, but a typical journal article is closer to 10,000. Sending that to a local model is impractical for two reasons:
+
+- **Speed.** A local model processes the entire prompt on your own hardware. Where a short sentence takes a second or two, a full paper can take *minutes* per call — and running it across many papers quickly becomes hours.
+- **Context window.** Many local models have a context window of only 4,000–8,000 tokens. A full paper can exceed it, so the model silently sees only part of the text (often missing the discussion and limitations at the end), giving misleading answers.
+
+Cloud providers like Groq have large context windows and process the prompt on their own fast hardware, so a whole-paper query returns in seconds — at the cost of sending the full manuscript to an external service.
+
+This is exactly why Metacheck's design encourages narrowing the text with `text_search()` first: smaller, targeted queries are faster, fit inside a local model's context window, and send less data. Reserve whole-paper prompts for short papers or cloud models.
+
 ### Rate limiting
 
-`llm()` makes one query per row of text. To guard against runaway costs from a coding mistake, metacheck caps the number of queries (default 30). Change the cap with `llm_max_calls()`:
+`llm()` makes one query per row of text. To guard against runaway costs from a coding mistake, Metacheck caps the number of queries (default 30). Change the cap with `llm_max_calls()`:
 
 ```{r}
 #| eval: false

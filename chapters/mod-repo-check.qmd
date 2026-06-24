@@ -46,13 +46,44 @@ mo <- module_run(psychsci[1:10], "repo_check")
 mo$summary_table
 ```
 
+## What it checks for
+
+For every repository it finds, `repo_check` builds a unified file list and then assesses three things:
+
+- **A README.** Each repository should document its contents. The module looks for a file whose name contains "readme" (or "read me"). A repository without one is flagged, because readers have no map of what the shared files are.
+- **Archive (zip) files.** Files bundled into a `.zip` (or similar archive) are flagged, because their contents cannot be inspected, indexed, or reused without downloading and unpacking them. The module reports the archive names and suggests uploading the files individually.
+- **What is shared.** It counts the data files, code files, README files, and archives in each repository (the `files_data`, `files_code`, `files_readme`, and `files_zip` columns of the summary table), so you can see at a glance whether data and code were actually shared.
+
+The traffic light follows from these checks:
+
+- **green** — repositories were found, every one has a README, and there are no archive files.
+- **yellow** — at least one repository is missing a README, or one or more archive files were found.
+- **na** — no repository links were found in the paper at all.
+
 ## A clean example and one with problems
 
-A repository that includes a README and shared data/code is the "good" case; repositories with no README, or no shared files, are surfaced for attention. The summary text reports both:
+The demo paper links to three repositories, and running `repo_check` on it produces a **yellow** light — there are problems to address. The summary text reports exactly what:
 
 ```{r}
+mo$traffic_light
 cat(mo$summary_text)
 ```
+
+Here the issues are a **missing README** and an **archive file** whose contents could not be examined. The per-paper summary table counts each file type — note `files_readme` is 0 (no README was shared) and `files_zip` is 1 (one archive):
+
+```{r}
+mo$summary_table |>
+  knitr::kable()
+```
+
+We can see the specific archive file that was flagged in the full file table:
+
+```{r}
+mo$table[mo$table$file_type %in% "archive", c("repo_name", "file_name")] |>
+  knitr::kable()
+```
+
+A **clean** result, by contrast, would include a README in every linked repository (`files_readme` ≥ 1 for each) and share files individually rather than as a zip (`files_zip` of 0) — producing a green light with no items to address.
 
 ## Options
 

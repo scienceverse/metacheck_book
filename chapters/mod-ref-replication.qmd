@@ -65,3 +65,15 @@ A match means a replication of a cited study exists in the database — it is an
 |---|---|---|
 | `paper` | — | the paper or paperlist to check |
 | `show_outcomes` | `FALSE` | include the outcome and type of each replication |
+
+## Updating the database
+
+The module matches references against a data frame called `FLoRA` that ships with Metacheck. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:
+
+```{r}
+#| eval: false
+FLoRA_date()     # the date the bundled database was last updated
+FLoRA_update()   # download the newest version of the FLoRA database
+```
+
+`FLoRA_update()` downloads the latest FLoRA data (>5 MB), summarises it into a compact form, deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally to pick up replications added since your installed version of Metacheck.
