@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -395,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="journal-article-reporting-standards" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="journal-article-reporting-standards">
 <span class="header-section-number">5.1</span> Journal Article Reporting Standards</h2>
-<p>The Journal Article Reporting Standards (JARS) developed by the American Psychological Association provide guidance on what information should be reported in scientific articles to support transparency and reproducibility <span class="citation" data-cites="appelbaum2018">(<a href="#ref-appelbaum2018" role="doc-biblioref"><strong>appelbaum2018?</strong></a>)</span>. Almost every published article would improve if researchers diligently followed JARS, but the guidelines are not widely known, rarely enforced by journals, and time-consuming to check manually. Automation can help.</p>
+<p>The Journal Article Reporting Standards (JARS) developed by the American Psychological Association provide guidance on what information should be reported in scientific articles to support transparency and reproducibility <span class="citation" data-cites="appelbaum2018">(<a href="#ref-appelbaum2018" role="doc-biblioref">Appelbaum et al., 2018</a>)</span>. Almost every published article would improve if researchers diligently followed JARS, but the guidelines are not widely known, rarely enforced by journals, and time-consuming to check manually. Automation can help.</p>
 <p>Metacheck provides five modules for checking statistical reporting quality. This vignette demonstrates each one using papers from the <code>psychsci</code> built-in dataset — 250 open-access articles published in <em>Psychological Science</em> between 2004 and 2014.</p>
 <table class="caption-top table">
 <colgroup>
@@ -459,7 +479,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>Report exact p values (e.g., <em>p</em> = .031) to two or three decimal places. However, report p values less than .001 as <em>p</em> &lt; .001.</p>
 </blockquote>
-<p>Exact p-values matter because they allow readers to include results in p-curve or z-curve analyses <span class="citation" data-cites="simonsohn2014 bartos2020">(<a href="#ref-simonsohn2014" role="doc-biblioref"><strong>simonsohn2014?</strong></a>; <a href="#ref-bartos2020" role="doc-biblioref"><strong>bartos2020?</strong></a>)</span>, and they enable tools like StatCheck to verify internal consistency. The <code>stat_p_exact</code> module flags any p-value reported as <em>p</em> &lt; some threshold greater than .001 (e.g., <em>p</em> &lt; .05) or as exactly zero (e.g., <em>p</em> = .000, which is mathematically impossible).</p>
+<p>Exact p-values matter because they allow readers to include results in p-curve or z-curve analyses <span class="citation" data-cites="simonsohn2014 bartos2020">(<a href="#ref-bartos2020" role="doc-biblioref">Bartoš &amp; Schimmack, 2020</a>; <a href="#ref-simonsohn2014" role="doc-biblioref">Simonsohn et al., 2014</a>)</span>, and they enable tools like StatCheck to verify internal consistency. The <code>stat_p_exact</code> module flags any p-value reported as <em>p</em> &lt; some threshold greater than .001 (e.g., <em>p</em> &lt; .05) or as exactly zero (e.g., <em>p</em> = .000, which is mathematically impossible).</p>
 <p>Paper <code>0956797619842261</code> has 60 detected p-values, 59 of which are exact. One is imprecise:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper_imprecise</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="st">"0956797619842261"</span><span class="op">]</span><span class="op">]</span></span>
@@ -518,7 +538,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr></section><section id="non-significant-p-values-stat_p_nonsig" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="non-significant-p-values-stat_p_nonsig">
 <span class="header-section-number">5.5</span> Non-significant p-values (<code>stat_p_nonsig</code>)</h2>
-<p>Non-significant results are frequently misinterpreted as evidence that an effect is absent, when in fact they only indicate that the data were insufficient to reject the null hypothesis. The correct approach is to perform an equivalence test against a smallest effect size of interest <span class="citation" data-cites="lakens2018">(<a href="#ref-lakens2018" role="doc-biblioref"><strong>lakens2018?</strong></a>)</span>.</p>
+<p>Non-significant results are frequently misinterpreted as evidence that an effect is absent, when in fact they only indicate that the data were insufficient to reject the null hypothesis. The correct approach is to perform an equivalence test against a smallest effect size of interest <span class="citation" data-cites="lakens2018">(<a href="#ref-lakens2018" role="doc-biblioref">Lakens et al., 2018</a>)</span>.</p>
 <p>The <code>stat_p_nonsig</code> module returns all sentences containing non-significant p-values (p ≥ .05). It does not automatically judge the interpretation — it surfaces the sentences so researchers can review them. Paper <code>0956797618772822</code> has 28 such sentences:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper_nonsig</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="st">"0956797618772822"</span><span class="op">]</span><span class="op">]</span></span>
@@ -561,7 +581,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr></section><section id="statistical-consistency-statcheck-stat_check" class="level2" data-number="5.7"><h2 data-number="5.7" class="anchored" data-anchor-id="statistical-consistency-statcheck-stat_check">
 <span class="header-section-number">5.7</span> Statistical consistency (StatCheck, <code>stat_check</code>)</h2>
-<p>StatCheck <span class="citation" data-cites="nuijten2016">(<a href="#ref-nuijten2016" role="doc-biblioref"><strong>nuijten2016?</strong></a>)</span> recalculates the p-value from the reported test statistic and degrees of freedom and checks whether the reported p-value is consistent with the recalculation. It supports t-tests and F-tests in APA format.</p>
+<p>StatCheck <span class="citation" data-cites="nuijten2016">(<a href="#ref-nuijten2016" role="doc-biblioref">Nuijten et al., 2016</a>)</span> recalculates the p-value from the reported test statistic and degrees of freedom and checks whether the reported p-value is consistent with the recalculation. It supports t-tests and F-tests in APA format.</p>
 <p><strong>Important caveat:</strong> StatCheck has a known false positive rate of approximately 43% — that is, roughly 43 out of every 100 flagged tests are not actually errors. Use the module to identify tests that warrant a closer look, not as definitive proof of an error. See the <a href="https://osf.io/preprints/psyarxiv/tcxaj_v1/">StatCheck preprint</a> for full validation details.</p>
 <p>The clean paper returns green:</p>
 <div class="cell">
@@ -611,6 +631,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). p-Curve and effect size. <em>Perspectives on Psychological Science</em>, <em>9</em>(6), 666–681. <a href="https://doi.org/10.1177/1745691614553988" class="uri">https://doi.org/10.1177/1745691614553988</a></p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-appelbaum2018" class="csl-entry" role="listitem">
+Appelbaum, M., Cooper, H., Kline, R. B., Mayo-Wilson, E., Nezu, A. M., &amp; Rao, S. M. (2018). Journal article reporting standards for quantitative research in psychology: The APA publications and communications board task force report. <em>American Psychologist</em>, <em>73</em>(1), 3–25. <a href="https://doi.org/10.1037/amp0000191">https://doi.org/10.1037/amp0000191</a>
+</div>
+<div id="ref-bartos2020" class="csl-entry" role="listitem">
+Bartoš, F., &amp; Schimmack, U. (2020). <em>Z-curve.2.0: Estimating replication rates and discovery rates</em>. <a href="https://doi.org/10.31234/osf.io/urgtn">https://doi.org/10.31234/osf.io/urgtn</a>
+</div>
+<div id="ref-lakens2018" class="csl-entry" role="listitem">
+Lakens, D., Scheel, A. M., &amp; Isager, P. M. (2018). Equivalence testing for psychological research: A tutorial. <em>Advances in Methods and Practices in Psychological Science</em>, <em>1</em>(2), 259–269. <a href="https://doi.org/10.1177/2515245918770963">https://doi.org/10.1177/2515245918770963</a>
+</div>
+<div id="ref-nuijten2016" class="csl-entry" role="listitem">
+Nuijten, M. B., Hartgerink, C. H. J., Assen, M. A. L. M. van, Epskamp, S., &amp; Wicherts, J. M. (2016). The prevalence of statistical reporting errors in psychology (1985–2013). <em>Behavior Research Methods</em>, <em>48</em>(4), 1205–1226. <a href="https://doi.org/10.3758/s13428-015-0664-2">https://doi.org/10.3758/s13428-015-0664-2</a>
+</div>
+<div id="ref-simonsohn2014" class="csl-entry" role="listitem">
+Simonsohn, U., Nelson, L. D., &amp; Simmons, J. P. (2014). P-curve: A key to the file-drawer. <em>Journal of Experimental Psychology: General</em>, <em>143</em>(2), 534–547. <a href="https://doi.org/10.1037/a0033242">https://doi.org/10.1037/a0033242</a>
+</div>
+</div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
