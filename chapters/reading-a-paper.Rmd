@@ -69,64 +69,149 @@ The functions `convert()` and `read()` also work on a folder of files, or a vect
 
 When a folder contains both a `.json` and a `.xml` file for the same paper, `read()` uses the JSON and skips the duplicate XML.
 
-## Paper Components
+## The paper object
 
-Paper objects contain structured information retrieved from the converted document. This in, including info, references, and citations.
+`read()` returns a **paper object**: a structured representation of the manuscript, stored as a list of tables. Everything metacheck does — searching text, running modules, checking references — operates on this object, so it is worth understanding what is inside it and how to get at each piece.
 
-### Info
-
-```{r}
-paper$info
-```
-
-
-### References
-
-The references are provided in a tabular format.
-
-```{r, eval = FALSE}
-paper$bib
-```
-
-```{r, echo = FALSE}
-isna <- paper$bib |> lapply(is.na) |> sapply(all)
-knitr::kable(paper$bib[, !isna])
-```
-
-### Cross-References
-
-Cross-references are also provided in a tabular format, with `xref_id` to match the bibliography table.
-
-```{r, eval = FALSE}
-paper$xref
-```
-
-```{r, echo = FALSE}
-knitr::kable(paper$xref)
-```
-
-### Batch
-
-The `psychsci` built-in dataset contains all 250 open-access articles published in *Psychological Science* from 2004 to 2014. *Psychological Science* is the flagship journal of the Association for Psychological Science and publishes empirical research from all subfields of psychology. The PDFs were converted to metacheck paper objects using `convert()` and stored in the package. This dataset is used throughout the documentation to demonstrate how to work with a list of papers.
-
-There are functions to combine the information from a list of papers, like `psychsci`.
+A paper object has the class `scivrs_paper`, and you access its parts with the `$` operator. Here are all the components:
 
 ```{r}
-paper_table(psychsci[1:5], "info", c("title", "doi"))
+class(paper)
+names(paper)
 ```
+
+The components are summarised below; the rest of this section shows each one. Most are data frames, so you can work with them using base R or the tidyverse.
+
+| Component | What it holds |
+|---|---|
+| `paper_id` | A single string identifying the paper |
+| `info` | One row of paper-level metadata (title, DOI, type, ...) |
+| `author` | One row per author |
+| `text` | One row per sentence |
+| `section` | One row per heading/section |
+| `url` | Links found in the text |
+| `bib` | The reference list |
+| `xref` | Cross-references linking sentences to bib entries, tables, and figures |
+| `figure` | Figures |
+| `table` | Tables |
+| `eq` | Extracted statistics and equations |
+| `bib_match` | Reference metadata matched from CrossRef and other services |
+
+### paper_id
+
+A single string identifying the paper (the user-supplied id, the DOI, or the filename):
 
 ```{r}
-paper_table(psychsci[1:5], "bib") |>
-  dplyr::filter(!is.na(doi), doi != "")
+paper$paper_id
 ```
 
+### info
 
-## Next steps
-
-Once you have a paper object, you can search its text directly (see [Text Search](text-search.qmd)) or run checks on it. metacheck comes with a set of built-in modules:
+A one-row data frame of paper-level metadata. Use `t()` to read it as a column:
 
 ```{r}
-module_list()
+t(paper$info) |>
+  knitr::kable(col.names = "value")
 ```
 
-Each module is documented in its own chapter in the [Modules](modules.qmd) part. To learn how the module system works and how to write your own, see [Modules](modules.qmd) and [Creating Modules](creating-modules.qmd).
+Pull out a single field directly:
+
+```{r}
+paper$info$title
+paper$info$doi
+```
+
+### author
+
+One row per author, in paper order:
+
+```{r}
+paper$author[, c("given", "family", "affiliation", "corresponding")] |>
+  knitr::kable()
+```
+
+### text
+
+One row per sentence (excluding the title, headings, and references). This is the table that `text_search()` searches.
+
+```{r}
+nrow(paper$text)
+head(paper$text[, c("text", "section_id", "paragraph_id")]) |>
+  knitr::kable()
+```
+
+### section
+
+One row per heading. `section_type` is metacheck's best guess at the kind of section, which modules use to focus on (say) only the results:
+
+```{r}
+paper$section[, c("section_id", "header", "section_type")] |>
+  knitr::kable()
+```
+
+### url
+
+Every external link found in the text, with the sentence (`text_id`) it appeared in:
+
+```{r}
+paper$url |>
+  knitr::kable()
+```
+
+### bib
+
+The reference list, parsed into columns:
+
+```{r}
+paper$bib[, c("bib_id", "authors", "year", "title")] |>
+  knitr::kable()
+```
+
+### xref
+
+Cross-references that link a sentence (`text_id`) to an item it cites — a bib entry, table, or figure (`xref_type`):
+
+```{r}
+paper$xref |>
+  knitr::kable()
+```
+
+### figure and table
+
+Figures and tables each get a row, linked to the `section` table by `section_id`:
+
+```{r}
+paper$figure[, c("figure_id", "section_id", "page_number")] |>
+  knitr::kable()
+paper$table[, c("table_id", "section_id", "page_number")] |>
+  knitr::kable()
+```
+
+### eq
+
+Statistics and equations extracted from the text, broken into a left-hand side, degrees of freedom, comparator, and right-hand side. Many statistics modules read from this table rather than re-scanning the text:
+
+```{r}
+head(paper$eq) |>
+  knitr::kable()
+```
+
+### bib_match
+
+When you convert with `crossref_lookup = TRUE` (or run a reference module), metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by `bib_id`:
+
+```{r}
+paper$bib_match[, c("bib_id", "service", "doi", "title")] |>
+  knitr::kable()
+```
+
+### Working with a list of papers
+
+A *paperlist* is simply a list of paper objects — for example the built-in `psychsci` dataset (250 open-access *Psychological Science* articles). To pull the same component from every paper into one combined table, use `paper_table()`:
+
+```{r}
+paper_table(psychsci[1:5], "info", c("title", "doi")) |>
+  knitr::kable()
+```
+
+Most functions and every module accept either a single paper or a paperlist, so the same code scales from one paper to a whole corpus. See [Using the Paper Database Corpora](papers-databases.qmd) for the available corpora.

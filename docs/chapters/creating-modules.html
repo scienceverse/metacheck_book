@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>22&nbsp; Creating Modules – The Metacheck Manual</title>
+<title>7&nbsp; Creating Modules – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/github.html" rel="next">
-<link href="../chapters/jars.html" rel="prev">
+<link href="../chapters/mod-power.html" rel="next">
+<link href="../chapters/modules.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/creating-modules.html">Advanced Functions</a></li><li class="breadcrumb-item"><a href="../chapters/creating-modules.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Creating Modules</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/modules.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/creating-modules.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -186,77 +186,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Modules</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
       </ul>
@@ -272,73 +284,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Advanced Functions</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Using Metacheck Locally</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -346,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Drafts &amp; Work in Progress</span></a>
+ <span class="menu-text">Appendices</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -354,79 +324,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../drafts/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About these drafts</span></a>
+  <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -440,39 +345,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#roxygen-documentation" id="toc-roxygen-documentation" class="nav-link active" data-scroll-target="#roxygen-documentation"><span class="header-section-number">22.1</span> Roxygen Documentation</a>
+<a href="#roxygen-documentation" id="toc-roxygen-documentation" class="nav-link active" data-scroll-target="#roxygen-documentation"><span class="header-section-number">7.1</span> Roxygen Documentation</a>
   <ul class="collapse">
-<li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title"><span class="header-section-number">22.1.1</span> Title</a></li>
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description"><span class="header-section-number">22.1.2</span> Description</a></li>
-  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"><span class="header-section-number">22.1.3</span> Details</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">22.1.4</span> Validation</a></li>
-  <li><a href="#keywords" id="toc-keywords" class="nav-link" data-scroll-target="#keywords"><span class="header-section-number">22.1.5</span> Keywords</a></li>
-  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author"><span class="header-section-number">22.1.6</span> Author</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">22.1.7</span> References</a></li>
-  <li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"><span class="header-section-number">22.1.8</span> Import</a></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters"><span class="header-section-number">22.1.9</span> Parameters</a></li>
-  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns"><span class="header-section-number">22.1.10</span> Returns</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">22.1.11</span> Examples</a></li>
+<li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title"><span class="header-section-number">7.1.1</span> Title</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description"><span class="header-section-number">7.1.2</span> Description</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"><span class="header-section-number">7.1.3</span> Details</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">7.1.4</span> Validation</a></li>
+  <li><a href="#keywords" id="toc-keywords" class="nav-link" data-scroll-target="#keywords"><span class="header-section-number">7.1.5</span> Keywords</a></li>
+  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author"><span class="header-section-number">7.1.6</span> Author</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7.1.7</span> References</a></li>
+  <li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"><span class="header-section-number">7.1.8</span> Import</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters"><span class="header-section-number">7.1.9</span> Parameters</a></li>
+  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns"><span class="header-section-number">7.1.10</span> Returns</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">7.1.11</span> Examples</a></li>
   </ul>
 </li>
   <li>
-<a href="#function-code" id="toc-function-code" class="nav-link" data-scroll-target="#function-code"><span class="header-section-number">22.2</span> Function Code</a>
+<a href="#function-code" id="toc-function-code" class="nav-link" data-scroll-target="#function-code"><span class="header-section-number">7.2</span> Function Code</a>
   <ul class="collapse">
-<li><a href="#code-helpers" id="toc-code-helpers" class="nav-link" data-scroll-target="#code-helpers"><span class="header-section-number">22.2.1</span> Code Helpers</a></li>
-  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table"><span class="header-section-number">22.2.2</span> Table</a></li>
-  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table"><span class="header-section-number">22.2.3</span> Summary Table</a></li>
-  <li><a href="#traffic-light" id="toc-traffic-light" class="nav-link" data-scroll-target="#traffic-light"><span class="header-section-number">22.2.4</span> Traffic Light</a></li>
-  <li><a href="#summary-text" id="toc-summary-text" class="nav-link" data-scroll-target="#summary-text"><span class="header-section-number">22.2.5</span> Summary Text</a></li>
-  <li><a href="#report" id="toc-report" class="nav-link" data-scroll-target="#report"><span class="header-section-number">22.2.6</span> Report</a></li>
-  <li><a href="#return" id="toc-return" class="nav-link" data-scroll-target="#return"><span class="header-section-number">22.2.7</span> Return</a></li>
+<li><a href="#code-helpers" id="toc-code-helpers" class="nav-link" data-scroll-target="#code-helpers"><span class="header-section-number">7.2.1</span> Code Helpers</a></li>
+  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table"><span class="header-section-number">7.2.2</span> Table</a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table"><span class="header-section-number">7.2.3</span> Summary Table</a></li>
+  <li><a href="#traffic-light" id="toc-traffic-light" class="nav-link" data-scroll-target="#traffic-light"><span class="header-section-number">7.2.4</span> Traffic Light</a></li>
+  <li><a href="#summary-text" id="toc-summary-text" class="nav-link" data-scroll-target="#summary-text"><span class="header-section-number">7.2.5</span> Summary Text</a></li>
+  <li><a href="#report" id="toc-report" class="nav-link" data-scroll-target="#report"><span class="header-section-number">7.2.6</span> Report</a></li>
+  <li><a href="#return" id="toc-return" class="nav-link" data-scroll-target="#return"><span class="header-section-number">7.2.7</span> Return</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/creating-modules.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/creating-modules.html">Advanced Functions</a></li><li class="breadcrumb-item"><a href="../chapters/creating-modules.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Creating Modules</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/modules.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/creating-modules.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Creating Modules</span>
+<span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span>
 </h1>
 </div>
 
@@ -591,24 +496,24 @@ module_name &lt;- function(paper, ...) {
   )
 }</code></pre>
 </div>
-<section id="roxygen-documentation" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="roxygen-documentation">
-<span class="header-section-number">22.1</span> Roxygen Documentation</h2>
+<section id="roxygen-documentation" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="roxygen-documentation">
+<span class="header-section-number">7.1</span> Roxygen Documentation</h2>
 <p>The module file starts with standard function documentation using roxygen2. Roxygen documentation always starts with <code>#'</code>.</p>
-<section id="title" class="level3" data-number="22.1.1"><h3 data-number="22.1.1" class="anchored" data-anchor-id="title">
-<span class="header-section-number">22.1.1</span> Title</h3>
+<section id="title" class="level3" data-number="7.1.1"><h3 data-number="7.1.1" class="anchored" data-anchor-id="title">
+<span class="header-section-number">7.1.1</span> Title</h3>
 <p>On the first line, give your module a short title, which will be used as a section header in reports.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' Module Name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="description" class="level3" data-number="22.1.2"><h3 data-number="22.1.2" class="anchored" data-anchor-id="description">
-<span class="header-section-number">22.1.2</span> Description</h3>
+</section><section id="description" class="level3" data-number="7.1.2"><h3 data-number="7.1.2" class="anchored" data-anchor-id="description">
+<span class="header-section-number">7.1.2</span> Description</h3>
 <p>You can skip a line and write a 1-sentence description, which will be shown in <code>module_list()</code>, or optionally start this with <code>@description</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @description</span></span>
 <span><span class="co">#' A short description of the module</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="details" class="level3" data-number="22.1.3"><h3 data-number="22.1.3" class="anchored" data-anchor-id="details">
-<span class="header-section-number">22.1.3</span> Details</h3>
+</section><section id="details" class="level3" data-number="7.1.3"><h3 data-number="7.1.3" class="anchored" data-anchor-id="details">
+<span class="header-section-number">7.1.3</span> Details</h3>
 <p>You can write more detailed help under the tag <code>@details</code>, which will be shown when calling <code>module_help()</code>. This is optional.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @details</span></span>
@@ -620,8 +525,8 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#' * check it twice</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you have experience writing R functions with roxygen, you can also omit the <code>@description</code> and <code>@details</code> tags and rely on paragraph spacing to distinguish description from details.</p>
-</section><section id="validation" class="level3" data-number="22.1.4"><h3 data-number="22.1.4" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">22.1.4</span> Validation</h3>
+</section><section id="validation" class="level3" data-number="7.1.4"><h3 data-number="7.1.4" class="anchored" data-anchor-id="validation">
+<span class="header-section-number">7.1.4</span> Validation</h3>
 <p>Our <a href="https://www.scienceverse.org/metacheck/#our-values">values statement</a> lists quality control as a core value. Validation information gets special styling in the report, so is put at the end of the details section and marked with <code>&lt;validation&gt;</code> at the start and <code>&lt;/validation&gt;</code> at the end.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' &lt;validation&gt;</span></span>
@@ -635,21 +540,21 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#' &lt;/validation&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The example above works well for modules that detect a practice that may happen zero or more times per paper. Communicating validation information clearly and succinctly is challenging, so feel free to use other wordings. We encourage you to also include a link to a repository that contains more detailed information and evidence.</p>
-</section><section id="keywords" class="level3" data-number="22.1.5"><h3 data-number="22.1.5" class="anchored" data-anchor-id="keywords">
-<span class="header-section-number">22.1.5</span> Keywords</h3>
+</section><section id="keywords" class="level3" data-number="7.1.5"><h3 data-number="7.1.5" class="anchored" data-anchor-id="keywords">
+<span class="header-section-number">7.1.5</span> Keywords</h3>
 <p>Choose one section category for your module to be displayed under in reports.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @keywords general|intro|method|results|discussion|reference</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="author" class="level3" data-number="22.1.6"><h3 data-number="22.1.6" class="anchored" data-anchor-id="author">
-<span class="header-section-number">22.1.6</span> Author</h3>
+</section><section id="author" class="level3" data-number="7.1.6"><h3 data-number="7.1.6" class="anchored" data-anchor-id="author">
+<span class="header-section-number">7.1.6</span> Author</h3>
 <p>Include the module authors so they can get credit! Add a new <code>@author</code> tag for each author, and optionally add their email address.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @author Lisa DeBruine (\email{debruine@gmail.com})</span></span>
 <span><span class="co">#' @author Daniel Lakens (\email{lakens@gmail.com})</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="references" class="level3" data-number="22.1.7"><h3 data-number="22.1.7" class="anchored" data-anchor-id="references">
-<span class="header-section-number">22.1.7</span> References</h3>
+</section><section id="references" class="level3" data-number="7.1.7"><h3 data-number="7.1.7" class="anchored" data-anchor-id="references">
+<span class="header-section-number">7.1.7</span> References</h3>
 <p>Optionally include references that you would want available to users. If you are building a module that uses citable resources, please list them here.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @references</span></span>
@@ -658,36 +563,36 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#' ISSN: 2692-4579. [Cited 2025-05-20].</span></span>
 <span><span class="co">#' Available from: http://retractiondatabase.org/.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="import" class="level3" data-number="22.1.8"><h3 data-number="22.1.8" class="anchored" data-anchor-id="import">
-<span class="header-section-number">22.1.8</span> Import</h3>
+</section><section id="import" class="level3" data-number="7.1.8"><h3 data-number="7.1.8" class="anchored" data-anchor-id="import">
+<span class="header-section-number">7.1.8</span> Import</h3>
 <p>If you are using packages other than <code>metacheck</code>, add each with an <code>@import</code> statement.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @import dplyr</span></span>
 <span><span class="co">#' @import tidyr</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Technically, you can then use functions from these packages in your function code without the package name prefix, but it is still best practice to use the package name prefix for all functions, like <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">dplyr::case_when()</a></code>, and we require this for contributed modules.</p>
-</section><section id="parameters" class="level3" data-number="22.1.9"><h3 data-number="22.1.9" class="anchored" data-anchor-id="parameters">
-<span class="header-section-number">22.1.9</span> Parameters</h3>
+</section><section id="parameters" class="level3" data-number="7.1.9"><h3 data-number="7.1.9" class="anchored" data-anchor-id="parameters">
+<span class="header-section-number">7.1.9</span> Parameters</h3>
 <p>Each argument should be defined for a function. All metacheck modules require the first argument to be <code>paper</code>. The last argument can optionally be <code>...</code>. This allows the <code>module_run()</code> function to pass any arguments, and your code can use them by name (e.g., <code>extra_args &lt;- list(...)</code>).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @param paper a paper object or paperlist object</span></span>
 <span><span class="co">#' @param ... further arguments (not used)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="returns" class="level3" data-number="22.1.10"><h3 data-number="22.1.10" class="anchored" data-anchor-id="returns">
-<span class="header-section-number">22.1.10</span> Returns</h3>
+</section><section id="returns" class="level3" data-number="7.1.10"><h3 data-number="7.1.10" class="anchored" data-anchor-id="returns">
+<span class="header-section-number">7.1.10</span> Returns</h3>
 <p>It is good practice to explain what your function returns. This is usually the default list with table, summary, traffic light, and report text, but you can edit this. It’s just a human-readable string.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @returns a list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="examples" class="level3" data-number="22.1.11"><h3 data-number="22.1.11" class="anchored" data-anchor-id="examples">
-<span class="header-section-number">22.1.11</span> Examples</h3>
+</section><section id="examples" class="level3" data-number="7.1.11"><h3 data-number="7.1.11" class="anchored" data-anchor-id="examples">
+<span class="header-section-number">7.1.11</span> Examples</h3>
 <p>You can add an example of how to use this module with the <code>module_run()</code> function. Give a paper or list of papers in the example so you can demonstrate the purpose of this module and it doesn’t take too much time to run the example.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @examples</span></span>
 <span><span class="co">#' module_run(psychsci, "module_name")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="function-code" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="function-code">
-<span class="header-section-number">22.2</span> Function Code</h2>
+</section></section><section id="function-code" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="function-code">
+<span class="header-section-number">7.2</span> Function Code</h2>
 <p>The module function is written like any R package function, with the requirement that the first argument be <code>paper</code>. Set <code>module_name</code> to your module name, which must be a valid R variable name. Your module script should also have the same name, with a .R suffix (e.g., <code>module_name.R</code>).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">paper</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
@@ -704,10 +609,10 @@ module_name &lt;- function(paper, ...) {
 <p>You can define helper functions below your main module functions, but the first function defined in the script is what will be run on the paper object.</p>
 <p>A module can technically do anything you want with the paper input, but you will need to follow the template below for your module to work automatically with reports and the metascience workflow.</p>
 <p>If you are using your modules to build a report, you need to specify what type of output corresponds to good practice or practice that may need improvement. We do this through “traffic_light” and “report”.</p>
-<section id="code-helpers" class="level3" data-number="22.2.1"><h3 data-number="22.2.1" class="anchored" data-anchor-id="code-helpers">
-<span class="header-section-number">22.2.1</span> Code Helpers</h3>
-<section id="progress-bars" class="level4" data-number="22.2.1.1"><h4 data-number="22.2.1.1" class="anchored" data-anchor-id="progress-bars">
-<span class="header-section-number">22.2.1.1</span> Progress Bars</h4>
+<section id="code-helpers" class="level3" data-number="7.2.1"><h3 data-number="7.2.1" class="anchored" data-anchor-id="code-helpers">
+<span class="header-section-number">7.2.1</span> Code Helpers</h3>
+<section id="progress-bars" class="level4" data-number="7.2.1.1"><h4 data-number="7.2.1.1" class="anchored" data-anchor-id="progress-bars">
+<span class="header-section-number">7.2.1.1</span> Progress Bars</h4>
 <p>If you want to display progress for a long module, you can use the <code>pb()</code> function. It’s a modified version of <code><a href="http://r-lib.github.io/progress/reference/progress_bar.html">progress::progress_bar()</a></code> that only displays a progress bar if <code>verbose()</code> is true.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"beginning"</span>, <span class="st">"middle"</span>, <span class="st">"end"</span><span class="op">)</span></span>
@@ -729,8 +634,8 @@ module_name &lt;- function(paper, ...) {
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="get-previous-outputs" class="level4" data-number="22.2.1.2"><h4 data-number="22.2.1.2" class="anchored" data-anchor-id="get-previous-outputs">
-<span class="header-section-number">22.2.1.2</span> Get Previous Outputs</h4>
+</section><section id="get-previous-outputs" class="level4" data-number="7.2.1.2"><h4 data-number="7.2.1.2" class="anchored" data-anchor-id="get-previous-outputs">
+<span class="header-section-number">7.2.1.2</span> Get Previous Outputs</h4>
 <p>If you run module in a chain or via the <code>report()</code> function, the output of the previously run modules is available to later modules. You will need to handle what happens if the part of the output you require is missing, but always access these with the <code>get_prev_outputs()</code> function.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># get p_table from prev_outputs if available</span></span>
@@ -745,8 +650,8 @@ module_name &lt;- function(paper, ...) {
 <span></span>
 <span><span class="co"># ... further code using p_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="table" class="level3" data-number="22.2.2"><h3 data-number="22.2.2" class="anchored" data-anchor-id="table">
-<span class="header-section-number">22.2.2</span> Table</h3>
+</section></section><section id="table" class="level3" data-number="7.2.2"><h3 data-number="7.2.2" class="anchored" data-anchor-id="table">
+<span class="header-section-number">7.2.2</span> Table</h3>
 <p>Most modules will need to structure their output in a table that can be shown in a report. The <code>text_search()</code> function below creates a table with a row for each sentence that contains to word “significant”.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co">## table ----</span></span>
@@ -759,8 +664,8 @@ module_name &lt;- function(paper, ...) {
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"module_name"</span><span class="op">)</span> <span class="co"># 1 paper</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"module_name"</span><span class="op">)</span> <span class="co"># 10 papers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="summary-table" class="level3" data-number="22.2.3"><h3 data-number="22.2.3" class="anchored" data-anchor-id="summary-table">
-<span class="header-section-number">22.2.3</span> Summary Table</h3>
+</section><section id="summary-table" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="summary-table">
+<span class="header-section-number">7.2.3</span> Summary Table</h3>
 <p>For the metascience workflow, it is useful to create a table with a row for each paper in a list, and some columns that summarise the results. You can use nested tables if you want some of your cells to contain multiple values.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co">## summary_table ----</span></span>
@@ -776,8 +681,8 @@ module_name &lt;- function(paper, ...) {
 <span>  paper_type <span class="op">=</span> <span class="st">"unknown"</span></span>
 <span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="traffic-light" class="level3" data-number="22.2.4"><h3 data-number="22.2.4" class="anchored" data-anchor-id="traffic-light">
-<span class="header-section-number">22.2.4</span> Traffic Light</h3>
+</section><section id="traffic-light" class="level3" data-number="7.2.4"><h3 data-number="7.2.4" class="anchored" data-anchor-id="traffic-light">
+<span class="header-section-number">7.2.4</span> Traffic Light</h3>
 <p>The traffic lights are used in single-paper reports to give a quick visual overview of the module results. There are 6 kinds of traffic lights:</p>
 <style>
   h2.na::before { content: '⬜ '; }
@@ -805,8 +710,8 @@ module_name &lt;- function(paper, ...) {
 <span>  <span class="co">#   fail: check failed</span></span>
 <span>  <span class="va">tl</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span><span class="op">)</span> <span class="st">"info"</span> <span class="kw">else</span> <span class="st">"na"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="summary-text" class="level3" data-number="22.2.5"><h3 data-number="22.2.5" class="anchored" data-anchor-id="summary-text">
-<span class="header-section-number">22.2.5</span> Summary Text</h3>
+</section><section id="summary-text" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="summary-text">
+<span class="header-section-number">7.2.5</span> Summary Text</h3>
 <p>The reports begin with a summary of each module, showing the traffic light, the module name, and a short summary of the results. The returned item <code>summary_text</code> provides this text. You will usually want to customise the summary text for the traffic light or other aspects of the results, such as the number of instances of a practice found and the number that might be problematic.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co">## summary_text ----</span></span>
@@ -822,8 +727,8 @@ module_name &lt;- function(paper, ...) {
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">summary_text</span> <span class="op">&lt;-</span> <span class="va">summary_text_options</span><span class="op">[[</span><span class="va">tl</span><span class="op">]</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="report" class="level3" data-number="22.2.6"><h3 data-number="22.2.6" class="anchored" data-anchor-id="report">
-<span class="header-section-number">22.2.6</span> Report</h3>
+</section><section id="report" class="level3" data-number="7.2.6"><h3 data-number="7.2.6" class="anchored" data-anchor-id="report">
+<span class="header-section-number">7.2.6</span> Report</h3>
 <p>Reports need to explain concepts or give resources for further learning. This is often specific to the outcome of a check.</p>
 <p>The <code>report</code> should be a character vector, with one or more item. Use <a href="https://quarto.org/docs/authoring/markdown-basics.html">quarto / markdown</a> for styling text, such as adding links or lists.</p>
 <div class="cell">
@@ -845,8 +750,8 @@ module_name &lt;- function(paper, ...) {
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can use the helper functions <code>scroll_table()</code> to display tables and <code>collapse_section()</code> to hide longer sections of text or supplemental tables.</p>
-<section id="scroll-tables" class="level4" data-number="22.2.6.1"><h4 data-number="22.2.6.1" class="anchored" data-anchor-id="scroll-tables">
-<span class="header-section-number">22.2.6.1</span> Scroll Tables</h4>
+<section id="scroll-tables" class="level4" data-number="7.2.6.1"><h4 data-number="7.2.6.1" class="anchored" data-anchor-id="scroll-tables">
+<span class="header-section-number">7.2.6.1</span> Scroll Tables</h4>
 <p>The function <code>scroll_table()</code> generates the R code chunk needed to display a scrollable table in a quarto document, which is how the reports are created. It will include the contents of the table.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, letter <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
@@ -871,8 +776,8 @@ module_name &lt;- function(paper, ...) {
 #&gt; metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)
 #&gt; ```</code></pre>
 </div>
-</section><section id="collapsible-sections" class="level4" data-number="22.2.6.2"><h4 data-number="22.2.6.2" class="anchored" data-anchor-id="collapsible-sections">
-<span class="header-section-number">22.2.6.2</span> Collapsible Sections</h4>
+</section><section id="collapsible-sections" class="level4" data-number="7.2.6.2"><h4 data-number="7.2.6.2" class="anchored" data-anchor-id="collapsible-sections">
+<span class="header-section-number">7.2.6.2</span> Collapsible Sections</h4>
 <p>The function <code>collapse_section()</code> generates the R code chunk needed to hide a section in a collapsible box.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"This is my first *paragraph*:"</span>,</span>
@@ -895,8 +800,8 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; :::</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="plurals" class="level4" data-number="22.2.6.3"><h4 data-number="22.2.6.3" class="anchored" data-anchor-id="plurals">
-<span class="header-section-number">22.2.6.3</span> Plurals</h4>
+</section><section id="plurals" class="level4" data-number="7.2.6.3"><h4 data-number="7.2.6.3" class="anchored" data-anchor-id="plurals">
+<span class="header-section-number">7.2.6.3</span> Plurals</h4>
 <p>Feedback and summary text often needs to refer to the number of instances something happened. We found ourselves having to awkwardly write text templates like “We found %d inexact p-value(s).” The <code>plural()</code> function is a quick helper so you can add in an “s” if the number is not 1. We like the <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> function for setting up your template sentence and replacing in numbers or strings.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2</span></span>
@@ -907,8 +812,8 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#&gt; [2] "We found 1 problem that is serious."  </span></span>
 <span><span class="co">#&gt; [3] "We found 2 problems that are serious."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="html-links" class="level4" data-number="22.2.6.4"><h4 data-number="22.2.6.4" class="anchored" data-anchor-id="html-links">
-<span class="header-section-number">22.2.6.4</span> HTML Links</h4>
+</section><section id="html-links" class="level4" data-number="7.2.6.4"><h4 data-number="7.2.6.4" class="anchored" data-anchor-id="html-links">
+<span class="header-section-number">7.2.6.4</span> HTML Links</h4>
 <p>Usually, you will use markdown to create linked text, like <code>[text](url)</code>. However, this doesn’t work inside a scroll table, so we made a helper for creating html links. If you just give it a URL, it will remove the “http(s)://” and use the rest of the URL as the linked text.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">link</span><span class="op">(</span><span class="st">"https://scienceverse.org/metacheck"</span><span class="op">)</span></span>
@@ -921,8 +826,8 @@ module_name &lt;- function(paper, ...) {
 <span>     new_window <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "&lt;a href='https://scienceverse.org/metacheck'&gt;MetaCheck&lt;/a&gt;"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="format-references" class="level4" data-number="22.2.6.5"><h4 data-number="22.2.6.5" class="anchored" data-anchor-id="format-references">
-<span class="header-section-number">22.2.6.5</span> Format References</h4>
+</section><section id="format-references" class="level4" data-number="7.2.6.5"><h4 data-number="7.2.6.5" class="anchored" data-anchor-id="format-references">
+<span class="header-section-number">7.2.6.5</span> Format References</h4>
 <p>In order to keep references displayed consistently, use the <code>format_ref()</code> function. This function can take a bibentry object (like the values in the <code>ref</code> column of a paper’s bib table), bibtex text, or plain text.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># get refs from a paper</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -965,8 +870,8 @@ module_name &lt;- function(paper, ...) {
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">format_ref</span><span class="op">(</span><span class="st">"My wierd citation (2025)"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>[1] “My wierd citation (2025)”</p>
 <p>We will work towards future versions being able to collate all references in a report displayed using this method to automatically create a linked reference section,</p>
-</section></section><section id="return" class="level3" data-number="22.2.7"><h3 data-number="22.2.7" class="anchored" data-anchor-id="return">
-<span class="header-section-number">22.2.7</span> Return</h3>
+</section></section><section id="return" class="level3" data-number="7.2.7"><h3 data-number="7.2.7" class="anchored" data-anchor-id="return">
+<span class="header-section-number">7.2.7</span> Return</h3>
 <p>Structure the returned values in a list. The names below are reserved for specific uses in the report and piped workflow, but you can also return other objects for your own purposes.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co"># return a list ----</span></span>
@@ -1381,13 +1286,13 @@ module_name &lt;- function(paper, ...) {
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/jars.html" class="pagination-link" aria-label="Journal Article Reporting Standards">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span>
+      <a href="../chapters/modules.html" class="pagination-link" aria-label="Modules">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/github.html" class="pagination-link" aria-label="Exploring GitHub Repositories">
-        <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/mod-power.html" class="pagination-link" aria-label="Power Analysis Check">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

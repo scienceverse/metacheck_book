@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>Appendix A — Function reference for new users – The Metacheck Manual</title>
+<title>Appendix B — Function reference for new users – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../drafts/validation-osf.html" rel="prev">
+<link href="../chapters/osf-schemas.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/function-reference.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/function-reference.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Function reference for new users</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/osf-schemas.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/function-reference.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -195,68 +195,80 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
       </ul>
@@ -272,32 +284,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -305,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Advanced Functions</span></a>
+ <span class="menu-text">Using Metacheck Locally</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -313,120 +301,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Drafts &amp; Work in Progress</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About these drafts</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -440,32 +345,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#public-functions" id="toc-public-functions" class="nav-link active" data-scroll-target="#public-functions"><span class="header-section-number">B</span> Public functions</a>
+<a href="#public-functions" id="toc-public-functions" class="nav-link active" data-scroll-target="#public-functions"><span class="header-section-number">C</span> Public functions</a>
   <ul class="collapse">
-<li><a href="#getting-a-paper-to-work-with" id="toc-getting-a-paper-to-work-with" class="nav-link" data-scroll-target="#getting-a-paper-to-work-with"><span class="header-section-number">B.1</span> Getting a paper to work with</a></li>
-  <li><a href="#importing-papers-from-pdfs-and-xml" id="toc-importing-papers-from-pdfs-and-xml" class="nav-link" data-scroll-target="#importing-papers-from-pdfs-and-xml"><span class="header-section-number">B.2</span> Importing papers from PDFs and XML</a></li>
-  <li><a href="#searching-the-text" id="toc-searching-the-text" class="nav-link" data-scroll-target="#searching-the-text"><span class="header-section-number">B.3</span> Searching the text</a></li>
-  <li><a href="#extracting-statistics-and-links" id="toc-extracting-statistics-and-links" class="nav-link" data-scroll-target="#extracting-statistics-and-links"><span class="header-section-number">B.4</span> Extracting statistics and links</a></li>
-  <li><a href="#running-checks-modules" id="toc-running-checks-modules" class="nav-link" data-scroll-target="#running-checks-modules"><span class="header-section-number">B.5</span> Running checks (modules)</a></li>
-  <li><a href="#building-a-report" id="toc-building-a-report" class="nav-link" data-scroll-target="#building-a-report"><span class="header-section-number">B.6</span> Building a report</a></li>
-  <li><a href="#report-building-helpers" id="toc-report-building-helpers" class="nav-link" data-scroll-target="#report-building-helpers"><span class="header-section-number">B.7</span> Report-building helpers</a></li>
-  <li><a href="#looking-up-dois-and-metadata" id="toc-looking-up-dois-and-metadata" class="nav-link" data-scroll-target="#looking-up-dois-and-metadata"><span class="header-section-number">B.8</span> Looking up DOIs and metadata</a></li>
-  <li><a href="#databases-of-comments-replications-retractions" id="toc-databases-of-comments-replications-retractions" class="nav-link" data-scroll-target="#databases-of-comments-replications-retractions"><span class="header-section-number">B.9</span> Databases of comments, replications, retractions</a></li>
-  <li><a href="#finding-and-downloading-shared-files" id="toc-finding-and-downloading-shared-files" class="nav-link" data-scroll-target="#finding-and-downloading-shared-files"><span class="header-section-number">B.10</span> Finding and downloading shared files</a></li>
-  <li><a href="#asking-a-large-language-model" id="toc-asking-a-large-language-model" class="nav-link" data-scroll-target="#asking-a-large-language-model"><span class="header-section-number">B.11</span> Asking a large language model</a></li>
-  <li><a href="#checking-shared-code" id="toc-checking-shared-code" class="nav-link" data-scroll-target="#checking-shared-code"><span class="header-section-number">B.12</span> Checking shared code</a></li>
-  <li><a href="#orcid-and-contributor-info" id="toc-orcid-and-contributor-info" class="nav-link" data-scroll-target="#orcid-and-contributor-info"><span class="header-section-number">B.13</span> ORCID and contributor info</a></li>
-  <li><a href="#file-types" id="toc-file-types" class="nav-link" data-scroll-target="#file-types"><span class="header-section-number">B.14</span> File types</a></li>
-  <li><a href="#validation-utilities" id="toc-validation-utilities" class="nav-link" data-scroll-target="#validation-utilities"><span class="header-section-number">B.15</span> Validation utilities</a></li>
-  <li><a href="#general-utilities" id="toc-general-utilities" class="nav-link" data-scroll-target="#general-utilities"><span class="header-section-number">B.16</span> General utilities</a></li>
+<li><a href="#getting-a-paper-to-work-with" id="toc-getting-a-paper-to-work-with" class="nav-link" data-scroll-target="#getting-a-paper-to-work-with"><span class="header-section-number">C.1</span> Getting a paper to work with</a></li>
+  <li><a href="#importing-papers-from-pdfs-and-xml" id="toc-importing-papers-from-pdfs-and-xml" class="nav-link" data-scroll-target="#importing-papers-from-pdfs-and-xml"><span class="header-section-number">C.2</span> Importing papers from PDFs and XML</a></li>
+  <li><a href="#searching-the-text" id="toc-searching-the-text" class="nav-link" data-scroll-target="#searching-the-text"><span class="header-section-number">C.3</span> Searching the text</a></li>
+  <li><a href="#extracting-statistics-and-links" id="toc-extracting-statistics-and-links" class="nav-link" data-scroll-target="#extracting-statistics-and-links"><span class="header-section-number">C.4</span> Extracting statistics and links</a></li>
+  <li><a href="#running-checks-modules" id="toc-running-checks-modules" class="nav-link" data-scroll-target="#running-checks-modules"><span class="header-section-number">C.5</span> Running checks (modules)</a></li>
+  <li><a href="#building-a-report" id="toc-building-a-report" class="nav-link" data-scroll-target="#building-a-report"><span class="header-section-number">C.6</span> Building a report</a></li>
+  <li><a href="#report-building-helpers" id="toc-report-building-helpers" class="nav-link" data-scroll-target="#report-building-helpers"><span class="header-section-number">C.7</span> Report-building helpers</a></li>
+  <li><a href="#looking-up-dois-and-metadata" id="toc-looking-up-dois-and-metadata" class="nav-link" data-scroll-target="#looking-up-dois-and-metadata"><span class="header-section-number">C.8</span> Looking up DOIs and metadata</a></li>
+  <li><a href="#databases-of-comments-replications-retractions" id="toc-databases-of-comments-replications-retractions" class="nav-link" data-scroll-target="#databases-of-comments-replications-retractions"><span class="header-section-number">C.9</span> Databases of comments, replications, retractions</a></li>
+  <li><a href="#finding-and-downloading-shared-files" id="toc-finding-and-downloading-shared-files" class="nav-link" data-scroll-target="#finding-and-downloading-shared-files"><span class="header-section-number">C.10</span> Finding and downloading shared files</a></li>
+  <li><a href="#asking-a-large-language-model" id="toc-asking-a-large-language-model" class="nav-link" data-scroll-target="#asking-a-large-language-model"><span class="header-section-number">C.11</span> Asking a large language model</a></li>
+  <li><a href="#checking-shared-code" id="toc-checking-shared-code" class="nav-link" data-scroll-target="#checking-shared-code"><span class="header-section-number">C.12</span> Checking shared code</a></li>
+  <li><a href="#orcid-and-contributor-info" id="toc-orcid-and-contributor-info" class="nav-link" data-scroll-target="#orcid-and-contributor-info"><span class="header-section-number">C.13</span> ORCID and contributor info</a></li>
+  <li><a href="#file-types" id="toc-file-types" class="nav-link" data-scroll-target="#file-types"><span class="header-section-number">C.14</span> File types</a></li>
+  <li><a href="#validation-utilities" id="toc-validation-utilities" class="nav-link" data-scroll-target="#validation-utilities"><span class="header-section-number">C.15</span> Validation utilities</a></li>
+  <li><a href="#general-utilities" id="toc-general-utilities" class="nav-link" data-scroll-target="#general-utilities"><span class="header-section-number">C.16</span> General utilities</a></li>
   </ul>
 </li>
-  <li><a href="#internal-functions" id="toc-internal-functions" class="nav-link" data-scroll-target="#internal-functions"><span class="header-section-number">C</span> Internal functions</a></li>
+  <li><a href="#internal-functions" id="toc-internal-functions" class="nav-link" data-scroll-target="#internal-functions"><span class="header-section-number">D</span> Internal functions</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/function-reference.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/function-reference.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/function-reference.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Function reference for new users</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title">Appendix A — Function reference for new users</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/osf-schemas.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/function-reference.html"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title">Appendix B — Function reference for new users</h1>
 </div>
 
 
@@ -498,10 +403,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="public-functions" class="level1" data-number="B"><h1 data-number="B">
-<span class="header-section-number">B</span> Public functions</h1>
-<section id="getting-a-paper-to-work-with" class="level2" data-number="B.1"><h2 data-number="B.1" class="anchored" data-anchor-id="getting-a-paper-to-work-with">
-<span class="header-section-number">B.1</span> Getting a paper to work with</h2>
+<section id="public-functions" class="level1" data-number="C"><h1 data-number="C">
+<span class="header-section-number">C</span> Public functions</h1>
+<section id="getting-a-paper-to-work-with" class="level2" data-number="C.1"><h2 data-number="C.1" class="anchored" data-anchor-id="getting-a-paper-to-work-with">
+<span class="header-section-number">C.1</span> Getting a paper to work with</h2>
 <p>Everything in metacheck operates on a <em>paper object</em> (or a list of them). These functions create or load one.</p>
 <p><strong><code>demopaper()</code></strong> — returns a ready-made example paper, so you can try things without loading a file.</p>
 <div class="cell">
@@ -558,16 +463,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">paper_validate</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span>
 <span><span class="fu">paper_write</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"mypaper.json"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="importing-papers-from-pdfs-and-xml" class="level2" data-number="B.2"><h2 data-number="B.2" class="anchored" data-anchor-id="importing-papers-from-pdfs-and-xml">
-<span class="header-section-number">B.2</span> Importing papers from PDFs and XML</h2>
+</section><section id="importing-papers-from-pdfs-and-xml" class="level2" data-number="C.2"><h2 data-number="C.2" class="anchored" data-anchor-id="importing-papers-from-pdfs-and-xml">
+<span class="header-section-number">C.2</span> Importing papers from PDFs and XML</h2>
 <p>These convert source documents (usually a PDF) into the metacheck JSON format. Most need an external service (a GROBID server or the bibr backend), so they are shown but not run here.</p>
 <p><strong><code>convert(file_path, save_path)</code></strong> — the main entry point: convert a document to metacheck JSON, picking a method automatically. <strong><code>convert_grobid(...)</code></strong> / <strong><code>convert_bibr(...)</code></strong> — convert using a specific backend. <strong><code>grobid_to_bibr(xml_path)</code></strong> — turn GROBID TEI XML into the bibr structure. <strong><code>format_bib_authors(authors)</code></strong> — format an author list for a bibliography.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># needs a running GROBID server or the bibr backend</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span><span class="st">"mypaper.pdf"</span>, save_path <span class="op">=</span> <span class="st">"out/"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="searching-the-text" class="level2" data-number="B.3"><h2 data-number="B.3" class="anchored" data-anchor-id="searching-the-text">
-<span class="header-section-number">B.3</span> Searching the text</h2>
+</section><section id="searching-the-text" class="level2" data-number="C.3"><h2 data-number="C.3" class="anchored" data-anchor-id="searching-the-text">
+<span class="header-section-number">C.3</span> Searching the text</h2>
 <p><strong><code>search_text(paper, pattern)</code></strong> (also available as <strong><code>text_search()</code></strong> — they are the same function) — find text matching a regular expression.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">search_text</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"significant"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -610,8 +515,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "On average researchers in the experimental (app) condition made fewer mistakes (M = 9.12) than researchers in the control (checklist) condition (M = 10.9), t(97.7) = 2.9, p = 0.005, d =0.59."</code></pre>
 </div>
 </div>
-</section><section id="extracting-statistics-and-links" class="level2" data-number="B.4"><h2 data-number="B.4" class="anchored" data-anchor-id="extracting-statistics-and-links">
-<span class="header-section-number">B.4</span> Extracting statistics and links</h2>
+</section><section id="extracting-statistics-and-links" class="level2" data-number="C.4"><h2 data-number="C.4" class="anchored" data-anchor-id="extracting-statistics-and-links">
+<span class="header-section-number">C.4</span> Extracting statistics and links</h2>
 <p><strong><code>extract_eq(paper)</code></strong> — list every “name <code>&lt;comparator&gt;</code> value” equation in the text (test statistics, means, effect sizes, …). This is the canonical place to get statistics; checks should read from here rather than re-scanning the text.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_eq</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -649,8 +554,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">stats</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="running-checks-modules" class="level2" data-number="B.5"><h2 data-number="B.5" class="anchored" data-anchor-id="running-checks-modules">
-<span class="header-section-number">B.5</span> Running checks (modules)</h2>
+</section><section id="running-checks-modules" class="level2" data-number="C.5"><h2 data-number="C.5" class="anchored" data-anchor-id="running-checks-modules">
+<span class="header-section-number">C.5</span> Running checks (modules)</h2>
 <p>Checks in metacheck are <em>modules</em>. These functions list, describe, and run them.</p>
 <p><strong><code>module_list()</code></strong> — the available modules.</p>
 <div class="cell">
@@ -678,8 +583,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "List All URLs"</code></pre>
 </div>
 </div>
-</section><section id="building-a-report" class="level2" data-number="B.6"><h2 data-number="B.6" class="anchored" data-anchor-id="building-a-report">
-<span class="header-section-number">B.6</span> Building a report</h2>
+</section><section id="building-a-report" class="level2" data-number="C.6"><h2 data-number="C.6" class="anchored" data-anchor-id="building-a-report">
+<span class="header-section-number">C.6</span> Building a report</h2>
 <p><strong><code>report(paper, modules)</code></strong> — run a set of modules and render a full report document. <strong><code>report_module_run(...)</code></strong> — run the modules that make up a report. <strong><code>module_report(module_output)</code></strong> — turn one module’s output into its report section. <strong><code>report_qmd(...)</code></strong> — produce the Quarto source for a module’s section.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">report_txt</span> <span class="op">&lt;-</span> <span class="fu">module_report</span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
@@ -692,8 +597,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"all_urls"</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span>,</span>
 <span>       output_file <span class="op">=</span> <span class="st">"report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="report-building-helpers" class="level2" data-number="B.7"><h2 data-number="B.7" class="anchored" data-anchor-id="report-building-helpers">
-<span class="header-section-number">B.7</span> Report-building helpers</h2>
+</section><section id="report-building-helpers" class="level2" data-number="C.7"><h2 data-number="C.7" class="anchored" data-anchor-id="report-building-helpers">
+<span class="header-section-number">C.7</span> Report-building helpers</h2>
 <p>Small helpers modules use to format their report sections.</p>
 <p><strong><code>scroll_table(table)</code></strong> / <strong><code>report_table(table)</code></strong> — render a data frame as an HTML table. <strong><code>collapse_section(text, title)</code></strong> — wrap text in a collapsible block. <strong><code>link(url, text)</code></strong> — make an HTML link. <strong><code>plural(n)</code></strong> — <code>"s"</code> when <code>n != 1</code>, else <code>""</code> (for grammatical messages). <strong><code>format_ref(bib)</code></strong> — format a citation from a bibentry.</p>
 <div class="cell">
@@ -714,8 +619,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "DeBruine L, Mesquida C, Werner J, Lakens D (2026). &lt;em&gt;metacheck: Check Research Outputs for Best Practices&lt;/em&gt;. &lt;a href=\"https://doi.org/10.5281/zenodo.20704754\"&gt;doi:10.5281/zenodo.20704754&lt;/a&gt;, R package version 0.1.0, &lt;a href=\"https://scienceverse.org/metacheck\"&gt;https://scienceverse.org/metacheck&lt;/a&gt;."</code></pre>
 </div>
 </div>
-</section><section id="looking-up-dois-and-metadata" class="level2" data-number="B.8"><h2 data-number="B.8" class="anchored" data-anchor-id="looking-up-dois-and-metadata">
-<span class="header-section-number">B.8</span> Looking up DOIs and metadata</h2>
+</section><section id="looking-up-dois-and-metadata" class="level2" data-number="C.8"><h2 data-number="C.8" class="anchored" data-anchor-id="looking-up-dois-and-metadata">
+<span class="header-section-number">C.8</span> Looking up DOIs and metadata</h2>
 <p><strong><code>doi_clean(doi)</code></strong> — normalise a DOI string. <strong><code>doi_valid_format(doi)</code></strong> — does it look like a DOI? <strong><code>doi_resolves(doi)</code></strong> / <strong><code>doi_lookup(doi)</code></strong> — check/look up a DOI online.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">doi_clean</span><span class="op">(</span><span class="st">"https://doi.org/10.1234/ABC"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -734,15 +639,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">crossref_doi</span><span class="op">(</span><span class="st">"10.1177/0956797614520714"</span><span class="op">)</span>  <span class="co"># needs internet</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="databases-of-comments-replications-retractions" class="level2" data-number="B.9"><h2 data-number="B.9" class="anchored" data-anchor-id="databases-of-comments-replications-retractions">
-<span class="header-section-number">B.9</span> Databases of comments, replications, retractions</h2>
+</section><section id="databases-of-comments-replications-retractions" class="level2" data-number="C.9"><h2 data-number="C.9" class="anchored" data-anchor-id="databases-of-comments-replications-retractions">
+<span class="header-section-number">C.9</span> Databases of comments, replications, retractions</h2>
 <p><strong><code>pubpeer_comments(doi)</code></strong> — PubPeer comments for a DOI. <strong><code>FLoRA()</code></strong> / <strong><code>FLoRA_update()</code></strong> / <strong><code>FLoRA_date()</code></strong> — the FLoRA replication database (loaded, refreshed, and dated). <strong><code>retractionwatch()</code></strong> (alias <strong><code>rw()</code></strong>) / <strong><code>rw_update()</code></strong> / <strong><code>rw_date()</code></strong> — the Retraction Watch database.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pubpeer_comments</span><span class="op">(</span><span class="st">"10.1177/0956797614520714"</span><span class="op">)</span>  <span class="co"># needs internet</span></span>
 <span><span class="fu">rw</span><span class="op">(</span><span class="op">)</span>                                            <span class="co"># downloads the database</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="finding-and-downloading-shared-files" class="level2" data-number="B.10"><h2 data-number="B.10" class="anchored" data-anchor-id="finding-and-downloading-shared-files">
-<span class="header-section-number">B.10</span> Finding and downloading shared files</h2>
+</section><section id="finding-and-downloading-shared-files" class="level2" data-number="C.10"><h2 data-number="C.10" class="anchored" data-anchor-id="finding-and-downloading-shared-files">
+<span class="header-section-number">C.10</span> Finding and downloading shared files</h2>
 <p>Each repository has a <code>*_links()</code> function that finds links in a paper, an <code>*_info()</code> function that fetches metadata, and (where supported) a <code>*_file_download()</code> function.</p>
 <p><strong>OSF:</strong> <code>osf_links()</code>, <code>osf_info()</code>, <code>osf_file_download()</code>, <code>osf_type()</code>, <code>osf_check_id()</code>, <code>osf_api_check()</code>, <code>osf_delay()</code>, <code>osf_get_all_pages()</code>, <code>osf_preprint_list()</code>.</p>
 <p><strong>GitHub:</strong> <code>github_links()</code>, <code>github_info()</code>, <code>github_repo()</code>, <code>github_files()</code>, <code>github_languages()</code>, <code>github_readme()</code>.</p>
@@ -767,15 +672,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">osf_file_download</span><span class="op">(</span><span class="st">"5tbm9"</span>, <span class="st">"downloads/"</span><span class="op">)</span>  <span class="co"># download files</span></span>
 <span><span class="fu">github_readme</span><span class="op">(</span><span class="st">"scienceverse/metacheck"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="asking-a-large-language-model" class="level2" data-number="B.11"><h2 data-number="B.11" class="anchored" data-anchor-id="asking-a-large-language-model">
-<span class="header-section-number">B.11</span> Asking a large language model</h2>
+</section><section id="asking-a-large-language-model" class="level2" data-number="C.11"><h2 data-number="C.11" class="anchored" data-anchor-id="asking-a-large-language-model">
+<span class="header-section-number">C.11</span> Asking a large language model</h2>
 <p><strong><code>llm(text, ...)</code></strong> — send text to a language model and get a structured answer. <strong><code>llm_use(...)</code></strong> — set which model/platform to use. <strong><code>llm_model(model)</code></strong> / <strong><code>llm_model_list(platform)</code></strong> — pick or list models. <strong><code>llm_max_calls(n)</code></strong> — cap how many calls a run may make.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="st">"ollama"</span><span class="op">)</span>                       <span class="co"># choose a backend</span></span>
 <span><span class="fu">llm</span><span class="op">(</span><span class="st">"Summarise this abstract: ..."</span><span class="op">)</span>     <span class="co"># query the model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="checking-shared-code" class="level2" data-number="B.12"><h2 data-number="B.12" class="anchored" data-anchor-id="checking-shared-code">
-<span class="header-section-number">B.12</span> Checking shared code</h2>
+</section><section id="checking-shared-code" class="level2" data-number="C.12"><h2 data-number="C.12" class="anchored" data-anchor-id="checking-shared-code">
+<span class="header-section-number">C.12</span> Checking shared code</h2>
 <p><strong><code>code_read(file_path)</code></strong> — read a code file. <strong><code>code_parse_r(file_path)</code></strong> — parse R code into a table of calls. <strong><code>code_remove_comments(code_text, lang)</code></strong> — strip comments from code.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_remove_comments</span><span class="op">(</span><span class="st">"x &lt;- 1 # set x"</span>, lang <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -783,8 +688,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "x &lt;- 1 # set x"</code></pre>
 </div>
 </div>
-</section><section id="orcid-and-contributor-info" class="level2" data-number="B.13"><h2 data-number="B.13" class="anchored" data-anchor-id="orcid-and-contributor-info">
-<span class="header-section-number">B.13</span> ORCID and contributor info</h2>
+</section><section id="orcid-and-contributor-info" class="level2" data-number="C.13"><h2 data-number="C.13" class="anchored" data-anchor-id="orcid-and-contributor-info">
+<span class="header-section-number">C.13</span> ORCID and contributor info</h2>
 <p><strong><code>check_orcid(orcid)</code></strong> — validate an ORCID and fetch the person. <strong><code>get_orcid(family, given)</code></strong> — look up an ORCID by name. <strong><code>orcid_person(orcid)</code></strong> — a person’s ORCID record. <strong><code>credit_roles()</code></strong> — the CRediT contributor-role taxonomy.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">credit_roles</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -811,8 +716,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">check_orcid</span><span class="op">(</span><span class="st">"0000-0002-0247-239X"</span><span class="op">)</span>   <span class="co"># needs internet</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="file-types" class="level2" data-number="B.14"><h2 data-number="B.14" class="anchored" data-anchor-id="file-types">
-<span class="header-section-number">B.14</span> File types</h2>
+</section><section id="file-types" class="level2" data-number="C.14"><h2 data-number="C.14" class="anchored" data-anchor-id="file-types">
+<span class="header-section-number">C.14</span> File types</h2>
 <p><strong><code>filetype(filename)</code></strong> — a coarse type for a filename (e.g.&nbsp;data, code, document). <strong><code>file_category(contents)</code></strong> — categorise file contents.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">filetype</span><span class="op">(</span><span class="st">"analysis.R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -826,8 +731,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;   "data"</code></pre>
 </div>
 </div>
-</section><section id="validation-utilities" class="level2" data-number="B.15"><h2 data-number="B.15" class="anchored" data-anchor-id="validation-utilities">
-<span class="header-section-number">B.15</span> Validation utilities</h2>
+</section><section id="validation-utilities" class="level2" data-number="C.15"><h2 data-number="C.15" class="anchored" data-anchor-id="validation-utilities">
+<span class="header-section-number">C.15</span> Validation utilities</h2>
 <p><strong><code>validate(gt, module)</code></strong> — compare a module’s current output against a coded ground-truth file. <strong><code>accuracy(expected, observed)</code></strong> — accuracy measures (sensitivity, specificity, d-prime, …) from two logical vectors.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">accuracy</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -863,8 +768,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; [1] "metacheck_accuracy_measures"</code></pre>
 </div>
 </div>
-</section><section id="general-utilities" class="level2" data-number="B.16"><h2 data-number="B.16" class="anchored" data-anchor-id="general-utilities">
-<span class="header-section-number">B.16</span> General utilities</h2>
+</section><section id="general-utilities" class="level2" data-number="C.16"><h2 data-number="C.16" class="anchored" data-anchor-id="general-utilities">
+<span class="header-section-number">C.16</span> General utilities</h2>
 <p><strong><code>email(email)</code></strong> — set the contact email used for polite API access. <strong><code>online(url)</code></strong> — is a URL reachable? <strong><code>verbose(verbose)</code></strong> — get/set whether functions print progress. <strong><code>pb(total)</code></strong> — a progress bar. <strong><code>rep_if(x, y, replace)</code></strong> — replace values equal to <code>y</code> with <code>replace</code>. <strong><code>path_sanitize(path)</code></strong> — make a string safe to use as a file path. <strong><code>message(...)</code></strong> — metacheck’s message wrapper. <strong><code>logger()</code>, <code>logpath()</code>, <code>lastlog()</code></strong> — write and read run logs.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rep_if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">3</span><span class="op">)</span>, <span class="cn">NA</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -880,8 +785,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">email</span><span class="op">(</span><span class="st">"you@example.org"</span><span class="op">)</span></span>
 <span><span class="fu">online</span><span class="op">(</span><span class="st">"https://osf.io"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="internal-functions" class="level1" data-number="C"><h1 data-number="C">
-<span class="header-section-number">C</span> Internal functions</h1>
+</section></section><section id="internal-functions" class="level1" data-number="D"><h1 data-number="D">
+<span class="header-section-number">D</span> Internal functions</h1>
 <p>These are not part of the public interface and may change without notice. They are listed so the documentation is complete. Several are exported only for testing and begin with a dot.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -1323,8 +1228,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../drafts/validation-osf.html" class="pagination-link" aria-label="osf">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span>
+      <a href="../chapters/osf-schemas.html" class="pagination-link" aria-label="OSF Registration Schemas">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
