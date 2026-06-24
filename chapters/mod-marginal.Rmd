@@ -1,0 +1,76 @@
+---
+title: "Marginal Significance (marginal)"
+vignette: >
+  %\VignetteIndexEntry{Marginal Significance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `marginal` module lists every sentence that describes an effect as **"marginally significant"** (or a related phrase). Describing a non-significant result as "marginally significant", "approaching significance", or "trending toward significance" is a common way to over-interpret a result that did not pass the chosen threshold. The module surfaces these sentences so a reader can judge each in context.
+
+The term list is based on Matthew Hankins' well-known catalogue of phrases used to dress up non-significant results.
+
+This module is **fully offline** — it uses only regular expressions, so all the code below runs with just the metacheck package.
+
+## Running the module
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "marginal")
+```
+
+The `table` contains one row per flagged sentence:
+
+```{r}
+mo <- module_run(paper, "marginal")
+mo$traffic_light
+mo$summary_text
+mo$table[, c("text", "section_type")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+mo <- module_run(psychsci[1:30], "marginal")
+# papers where at least one marginal-significance phrase was found
+subset(mo$summary_table, marginal > 0) |>
+  head() |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+A paper with no such phrasing returns a green traffic light and an empty table:
+
+```{r}
+clean <- test_paper("The effect was significant, t(28) = 2.40, p = .02, d = 0.45.")
+module_run(clean, "marginal")$traffic_light
+```
+
+A paper that hedges a non-significant result is flagged:
+
+```{r}
+flagged <- test_paper("The difference was marginally significant (p = .07).")
+mo <- module_run(flagged, "marginal")
+mo$traffic_light
+mo$table$text
+```
+
+## Options
+
+`marginal` takes no options beyond the `paper` argument — it is a pure text search.
+
+## Validation
+
+> In a sample of 51 papers with 87 statements, this module correctly identified 38 statements (true positives) and incorrectly flagged 22 statements (false positives). It failed to detect 27 statements. Among all statements flagged by the module, 63% were genuine cases (positive predictive value); the module missed 42% of all true statements (false negative rate).
+
+Because both the false-positive and false-negative rates are appreciable, this module is best used as a first-pass highlighter for human review.

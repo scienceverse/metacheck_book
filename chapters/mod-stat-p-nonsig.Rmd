@@ -1,0 +1,72 @@
+---
+title: "Non-Significant p-Values (stat_p_nonsig)"
+vignette: >
+  %\VignetteIndexEntry{Non-Significant p-Values}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `stat_p_nonsig` module finds every **non-significant p-value** (p ≥ .05) so a reader can check whether the surrounding text interprets it correctly. A common error is to treat a non-significant result as evidence that there is *no effect* ("there was no difference between groups, p = .27"), when a non-significant result is simply inconclusive.
+
+The module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.
+
+This module is **fully offline**.
+
+## Running the module
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "stat_p_nonsig")
+```
+
+The `table` lists each non-significant p-value with its comparison and value:
+
+```{r}
+mo <- module_run(paper, "stat_p_nonsig")
+mo$traffic_light
+mo$summary_text
+mo$table[, c("text", "p_comp", "p_value", "significance")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+mo <- module_run(psychsci[1:20], "stat_p_nonsig")
+head(mo$summary_table) |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+A result that is correctly described as inconclusive is fine; one that claims "no effect" from a non-significant test is the kind of thing to check. The module flags both, and you read the sentence:
+
+```{r}
+flagged <- test_paper("There was no difference between the groups, t(40) = 1.10, p = .28.")
+mo <- module_run(flagged, "stat_p_nonsig")
+mo$table[, c("text", "p_value")] |>
+  knitr::kable()
+```
+
+A paper reporting only significant results returns nothing to check:
+
+```{r}
+clean <- test_paper("The effect was significant, t(28) = 2.40, p = .02.")
+module_run(clean, "stat_p_nonsig")$traffic_light
+```
+
+## Options
+
+`stat_p_nonsig` takes only the `paper` argument.
+
+## Validation
+
+> In a sample of 194 papers with 1602 instances of non-significant p-values, this module correctly detected 1486 of them and incorrectly identified 153. 91% of detections were true instances (positive predictive value).

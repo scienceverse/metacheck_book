@@ -1,0 +1,67 @@
+---
+title: "Preregistration Check (prereg_check)"
+vignette: >
+  %\VignetteIndexEntry{Preregistration Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `prereg_check` module finds links to **preregistrations** on the OSF and AsPredicted in the manuscript, retrieves the preregistration text, and organises its contents into a single standardised template. This makes it much easier for a reviewer to compare what was preregistered against what the manuscript reports.
+
+::: callout-note
+This module makes **live network calls** to the OSF and AsPredicted to retrieve preregistration content. You need an internet connection to run the code below. (When this book is built, these calls run against the live services.)
+:::
+
+## Running the module
+
+`demopaper()` links to two preregistrations, so it is a good example.
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "prereg_check")
+mo$traffic_light
+mo$summary_text
+```
+
+The `table` has one row per preregistration, with the template fields organised into columns. Here are a few of them:
+
+```{r}
+mo$table[, c("template_name", "title", "id", "sample_size")] |>
+  knitr::kable()
+```
+
+The full set of fields the module standardises includes the study design, hypotheses, sample-size rationale, stopping rule, variables, statistical tests, inference criteria, and exclusion criteria:
+
+```{r}
+names(mo$table)
+```
+
+## Reading a single preregistration's contents
+
+Because each preregistration becomes a row, you can inspect one in detail by transposing it:
+
+```{r}
+prereg <- mo$table[1, c("template_name", "sample_size", "statistical_tests", "data_exclusion_criteria")]
+t(prereg) |>
+  knitr::kable()
+```
+
+## Options and limitations
+
+`prereg_check` takes only the `paper` argument. It **cannot** extract information from:
+
+- unstructured preregistration templates (where everything is in one free-text field), or
+- preregistrations stored as uploaded text documents on the OSF rather than in the structured form.
+
+For the details of which OSF registration templates exist and how they are identified, see the [OSF Registration Schemas](osf-schemas.html) chapter.
+
+## Notes
+
+If you want metacheck to support additional preregistration platforms, reach out to the development team.

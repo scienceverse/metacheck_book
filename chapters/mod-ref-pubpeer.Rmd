@@ -1,0 +1,60 @@
+---
+title: "PubPeer Comments (ref_pubpeer)"
+vignette: >
+  %\VignetteIndexEntry{PubPeer Comments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `ref_pubpeer` module cross-references the paper's **cited references** against [PubPeer](https://pubpeer.com/), a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.
+
+The module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.
+
+::: callout-note
+This module makes **live network calls** to PubPeer (matching references by DOI). You need an internet connection to run the code below.
+:::
+
+## Running the module
+
+`demopaper()` cites a reference that has PubPeer comments.
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "ref_pubpeer")
+mo$traffic_light
+mo$summary_text
+```
+
+The `table` lists each matched reference, the number of comments, and a link:
+
+```{r}
+mo$table[, c("doi", "total_comments", "url")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+#| eval: false
+mo <- module_run(psychsci[1:10], "ref_pubpeer")
+mo$summary_table
+```
+
+## Interpreting the result
+
+A `green`/empty result means none of the cited references had PubPeer comments. A flagged result does **not** mean a citation is bad — it means there is a discussion you may want to read. Follow the `url` to the PubPeer thread and judge the comments in context.
+
+## Options
+
+`ref_pubpeer` takes only the `paper` argument.
+
+## Notes
+
+In the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>3&nbsp; Modules – The metacheck Book</title>
+<title>5&nbsp; Modules – The metacheck Book</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../chapters/creating-modules.html" rel="next">
-<link href="../chapters/intro.html" rel="prev">
+<link href="../chapters/llms.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/modules.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/modules.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/modules.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/modules.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -154,14 +154,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -178,25 +190,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+  <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -213,19 +279,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -242,25 +320,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,55 +361,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -361,35 +439,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#module-list" id="toc-module-list" class="nav-link active" data-scroll-target="#module-list"><span class="header-section-number">3.1</span> Module List</a></li>
+<li><a href="#module-list" id="toc-module-list" class="nav-link active" data-scroll-target="#module-list"><span class="header-section-number">5.1</span> Module List</a></li>
   <li>
-<a href="#module-output" id="toc-module-output" class="nav-link" data-scroll-target="#module-output"><span class="header-section-number">3.2</span> Module Output</a>
+<a href="#module-output" id="toc-module-output" class="nav-link" data-scroll-target="#module-output"><span class="header-section-number">5.2</span> Module Output</a>
   <ul class="collapse">
-<li><a href="#traffic-light" id="toc-traffic-light" class="nav-link" data-scroll-target="#traffic-light"><span class="header-section-number">3.2.1</span> Traffic light</a></li>
-  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table"><span class="header-section-number">3.2.2</span> Table</a></li>
-  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table"><span class="header-section-number">3.2.3</span> Summary Table</a></li>
-  <li><a href="#report" id="toc-report" class="nav-link" data-scroll-target="#report"><span class="header-section-number">3.2.4</span> Report</a></li>
-  <li><a href="#paper" id="toc-paper" class="nav-link" data-scroll-target="#paper"><span class="header-section-number">3.2.5</span> Paper</a></li>
-  <li><a href="#previous-outputs" id="toc-previous-outputs" class="nav-link" data-scroll-target="#previous-outputs"><span class="header-section-number">3.2.6</span> Previous Outputs</a></li>
+<li><a href="#traffic-light" id="toc-traffic-light" class="nav-link" data-scroll-target="#traffic-light"><span class="header-section-number">5.2.1</span> Traffic light</a></li>
+  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table"><span class="header-section-number">5.2.2</span> Table</a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table"><span class="header-section-number">5.2.3</span> Summary Table</a></li>
+  <li><a href="#report" id="toc-report" class="nav-link" data-scroll-target="#report"><span class="header-section-number">5.2.4</span> Report</a></li>
+  <li><a href="#paper" id="toc-paper" class="nav-link" data-scroll-target="#paper"><span class="header-section-number">5.2.5</span> Paper</a></li>
+  <li><a href="#previous-outputs" id="toc-previous-outputs" class="nav-link" data-scroll-target="#previous-outputs"><span class="header-section-number">5.2.6</span> Previous Outputs</a></li>
   </ul>
 </li>
   <li>
-<a href="#built-in-modules" id="toc-built-in-modules" class="nav-link" data-scroll-target="#built-in-modules"><span class="header-section-number">3.3</span> Built-in Modules</a>
+<a href="#built-in-modules" id="toc-built-in-modules" class="nav-link" data-scroll-target="#built-in-modules"><span class="header-section-number">5.3</span> Built-in Modules</a>
   <ul class="collapse">
-<li><a href="#all_p_values" id="toc-all_p_values" class="nav-link" data-scroll-target="#all_p_values"><span class="header-section-number">3.3.1</span> all_p_values</a></li>
-  <li><a href="#all_urls" id="toc-all_urls" class="nav-link" data-scroll-target="#all_urls"><span class="header-section-number">3.3.2</span> all_urls</a></li>
-  <li><a href="#stat_p_exact" id="toc-stat_p_exact" class="nav-link" data-scroll-target="#stat_p_exact"><span class="header-section-number">3.3.3</span> stat_p_exact</a></li>
-  <li><a href="#marginal" id="toc-marginal" class="nav-link" data-scroll-target="#marginal"><span class="header-section-number">3.3.4</span> marginal</a></li>
-  <li><a href="#stat_check" id="toc-stat_check" class="nav-link" data-scroll-target="#stat_check"><span class="header-section-number">3.3.5</span> stat_check</a></li>
+<li><a href="#all_p_values" id="toc-all_p_values" class="nav-link" data-scroll-target="#all_p_values"><span class="header-section-number">5.3.1</span> all_p_values</a></li>
+  <li><a href="#all_urls" id="toc-all_urls" class="nav-link" data-scroll-target="#all_urls"><span class="header-section-number">5.3.2</span> all_urls</a></li>
+  <li><a href="#stat_p_exact" id="toc-stat_p_exact" class="nav-link" data-scroll-target="#stat_p_exact"><span class="header-section-number">5.3.3</span> stat_p_exact</a></li>
+  <li><a href="#marginal" id="toc-marginal" class="nav-link" data-scroll-target="#marginal"><span class="header-section-number">5.3.4</span> marginal</a></li>
+  <li><a href="#stat_check" id="toc-stat_check" class="nav-link" data-scroll-target="#stat_check"><span class="header-section-number">5.3.5</span> stat_check</a></li>
   </ul>
 </li>
-  <li><a href="#chaining-modules" id="toc-chaining-modules" class="nav-link" data-scroll-target="#chaining-modules"><span class="header-section-number">3.4</span> Chaining Modules</a></li>
+  <li><a href="#chaining-modules" id="toc-chaining-modules" class="nav-link" data-scroll-target="#chaining-modules"><span class="header-section-number">5.4</span> Chaining Modules</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/modules.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/modules.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/modules.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/modules.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/modules.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span>
+<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span>
 </h1>
 </div>
 
@@ -409,8 +487,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Metacheck is designed modularly, so you can add modules to check for anything. It comes with a set of pre-defined modules, and we hope people will share more modules.</p>
-<section id="module-list" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="module-list">
-<span class="header-section-number">3.1</span> Module List</h2>
+<section id="module-list" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="module-list">
+<span class="header-section-number">5.1</span> Module List</h2>
 <p>You can see the list of built-in modules with the function below.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_list.html">module_list</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>*** GENERAL ***</p>
@@ -450,8 +528,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>ref_summary: Summarise information about each reference in a paper.</li>
 </ul>
 <p>Use <code>module_help("module_name")</code> for help with a specific module</p>
-</section><section id="module-output" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="module-output">
-<span class="header-section-number">3.2</span> Module Output</h2>
+</section><section id="module-output" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="module-output">
+<span class="header-section-number">5.2</span> Module Output</h2>
 <p>Module designers can include any information in the returned output, but we suggest they structure it in a specific way to facilitate creating reports and summarising many papers in a metascientific workflow.</p>
 <p>So most modules output a list with the following named items: module, title, table, report, traffic_light, summary_text, summary_table, paper. You probably don’t need to worry about any of this unless you are designing modules or using metacheck for metascience – the <code><a href="https://scienceverse.github.io/metacheck/reference/report.html">report()</a></code> function takes care of displaying everything for you when you need to assess a single paper.</p>
 <div class="cell">
@@ -473,8 +551,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "We found 1 imprecise *p* value out of 3 detected *p* values."</code></pre>
 </div>
 </div>
-<section id="traffic-light" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="traffic-light">
-<span class="header-section-number">3.2.1</span> Traffic light</h3>
+<section id="traffic-light" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="traffic-light">
+<span class="header-section-number">5.2.1</span> Traffic light</h3>
 <p>The <code>traffic_light</code> helps the reports give a quick visual guide to where there are problems or things to check.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -488,8 +566,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 🔵 informational only;<br>
 ⚪️ not applicable;<br>
 ⚫️ check failed</p>
-</section><section id="table" class="level3" data-number="3.2.2"><h3 data-number="3.2.2" class="anchored" data-anchor-id="table">
-<span class="header-section-number">3.2.2</span> Table</h3>
+</section><section id="table" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="table">
+<span class="header-section-number">5.2.2</span> Table</h3>
 <p>The <code>table</code> is usually a detailed table in the format returned from <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> or <code><a href="https://scienceverse.github.io/metacheck/reference/text_expand.html">text_expand()</a></code>, containing either text relevant to the module, or a classification of the text. This table can be of use to further modules in a chain, or to metascientific users.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -504,8 +582,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; #   expanded &lt;chr&gt;, imprecise &lt;lgl&gt;, zero &lt;lgl&gt;</code></pre>
 </div>
 </div>
-</section><section id="summary-table" class="level3" data-number="3.2.3"><h3 data-number="3.2.3" class="anchored" data-anchor-id="summary-table">
-<span class="header-section-number">3.2.3</span> Summary Table</h3>
+</section><section id="summary-table" class="level3" data-number="5.2.3"><h3 data-number="5.2.3" class="anchored" data-anchor-id="summary-table">
+<span class="header-section-number">5.2.3</span> Summary Table</h3>
 <p>The <code>summary_table</code> contains a single row for each paper, and must have an <code>id</code> column that matches the paper IDs. It will also have additional columns that summarise the results of the module. This is mainly useful in the metascientific workflow, and this table is appended by each module in a chain.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -514,8 +592,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 1 to_err_is_human           1      0</code></pre>
 </div>
 </div>
-</section><section id="report" class="level3" data-number="3.2.4"><h3 data-number="3.2.4" class="anchored" data-anchor-id="report">
-<span class="header-section-number">3.2.4</span> Report</h3>
+</section><section id="report" class="level3" data-number="5.2.4"><h3 data-number="5.2.4" class="anchored" data-anchor-id="report">
+<span class="header-section-number">5.2.4</span> Report</h3>
 <p>The <code>report</code> contains a vector of markdown and R code to be inserted into a report. The display is usually handled by the <code><a href="https://scienceverse.github.io/metacheck/reference/module_report.html">module_report()</a></code> function inside the <code><a href="https://scienceverse.github.io/metacheck/reference/report.html">report()</a></code> function.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">report</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -525,8 +603,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; [3] "::: {.callout-tip title=\"Learn More\" collapse=\"true\"}\n\nThe APA manual states: Report exact *p* values (e.g., *p* = .031) to two or three decimal places. However, report *p* values less than .001 as *p* &lt; .001. However, 2 decimals is too imprecise for many use-cases (e.g., a *p* value meta-analysis), so report *p* values with three digits.\n\nAmerican Psychological Association (2020). &lt;em&gt;Publication manual of the American Psychological Association&lt;/em&gt;, 7 edition. American Psychological Association.\n\n:::\n"</code></pre>
 </div>
 </div>
-</section><section id="paper" class="level3" data-number="3.2.5"><h3 data-number="3.2.5" class="anchored" data-anchor-id="paper">
-<span class="header-section-number">3.2.5</span> Paper</h3>
+</section><section id="paper" class="level3" data-number="5.2.5"><h3 data-number="5.2.5" class="anchored" data-anchor-id="paper">
+<span class="header-section-number">5.2.5</span> Paper</h3>
 <p>The <code>paper</code> is just the paper argument to <code><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run()</a></code>. This is mainly used when chaining modules.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">paper</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -543,8 +621,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; * X-Refs: 5</code></pre>
 </div>
 </div>
-</section><section id="previous-outputs" class="level3" data-number="3.2.6"><h3 data-number="3.2.6" class="anchored" data-anchor-id="previous-outputs">
-<span class="header-section-number">3.2.6</span> Previous Outputs</h3>
+</section><section id="previous-outputs" class="level3" data-number="5.2.6"><h3 data-number="5.2.6" class="anchored" data-anchor-id="previous-outputs">
+<span class="header-section-number">5.2.6</span> Previous Outputs</h3>
 <p>If you run modules in a chain or via the <code><a href="https://scienceverse.github.io/metacheck/reference/report.html">report()</a></code> function, the output accumulates the outputs of previous modules in this item. This is so some modules can share resource-intensive parts of checks rather than repeating them.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="va">paper</span> <span class="op">|&gt;</span></span>
@@ -560,14 +638,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; Marginal Significance: You described 2 effects with terms related to 'marginally significant'.</code></pre>
 </div>
 </div>
-</section></section><section id="built-in-modules" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="built-in-modules">
-<span class="header-section-number">3.3</span> Built-in Modules</h2>
+</section></section><section id="built-in-modules" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="built-in-modules">
+<span class="header-section-number">5.3</span> Built-in Modules</h2>
 <p>Below, we will demonstrate the use of a few built-in modules, first on a single paper and then a list of papers, the <code>psychsci</code> list of 250 open-access papers from Psychological Science.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797620955209`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="all_p_values" class="level3" data-number="3.3.1"><h3 data-number="3.3.1" class="anchored" data-anchor-id="all_p_values">
-<span class="header-section-number">3.3.1</span> all_p_values</h3>
+<section id="all_p_values" class="level3" data-number="5.3.1"><h3 data-number="5.3.1" class="anchored" data-anchor-id="all_p_values">
+<span class="header-section-number">5.3.1</span> all_p_values</h3>
 <p>List all p-values in the text, returning the matched text (e.g., ‘p = 0.04’) and document location in a table.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">all_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"all_p_values"</span><span class="op">)</span></span>
@@ -632,8 +710,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 6 p &lt; .0001    88</code></pre>
 </div>
 </div>
-</section><section id="all_urls" class="level3" data-number="3.3.2"><h3 data-number="3.3.2" class="anchored" data-anchor-id="all_urls">
-<span class="header-section-number">3.3.2</span> all_urls</h3>
+</section><section id="all_urls" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="all_urls">
+<span class="header-section-number">5.3.2</span> all_urls</h3>
 <p>List all the URLs in the main text. There will, of course, be a few false positives when text in the paper is formatted as a valid URL.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">all_urls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"all_urls"</span><span class="op">)</span></span>
@@ -910,8 +988,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 250 09567976241279291   11</code></pre>
 </div>
 </div>
-</section><section id="stat_p_exact" class="level3" data-number="3.3.3"><h3 data-number="3.3.3" class="anchored" data-anchor-id="stat_p_exact">
-<span class="header-section-number">3.3.3</span> stat_p_exact</h3>
+</section><section id="stat_p_exact" class="level3" data-number="5.3.3"><h3 data-number="5.3.3" class="anchored" data-anchor-id="stat_p_exact">
+<span class="header-section-number">5.3.3</span> stat_p_exact</h3>
 <p>List any p-values that may have been reported with insufficient precision (e.g., p &lt; .05 or p = n.s.).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">imprecise</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
@@ -962,8 +1040,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; [3] "Contrary to expectations, our results revealed no significant main effect of time, b = -0.13, SE = 0.22, 95% CI = [-0.55, 0.30], t(1922) = -0.58, p &gt; .250, political orientation, b = 0.05, SE = 0.10, 95% CI = [-0.15, 0.24], t(1922) = 0.47, p &gt; .250, or their interaction, b = 0.04, SE = 0.06, 95% CI = [-0.08, 0.16], t(1922) = 0.67, p &gt; .250, on endorsement of the authority foundation."</code></pre>
 </div>
 </div>
-</section><section id="marginal" class="level3" data-number="3.3.4"><h3 data-number="3.3.4" class="anchored" data-anchor-id="marginal">
-<span class="header-section-number">3.3.4</span> marginal</h3>
+</section><section id="marginal" class="level3" data-number="5.3.4"><h3 data-number="5.3.4" class="anchored" data-anchor-id="marginal">
+<span class="header-section-number">5.3.4</span> marginal</h3>
 <p>List all sentences that describe an effect as ‘marginally significant’.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">marginal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"marginal"</span><span class="op">)</span></span>
 <span></span>
@@ -992,8 +1070,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; # ℹ 1 more variable: section_type &lt;chr&gt;</code></pre>
 </div>
 </div>
-</section><section id="stat_check" class="level3" data-number="3.3.5"><h3 data-number="3.3.5" class="anchored" data-anchor-id="stat_check">
-<span class="header-section-number">3.3.5</span> stat_check</h3>
+</section><section id="stat_check" class="level3" data-number="5.3.5"><h3 data-number="5.3.5" class="anchored" data-anchor-id="stat_check">
+<span class="header-section-number">5.3.5</span> stat_check</h3>
 <p>Check consistency of p-values and test statistics using functions from <a href="https://github.com/MicheleNuijten/statcheck">statcheck</a>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">statcheck</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_check"</span><span class="op">)</span></span>
@@ -1043,8 +1121,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 9     0.0330     0.0654     t(55) = 1.88, p = .033</code></pre>
 </div>
 </div>
-</section></section><section id="chaining-modules" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="chaining-modules">
-<span class="header-section-number">3.4</span> Chaining Modules</h2>
+</section></section><section id="chaining-modules" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="chaining-modules">
+<span class="header-section-number">5.4</span> Chaining Modules</h2>
 <p>Modules return a <code>summary</code> table as well as the detailed results <code>table</code>, which is automatically added to the summary if you chain modules.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ps_metascience</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -1469,13 +1547,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/intro.html" class="pagination-link" aria-label="Introducing metacheck">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span>
+      <a href="../chapters/llms.html" class="pagination-link" aria-label="Using Large Language Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/creating-modules.html" class="pagination-link" aria-label="Creating Modules">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Creating Modules</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>7&nbsp; Batch Processing – The metacheck Book</title>
+<title>18&nbsp; Batch Processing – The metacheck Book</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../chapters/local-files.html" rel="next">
-<link href="../chapters/jars.html" rel="prev">
+<link href="../chapters/mod-ref-replication.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/batch.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/batch.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -159,14 +159,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -183,25 +195,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+  <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -218,19 +284,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -247,25 +325,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -288,55 +366,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -367,40 +445,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#convert-pdfs" id="toc-convert-pdfs" class="nav-link active" data-scroll-target="#convert-pdfs"><span class="header-section-number">7.1</span> Convert PDFs</a>
+<a href="#convert-pdfs" id="toc-convert-pdfs" class="nav-link active" data-scroll-target="#convert-pdfs"><span class="header-section-number">18.1</span> Convert PDFs</a>
   <ul class="collapse">
-<li><a href="#using-bibr" id="toc-using-bibr" class="nav-link" data-scroll-target="#using-bibr"><span class="header-section-number">7.1.1</span> Using Bibr</a></li>
-  <li><a href="#using-grobid" id="toc-using-grobid" class="nav-link" data-scroll-target="#using-grobid"><span class="header-section-number">7.1.2</span> Using Grobid</a></li>
-  <li><a href="#read-in-converted-files" id="toc-read-in-converted-files" class="nav-link" data-scroll-target="#read-in-converted-files"><span class="header-section-number">7.1.3</span> Read in converted files</a></li>
+<li><a href="#using-bibr" id="toc-using-bibr" class="nav-link" data-scroll-target="#using-bibr"><span class="header-section-number">18.1.1</span> Using Bibr</a></li>
+  <li><a href="#using-grobid" id="toc-using-grobid" class="nav-link" data-scroll-target="#using-grobid"><span class="header-section-number">18.1.2</span> Using Grobid</a></li>
+  <li><a href="#read-in-converted-files" id="toc-read-in-converted-files" class="nav-link" data-scroll-target="#read-in-converted-files"><span class="header-section-number">18.1.3</span> Read in converted files</a></li>
   </ul>
 </li>
   <li>
-<a href="#paper-objects" id="toc-paper-objects" class="nav-link" data-scroll-target="#paper-objects"><span class="header-section-number">7.2</span> Paper Objects</a>
+<a href="#paper-objects" id="toc-paper-objects" class="nav-link" data-scroll-target="#paper-objects"><span class="header-section-number">18.2</span> Paper Objects</a>
   <ul class="collapse">
-<li><a href="#paper-id" id="toc-paper-id" class="nav-link" data-scroll-target="#paper-id"><span class="header-section-number">7.2.1</span> Paper ID</a></li>
-  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">7.2.2</span> Authors</a></li>
-  <li><a href="#info" id="toc-info" class="nav-link" data-scroll-target="#info"><span class="header-section-number">7.2.3</span> Info</a></li>
-  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography"><span class="header-section-number">7.2.4</span> Bibliography</a></li>
-  <li><a href="#cross-references" id="toc-cross-references" class="nav-link" data-scroll-target="#cross-references"><span class="header-section-number">7.2.5</span> Cross References</a></li>
-  <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text"><span class="header-section-number">7.2.6</span> Text</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">7.2.7</span> Section</a></li>
+<li><a href="#paper-id" id="toc-paper-id" class="nav-link" data-scroll-target="#paper-id"><span class="header-section-number">18.2.1</span> Paper ID</a></li>
+  <li><a href="#authors" id="toc-authors" class="nav-link" data-scroll-target="#authors"><span class="header-section-number">18.2.2</span> Authors</a></li>
+  <li><a href="#info" id="toc-info" class="nav-link" data-scroll-target="#info"><span class="header-section-number">18.2.3</span> Info</a></li>
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography"><span class="header-section-number">18.2.4</span> Bibliography</a></li>
+  <li><a href="#cross-references" id="toc-cross-references" class="nav-link" data-scroll-target="#cross-references"><span class="header-section-number">18.2.5</span> Cross References</a></li>
+  <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text"><span class="header-section-number">18.2.6</span> Text</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">18.2.7</span> Section</a></li>
   </ul>
 </li>
   <li>
-<a href="#text-search" id="toc-text-search" class="nav-link" data-scroll-target="#text-search"><span class="header-section-number">7.3</span> Text Search</a>
+<a href="#text-search" id="toc-text-search" class="nav-link" data-scroll-target="#text-search"><span class="header-section-number">18.3</span> Text Search</a>
   <ul class="collapse">
-<li><a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">7.3.1</span> Pattern</a></li>
-  <li><a href="#chaining" id="toc-chaining" class="nav-link" data-scroll-target="#chaining"><span class="header-section-number">7.3.2</span> Chaining</a></li>
-  <li><a href="#regex" id="toc-regex" class="nav-link" data-scroll-target="#regex"><span class="header-section-number">7.3.3</span> Regex</a></li>
-  <li><a href="#match" id="toc-match" class="nav-link" data-scroll-target="#match"><span class="header-section-number">7.3.4</span> Match</a></li>
+<li><a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">18.3.1</span> Pattern</a></li>
+  <li><a href="#chaining" id="toc-chaining" class="nav-link" data-scroll-target="#chaining"><span class="header-section-number">18.3.2</span> Chaining</a></li>
+  <li><a href="#regex" id="toc-regex" class="nav-link" data-scroll-target="#regex"><span class="header-section-number">18.3.3</span> Regex</a></li>
+  <li><a href="#match" id="toc-match" class="nav-link" data-scroll-target="#match"><span class="header-section-number">18.3.4</span> Match</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/batch.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/batch.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/batch.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/batch.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span>
+<span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span>
 </h1>
 </div>
 
@@ -421,8 +499,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span> <span class="co"># reading and writing CSV files</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In this vignette, we will process 250 open access papers from Psychological Science.</p>
-<section id="convert-pdfs" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="convert-pdfs">
-<span class="header-section-number">7.1</span> Convert PDFs</h2>
+<section id="convert-pdfs" class="level2" data-number="18.1"><h2 data-number="18.1" class="anchored" data-anchor-id="convert-pdfs">
+<span class="header-section-number">18.1</span> Convert PDFs</h2>
 <p>To use smart defaults, read in all of the PDF files from a directory called “pdf”, and save the converted files in JSON format a directory called “converted”.</p>
 <p>This function will use a local version of grobid or bibr if available, and then check a <a href="https://www.scienceverse.org/metacheck/convert.json">list of currently available free servers</a> and check those in order for accessibility (some require API keys).</p>
 <div class="cell">
@@ -430,8 +508,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>        save_path <span class="op">=</span> <span class="st">"converted"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The returned JSON files will contain infomations about how they were converted (with grogib or bibr, which version, and which server), but if you want more control, you can specific the bibr or grobid server to use.</p>
-<section id="using-bibr" class="level3" data-number="7.1.1"><h3 data-number="7.1.1" class="anchored" data-anchor-id="using-bibr">
-<span class="header-section-number">7.1.1</span> Using Bibr</h3>
+<section id="using-bibr" class="level3" data-number="18.1.1"><h3 data-number="18.1.1" class="anchored" data-anchor-id="using-bibr">
+<span class="header-section-number">18.1.1</span> Using Bibr</h3>
 <p>Bibr is a bibliographic metadata extractor, which has been developed specifically for metacheck. It uses OCR, regular expressions, machine learning, and limited LLMs to extract the contents of research papers in PDFs or Word format into structured metadata.</p>
 <p>Currently, you need an API key to use bibr while we work out how to afford this resource, but we hope this will change soon.</p>
 <div class="cell">
@@ -440,8 +518,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>        method <span class="op">=</span> <span class="st">"bibr"</span>,</span>
 <span>        api_url <span class="op">=</span> <span class="st">"https://platform.metacheck.app"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="using-grobid" class="level3" data-number="7.1.2"><h3 data-number="7.1.2" class="anchored" data-anchor-id="using-grobid">
-<span class="header-section-number">7.1.2</span> Using Grobid</h3>
+</section><section id="using-grobid" class="level3" data-number="18.1.2"><h3 data-number="18.1.2" class="anchored" data-anchor-id="using-grobid">
+<span class="header-section-number">18.1.2</span> Using Grobid</h3>
 <p>An alternate way to process PDFs is with the machine-learning library grobid, and then convert the resulting XML files to bibr format. This will have most, but not all, of the features of a paper processed by bibr.</p>
 <p>Read in all of the PDF files from a directory called “pdf”, process them with a local version of grobid, and save the JSON files in a directory called “converted”.</p>
 <div class="cell">
@@ -456,8 +534,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>        save_path <span class="op">=</span> <span class="st">"converted"</span>,</span>
 <span>        method <span class="op">=</span> <span class="st">"xml"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="read-in-converted-files" class="level3" data-number="7.1.3"><h3 data-number="7.1.3" class="anchored" data-anchor-id="read-in-converted-files">
-<span class="header-section-number">7.1.3</span> Read in converted files</h3>
+</section><section id="read-in-converted-files" class="level3" data-number="18.1.3"><h3 data-number="18.1.3" class="anchored" data-anchor-id="read-in-converted-files">
+<span class="header-section-number">18.1.3</span> Read in converted files</h3>
 <p>After you convert your papers to JSON format, read in the files to metacheck and save in an object called <code>papers</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/read.html">read</a></span><span class="op">(</span><span class="st">"converted"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -468,14 +546,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co"># saveRDS(papers, "psysci_oa.Rds")</span></span>
 <span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"psysci_oa.Rds"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="paper-objects" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="paper-objects">
-<span class="header-section-number">7.2</span> Paper Objects</h2>
+</section></section><section id="paper-objects" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="paper-objects">
+<span class="header-section-number">18.2</span> Paper Objects</h2>
 <p>Now <code>papers</code> is a list of metacheck paper objects, each of which contains structured information about the paper.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">papers</span><span class="op">[[</span><span class="fl">10</span><span class="op">]</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="paper-id" class="level3" data-number="7.2.1"><h3 data-number="7.2.1" class="anchored" data-anchor-id="paper-id">
-<span class="header-section-number">7.2.1</span> Paper ID</h3>
+<section id="paper-id" class="level3" data-number="18.2.1"><h3 data-number="18.2.1" class="anchored" data-anchor-id="paper-id">
+<span class="header-section-number">18.2.1</span> Paper ID</h3>
 <p>The <code>paper_id</code> is taken from the name of the original file.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">paper_id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -483,8 +561,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "0956797615588467"</code></pre>
 </div>
 </div>
-</section><section id="authors" class="level3" data-number="7.2.2"><h3 data-number="7.2.2" class="anchored" data-anchor-id="authors">
-<span class="header-section-number">7.2.2</span> Authors</h3>
+</section><section id="authors" class="level3" data-number="18.2.2"><h3 data-number="18.2.2" class="anchored" data-anchor-id="authors">
+<span class="header-section-number">18.2.2</span> Authors</h3>
 <p>The <code>author</code> table contains information for each author.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">author</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -522,8 +600,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 14 Vanessa   Fasolt          2</code></pre>
 </div>
 </div>
-</section><section id="info" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="info">
-<span class="header-section-number">7.2.3</span> Info</h3>
+</section><section id="info" class="level3" data-number="18.2.3"><h3 data-number="18.2.3" class="anchored" data-anchor-id="info">
+<span class="header-section-number">18.2.3</span> Info</h3>
 <p>The <code>info</code> table lists the filename, title, keywords, doi, and other info. The import sometimes makes mistakes with the DOI, so be cautious about using this.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">info</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -555,8 +633,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 6 10.1177/0956797614566469 Conspiracist Ideation as a Predictor of Climate-Scie…</code></pre>
 </div>
 </div>
-</section><section id="bibliography" class="level3" data-number="7.2.4"><h3 data-number="7.2.4" class="anchored" data-anchor-id="bibliography">
-<span class="header-section-number">7.2.4</span> Bibliography</h3>
+</section><section id="bibliography" class="level3" data-number="18.2.4"><h3 data-number="18.2.4" class="anchored" data-anchor-id="bibliography">
+<span class="header-section-number">18.2.4</span> Bibliography</h3>
 <p>The <code>bib</code> table contains the items in the reference list, including an id to link them to cross references (bib_id), the text ID for the full reference text (text_id), and the reference parsed by doi, title, author, year, etc.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">bib</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -628,8 +706,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 6 0956797615588467      5 10.1016/j.jcps.2011.05.001         Berns, G. S., &amp; Mo…</code></pre>
 </div>
 </div>
-</section><section id="cross-references" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="cross-references">
-<span class="header-section-number">7.2.5</span> Cross References</h3>
+</section><section id="cross-references" class="level3" data-number="18.2.5"><h3 data-number="18.2.5" class="anchored" data-anchor-id="cross-references">
+<span class="header-section-number">18.2.5</span> Cross References</h3>
 <p>The <code>xref</code> table contains each cross-reference to the bibliography, tables or figures. It includes an id to link them to a table (<code>xref_id</code>), whether the cross-reference is to a bib, table, or figure (<code>xref_type</code>), the contents of the reference (<code>contents</code>), and the ID of the sentence that it is cited in (<code>text_id</code>).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">xref</span> <span class="op">&lt;-</span> <span class="va">paper</span><span class="op">$</span><span class="va">xref</span></span>
@@ -639,8 +717,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 </div>
 </div>
-</section><section id="text" class="level3" data-number="7.2.6"><h3 data-number="7.2.6" class="anchored" data-anchor-id="text">
-<span class="header-section-number">7.2.6</span> Text</h3>
+</section><section id="text" class="level3" data-number="18.2.6"><h3 data-number="18.2.6" class="anchored" data-anchor-id="text">
+<span class="header-section-number">18.2.6</span> Text</h3>
 <p>The <code>text</code> item is a table containing each sentence from the main text (<code>text</code>). Each sentence has a unique sequential <code>text_id</code> number, and each paragraph and section are also sequentially numbered. The page_number is the page of the original document, starting with 1, that this sentence starts on.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">text</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -661,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 6       6            1          0          NA      &lt;NA&gt;</code></pre>
 </div>
 </div>
-</section><section id="section" class="level3" data-number="7.2.7"><h3 data-number="7.2.7" class="anchored" data-anchor-id="section">
-<span class="header-section-number">7.2.7</span> Section</h3>
+</section><section id="section" class="level3" data-number="18.2.7"><h3 data-number="18.2.7" class="anchored" data-anchor-id="section">
+<span class="header-section-number">18.2.7</span> Section</h3>
 <p>The <code>section</code> table supplements the text table to help group and search text. The <code>section_id</code> matches that in the text table, and <code>parent_section_id</code> is the ID of the section this one is nested under in the case of subsections. The <code>header</code> is the section header. The <code>section_type</code> is our best guess based on the header of the section type and the <code>classification_score</code> is a confidence rating of this guess (this is under development and currently not very accurate). Papers read in with grobid will not have a parent_section_id or classification_score.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">section</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -683,8 +761,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; 6                   NA</code></pre>
 </div>
 </div>
-</section></section><section id="text-search" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="text-search">
-<span class="header-section-number">7.3</span> Text Search</h2>
+</section></section><section id="text-search" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="text-search">
+<span class="header-section-number">18.3</span> Text Search</h2>
 <p>The <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> function helps you search the text of a paper or list of papers.</p>
 <p>The default arguments give you a data frame containing a row for every sentence in every paper in the set. The data frame has the same column structure as the <code>text</code> table above, so that you can easily chain text searches.</p>
 <div class="cell">
@@ -693,7 +771,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div id="tbl-sentences" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sentences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7.1: 10 random values from all the papers
+Table&nbsp;18.1: 10 random values from all the papers
 </figcaption><div aria-describedby="tbl-sentences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="datatables html-widget html-fill-item" id="htmlwidget-6df800d8529c5d1799ed" style="width:100%;height:auto;"></div>
@@ -713,8 +791,8 @@ Table&nbsp;7.1: 10 random values from all the papers
 <pre><code>#&gt; [1] "According to the direct-matching model, activation of the PMC during action observation constitutes a covert simulation of the observed action, which enables the observer to match it with an action in his or her own repertoire of intentional actions and thereby to identify the goal of the action (Gallese et al., 2004). The directmatching model therefore holds that somatotopically organized regions of PMC play a causal role in understanding observed actions. The predictive-coding model (Kilner, Friston, &amp; Frith, 2007) is based on the conception of a hierarchy of reciprocally connected models. Each model generates predictions about the representations at the immediately subordinate level. These predictions are compared with the actual state of the subordinate-level model, and a prediction error is returned to the superordinate-level model, which is revised and then generates a new prediction. By this process, the interconnected models are continuously updated and prediction errors minimized. Thus, according to the predictive-coding model, premotor activation and higher-level representations reciprocally modulate each other. Like the directmatching model, then, the predictive-coding model holds that somatotopically organized regions of PMC play a causal role in action understanding, with the mechanisms for action understanding overlapping with those for the production of actions."</code></pre>
 </div>
 </div>
-<section id="pattern" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="pattern">
-<span class="header-section-number">7.3.1</span> Pattern</h3>
+<section id="pattern" class="level3" data-number="18.3.1"><h3 data-number="18.3.1" class="anchored" data-anchor-id="pattern">
+<span class="header-section-number">18.3.1</span> Pattern</h3>
 <p>You can just code every sentence or paragraph in a set of papers, but this is usually not very efficient, so we can use a search pattern to filter the text.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, pattern <span class="op">=</span> <span class="st">"Scotland"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -726,8 +804,8 @@ Table&nbsp;7.1: 10 random values from all the papers
 <script type="application/json" data-for="htmlwidget-4bd115fc6dbc05dccaaf">{"x":{"filter":"none","vertical":false,"data":[["We gratefully acknowledge funding support from the Economic and Social Research Council (ES/L010437/1, ESRC Future Leaders grant to M. Daly), from Skills Development Scotland (Ph.D. scholarship funding to M. Egan), and from the European Commission Marie Curie Initiative (Grant Agreement PCIG10-GA-2011-303833 awarded to L. Delaney).","The two surveys used identical sampling and interview methods and were administered to nationally representative samples of people who were older than 16 years and resided in England, Scotland, or Wales.","The study protocol was approved by the Multi-Centre Research Ethics Committee for Scotland (MREC/01/0/56; 07/MRE00/58) and by the Lothian Research Ethics Committee (LREC/2003/2/29).","We thank the Lothian Birth Cohort 1936 research team, participants, and staff at the Wellcome Trust Clinical Research Facility, Edinburgh, Scotland.","To start, we tested whether neuroticism's bifactor structure replicated in two independent data sets: 8,158 participants in Generation Scotland (Smith et al., 2006) and the 1,434 participants used to develop the EPQ-R (Eysenck et al., 1985).","Generation Scotland was funded by the Scottish Government Chief Scientist Office (CZD/16/6) and Scottish Funding Council (HR03006).","Note that crime data were not available for Scotland.","For one, historian David Hackett Fischer (1991) argued that Scotland's history of frequent warfare led to a short-term cultural orientation, such as not wanting to invest in building more costly houses.","Our study focused only on survey participants living in England, because of the lack of contextual-level information for the Wales, Scotland, and Northern Ireland subsamples."],[248,43,46,197,40,80,115,306,87],["0956797615569001","0956797615615584","0956797618804501","0956797618804501","0956797619833325","0956797619833325","0956797619866627","09567976231172500","09567976241243370"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</section><section id="chaining" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="chaining">
-<span class="header-section-number">7.3.2</span> Chaining</h3>
+</section><section id="chaining" class="level3" data-number="18.3.2"><h3 data-number="18.3.2" class="anchored" data-anchor-id="chaining">
+<span class="header-section-number">18.3.2</span> Chaining</h3>
 <p>You can chain together searches to iteratively narrow down results. The following example first finds all sentences with “DeBruine” and then searches only that set for “2006”.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="va">papers</span> <span class="op">|&gt;</span></span>
@@ -753,8 +831,8 @@ Table&nbsp;7.1: 10 random values from all the papers
 <script type="application/json" data-for="htmlwidget-e0225d4b52ef7b3e0fe7">{"x":{"filter":"none","vertical":false,"data":[["Each participant was also randomly assigned to see one of 40 different faces (20 male, 20 female) selected from the Chicago Face Database (Ma, Correll, &amp; Wittenbrink, 2015).","The 120 faces were drawn from the Chicago Face Database (Ma et al., 2015) and evenly divided across ethnicity (Asian, Black, Latinx, White) and gender (female, male).","Participants completed four trials in which they rated neutrally posed faces from the Chicago Face Database (White, Black, Latinx, East Asian; Ma et al., 2015) and the Bogazici Face Database (Turkish; Saribay et al., 2018).","The participants who reported face impressions rated real facial stimuli from a variety of standardized databases, including the Chicago Face Database (Ma et al., 2015) and the Face Research Lab London Set (DeBruine &amp; Jones, 2017).","To test generalizability and that any effects were artifacts of these different databases, we had participants in Study 2 rate color frontal photographs of faces with neutral expressions from only the Chicago Face Database (Ma et al., 2015).","We used 30 face identities, 15 women and 15 men, with neutral expressions taken from the Chicago Face Database (Ma et al., 2015).","In contrast, Gwinn and colleagues sampled a large set of 64 highly controlled faces from the Chicago Face Database (CFD; Ma et al., 2015; note, however, that neither the article itself nor our personal communication with the author could establish which exact stimuli were used). If this reasoning was correct, the different results between the two reports should be attributable to the greater memorability of less standardized images employed by Ackerman et al., compared with images from databases in which photos are taken under controlled conditions and standardized instructions to models employed by Gwinn and colleagues.","Difference in recognition sensitivity (White -Black) separately for each target expression (A = angry, N = neutral) for the Ackerman stimuli without announcement (left side; a) and for the Chicago Face Database (CFD) stimuli with announcement as in the study by Gwinn et al. (2015; right side; b).","Results for the stimuli used by Ackerman et al. (2006) without announcement (left side; a) and for the Chicago Face Database stimuli with announcement as in the study by Gwinn et al. (2015; right side; b).","CFD = Chicago Face Database."],[137,57,117,80,186,54,32,138,219,222],["0956797620960011","09567976211019950","09567976211019950","09567976211024259","09567976211024259","09567976221147259","09567976231218640","09567976231218640","09567976231218640","09567976231218640"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</section><section id="regex" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="regex">
-<span class="header-section-number">7.3.3</span> Regex</h3>
+</section><section id="regex" class="level3" data-number="18.3.3"><h3 data-number="18.3.3" class="anchored" data-anchor-id="regex">
+<span class="header-section-number">18.3.3</span> Regex</h3>
 <p>You can also use regular expressions to refine your search. The pattern below returns every sentence that contains a word that contains text with p &gt; ###, regardless of the spaces.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, pattern <span class="op">=</span> <span class="st">"p\\s*&gt;\\s*0?\\.[0-9]+\\b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -765,8 +843,8 @@ Table&nbsp;7.1: 10 random values from all the papers
 <script type="application/json" data-for="htmlwidget-365729e60308d4703458">{"x":{"filter":"none","vertical":false,"data":[["No main effects or interactions with time were found (p &gt; .29), which indicates that the action-specific effects of TMS on confidence are not specific to its delivery before or after a perceptual decision.","There was a significant interactive effect of time and political orientation, b = 0.10, SE = 0.04, 95% CI = [0.03, 0.17], t(1922) = 2.72, p = .007, on endorsement of the fairness foundation (see Table S2 CI = [-0.14, -0.04], t(1922) = -3.59, p &lt; .001, disappeared after 7/7, b = 0.004, SE = 0.02, 95% CI = [-0.04, 0.05], t(1922) = 0.17, p &gt; .250 (see Fig 2).","Contrary to expectations, our results revealed no significant main effect of time, b = -0.13, SE = 0.22, 95% CI = [-0.55, 0.30], t(1922) = -0.58, p &gt; .250, political orientation, b = 0.05, SE = 0.10, 95% CI = [-0.15, 0.24], t(1922) = 0.47, p &gt; .250, or their interaction, b = 0.04, SE = 0.06, 95% CI = [-0.08, 0.16], t(1922) = 0.67, p &gt; .250, on endorsement of the authority foundation.","Again, contrary to expectations, our results revealed no significant main effect of time, b = -0.18, SE = 0.14, 95% CI = [-0.46, 0.10], t(1922) = -1.26, p = .208, political orientation, b = -0.08, SE = 0.06, 95% CI = [-0.20, 0.04], t(1922) = -1.26, p = .209, or their interaction, b = 0.04, SE = 0.04, 95% CI = [-0.04, 0.12], t(1922) = 1.05, p &gt; .250, on endorsement of the harm foundation.","Time increased negative attitudes among liberal participants, b = 0.13, SE = 0.06, 95% CI = [0.02, 0.24], t(1922) = 2.34, p = .020, but did not affect attitudes among conservative participants, b = -0.04, SE = 0.06, 95% CI = [-0.15, 0.07], t(1922) = -0.64, p &gt; .250.","Time increased negative attitudes among liberal participants, b = 0.22, SE = 0.06, 95% CI = [0.10, 0.33], t(1922) = 3.63, p &lt; .001, but did not affect attitudes among conservative participants, b = 0.03, SE = 0.06, 95% CI = [-0.09, 0.14], t(1922) = 0.45, p &gt; .250."],[99,87,89,91,93,96],["0956797614557697","0956797615615584","0956797615615584","0956797615615584","0956797615615584","0956797615615584"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>text<\/th>\n      <th>text_id<\/th>\n      <th>paper_id<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"dom":"tip","columnDefs":[{"className":"dt-right","targets":1},{"name":"text","targets":0},{"name":"text_id","targets":1},{"name":"paper_id","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-</section><section id="match" class="level3" data-number="7.3.4"><h3 data-number="7.3.4" class="anchored" data-anchor-id="match">
-<span class="header-section-number">7.3.4</span> Match</h3>
+</section><section id="match" class="level3" data-number="18.3.4"><h3 data-number="18.3.4" class="anchored" data-anchor-id="match">
+<span class="header-section-number">18.3.4</span> Match</h3>
 <p>You can return just the matching text for a regular expression by setting the results to “match”.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">match</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">papers</span>, </span>
@@ -1194,13 +1272,13 @@ Table&nbsp;7.1: 10 random values from all the papers
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/jars.html" class="pagination-link" aria-label="Journal Article Reporting Standards">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span>
+      <a href="../chapters/mod-ref-replication.html" class="pagination-link" aria-label="Replication Check (ref_replication)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/local-files.html" class="pagination-link" aria-label="Checking Local Files with repo_check and code_check">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

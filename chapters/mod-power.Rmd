@@ -1,0 +1,105 @@
+---
+title: "Power Analysis Check (power)"
+vignette: >
+  %\VignetteIndexEntry{Power Analysis Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `power` module uses regular expressions to find sentences that describe a statistical **power analysis**, and classifies each as *a priori*, *sensitivity*, or *post-hoc*. When [LLM support](llms.html) is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.
+
+A priori power analyses are the useful kind; post-hoc ("observed") power is rarely informative.
+
+## Running the module
+
+Every module is run the same way, with `module_run(paper, "module_name")`. We use the built-in `demopaper()`, which contains a few power statements.
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "power")
+```
+
+Printing the result renders the module's report. To work with the underlying data, use the returned list. The `table` has one row per detected power statement, with a `power_type` classification and a `complete` flag:
+
+```{r}
+mo <- module_run(paper, "power")
+mo$traffic_light
+mo$summary_text
+mo$table[, c("text", "power_type", "complete")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+Pass a `paperlist` such as the built-in `psychsci` (250 open-access *Psychological Science* articles) to run across a corpus. Here we run on the first 20 papers and summarise how many power statements were found per paper.
+
+```{r}
+mo <- module_run(psychsci[1:20], "power")
+head(mo$summary_table) |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+A paper that reports an a priori power analysis with all the needed details is the "good" case; a paper that mentions power only vaguely, or reports post-hoc power, is the kind of thing the module surfaces for a closer look.
+
+```{r}
+#| results: asis
+# demopaper contains both a priori and less-complete power statements
+module_run(demopaper(), "power")
+```
+
+The `power_type` column tells you which statements are a priori (worth keeping) versus post-hoc (usually a red flag), and `complete` flags a priori analyses that are missing required information.
+
+## Options: using an LLM
+
+The regular-expression behaviour above runs with no setup. To also extract structured details, turn on [LLM support](llms.html). The module reads the same switch (`llm_use()`) and model (`llm_model()`) described in the LLM chapter — there is no special module argument. The examples below are shown but not executed here, because they require Ollama or a cloud API key.
+
+**No LLM (default)** — detection and classification only:
+
+```{r}
+#| eval: false
+llm_use(FALSE)
+module_run(demopaper(), "power")
+```
+
+**Local LLM with Ollama** — extracts structured details, nothing leaves your machine:
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("ollama/qwen2.5:3b")
+module_run(demopaper(), "power")
+```
+
+**Cloud LLM with Groq** — faster, but sends text to the provider:
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("groq")
+module_run(demopaper(), "power")
+```
+
+With an LLM enabled, the result table gains columns for the extracted test, sample size, alpha, power, and effect size. See the [Local AI with Ollama](ollama.html) chapter for a fully worked LLM example of this module.
+
+The `power` module also accepts a `seed` argument (default `8675309`) that is passed to the LLM for reproducibility:
+
+```{r}
+#| eval: false
+module_run(demopaper(), "power", seed = 1)
+```
+
+## Validation
+
+> In a sample of 128 papers with 246 instances of power statements, 203 were correctly detected (true positives), 22 were missed (false negatives) and 21 were incorrectly detected (false positives). Among all instances flagged as power statements, 90.6% were correct (positive predictive value).
+
+As with all modules, treat the output as a prompt for human judgement, not a verdict.

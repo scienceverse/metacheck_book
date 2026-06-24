@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to metacheck, an R package providing a modular, extendable system for checking research outputs for best practices using text search, R code, and optional LLM queries.">
-<title>1&nbsp; metacheck – The metacheck Book</title>
+<title>2&nbsp; metacheck – The metacheck Book</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/intro.html" rel="next">
-<link href="../index.html" rel="prev">
+<link href="../chapters/reading-a-paper.html" rel="next">
+<link href="../chapters/intro.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/get-started.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/get-started.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/get-started.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -155,14 +155,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -179,25 +191,79 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power Analysis Check (power)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
+  <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Preregistration Check (prereg_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Marginal Significance (marginal)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">StatCheck (stat_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Exact p-Values (stat_p_exact)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Non-Significant p-Values (stat_p_nonsig)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Repository Check (repo_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Code Check (code_check)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">PubPeer Comments (ref_pubpeer)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Retraction Watch (ref_retraction)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Replication Check (ref_replication)</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,19 +280,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/batch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Batch Processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/stats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Statistical Reporting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/jars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Journal Article Reporting Standards</span></span></a>
   </div>
 </li>
       </ul>
@@ -243,25 +321,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Exploring GitHub Repositories</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Retrieving Planned Sample Sizes from AsPredicted Preregistrations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -284,55 +362,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/metascience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Using metacheck for MetaScience</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/workshop-4m.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">4M Workshop Metascience with Papercheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/grobid-checks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">grobid-checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/paper-structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Paper Object Structures</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/check-correct-citations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Check correct Citations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-p-values.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">P Value Module sValidation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-aspredicted.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">AsPredicted functions validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Effect Size Module Validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../drafts/validation-osf.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">osf</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">osf</span></span></a>
   </div>
 </li>
       </ul>
@@ -363,67 +441,67 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation"><span class="header-section-number">1.1</span> Installation</a>
+<a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation"><span class="header-section-number">2.1</span> Installation</a>
   <ul class="collapse">
-<li><a href="#optional-use-of-external-servers" id="toc-optional-use-of-external-servers" class="nav-link" data-scroll-target="#optional-use-of-external-servers"><span class="header-section-number">1.1.1</span> Optional use of external servers</a></li>
-  <li><a href="#load-from-json" id="toc-load-from-json" class="nav-link" data-scroll-target="#load-from-json"><span class="header-section-number">1.1.2</span> Load from JSON</a></li>
-  <li><a href="#load-from-non-pdf-document" id="toc-load-from-non-pdf-document" class="nav-link" data-scroll-target="#load-from-non-pdf-document"><span class="header-section-number">1.1.3</span> Load from non-PDF document</a></li>
-  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing"><span class="header-section-number">1.1.4</span> Batch Processing</a></li>
+<li><a href="#optional-use-of-external-servers" id="toc-optional-use-of-external-servers" class="nav-link" data-scroll-target="#optional-use-of-external-servers"><span class="header-section-number">2.1.1</span> Optional use of external servers</a></li>
+  <li><a href="#load-from-json" id="toc-load-from-json" class="nav-link" data-scroll-target="#load-from-json"><span class="header-section-number">2.1.2</span> Load from JSON</a></li>
+  <li><a href="#load-from-non-pdf-document" id="toc-load-from-non-pdf-document" class="nav-link" data-scroll-target="#load-from-non-pdf-document"><span class="header-section-number">2.1.3</span> Load from non-PDF document</a></li>
+  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing"><span class="header-section-number">2.1.4</span> Batch Processing</a></li>
   </ul>
 </li>
   <li>
-<a href="#paper-components" id="toc-paper-components" class="nav-link" data-scroll-target="#paper-components"><span class="header-section-number">1.2</span> Paper Components</a>
+<a href="#paper-components" id="toc-paper-components" class="nav-link" data-scroll-target="#paper-components"><span class="header-section-number">2.2</span> Paper Components</a>
   <ul class="collapse">
-<li><a href="#info" id="toc-info" class="nav-link" data-scroll-target="#info"><span class="header-section-number">1.2.1</span> Info</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">1.2.2</span> References</a></li>
-  <li><a href="#cross-references" id="toc-cross-references" class="nav-link" data-scroll-target="#cross-references"><span class="header-section-number">1.2.3</span> Cross-References</a></li>
-  <li><a href="#batch" id="toc-batch" class="nav-link" data-scroll-target="#batch"><span class="header-section-number">1.2.4</span> Batch</a></li>
+<li><a href="#info" id="toc-info" class="nav-link" data-scroll-target="#info"><span class="header-section-number">2.2.1</span> Info</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">2.2.2</span> References</a></li>
+  <li><a href="#cross-references" id="toc-cross-references" class="nav-link" data-scroll-target="#cross-references"><span class="header-section-number">2.2.3</span> Cross-References</a></li>
+  <li><a href="#batch" id="toc-batch" class="nav-link" data-scroll-target="#batch"><span class="header-section-number">2.2.4</span> Batch</a></li>
   </ul>
 </li>
   <li>
-<a href="#search-text" id="toc-search-text" class="nav-link" data-scroll-target="#search-text"><span class="header-section-number">1.3</span> Search Text</a>
+<a href="#search-text" id="toc-search-text" class="nav-link" data-scroll-target="#search-text"><span class="header-section-number">2.3</span> Search Text</a>
   <ul class="collapse">
-<li><a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">1.3.1</span> Pattern</a></li>
-  <li><a href="#return" id="toc-return" class="nav-link" data-scroll-target="#return"><span class="header-section-number">1.3.2</span> Return</a></li>
-  <li><a href="#regex-matches" id="toc-regex-matches" class="nav-link" data-scroll-target="#regex-matches"><span class="header-section-number">1.3.3</span> Regex matches</a></li>
-  <li><a href="#expand-text" id="toc-expand-text" class="nav-link" data-scroll-target="#expand-text"><span class="header-section-number">1.3.4</span> Expand Text</a></li>
+<li><a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">2.3.1</span> Pattern</a></li>
+  <li><a href="#return" id="toc-return" class="nav-link" data-scroll-target="#return"><span class="header-section-number">2.3.2</span> Return</a></li>
+  <li><a href="#regex-matches" id="toc-regex-matches" class="nav-link" data-scroll-target="#regex-matches"><span class="header-section-number">2.3.3</span> Regex matches</a></li>
+  <li><a href="#expand-text" id="toc-expand-text" class="nav-link" data-scroll-target="#expand-text"><span class="header-section-number">2.3.4</span> Expand Text</a></li>
   </ul>
 </li>
   <li>
-<a href="#large-language-models" id="toc-large-language-models" class="nav-link" data-scroll-target="#large-language-models"><span class="header-section-number">1.4</span> Large Language Models</a>
+<a href="#large-language-models" id="toc-large-language-models" class="nav-link" data-scroll-target="#large-language-models"><span class="header-section-number">2.4</span> Large Language Models</a>
   <ul class="collapse">
-<li><a href="#option-1-run-a-model-locally-with-ollama-recommended" id="toc-option-1-run-a-model-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#option-1-run-a-model-locally-with-ollama-recommended"><span class="header-section-number">1.4.1</span> Option 1: Run a model locally with Ollama (recommended)</a></li>
-  <li><a href="#option-2-use-a-cloud-api" id="toc-option-2-use-a-cloud-api" class="nav-link" data-scroll-target="#option-2-use-a-cloud-api"><span class="header-section-number">1.4.2</span> Option 2: Use a cloud API</a></li>
-  <li><a href="#llm-queries" id="toc-llm-queries" class="nav-link" data-scroll-target="#llm-queries"><span class="header-section-number">1.4.3</span> LLM Queries</a></li>
-  <li><a href="#expand-json" id="toc-expand-json" class="nav-link" data-scroll-target="#expand-json"><span class="header-section-number">1.4.4</span> Expand JSON</a></li>
-  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">1.4.5</span> Rate Limiting</a></li>
+<li><a href="#option-1-run-a-model-locally-with-ollama-recommended" id="toc-option-1-run-a-model-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#option-1-run-a-model-locally-with-ollama-recommended"><span class="header-section-number">2.4.1</span> Option 1: Run a model locally with Ollama (recommended)</a></li>
+  <li><a href="#option-2-use-a-cloud-api" id="toc-option-2-use-a-cloud-api" class="nav-link" data-scroll-target="#option-2-use-a-cloud-api"><span class="header-section-number">2.4.2</span> Option 2: Use a cloud API</a></li>
+  <li><a href="#llm-queries" id="toc-llm-queries" class="nav-link" data-scroll-target="#llm-queries"><span class="header-section-number">2.4.3</span> LLM Queries</a></li>
+  <li><a href="#expand-json" id="toc-expand-json" class="nav-link" data-scroll-target="#expand-json"><span class="header-section-number">2.4.4</span> Expand JSON</a></li>
+  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">2.4.5</span> Rate Limiting</a></li>
   </ul>
 </li>
   <li>
-<a href="#repository-functions" id="toc-repository-functions" class="nav-link" data-scroll-target="#repository-functions"><span class="header-section-number">1.5</span> Repository Functions</a>
+<a href="#repository-functions" id="toc-repository-functions" class="nav-link" data-scroll-target="#repository-functions"><span class="header-section-number">2.5</span> Repository Functions</a>
   <ul class="collapse">
-<li><a href="#osf-links-and-ids" id="toc-osf-links-and-ids" class="nav-link" data-scroll-target="#osf-links-and-ids"><span class="header-section-number">1.5.1</span> OSF Links and IDs</a></li>
-  <li><a href="#osf-info" id="toc-osf-info" class="nav-link" data-scroll-target="#osf-info"><span class="header-section-number">1.5.2</span> OSF Info</a></li>
-  <li><a href="#download-osf-files" id="toc-download-osf-files" class="nav-link" data-scroll-target="#download-osf-files"><span class="header-section-number">1.5.3</span> Download OSF Files</a></li>
-  <li><a href="#github-researchbox-and-zenodo" id="toc-github-researchbox-and-zenodo" class="nav-link" data-scroll-target="#github-researchbox-and-zenodo"><span class="header-section-number">1.5.4</span> GitHub, ResearchBox, and Zenodo</a></li>
-  <li><a href="#local-files" id="toc-local-files" class="nav-link" data-scroll-target="#local-files"><span class="header-section-number">1.5.5</span> Local files</a></li>
+<li><a href="#osf-links-and-ids" id="toc-osf-links-and-ids" class="nav-link" data-scroll-target="#osf-links-and-ids"><span class="header-section-number">2.5.1</span> OSF Links and IDs</a></li>
+  <li><a href="#osf-info" id="toc-osf-info" class="nav-link" data-scroll-target="#osf-info"><span class="header-section-number">2.5.2</span> OSF Info</a></li>
+  <li><a href="#download-osf-files" id="toc-download-osf-files" class="nav-link" data-scroll-target="#download-osf-files"><span class="header-section-number">2.5.3</span> Download OSF Files</a></li>
+  <li><a href="#github-researchbox-and-zenodo" id="toc-github-researchbox-and-zenodo" class="nav-link" data-scroll-target="#github-researchbox-and-zenodo"><span class="header-section-number">2.5.4</span> GitHub, ResearchBox, and Zenodo</a></li>
+  <li><a href="#local-files" id="toc-local-files" class="nav-link" data-scroll-target="#local-files"><span class="header-section-number">2.5.5</span> Local files</a></li>
   </ul>
 </li>
   <li>
-<a href="#modules" id="toc-modules" class="nav-link" data-scroll-target="#modules"><span class="header-section-number">1.6</span> Modules</a>
+<a href="#modules" id="toc-modules" class="nav-link" data-scroll-target="#modules"><span class="header-section-number">2.6</span> Modules</a>
   <ul class="collapse">
-<li><a href="#module-list" id="toc-module-list" class="nav-link" data-scroll-target="#module-list"><span class="header-section-number">1.6.1</span> Module List</a></li>
-  <li><a href="#running-modules" id="toc-running-modules" class="nav-link" data-scroll-target="#running-modules"><span class="header-section-number">1.6.2</span> Running modules</a></li>
-  <li><a href="#creating-modules" id="toc-creating-modules" class="nav-link" data-scroll-target="#creating-modules"><span class="header-section-number">1.6.3</span> Creating modules</a></li>
+<li><a href="#module-list" id="toc-module-list" class="nav-link" data-scroll-target="#module-list"><span class="header-section-number">2.6.1</span> Module List</a></li>
+  <li><a href="#running-modules" id="toc-running-modules" class="nav-link" data-scroll-target="#running-modules"><span class="header-section-number">2.6.2</span> Running modules</a></li>
+  <li><a href="#creating-modules" id="toc-creating-modules" class="nav-link" data-scroll-target="#creating-modules"><span class="header-section-number">2.6.3</span> Creating modules</a></li>
   </ul>
 </li>
-  <li><a href="#reports" id="toc-reports" class="nav-link" data-scroll-target="#reports"><span class="header-section-number">1.7</span> Reports</a></li>
+  <li><a href="#reports" id="toc-reports" class="nav-link" data-scroll-target="#reports"><span class="header-section-number">2.7</span> Reports</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/get-started.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/get-started.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/get-started.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/get-started.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">1</span>&nbsp; <span class="chapter-title">metacheck</span>
+<span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span>
 </h1>
 </div>
 
@@ -438,8 +516,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="installation" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="installation">
-<span class="header-section-number">1.1</span> Installation</h2>
+</header><section id="installation" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="installation">
+<span class="header-section-number">2.1</span> Installation</h2>
 <p>You can install the metacheck from <a href="https://github.com/scienceverse/metacheck">GitHub</a> with:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Metacheck is under active development. If you install the development version of Metacheck, you will often be able to use new modules or functions, but the development version might als have more bugs. You can install the development version of Metacheck from <a href="https://github.com/scienceverse/metacheck">GitHub</a> with [TODO]:</p>
@@ -450,8 +528,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>You can launch a simple shiny app that creates a report from a PDF, with options to control what information is sent to or retrieved from external servers. This shiny app will run a fixed number of validated modules. It also provides R code to transition to R, where you can use more functions of Metacheck. The shiny app is the best way to get started with Metacheck.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">metacheck</span><span class="fu">::</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_app.html">report_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="optional-use-of-external-servers" class="level3" data-number="1.1.1"><h3 data-number="1.1.1" class="anchored" data-anchor-id="optional-use-of-external-servers">
-<span class="header-section-number">1.1.1</span> Optional use of external servers</h3>
+<section id="optional-use-of-external-servers" class="level3" data-number="2.1.1"><h3 data-number="2.1.1" class="anchored" data-anchor-id="optional-use-of-external-servers">
+<span class="header-section-number">2.1.1</span> Optional use of external servers</h3>
 <p>Metacheck has been developed so that it can run locally, without sending any information anywhere. This requires a bit more technical expertise, but it makes the tool available to editors or peer reviewers who are not allowed to upload submitted manuscripts to an external server. When such privacy concerns are not an issue (for example when running Metacheck on a publicly available preprint) you can use online servers for specific tasks, such as converting a pdf to xml. This offers an easier user experience.</p>
 <p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert()</a></code> can read PDF files and save them in <a href="https://www.scienceverse.org/schema/paper.json">JSON format</a>. This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don’t supply an <code>api_url</code>, Metacheck will use a <a href="https://www.scienceverse.org/metacheck/convert.json">list of active servers</a> and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology tht meets GDPR requirements.</p>
 <p>You can also supplement the reference section created by GROBID with information retrieved from Crossref. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, an can take some time. You can always add this information later with the <code>add_bibmatch()</code> function.</p>
@@ -470,23 +548,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>                     method <span class="op">=</span> <span class="st">"grobid"</span>,</span>
 <span>                     api_url <span class="op">=</span> <span class="st">"http://localhost:8070"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="load-from-json" class="level3" data-number="1.1.2"><h3 data-number="1.1.2" class="anchored" data-anchor-id="load-from-json">
-<span class="header-section-number">1.1.2</span> Load from JSON</h3>
+</section><section id="load-from-json" class="level3" data-number="2.1.2"><h3 data-number="2.1.2" class="anchored" data-anchor-id="load-from-json">
+<span class="header-section-number">2.1.2</span> Load from JSON</h3>
 <p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/read.html">read()</a></code> can read converted JSON files created by the <code>convert</code> function.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/read.html">read</a></span><span class="op">(</span><span class="va">json_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="load-from-non-pdf-document" class="level3" data-number="1.1.3"><h3 data-number="1.1.3" class="anchored" data-anchor-id="load-from-non-pdf-document">
-<span class="header-section-number">1.1.3</span> Load from non-PDF document</h3>
+</section><section id="load-from-non-pdf-document" class="level3" data-number="2.1.3"><h3 data-number="2.1.3" class="anchored" data-anchor-id="load-from-non-pdf-document">
+<span class="header-section-number">2.1.3</span> Load from non-PDF document</h3>
 <p>To take advantage of GROBID’s ability to parse references and other aspects of papers, for now the best way is to convert your papers to PDF. We are developing our own custom backend called <code>bibr</code> which will also be able to convert DOC and DOCX files directly.</p>
-</section><section id="batch-processing" class="level3" data-number="1.1.4"><h3 data-number="1.1.4" class="anchored" data-anchor-id="batch-processing">
-<span class="header-section-number">1.1.4</span> Batch Processing</h3>
+</section><section id="batch-processing" class="level3" data-number="2.1.4"><h3 data-number="2.1.4" class="anchored" data-anchor-id="batch-processing">
+<span class="header-section-number">2.1.4</span> Batch Processing</h3>
 <p>The functions <code><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert()</a></code> and <code><a href="https://scienceverse.github.io/metacheck/reference/read.html">read()</a></code> also work on a folder of files, or a vector of paths, returning a list of JSON file paths or paper objects, respectively.</p>
-</section></section><section id="paper-components" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="paper-components">
-<span class="header-section-number">1.2</span> Paper Components</h2>
+</section></section><section id="paper-components" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="paper-components">
+<span class="header-section-number">2.2</span> Paper Components</h2>
 <p>Paper objects contain structured information retrieved from the converted document. This in, including info, references, and citations.</p>
-<section id="info" class="level3" data-number="1.2.1"><h3 data-number="1.2.1" class="anchored" data-anchor-id="info">
-<span class="header-section-number">1.2.1</span> Info</h3>
+<section id="info" class="level3" data-number="2.2.1"><h3 data-number="2.2.1" class="anchored" data-anchor-id="info">
+<span class="header-section-number">2.2.1</span> Info</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">info</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -497,8 +575,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section><section id="references" class="level3" data-number="1.2.2"><h3 data-number="1.2.2" class="anchored" data-anchor-id="references">
-<span class="header-section-number">1.2.2</span> References</h3>
+</section><section id="references" class="level3" data-number="2.2.2"><h3 data-number="2.2.2" class="anchored" data-anchor-id="references">
+<span class="header-section-number">2.2.2</span> References</h3>
 <p>The references are provided in a tabular format.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">bib</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -630,8 +708,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="cross-references" class="level3" data-number="1.2.3"><h3 data-number="1.2.3" class="anchored" data-anchor-id="cross-references">
-<span class="header-section-number">1.2.3</span> Cross-References</h3>
+</section><section id="cross-references" class="level3" data-number="2.2.3"><h3 data-number="2.2.3" class="anchored" data-anchor-id="cross-references">
+<span class="header-section-number">2.2.3</span> Cross-References</h3>
 <p>Cross-references are also provided in a tabular format, with <code>xref_id</code> to match the bibliography table.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span><span class="op">$</span><span class="va">xref</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -680,8 +758,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="batch" class="level3" data-number="1.2.4"><h3 data-number="1.2.4" class="anchored" data-anchor-id="batch">
-<span class="header-section-number">1.2.4</span> Batch</h3>
+</section><section id="batch" class="level3" data-number="2.2.4"><h3 data-number="2.2.4" class="anchored" data-anchor-id="batch">
+<span class="header-section-number">2.2.4</span> Batch</h3>
 <p>The <code>psychsci</code> built-in dataset contains all 250 open-access articles published in <em>Psychological Science</em> from 2004 to 2014. <em>Psychological Science</em> is the flagship journal of the Association for Psychological Science and publishes empirical research from all subfields of psychology. The PDFs were converted to metacheck paper objects using <code><a href="https://scienceverse.github.io/metacheck/reference/convert.html">convert()</a></code> and stored in the package. This dataset is used throughout the documentation to demonstrate how to work with a list of papers.</p>
 <p>There are functions to combine the information from a list of papers, like <code>psychsci</code>.</p>
 <div class="cell">
@@ -705,8 +783,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section></section><section id="search-text" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="search-text">
-<span class="header-section-number">1.3</span> Search Text</h2>
+</section></section><section id="search-text" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="search-text">
+<span class="header-section-number">2.3</span> Search Text</h2>
 <p>You can access a parsed table of the full text of the paper via <code>paper$text</code>, but you may find it more convenient to use the function <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code>. The defaults return a data table of each sentence, with the section type, header, div, paragraph and sentence numbers, and file name. (The section type is a best guess from the headers, so may not always be accurate.)</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -807,8 +885,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<section id="pattern" class="level3" data-number="1.3.1"><h3 data-number="1.3.1" class="anchored" data-anchor-id="pattern">
-<span class="header-section-number">1.3.1</span> Pattern</h3>
+<section id="pattern" class="level3" data-number="2.3.1"><h3 data-number="2.3.1" class="anchored" data-anchor-id="pattern">
+<span class="header-section-number">2.3.1</span> Pattern</h3>
 <p>You can search for a specific word or phrase by setting the <code>pattern</code> argument. The pattern is a regex string by default; set <code>fixed = TRUE</code> if you want to find exact text matches.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">paper</span>, pattern <span class="op">=</span> <span class="st">"metacheck"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -865,8 +943,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="return" class="level3" data-number="1.3.2"><h3 data-number="1.3.2" class="anchored" data-anchor-id="return">
-<span class="header-section-number">1.3.2</span> Return</h3>
+</section><section id="return" class="level3" data-number="2.3.2"><h3 data-number="2.3.2" class="anchored" data-anchor-id="return">
+<span class="header-section-number">2.3.2</span> Return</h3>
 <p>Set <code>return</code> to one of “sentence”, “paragraph”, “section”, or “match” to control what gets returned.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"GitHub"</span>, </span>
@@ -924,8 +1002,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="regex-matches" class="level3" data-number="1.3.3"><h3 data-number="1.3.3" class="anchored" data-anchor-id="regex-matches">
-<span class="header-section-number">1.3.3</span> Regex matches</h3>
+</section><section id="regex-matches" class="level3" data-number="2.3.3"><h3 data-number="2.3.3" class="anchored" data-anchor-id="regex-matches">
+<span class="header-section-number">2.3.3</span> Regex matches</h3>
 <p>You can also return just the matched text from a regex search by setting <code>return = "match"</code>. The extra <code>...</code> arguments in <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> are passed to <code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, so <code>perl = TRUE</code> allows you to use more complex regex, like below.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"[a-zA-Z]\\S*\\s*(=|&lt;)\\s*[0-9\\.,-]*\\d"</span></span>
@@ -1093,8 +1171,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="expand-text" class="level3" data-number="1.3.4"><h3 data-number="1.3.4" class="anchored" data-anchor-id="expand-text">
-<span class="header-section-number">1.3.4</span> Expand Text</h3>
+</section><section id="expand-text" class="level3" data-number="2.3.4"><h3 data-number="2.3.4" class="anchored" data-anchor-id="expand-text">
+<span class="header-section-number">2.3.4</span> Expand Text</h3>
 <p>You can expand the text returned by <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> or a module with <code><a href="https://scienceverse.github.io/metacheck/reference/text_expand.html">text_expand()</a></code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">marginal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"marginal"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1109,12 +1187,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section></section><section id="large-language-models" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="large-language-models">
-<span class="header-section-number">1.4</span> Large Language Models</h2>
+</section></section><section id="large-language-models" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="large-language-models">
+<span class="header-section-number">2.4</span> Large Language Models</h2>
 <p><strong>LLM use is entirely optional.</strong> Metacheck follows the principle that AI should be opt-in, restricted to classification of existing text, and used only where it provides clear benefits that cannot be achieved with other methods such as regular expressions. The vast majority of modules work without any LLM at all.</p>
 <p>Currently, the only module that will unlock substantial extra functionality when an lmm is used is the <strong><code>power</code> module</strong>, which can read sentences about power analyses and extract structured information (test type, sample size, effect size, etc.) that would be difficult to capture reliably with regular expressions alone.</p>
-<section id="option-1-run-a-model-locally-with-ollama-recommended" class="level3" data-number="1.4.1"><h3 data-number="1.4.1" class="anchored" data-anchor-id="option-1-run-a-model-locally-with-ollama-recommended">
-<span class="header-section-number">1.4.1</span> Option 1: Run a model locally with Ollama (recommended)</h3>
+<section id="option-1-run-a-model-locally-with-ollama-recommended" class="level3" data-number="2.4.1"><h3 data-number="2.4.1" class="anchored" data-anchor-id="option-1-run-a-model-locally-with-ollama-recommended">
+<span class="header-section-number">2.4.1</span> Option 1: Run a model locally with Ollama (recommended)</h3>
 <p>The recommended approach is to run an AI model on your own computer using <a href="https://ollama.com">Ollama</a>, a free open-source tool. This means:</p>
 <ul>
 <li>No API key or account required</li>
@@ -1132,8 +1210,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_model.html">llm_model</a></span><span class="op">(</span><span class="st">"ollama/llama3.2"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_use.html">llm_use</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="option-2-use-a-cloud-api" class="level3" data-number="1.4.2"><h3 data-number="1.4.2" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
-<span class="header-section-number">1.4.2</span> Option 2: Use a cloud API</h3>
+</section><section id="option-2-use-a-cloud-api" class="level3" data-number="2.4.2"><h3 data-number="2.4.2" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
+<span class="header-section-number">2.4.2</span> Option 2: Use a cloud API</h3>
 <p>You can also use any model supported by <a href="https://ellmer.tidyverse.org/">ellmer</a> via a cloud API. This is faster but requires an account and API key with a provider, and sends text to an external service.</p>
 <p>Get an API key from your preferred provider (e.g.&nbsp;<a href="https://console.groq.com/keys" class="uri">https://console.groq.com/keys</a>) and add it to your <code>.Renviron</code> file (use <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code> to open it):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="va">GROQ_API_KEY</span><span class="op">=</span><span class="st">"sk-proj-abcdefghijklmnopqrs0123456789ABCDEFGHIJKLMNOPQRS"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1149,8 +1227,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </div>
 </div>
-</section><section id="llm-queries" class="level3" data-number="1.4.3"><h3 data-number="1.4.3" class="anchored" data-anchor-id="llm-queries">
-<span class="header-section-number">1.4.3</span> LLM Queries</h3>
+</section><section id="llm-queries" class="level3" data-number="2.4.3"><h3 data-number="2.4.3" class="anchored" data-anchor-id="llm-queries">
+<span class="header-section-number">2.4.3</span> LLM Queries</h3>
 <p>You can query the extracted text of papers with LLMs. See <code><a href="https://scienceverse.github.io/metacheck/reference/llm.html">?llm</a></code> for details of how to get and set up your API key, choose an LLM, and adjust settings.</p>
 <p>Use <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code> first to narrow down the text into what you want to query. Below, we limited search to the first ten papers, and returned sentences that contains the word “power” and at least one number. Then we asked an LLM to determine if this is an a priori power analysis, and if so, to return some relevant values in a JSON-structured format.</p>
 <div class="cell">
@@ -1179,8 +1257,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">llm_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm.html">llm</a></span><span class="op">(</span><span class="va">power</span>, <span class="va">system_prompt</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="expand-json" class="level3" data-number="1.4.4"><h3 data-number="1.4.4" class="anchored" data-anchor-id="expand-json">
-<span class="header-section-number">1.4.4</span> Expand JSON</h3>
+</section><section id="expand-json" class="level3" data-number="2.4.4"><h3 data-number="2.4.4" class="anchored" data-anchor-id="expand-json">
+<span class="header-section-number">2.4.4</span> Expand JSON</h3>
 <p>It is useful to ask an LLM to return data in JSON structured format, but can be frustrating to extract the data, especially where the LLM makes syntax mistakes. The function <code><a href="https://scienceverse.github.io/metacheck/reference/json_expand.html">json_expand()</a></code> tries to expand a column with a JSON-formatted response into columns and deals with it gracefully (sets an ‘error’ column to “parsing error”) if there are errors. It also fixes column data types, if possible.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">llm_response</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/json_expand.html">json_expand</a></span><span class="op">(</span><span class="va">llm_power</span>, <span class="st">"answer"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1344,14 +1422,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="rate-limiting" class="level3" data-number="1.4.5"><h3 data-number="1.4.5" class="anchored" data-anchor-id="rate-limiting">
-<span class="header-section-number">1.4.5</span> Rate Limiting</h3>
+</section><section id="rate-limiting" class="level3" data-number="2.4.5"><h3 data-number="2.4.5" class="anchored" data-anchor-id="rate-limiting">
+<span class="header-section-number">2.4.5</span> Rate Limiting</h3>
 <p>The <code><a href="https://scienceverse.github.io/metacheck/reference/llm.html">llm()</a></code> function makes a separate query for each row in a data frame from <code><a href="https://scienceverse.github.io/metacheck/reference/text_search.html">text_search()</a></code>. (Using parallel functions in ellmer can be more efficient but currently does not associate structured output correctly when inputs may have 0 or more outputs.) To prevent accidentally making too many calls because of errors in your code, a default limit of 30 queries is set, which you can change:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_max_calls.html">llm_max_calls</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="repository-functions" class="level2" data-number="1.5"><h2 data-number="1.5" class="anchored" data-anchor-id="repository-functions">
-<span class="header-section-number">1.5</span> Repository Functions</h2>
+</section></section><section id="repository-functions" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="repository-functions">
+<span class="header-section-number">2.5</span> Repository Functions</h2>
 <p>Metacheck can find links to research repositories in a paper, retrieve the list of files they contain, and download those files for further checking. Four online services are supported, as well as local folders on your own computer.</p>
 <table class="caption-top table">
 <colgroup>
@@ -1402,8 +1480,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>The <code>repo_check</code> and <code>code_check</code> modules use all of these automatically: <code>repo_check</code> finds all repository links in a paper and builds a unified file list, and <code>code_check</code> then analyses any code files in that list. See the <a href="github.html">GitHub</a> and <a href="local-files.html">Local Files</a> articles for more detail on those two sources.</p>
-<section id="osf-links-and-ids" class="level3" data-number="1.5.1"><h3 data-number="1.5.1" class="anchored" data-anchor-id="osf-links-and-ids">
-<span class="header-section-number">1.5.1</span> OSF Links and IDs</h3>
+<section id="osf-links-and-ids" class="level3" data-number="2.5.1"><h3 data-number="2.5.1" class="anchored" data-anchor-id="osf-links-and-ids">
+<span class="header-section-number">2.5.1</span> OSF Links and IDs</h3>
 <p>Get any OSF links from a paper or list of papers.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_links.html">osf_links</a></span><span class="op">(</span><span class="va">psychsci</span><span class="op">)</span></span>
@@ -1433,8 +1511,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>However, all of the <code>osf_***()</code> functions fix IDs for you and handle duplicate IDs without making extra API calls, so you don’t need to add this step to most workflows.</p>
-</section><section id="osf-info" class="level3" data-number="1.5.2"><h3 data-number="1.5.2" class="anchored" data-anchor-id="osf-info">
-<span class="header-section-number">1.5.2</span> OSF Info</h3>
+</section><section id="osf-info" class="level3" data-number="2.5.2"><h3 data-number="2.5.2" class="anchored" data-anchor-id="osf-info">
+<span class="header-section-number">2.5.2</span> OSF Info</h3>
 <p>Get basic information about OSF links, such as the name, description, osf_type (nodes, files, preprints, registrations, users, set to “private” if you don’t have authorisation to view it, and “invalid” if the ), whether it is public</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_info.html">osf_info</a></span><span class="op">(</span><span class="va">links</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="st">"href"</span><span class="op">]</span><span class="op">)</span></span>
@@ -1576,8 +1654,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="download-osf-files" class="level3" data-number="1.5.3"><h3 data-number="1.5.3" class="anchored" data-anchor-id="download-osf-files">
-<span class="header-section-number">1.5.3</span> Download OSF Files</h3>
+</section><section id="download-osf-files" class="level3" data-number="2.5.3"><h3 data-number="2.5.3" class="anchored" data-anchor-id="download-osf-files">
+<span class="header-section-number">2.5.3</span> Download OSF Files</h3>
 <p>OSF projects let you organise information into nested components, and files within those components. Therefore, to retrieve all of the files associate with a project, you may need to navigate to several components and download zip files for the files from each components, then reorganise and rename the downloaded folders.</p>
 <p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than <code>max_file_size</code> (defaults to 10 MB) up to a total size of <code>max_download_size</code> (defaults to 100 MB).</p>
 <div class="cell">
@@ -1619,8 +1697,8 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
 #&gt; [23] "README"</code></pre>
 </div>
 </div>
-</section><section id="github-researchbox-and-zenodo" class="level3" data-number="1.5.4"><h3 data-number="1.5.4" class="anchored" data-anchor-id="github-researchbox-and-zenodo">
-<span class="header-section-number">1.5.4</span> GitHub, ResearchBox, and Zenodo</h3>
+</section><section id="github-researchbox-and-zenodo" class="level3" data-number="2.5.4"><h3 data-number="2.5.4" class="anchored" data-anchor-id="github-researchbox-and-zenodo">
+<span class="header-section-number">2.5.4</span> GitHub, ResearchBox, and Zenodo</h3>
 <p>The same pattern — find links, retrieve file lists, optionally download — applies to the other three services.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># GitHub</span></span>
@@ -1636,19 +1714,19 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
 <span><span class="va">z_info</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_info.html">zenodo_info</a></span><span class="op">(</span><span class="va">z_links</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="github.html">GitHub</a> article for a detailed walkthrough of the GitHub functions.</p>
-</section><section id="local-files" class="level3" data-number="1.5.5"><h3 data-number="1.5.5" class="anchored" data-anchor-id="local-files">
-<span class="header-section-number">1.5.5</span> Local files</h3>
+</section><section id="local-files" class="level3" data-number="2.5.5"><h3 data-number="2.5.5" class="anchored" data-anchor-id="local-files">
+<span class="header-section-number">2.5.5</span> Local files</h3>
 <p>If files are not in an online repository — for example because you downloaded a zip archive from a reviewer submission, or because the authors used a service not yet supported — you can point metacheck at a local folder instead.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
 <span>                     local_path <span class="op">=</span> <span class="st">"path/to/downloaded/files"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="local-files.html">Local Files</a> article for full details, including how to handle cloud-synced folders and multiple paths at once.</p>
-</section></section><section id="modules" class="level2" data-number="1.6"><h2 data-number="1.6" class="anchored" data-anchor-id="modules">
-<span class="header-section-number">1.6</span> Modules</h2>
+</section></section><section id="modules" class="level2" data-number="2.6"><h2 data-number="2.6" class="anchored" data-anchor-id="modules">
+<span class="header-section-number">2.6</span> Modules</h2>
 <p>metacheck is designed modularly, so you can add modules to check for anything. It comes with a set of pre-defined modules, and we hope people will share more modules.</p>
-<section id="module-list" class="level3" data-number="1.6.1"><h3 data-number="1.6.1" class="anchored" data-anchor-id="module-list">
-<span class="header-section-number">1.6.1</span> Module List</h3>
+<section id="module-list" class="level3" data-number="2.6.1"><h3 data-number="2.6.1" class="anchored" data-anchor-id="module-list">
+<span class="header-section-number">2.6.1</span> Module List</h3>
 <p>You can see the list of built-in modules with the function below.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_list.html">module_list</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1660,8 +1738,8 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
 </div>
 </div>
 </div>
-</section><section id="running-modules" class="level3" data-number="1.6.2"><h3 data-number="1.6.2" class="anchored" data-anchor-id="running-modules">
-<span class="header-section-number">1.6.2</span> Running modules</h3>
+</section><section id="running-modules" class="level3" data-number="2.6.2"><h3 data-number="2.6.2" class="anchored" data-anchor-id="running-modules">
+<span class="header-section-number">2.6.2</span> Running modules</h3>
 <p>To run a built-in module on a paper, you can reference it by name.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"all_p_values"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1739,11 +1817,11 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
 </table>
 </div>
 </div>
-</section><section id="creating-modules" class="level3" data-number="1.6.3"><h3 data-number="1.6.3" class="anchored" data-anchor-id="creating-modules">
-<span class="header-section-number">1.6.3</span> Creating modules</h3>
+</section><section id="creating-modules" class="level3" data-number="2.6.3"><h3 data-number="2.6.3" class="anchored" data-anchor-id="creating-modules">
+<span class="header-section-number">2.6.3</span> Creating modules</h3>
 <p>You can create your own modules using R code. Modules can also contain instructions for reporting, to give “traffic lights” for whether a check passed or failed, and to include appropriate text feedback in a report. See the <a href="modules.html">modules vignette</a> for more details.</p>
-</section></section><section id="reports" class="level2" data-number="1.7"><h2 data-number="1.7" class="anchored" data-anchor-id="reports">
-<span class="header-section-number">1.7</span> Reports</h2>
+</section></section><section id="reports" class="level2" data-number="2.7"><h2 data-number="2.7" class="anchored" data-anchor-id="reports">
+<span class="header-section-number">2.7</span> Reports</h2>
 <p>You can generate a report from any set of modules. Check the function help for the default set.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report.html">report</a></span><span class="op">(</span><span class="va">paper</span>, output_format <span class="op">=</span> <span class="st">"qmd"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2151,13 +2229,13 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link" aria-label="Welcome">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome</span>
+      <a href="../chapters/intro.html" class="pagination-link" aria-label="Introducing metacheck">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/intro.html" class="pagination-link" aria-label="Introducing metacheck">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/reading-a-paper.html" class="pagination-link" aria-label="Reading in a Paper">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

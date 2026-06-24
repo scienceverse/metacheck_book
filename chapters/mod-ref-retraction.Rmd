@@ -1,0 +1,58 @@
+---
+title: "Retraction Watch (ref_retraction)"
+vignette: >
+  %\VignetteIndexEntry{Retraction Watch}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `ref_retraction` module cross-references the paper's **cited references** against the [Retraction Watch](https://retractionwatch.com/) database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.
+
+::: callout-note
+This module makes **live network calls** (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.
+:::
+
+## Running the module
+
+`demopaper()` cites a reference that is in the Retraction Watch database.
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "ref_retraction")
+mo$traffic_light
+mo$summary_text
+```
+
+The `table` lists each cited reference found in the database:
+
+```{r}
+mo$table[, c("doi", "text")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+#| eval: false
+mo <- module_run(psychsci[1:10], "ref_retraction")
+mo$summary_table
+```
+
+## Interpreting the result
+
+A flagged reference is not automatically a mistake — retractions happen for many reasons, and a retracted paper is sometimes cited deliberately (for example, to discuss the retraction itself). The module's job is to make sure you are *aware*, so you can decide. Follow up each flagged DOI before acting.
+
+## Options
+
+`ref_retraction` takes only the `paper` argument.
+
+## Notes
+
+This is the same kind of check that reference managers such as [Zotero](https://www.zotero.org/blog/retracted-item-notifications/) perform, brought into the metacheck workflow so it can run alongside the other reference checks.

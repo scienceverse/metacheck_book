@@ -1,0 +1,77 @@
+---
+title: "Exact p-Values (stat_p_exact)"
+vignette: >
+  %\VignetteIndexEntry{Exact p-Values}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `stat_p_exact` module flags **p-values reported with insufficient precision** — for example `p < .05` or `p = n.s.` instead of an exact value like `p = .031` — and p-values reported as **exactly zero** (`p = .000`), which is mathematically impossible and should be written `p < .001`.
+
+Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.
+
+This module is **fully offline**.
+
+## Running the module
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "stat_p_exact")
+```
+
+The `table` lists every detected p-value, with `imprecise` and `zero` flags:
+
+```{r}
+mo <- module_run(paper, "stat_p_exact")
+mo$traffic_light
+mo$summary_text
+mo$table[, c("text", "p_comp", "p_value", "imprecise", "zero")] |>
+  knitr::kable()
+```
+
+To see only the problematic ones:
+
+```{r}
+mo$table[mo$table$imprecise | mo$table$zero, c("text", "expanded")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+mo <- module_run(psychsci[1:20], "stat_p_exact")
+head(mo$summary_table) |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+A known paper that reports imprecise p-values:
+
+```{r}
+#| results: asis
+module_run(psychsci$`0956797614560771`, "stat_p_exact")
+```
+
+A paper that reports all p-values exactly returns green:
+
+```{r}
+#| results: asis
+module_run(psychsci$`0956797616665351`, "stat_p_exact")
+```
+
+## Options
+
+`stat_p_exact` takes only the `paper` argument.
+
+## Validation
+
+> In a sample of 225 papers containing 405 instances of non-exact p-values, the module correctly detected 269 cases (true positives) and incorrectly identified 78 (false positives). It missed 136 instances (false negatives) and correctly identified 4557 cases of precisely reported p-values (true negatives). 78% of positive detections were correct (positive predictive value).

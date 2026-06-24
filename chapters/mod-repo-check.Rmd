@@ -1,0 +1,74 @@
+---
+title: "Repository Check (repo_check)"
+vignette: >
+  %\VignetteIndexEntry{Repository Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `repo_check` module finds links to **research repositories** in a paper (OSF, GitHub, ResearchBox, Zenodo), retrieves the list of files in each, and reports what is shared — for example whether there are data and code files, and whether the repository includes a README.
+
+::: callout-note
+This module makes **live network calls** to the linked repositories. You need an internet connection to run the code below.
+:::
+
+## Running the module
+
+`demopaper()` links to several repositories.
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "repo_check")
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+The `table` lists every file found across all linked repositories:
+
+```{r}
+mo$table[, c("repo_name", "file_name", "file_type", "file_size")] |>
+  head(10) |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+#| eval: false
+mo <- module_run(psychsci[1:10], "repo_check")
+mo$summary_table
+```
+
+## A clean example and one with problems
+
+A repository that includes a README and shared data/code is the "good" case; repositories with no README, or no shared files, are surfaced for attention. The summary text reports both:
+
+```{r}
+cat(mo$summary_text)
+```
+
+## Options
+
+`repo_check` accepts arguments for working with **local files** instead of (or in addition to) online repositories:
+
+```{r}
+#| eval: false
+# also include files from a local folder
+module_run(paper, "repo_check", local_path = "path/to/downloaded/files")
+
+# only check a local folder, skip all online lookups
+module_run(paper, "repo_check", local_path = "path/to/files", local_only = TRUE)
+```
+
+`local_only = TRUE` is useful when you cannot or do not want to contact external services — for example when checking a reviewer submission you downloaded as a zip. See the [Local Files](local-files.html) chapter for details.
+
+## Related
+
+The companion [code_check](mod-code-check.html) module analyses the actual code files that `repo_check` discovers. See also the [GitHub](github.html) chapter for a deeper look at the GitHub-specific functions.

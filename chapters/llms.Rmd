@@ -1,0 +1,182 @@
+---
+title: "Using Large Language Models"
+vignette: >
+  %\VignetteIndexEntry{Using Large Language Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>"
+)
+library(metacheck)
+```
+
+Most of metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do *more* when a large language model (LLM) is available — most notably the [power](mod-power.html) module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the [prereg_check](mod-prereg-check.html) module.
+
+This chapter explains how LLM support works in metacheck: how to turn it on, how to choose a model, how to run a model locally with Ollama or through a cloud API, and how to query papers directly with `llm()`.
+
+::: callout-important
+## metacheck's philosophy on AI
+
+LLM use is **entirely optional and opt-in**. metacheck restricts LLMs to *classification of existing text*, never evaluation of quality. We prioritise non-LLM methods, and the vast majority of modules work without any LLM. When you do use one, the recommended setup runs the model **locally** so no data leaves your computer.
+:::
+
+Because the code in this chapter needs an LLM to be installed and configured, the examples below are shown but not executed when this book is built. You can run all of them yourself once you have set up either Ollama or a cloud API key, as described below.
+
+## Turning LLM support on and off
+
+LLM support is controlled by a single global switch, `llm_use()`. It is **off by default**. Modules that can use an LLM check this switch and fall back to their regular-expression behaviour when it is off.
+
+```{r}
+#| eval: false
+llm_use()        # check the current setting (FALSE by default)
+llm_use(TRUE)    # turn LLM support on
+llm_use(FALSE)   # turn it back off
+```
+
+So the same module call behaves differently depending on this switch:
+
+```{r}
+#| eval: false
+paper <- demopaper()
+
+llm_use(FALSE)
+module_run(paper, "power")   # regex only: detects and classifies power statements
+
+llm_use(TRUE)
+module_run(paper, "power")   # also extracts structured details with the LLM
+```
+
+## Choosing a model
+
+The model is set with `llm_model()`. A model is named either as `"provider"` (use that provider's default model) or `"provider/model"` (a specific model).
+
+```{r}
+#| eval: false
+llm_model()                                 # show the model currently set
+llm_model("ollama/qwen2.5:3b")              # a specific local Ollama model
+llm_model("groq")                           # the default Groq cloud model
+llm_model("groq/llama-3.3-70b-versatile")   # a specific Groq model
+```
+
+When metacheck starts, it checks for known API keys (for example `GROQ_API_KEY`) in your environment and sets a sensible default model automatically.
+
+### Listing available models
+
+`llm_model_list()` returns the models metacheck can see across all configured providers. Pass a provider name to narrow it down.
+
+```{r}
+#| eval: false
+llm_model_list()           # all models from all configured providers
+llm_model_list("groq")     # just Groq models
+llm_model_list("ollama")   # just the models you have pulled locally
+```
+
+### Supported providers
+
+metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:
+
+| Provider | Type | Notes |
+|---|---|---|
+| `ollama` | local | Recommended. Runs on your own machine; no key, no data sent out. |
+| `groq` | cloud | Fast, free tier; needs `GROQ_API_KEY`. |
+| `openai` | cloud | Needs `OPENAI_API_KEY`. |
+| `anthropic` / `claude` | cloud | Needs `ANTHROPIC_API_KEY`. |
+| `google_gemini` / `google_vertex` | cloud | Needs `GOOGLE_API_KEY`. |
+| `mistral` | cloud | Needs a Mistral key. |
+| `aws_bedrock` | cloud | AWS credentials. |
+| `github` | cloud | GitHub Models. |
+| `lmstudio` / `vllm` | local | Other local-serving options. |
+
+## Option 1: Run a model locally with Ollama (recommended)
+
+[Ollama](https://ollama.com) is a free, open-source tool that runs AI models on your own computer. No API key, no account, no usage costs, and no data leaves your machine. The trade-off is speed: your computer does the work, so it is slower than a cloud API — especially the first time a model loads.
+
+**Setup, in brief:**
+
+1. Download and install Ollama from <https://ollama.com/download>.
+2. Pull a model from a terminal (not R). A small, capable starting model:
+
+   ``` bash
+   ollama pull qwen2.5:3b
+   ```
+
+   Other useful models: `llama3.2` (a good general default) and `qwen2.5:7b` (more capable, needs more memory). You can see everything you have pulled with `ollama list`.
+3. Point metacheck at it in R:
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("ollama/qwen2.5:3b")
+```
+
+For a full walkthrough — system requirements, verifying the server is running, choosing a model size for your hardware, and troubleshooting — see the dedicated [Local AI with Ollama](ollama.html) chapter.
+
+## Option 2: Use a cloud API
+
+You can use any cloud model ellmer supports. This is faster than running locally but requires an account and API key with the provider, and **sends text to an external service** — keep this in mind for unpublished manuscripts.
+
+Get an API key from your provider (for example <https://console.groq.com/keys>) and add it to your `.Renviron` file (open it with `usethis::edit_r_environ()`):
+
+``` bash
+GROQ_API_KEY="your-key-here"
+```
+
+Then enable LLM support and select the model:
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("groq")   # or e.g. llm_model("groq/llama-3.3-70b-versatile")
+```
+
+## Querying papers directly with `llm()`
+
+Beyond the modules, you can send any text to an LLM with `llm()`. Narrow the text down first with `text_search()` so you only send relevant sentences (this also keeps the number of queries — and any costs — low).
+
+```{r}
+#| eval: false
+power_sentences <- psychsci[1:10] |>
+  text_search("power") |>      # sentences mentioning power
+  text_search("[0-9]")          # and containing at least one number
+
+system_prompt <- "Does this sentence report an a priori power analysis? Answer only TRUE or FALSE."
+
+result <- llm(power_sentences, system_prompt)
+```
+
+### Free text vs. structured output
+
+By default `llm()` returns free-text responses in an `answer` column. For reliable extraction, pass an ellmer `type` specification so the provider returns structured fields:
+
+```{r}
+#| eval: false
+type_spec <- ellmer::type_object(
+  apriori = ellmer::type_boolean("Whether this is an a priori power analysis"),
+  sample  = ellmer::type_integer("The planned sample size", required = FALSE)
+)
+
+result <- llm(power_sentences, "Extract power analysis details.", type = type_spec)
+```
+
+If you ask for JSON in the prompt instead of using a `type`, `json_expand()` turns the JSON column into proper columns and handles malformed responses gracefully (setting an `error` column rather than failing):
+
+```{r}
+#| eval: false
+json_expand(result, "answer")
+```
+
+### Rate limiting
+
+`llm()` makes one query per row of text. To guard against runaway costs from a coding mistake, metacheck caps the number of queries (default 30). Change the cap with `llm_max_calls()`:
+
+```{r}
+#| eval: false
+llm_max_calls()      # check current limit
+llm_max_calls(100)   # raise it
+```
+
+See `?llm` for the full set of arguments and details.

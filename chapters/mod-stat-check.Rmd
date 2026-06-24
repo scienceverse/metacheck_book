@@ -1,0 +1,73 @@
+---
+title: "StatCheck (stat_check)"
+vignette: >
+  %\VignetteIndexEntry{StatCheck}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `stat_check` module runs [Statcheck](https://statcheck.io/) on the paper. Statcheck recomputes the p-value from each reported test statistic and degrees of freedom, and flags cases where the reported p-value is **inconsistent** with the statistic — and, more seriously, where the inconsistency changes the significance decision (a *decision error*).
+
+metacheck only returns Statcheck results for **t-tests and F-tests**, the tests for which the approach has been validated. Statcheck only detects statistics written in APA format, which is mostly used in psychology journals.
+
+This module is **fully offline** (Statcheck runs locally).
+
+## Running the module
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "stat_check")
+```
+
+The `table` has one row per detected test, comparing `reported_p` to `computed_p`, with `error` and `decision_error` flags:
+
+```{r}
+mo <- module_run(paper, "stat_check")
+mo$traffic_light
+mo$summary_text
+mo$table[, c("test_type", "reported_p", "computed_p", "error", "decision_error")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+Statcheck on a large corpus can take a while (the full `psychsci` set has more than 27,000 sentences with numbers). Here we run on a small subset:
+
+```{r}
+mo <- module_run(psychsci[1:20], "stat_check")
+head(mo$summary_table) |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+The flagged rows are the ones to inspect — especially `decision_error == TRUE`, where the reported and recomputed p-values fall on opposite sides of .05:
+
+```{r}
+mo <- module_run(psychsci[1:20], "stat_check")
+err <- mo$table[mo$table$error %in% TRUE, c("raw", "reported_p", "computed_p", "decision_error")]
+head(err) |>
+  knitr::kable()
+```
+
+## Options
+
+`stat_check` takes only the `paper` argument.
+
+::: callout-note
+Statcheck treats `p = .000` as an error (you should report `p < .001`), and may misflag one-sided tests, since it assumes two-sided p-values. Always read the flagged sentence before concluding there is a real error.
+:::
+
+## Validation
+
+> In a sample of 685 tests with 34 instances of inconsistent reporting, Statcheck correctly detected all 34 and incorrectly identified 26. So 0% of true instances were missed, and 43% of detections were false positives. See <https://osf.io/preprints/psyarxiv/tcxaj_v1/> for the full validation.
+
+Statcheck was developed by Michèle Nuijten and Sascha Epskamp.

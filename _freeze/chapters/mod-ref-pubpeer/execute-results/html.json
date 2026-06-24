@@ -1,0 +1,15 @@
+{
+  "hash": "795b39da3533b84e5cadd0a89a8a7d9a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"PubPeer Comments (ref_pubpeer)\"\nvignette: >\n  %\\VignetteIndexEntry{PubPeer Comments}\n  %\\VignetteEngine{knitr::rmarkdown}\n  %\\VignetteEncoding{UTF-8}\n---\n\n\n\n## What it checks\n\nThe `ref_pubpeer` module cross-references the paper's **cited references** against [PubPeer](https://pubpeer.com/), a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.\n\nThe module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.\n\n::: callout-note\nThis module makes **live network calls** to PubPeer (matching references by DOI). You need an internet connection to run the code below.\n:::\n\n## Running the module\n\n`demopaper()` cites a reference that has PubPeer comments.\n\n\n::: {.cell}\n\n```{.r .cell-code}\npaper <- demopaper()\nmo <- module_run(paper, \"ref_pubpeer\")\nmo$traffic_light\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n#> [1] \"info\"\n```\n\n\n:::\n\n```{.r .cell-code}\nmo$summary_text\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n#> [1] \"You cited 1 reference with comments in PubPeer.\"\n```\n\n\n:::\n:::\n\n\nThe `table` lists each matched reference, the number of comments, and a link:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmo$table[, c(\"doi\", \"total_comments\", \"url\")] |>\n  knitr::kable()\n```\n\n::: {.cell-output-display}\n\n\n|doi                      | total_comments|url                                                             |\n|:------------------------|--------------:|:---------------------------------------------------------------|\n|10.1177/0956797614520714 |              3|https://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56 |\n\n\n:::\n:::\n\n\n## Running on many papers\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmo <- module_run(psychsci[1:10], \"ref_pubpeer\")\nmo$summary_table\n```\n:::\n\n\n## Interpreting the result\n\nA `green`/empty result means none of the cited references had PubPeer comments. A flagged result does **not** mean a citation is bad — it means there is a discussion you may want to read. Follow the `url` to the PubPeer thread and judge the comments in context.\n\n## Options\n\n`ref_pubpeer` takes only the `paper` argument.\n\n## Notes\n\nIn the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

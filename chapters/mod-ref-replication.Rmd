@@ -1,0 +1,67 @@
+---
+title: "Replication Check (ref_replication)"
+vignette: >
+  %\VignetteIndexEntry{Replication Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `ref_replication` module cross-references the paper's **cited references** against the [FLoRA](https://forrt.org/) replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication's outcome.
+
+::: callout-note
+This module makes **live network calls** to the FLoRA replication database. You need an internet connection to run the code below.
+:::
+
+## Running the module
+
+`demopaper()` cites an original study that has a recorded replication.
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "ref_replication")
+mo$traffic_light
+mo$summary_text
+```
+
+The `table` matches each cited original to its replication(s):
+
+```{r}
+mo$table[, c("doi", "replication_doi", "replication_url")] |>
+  knitr::kable()
+```
+
+## Option: show replication outcomes
+
+By default the module reports *that* a replication exists. Set `show_outcomes = TRUE` to also include the outcome of each replication (for example, whether it was successful), which adds the `replication_outcome` and `replication_type` information to the report:
+
+```{r}
+mo <- module_run(paper, "ref_replication", show_outcomes = TRUE)
+mo$table[, c("doi", "replication_doi", "replication_outcome", "replication_type")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+#| eval: false
+mo <- module_run(psychsci[1:10], "ref_replication", show_outcomes = TRUE)
+mo$summary_table
+```
+
+## Interpreting the result
+
+A match means a replication of a cited study exists in the database — it is an invitation to check whether the replication's result changes how you should cite the original. As always, the module surfaces information for human judgement.
+
+## Options
+
+| Argument | Default | Effect |
+|---|---|---|
+| `paper` | — | the paper or paperlist to check |
+| `show_outcomes` | `FALSE` | include the outcome and type of each replication |

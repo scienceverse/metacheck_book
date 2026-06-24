@@ -1,0 +1,69 @@
+---
+title: "Code Check (code_check)"
+vignette: >
+  %\VignetteIndexEntry{Code Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `code_check` module analyses the **code files** shared with a paper. Building on the file list from [repo_check](mod-repo-check.html), it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use **absolute file paths** (which break on other machines), and whether files they try to load are actually present in the repository.
+
+::: callout-note
+This module makes **live network calls** to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.
+:::
+
+## Running the module
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "code_check")
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+The `table` has one row per code file, with the reproducibility checks as columns:
+
+```{r}
+mo$table[, c("file_name", "language", "parse_error", "absolute_paths",
+             "percentage_comment", "loaded_files_missing")] |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+Common problems the module surfaces:
+
+- **Absolute paths** (`absolute_paths == TRUE`) — e.g. `read.csv("C:/Users/me/data.csv")` — which will not run on anyone else's computer.
+- **Missing loaded files** (`loaded_files_missing > 0`) — the script reads a file that was not shared.
+- **Parse errors** (`parse_error == TRUE`) — the file is not valid code.
+
+```{r}
+mo$table[, c("file_name", "absolute_paths", "loaded_files_missing", "parse_error")] |>
+  knitr::kable()
+```
+
+## Options
+
+`code_check` shares `repo_check`'s local-file options, plus a limit on how many files to inspect:
+
+```{r}
+#| eval: false
+# inspect at most 5 files (default is 20)
+module_run(paper, "code_check", file_limit = 5)
+
+# check code in a local folder only, no online lookups
+module_run(paper, "code_check", local_path = "path/to/files", local_only = TRUE)
+```
+
+See the [Local Files](local-files.html) chapter for a full walkthrough of checking local code, including cloud-synced folders.
+
+## Notes
+
+The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible.
