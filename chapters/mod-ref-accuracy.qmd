@@ -1,0 +1,96 @@
+---
+title: "Reference Accuracy"
+vignette: >
+  %\VignetteIndexEntry{Reference Accuracy}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `ref_accuracy` module checks each cited reference against the metadata retrieved from [CrossRef](https://www.crossref.org/), to catch **inaccurate references**. Citation errors are common — a wrong year, a garbled title, a missing or extra author — and they make the cited work harder to find and the citation harder to verify.
+
+For every reference that has a CrossRef match, the module compares the title (ignoring capitalisation) and the author last names against the retrieved record, and flags any mismatch.
+
+::: callout-note
+This module relies on the paper's `bib_match` table, which holds reference metadata retrieved from CrossRef. It is populated when you convert a paper with `crossref_lookup = TRUE`, or you can add or refresh it at any time with `add_bibmatch()`. Building it makes **live network calls**, so you need an internet connection.
+:::
+
+## Running the module
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "ref_accuracy")
+mo$traffic_light
+mo$summary_text
+```
+
+The `table` has one row per reference, with a set of `*_mismatch` flags and a `no_match` flag for references CrossRef could not find:
+
+```{r}
+mo$table[, c("bib_id", "title.orig", "title_mismatch", "author_mismatch", "no_match")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+#| eval: false
+mo <- module_run(psychsci[1:10], "ref_accuracy")
+mo$summary_table
+```
+
+## Worked examples
+
+The demo paper's reference list contains two real mismatches worth looking at:
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "ref_accuracy")
+mo$table |>
+  dplyr::filter(title_mismatch | author_mismatch | doi_mismatch) |>
+  _[, c("bib_id", "title.orig", "title.match")] |>
+  knitr::kable()
+```
+
+The first (`bib_id` 2) is informative: the paper cites *"Evil Genius? How Dishonesty Can Lead to Greater Creativity"*, but the title CrossRef returns now begins with **"Retracted:"** — the article was retracted after this paper cited it. The mismatch is not a citation error at all; it is a signal the cited work has since been retracted (which the [retraction](mod-ref-retraction.qmd) module checks directly).
+
+The second (`bib_id` 3) is a citation that is genuinely incomplete. The paper cites Lakens (2018) as *"Equivalence Testing for Psychological Research"* with **no DOI** and a single author, while CrossRef has the full title (*"...: A Tutorial"*), three authors, and a DOI:
+
+```{r}
+mo$table |>
+  dplyr::filter(bib_id == 3) |>
+  _[, c("authors.orig", "doi.orig", "doi.match")] |>
+  knitr::kable()
+```
+
+A clear example also shows up in the `psychsci` corpus. In one article, a cited title differs by a single word — *"...is made **prior to** basic-level distinctions..."* in the reference list versus *"...is made **before** basic-level..."* in the published record:
+
+```{r}
+psy <- module_run(psychsci[["0956797614522816"]], "ref_accuracy")
+psy$table |>
+  dplyr::filter(bib_id == 8) |>
+  _[, c("title.orig", "title.match", "title_mismatch")] |>
+  knitr::kable()
+```
+
+This is the kind of small transcription slip — easy to make, hard to spot by eye — that the module surfaces automatically. (Differences in capitalisation and punctuation alone are ignored, so only substantive changes like this one are flagged.)
+
+## Interpreting the result
+
+A flagged reference is a candidate problem, not a confirmed error. Mismatches can come from three sources: a real citation mistake in the paper, an imperfect parse of the reference out of the PDF, or an inaccuracy in CrossRef's own record. The module makes the discrepancy visible so you can look at the original reference and decide which it is.
+
+References with `no_match = TRUE` were not found in CrossRef at all — often because they lack a DOI, or are books, preprints, or grey literature CrossRef does not index. These are not errors; they simply could not be checked.
+
+## Options
+
+`ref_accuracy` takes only the `paper` argument.
+
+## Notes
+
+This is one of four reference-section checks. The [reference summary](mod-ref-summary.qmd) module collects the results of all of them — accuracy, [PubPeer](mod-ref-pubpeer.qmd), [retraction](mod-ref-retraction.qmd), and [replication](mod-ref-replication.qmd) — into a single per-reference table.

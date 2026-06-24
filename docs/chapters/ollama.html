@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>22&nbsp; Local AI with Ollama – The Metacheck Manual</title>
+<title>28&nbsp; Local AI with Ollama – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/ollama.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/ollama.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -231,56 +231,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -297,13 +333,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -340,41 +376,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup"><span class="header-section-number">22.1</span> Setup</a>
+<a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup"><span class="header-section-number">28.1</span> Setup</a>
   <ul class="collapse">
-<li><a href="#what-you-need" id="toc-what-you-need" class="nav-link" data-scroll-target="#what-you-need"><span class="header-section-number">22.1.1</span> What you need</a></li>
-  <li><a href="#step-1-install-ollama" id="toc-step-1-install-ollama" class="nav-link" data-scroll-target="#step-1-install-ollama"><span class="header-section-number">22.1.2</span> Step 1: Install Ollama</a></li>
-  <li><a href="#step-2-download-an-ai-model" id="toc-step-2-download-an-ai-model" class="nav-link" data-scroll-target="#step-2-download-an-ai-model"><span class="header-section-number">22.1.3</span> Step 2: Download an AI model</a></li>
-  <li><a href="#step-3-verify-ollama-is-running" id="toc-step-3-verify-ollama-is-running" class="nav-link" data-scroll-target="#step-3-verify-ollama-is-running"><span class="header-section-number">22.1.4</span> Step 3: Verify Ollama is running</a></li>
-  <li><a href="#step-4-configure-metacheck-to-use-ollama" id="toc-step-4-configure-metacheck-to-use-ollama" class="nav-link" data-scroll-target="#step-4-configure-metacheck-to-use-ollama"><span class="header-section-number">22.1.5</span> Step 4: Configure metacheck to use Ollama</a></li>
+<li><a href="#what-you-need" id="toc-what-you-need" class="nav-link" data-scroll-target="#what-you-need"><span class="header-section-number">28.1.1</span> What you need</a></li>
+  <li><a href="#step-1-install-ollama" id="toc-step-1-install-ollama" class="nav-link" data-scroll-target="#step-1-install-ollama"><span class="header-section-number">28.1.2</span> Step 1: Install Ollama</a></li>
+  <li><a href="#step-2-download-an-ai-model" id="toc-step-2-download-an-ai-model" class="nav-link" data-scroll-target="#step-2-download-an-ai-model"><span class="header-section-number">28.1.3</span> Step 2: Download an AI model</a></li>
+  <li><a href="#step-3-verify-ollama-is-running" id="toc-step-3-verify-ollama-is-running" class="nav-link" data-scroll-target="#step-3-verify-ollama-is-running"><span class="header-section-number">28.1.4</span> Step 3: Verify Ollama is running</a></li>
+  <li><a href="#step-4-configure-metacheck-to-use-ollama" id="toc-step-4-configure-metacheck-to-use-ollama" class="nav-link" data-scroll-target="#step-4-configure-metacheck-to-use-ollama"><span class="header-section-number">28.1.5</span> Step 4: Configure metacheck to use Ollama</a></li>
   </ul>
 </li>
-  <li><a href="#a-simple-first-example" id="toc-a-simple-first-example" class="nav-link" data-scroll-target="#a-simple-first-example"><span class="header-section-number">22.2</span> A simple first example</a></li>
+  <li><a href="#a-simple-first-example" id="toc-a-simple-first-example" class="nav-link" data-scroll-target="#a-simple-first-example"><span class="header-section-number">28.2</span> A simple first example</a></li>
   <li>
-<a href="#run-the-power-module" id="toc-run-the-power-module" class="nav-link" data-scroll-target="#run-the-power-module"><span class="header-section-number">22.3</span> Run the power module</a>
+<a href="#run-the-power-module" id="toc-run-the-power-module" class="nav-link" data-scroll-target="#run-the-power-module"><span class="header-section-number">28.3</span> Run the power module</a>
   <ul class="collapse">
-<li><a href="#on-a-single-paper" id="toc-on-a-single-paper" class="nav-link" data-scroll-target="#on-a-single-paper"><span class="header-section-number">22.3.1</span> On a single paper</a></li>
-  <li><a href="#on-the-full-psychsci-dataset" id="toc-on-the-full-psychsci-dataset" class="nav-link" data-scroll-target="#on-the-full-psychsci-dataset"><span class="header-section-number">22.3.2</span> On the full psychsci dataset</a></li>
+<li><a href="#on-a-single-paper" id="toc-on-a-single-paper" class="nav-link" data-scroll-target="#on-a-single-paper"><span class="header-section-number">28.3.1</span> On a single paper</a></li>
+  <li><a href="#on-the-full-psychsci-dataset" id="toc-on-the-full-psychsci-dataset" class="nav-link" data-scroll-target="#on-the-full-psychsci-dataset"><span class="header-section-number">28.3.2</span> On the full psychsci dataset</a></li>
   </ul>
 </li>
-  <li><a href="#running-regcheck-locally" id="toc-running-regcheck-locally" class="nav-link" data-scroll-target="#running-regcheck-locally"><span class="header-section-number">22.4</span> Running RegCheck locally</a></li>
+  <li><a href="#running-regcheck-locally" id="toc-running-regcheck-locally" class="nav-link" data-scroll-target="#running-regcheck-locally"><span class="header-section-number">28.4</span> Running RegCheck locally</a></li>
   <li>
-<a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting"><span class="header-section-number">22.5</span> Troubleshooting</a>
+<a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting"><span class="header-section-number">28.5</span> Troubleshooting</a>
   <ul class="collapse">
-<li><a href="#ollama-is-not-running-or-connection-errors" id="toc-ollama-is-not-running-or-connection-errors" class="nav-link" data-scroll-target="#ollama-is-not-running-or-connection-errors"><span class="header-section-number">22.5.1</span> “Ollama is not running” or connection errors</a></li>
-  <li><a href="#the-model-seems-to-freeze-or-takes-very-long" id="toc-the-model-seems-to-freeze-or-takes-very-long" class="nav-link" data-scroll-target="#the-model-seems-to-freeze-or-takes-very-long"><span class="header-section-number">22.5.2</span> The model seems to freeze or takes very long</a></li>
-  <li><a href="#model-not-found-error" id="toc-model-not-found-error" class="nav-link" data-scroll-target="#model-not-found-error"><span class="header-section-number">22.5.3</span> “Model not found” error</a></li>
-  <li><a href="#out-of-memory-errors" id="toc-out-of-memory-errors" class="nav-link" data-scroll-target="#out-of-memory-errors"><span class="header-section-number">22.5.4</span> Out of memory errors</a></li>
-  <li><a href="#switching-back-to-a-cloud-model" id="toc-switching-back-to-a-cloud-model" class="nav-link" data-scroll-target="#switching-back-to-a-cloud-model"><span class="header-section-number">22.5.5</span> Switching back to a cloud model</a></li>
+<li><a href="#ollama-is-not-running-or-connection-errors" id="toc-ollama-is-not-running-or-connection-errors" class="nav-link" data-scroll-target="#ollama-is-not-running-or-connection-errors"><span class="header-section-number">28.5.1</span> “Ollama is not running” or connection errors</a></li>
+  <li><a href="#the-model-seems-to-freeze-or-takes-very-long" id="toc-the-model-seems-to-freeze-or-takes-very-long" class="nav-link" data-scroll-target="#the-model-seems-to-freeze-or-takes-very-long"><span class="header-section-number">28.5.2</span> The model seems to freeze or takes very long</a></li>
+  <li><a href="#model-not-found-error" id="toc-model-not-found-error" class="nav-link" data-scroll-target="#model-not-found-error"><span class="header-section-number">28.5.3</span> “Model not found” error</a></li>
+  <li><a href="#out-of-memory-errors" id="toc-out-of-memory-errors" class="nav-link" data-scroll-target="#out-of-memory-errors"><span class="header-section-number">28.5.4</span> Out of memory errors</a></li>
+  <li><a href="#switching-back-to-a-cloud-model" id="toc-switching-back-to-a-cloud-model" class="nav-link" data-scroll-target="#switching-back-to-a-cloud-model"><span class="header-section-number">28.5.5</span> Switching back to a cloud model</a></li>
   </ul>
 </li>
-  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference"><span class="header-section-number">22.6</span> Quick reference</a></li>
+  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference"><span class="header-section-number">28.6</span> Quick reference</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/ollama.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/ollama.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/ollama.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span>
+<span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span>
 </h1>
 </div>
 
@@ -398,19 +434,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Your papers and any information processed by the AI stay on your own machine</li>
 </ul>
 <p>The trade-off is that your computer does the work, so it will be slower — especially the first time, while the model loads into memory.</p>
-<section id="setup" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="setup">
-<span class="header-section-number">22.1</span> Setup</h2>
+<section id="setup" class="level2" data-number="28.1"><h2 data-number="28.1" class="anchored" data-anchor-id="setup">
+<span class="header-section-number">28.1</span> Setup</h2>
 <p>You need to repeat these step every time you want to use Ollama with Metacheck on a new machine.</p>
-<section id="what-you-need" class="level3" data-number="22.1.1"><h3 data-number="22.1.1" class="anchored" data-anchor-id="what-you-need">
-<span class="header-section-number">22.1.1</span> What you need</h3>
+<section id="what-you-need" class="level3" data-number="28.1.1"><h3 data-number="28.1.1" class="anchored" data-anchor-id="what-you-need">
+<span class="header-section-number">28.1.1</span> What you need</h3>
 <ul>
 <li>A computer with at least <strong>8 GB of RAM</strong> (16 GB recommended)</li>
 <li>R with the <code>metacheck</code> package installed</li>
 <li>At least <strong>2–5 GB of free disk space</strong> for the AI model (and more if you want to try larger models)</li>
 </ul>
 <p>You do <strong>not</strong> need a graphics card (GPU). Ollama works on ordinary laptop hardware.</p>
-</section><section id="step-1-install-ollama" class="level3" data-number="22.1.2"><h3 data-number="22.1.2" class="anchored" data-anchor-id="step-1-install-ollama">
-<span class="header-section-number">22.1.2</span> Step 1: Install Ollama</h3>
+</section><section id="step-1-install-ollama" class="level3" data-number="28.1.2"><h3 data-number="28.1.2" class="anchored" data-anchor-id="step-1-install-ollama">
+<span class="header-section-number">28.1.2</span> Step 1: Install Ollama</h3>
 <p>Ollama is a free program that lets you download and run AI models on your computer. It runs in the background like a web server, and R talks to it automatically.</p>
 <p><strong>Windows:</strong></p>
 <ol type="1">
@@ -432,8 +468,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Open Ollama from Applications — it will appear in your menu bar</li>
 <li>When you first open Ollama, it will add background items that you can manage in Login Items &amp; Extensions</li>
 <li>Ignore the “Launch” interface and open a Terminal window (or use the terminal in RStudio – not the console) and use the terminal instructions below.</li>
-</ol></section><section id="step-2-download-an-ai-model" class="level3" data-number="22.1.3"><h3 data-number="22.1.3" class="anchored" data-anchor-id="step-2-download-an-ai-model">
-<span class="header-section-number">22.1.3</span> Step 2: Download an AI model</h3>
+</ol></section><section id="step-2-download-an-ai-model" class="level3" data-number="28.1.3"><h3 data-number="28.1.3" class="anchored" data-anchor-id="step-2-download-an-ai-model">
+<span class="header-section-number">28.1.3</span> Step 2: Download an AI model</h3>
 <p>Ollama needs to download the actual AI model before it can be used. Think of this like downloading an app: you do it once, and then it is stored on your computer.</p>
 <p>The simplest way to do this is in the app itself: click the “Add Model” button, search for “qwen2.5”, and click “Download” next to the <code>qwen2.5:3b</code> model (or select the model, and ask a question).</p>
 <p>If you feel comfortable using the command line, you can also do this with a terminal command. Open a <strong>Terminal</strong> (Mac) or <strong>Command Prompt / PowerShell</strong> (Windows) and run:</p>
@@ -444,15 +480,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>To check which models you have downloaded, run:</p>
 <pre><code>ollama list</code></pre>
-<hr></section><section id="step-3-verify-ollama-is-running" class="level3" data-number="22.1.4"><h3 data-number="22.1.4" class="anchored" data-anchor-id="step-3-verify-ollama-is-running">
-<span class="header-section-number">22.1.4</span> Step 3: Verify Ollama is running</h3>
+<hr></section><section id="step-3-verify-ollama-is-running" class="level3" data-number="28.1.4"><h3 data-number="28.1.4" class="anchored" data-anchor-id="step-3-verify-ollama-is-running">
+<span class="header-section-number">28.1.4</span> Step 3: Verify Ollama is running</h3>
 <p>Ollama should start automatically when you install it. Anytime you want to use ollama from metacheck, make sure it is running in the background. You can check this by looking for the Ollama icon (in the system tray on Windows, or menu bar on Mac).</p>
 <p>To check, open your web browser and visit:</p>
 <pre><code>http://localhost:11434</code></pre>
 <p>If you see a message like <code>Ollama is running</code>, you are ready to go.</p>
 <p>If nothing appears, open the Ollama application manually (from Applications on Mac, or search for “Ollama” in the Windows Start menu).</p>
-<hr></section><section id="step-4-configure-metacheck-to-use-ollama" class="level3" data-number="22.1.5"><h3 data-number="22.1.5" class="anchored" data-anchor-id="step-4-configure-metacheck-to-use-ollama">
-<span class="header-section-number">22.1.5</span> Step 4: Configure metacheck to use Ollama</h3>
+<hr></section><section id="step-4-configure-metacheck-to-use-ollama" class="level3" data-number="28.1.5"><h3 data-number="28.1.5" class="anchored" data-anchor-id="step-4-configure-metacheck-to-use-ollama">
+<span class="header-section-number">28.1.5</span> Step 4: Configure metacheck to use Ollama</h3>
 <p>In R, run the following three lines before using the power module. These tell metacheck to use the AI, which model to use, and how many calls it is allowed to make (which in the case of a free local model can be set as high as you want):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>                          <span class="co"># turn on LLM support</span></span>
@@ -463,8 +499,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p><strong>Note:</strong> If you downloaded a different model in Step 2, replace <code>qwen2.5:3b</code> with the name you used (for example, <code>"ollama/qwen2.5:7b"</code> or <code>"ollama/llama3.1"</code>).</p>
 </blockquote>
-<hr></section></section><section id="a-simple-first-example" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="a-simple-first-example">
-<span class="header-section-number">22.2</span> A simple first example</h2>
+<hr></section></section><section id="a-simple-first-example" class="level2" data-number="28.2"><h2 data-number="28.2" class="anchored" data-anchor-id="a-simple-first-example">
+<span class="header-section-number">28.2</span> A simple first example</h2>
 <p>Here is a quick example to confirm that everything is working. We will search a paper for any paragraph that mentions participants, then ask the local AI model to describe who those participants were.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
@@ -492,10 +528,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>The first query will feel slow</strong> — this is normal. Ollama needs a moment to load the model into memory the first time. Subsequent queries in the same R session will be much faster.</p>
 <p>If you see a short paragraph describing the participants, your setup is working correctly and you are ready to move on to the power module.</p>
-</section><section id="run-the-power-module" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="run-the-power-module">
-<span class="header-section-number">22.3</span> Run the power module</h2>
-<section id="on-a-single-paper" class="level3" data-number="22.3.1"><h3 data-number="22.3.1" class="anchored" data-anchor-id="on-a-single-paper">
-<span class="header-section-number">22.3.1</span> On a single paper</h3>
+</section><section id="run-the-power-module" class="level2" data-number="28.3"><h2 data-number="28.3" class="anchored" data-anchor-id="run-the-power-module">
+<span class="header-section-number">28.3</span> Run the power module</h2>
+<section id="on-a-single-paper" class="level3" data-number="28.3.1"><h3 data-number="28.3.1" class="anchored" data-anchor-id="on-a-single-paper">
+<span class="header-section-number">28.3.1</span> On a single paper</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
 <span></span>
@@ -515,8 +551,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">result</span><span class="op">$</span><span class="va">table</span>           <span class="co"># the full extracted data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>The first query will feel slow</strong> — this is normal. Ollama needs a moment to load the model into memory. Subsequent queries on the same session will be much faster.</p>
-</section><section id="on-the-full-psychsci-dataset" class="level3" data-number="22.3.2"><h3 data-number="22.3.2" class="anchored" data-anchor-id="on-the-full-psychsci-dataset">
-<span class="header-section-number">22.3.2</span> On the full psychsci dataset</h3>
+</section><section id="on-the-full-psychsci-dataset" class="level3" data-number="28.3.2"><h3 data-number="28.3.2" class="anchored" data-anchor-id="on-the-full-psychsci-dataset">
+<span class="header-section-number">28.3.2</span> On the full psychsci dataset</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
 <span></span>
@@ -528,8 +564,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Processing the full dataset takes considerably longer (and could take hours, depending on your hardware, the number of power related sentences detected, and model size).</p>
-</section></section><section id="running-regcheck-locally" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="running-regcheck-locally">
-<span class="header-section-number">22.4</span> Running RegCheck locally</h2>
+</section></section><section id="running-regcheck-locally" class="level2" data-number="28.4"><h2 data-number="28.4" class="anchored" data-anchor-id="running-regcheck-locally">
+<span class="header-section-number">28.4</span> Running RegCheck locally</h2>
 <p>The <a href="../chapters/mod-reg-check.html">RegCheck module</a> compares a paper against its preregistration. By default it sends text to a hosted RegCheck app, but you can run the whole comparison <strong>on your own machine</strong> with Ollama, so no paper or preregistration text leaves your computer. This needs a one-time setup of a small RegCheck server (in addition to Ollama).</p>
 <p><strong>1. Pull the required Ollama models.</strong> RegCheck uses a fixed embedding model plus a language model of your choice. In a terminal:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull nomic-embed-text-v2-moe</span>
@@ -555,39 +591,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/regcheck_stop_local.html">regcheck_stop_local</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="../chapters/mod-reg-check.html">RegCheck module chapter</a> for what the comparison returns and how to read the results.</p>
-</section><section id="troubleshooting" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="troubleshooting">
-<span class="header-section-number">22.5</span> Troubleshooting</h2>
-<section id="ollama-is-not-running-or-connection-errors" class="level3" data-number="22.5.1"><h3 data-number="22.5.1" class="anchored" data-anchor-id="ollama-is-not-running-or-connection-errors">
-<span class="header-section-number">22.5.1</span> “Ollama is not running” or connection errors</h3>
+</section><section id="troubleshooting" class="level2" data-number="28.5"><h2 data-number="28.5" class="anchored" data-anchor-id="troubleshooting">
+<span class="header-section-number">28.5</span> Troubleshooting</h2>
+<section id="ollama-is-not-running-or-connection-errors" class="level3" data-number="28.5.1"><h3 data-number="28.5.1" class="anchored" data-anchor-id="ollama-is-not-running-or-connection-errors">
+<span class="header-section-number">28.5.1</span> “Ollama is not running” or connection errors</h3>
 <ul>
 <li>Open the Ollama application and wait a few seconds for it to start</li>
 <li>On Windows, look for the Ollama icon in the system tray; right-click and choose “Start”</li>
 <li>On Mac, launch Ollama.app and click the Ollama icon in the menu bar</li>
-</ul></section><section id="the-model-seems-to-freeze-or-takes-very-long" class="level3" data-number="22.5.2"><h3 data-number="22.5.2" class="anchored" data-anchor-id="the-model-seems-to-freeze-or-takes-very-long">
-<span class="header-section-number">22.5.2</span> The model seems to freeze or takes very long</h3>
+</ul></section><section id="the-model-seems-to-freeze-or-takes-very-long" class="level3" data-number="28.5.2"><h3 data-number="28.5.2" class="anchored" data-anchor-id="the-model-seems-to-freeze-or-takes-very-long">
+<span class="header-section-number">28.5.2</span> The model seems to freeze or takes very long</h3>
 <ul>
 <li>This is normal on the first query while the model loads. Wait at least 60 seconds before concluding something has gone wrong</li>
 <li>Larger models take longer; try <code>qwen2.5:3b</code> if you just want to check if your setup is working, as it is faster than the larger models.</li>
-</ul></section><section id="model-not-found-error" class="level3" data-number="22.5.3"><h3 data-number="22.5.3" class="anchored" data-anchor-id="model-not-found-error">
-<span class="header-section-number">22.5.3</span> “Model not found” error</h3>
+</ul></section><section id="model-not-found-error" class="level3" data-number="28.5.3"><h3 data-number="28.5.3" class="anchored" data-anchor-id="model-not-found-error">
+<span class="header-section-number">28.5.3</span> “Model not found” error</h3>
 <ul>
 <li>Make sure the model name in <code><a href="https://scienceverse.github.io/metacheck/reference/llm_model.html">llm_model()</a></code> exactly matches the name shown in <code>ollama list</code>
 </li>
 <li>The name must start with <code>ollama/</code>, for example <code>"ollama/qwen2.5:3b"</code>
 </li>
-</ul></section><section id="out-of-memory-errors" class="level3" data-number="22.5.4"><h3 data-number="22.5.4" class="anchored" data-anchor-id="out-of-memory-errors">
-<span class="header-section-number">22.5.4</span> Out of memory errors</h3>
+</ul></section><section id="out-of-memory-errors" class="level3" data-number="28.5.4"><h3 data-number="28.5.4" class="anchored" data-anchor-id="out-of-memory-errors">
+<span class="header-section-number">28.5.4</span> Out of memory errors</h3>
 <ul>
 <li>Try a smaller model: <code>ollama pull qwen2.5:3b</code> and use <code>llm_model("ollama/qwen2.5:3b")</code>
 </li>
 <li>Close other applications to free up RAM</li>
-</ul></section><section id="switching-back-to-a-cloud-model" class="level3" data-number="22.5.5"><h3 data-number="22.5.5" class="anchored" data-anchor-id="switching-back-to-a-cloud-model">
-<span class="header-section-number">22.5.5</span> Switching back to a cloud model</h3>
+</ul></section><section id="switching-back-to-a-cloud-model" class="level3" data-number="28.5.5"><h3 data-number="28.5.5" class="anchored" data-anchor-id="switching-back-to-a-cloud-model">
+<span class="header-section-number">28.5.5</span> Switching back to a cloud model</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_model.html">llm_model</a></span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>   <span class="co"># or another model name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="quick-reference" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="quick-reference">
-<span class="header-section-number">22.6</span> Quick reference</h2>
+</section></section><section id="quick-reference" class="level2" data-number="28.6"><h2 data-number="28.6" class="anchored" data-anchor-id="quick-reference">
+<span class="header-section-number">28.6</span> Quick reference</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Minimal setup to run the power module locally</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
@@ -1000,7 +1036,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/local-files.html" class="pagination-link" aria-label="Checking Local Files with repo_check and code_check">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

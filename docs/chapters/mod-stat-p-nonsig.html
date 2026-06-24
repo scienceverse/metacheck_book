@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>15&nbsp; Non-Significant p-Values – The Metacheck Manual</title>
+<title>17&nbsp; Non-Significant p-Values – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/mod-repo-check.html" rel="next">
+<link href="../chapters/mod-stat-effect-size.html" rel="next">
 <link href="../chapters/mod-stat-p-exact.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-p-nonsig.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-p-nonsig.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -231,56 +231,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -297,13 +333,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -339,18 +375,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">15.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">15.2</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">15.3</span> Running on many papers</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">15.4</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">15.5</span> Options</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">15.6</span> Validation</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">17.1</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">17.2</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">17.3</span> Running on many papers</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">17.4</span> A clean example and one with problems</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">17.5</span> Options</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">17.6</span> Validation</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-p-nonsig.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-p-nonsig.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-p-nonsig.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span>
+<span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span>
 </h1>
 </div>
 
@@ -365,13 +401,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">15.1</span> What it checks</h2>
+</header><section id="what-it-checks" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">17.1</span> What it checks</h2>
 <p>The <code>stat_p_nonsig</code> module finds every <strong>non-significant p-value</strong> (p ≥ .05) so a reader can check whether the surrounding text interprets it correctly. A common error is to treat a non-significant result as evidence that there is <em>no effect</em> (“there was no difference between groups, p = .27”), when a non-significant result is simply inconclusive.</p>
 <p>The module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.</p>
 <p>This module is <strong>fully offline</strong>.</p>
-</section><section id="running-the-module" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">15.2</span> Running the module</h2>
+</section><section id="running-the-module" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">17.2</span> Running the module</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Non-Significant P Value Check: We found 2 non-significant p values that should be checked for appropriate interpretation.</p>
@@ -413,8 +449,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">15.3</span> Running on many papers</h2>
+</section><section id="running-on-many-papers" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">17.3</span> Running on many papers</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -454,8 +490,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">15.4</span> A clean example and one with problems</h2>
+</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">17.4</span> A clean example and one with problems</h2>
 <p>A result that is correctly described as inconclusive is fine; one that claims “no effect” from a non-significant test is the kind of thing to check. The module flags both, and you read the sentence:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flagged</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"There was no difference between the groups, t(40) = 1.10, p = .28."</span><span class="op">)</span></span>
@@ -483,11 +519,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; [1] "green"</code></pre>
 </div>
 </div>
-</section><section id="options" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">15.5</span> Options</h2>
+</section><section id="options" class="level2" data-number="17.5"><h2 data-number="17.5" class="anchored" data-anchor-id="options">
+<span class="header-section-number">17.5</span> Options</h2>
 <p><code>stat_p_nonsig</code> takes only the <code>paper</code> argument.</p>
-</section><section id="validation" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">15.6</span> Validation</h2>
+</section><section id="validation" class="level2" data-number="17.6"><h2 data-number="17.6" class="anchored" data-anchor-id="validation">
+<span class="header-section-number">17.6</span> Validation</h2>
 <blockquote class="blockquote">
 <p>In a sample of 194 papers with 1602 instances of non-significant p-values, this module correctly detected 1486 of them and incorrectly identified 153. 91% of detections were true instances (positive predictive value).</p>
 </blockquote>
@@ -894,12 +930,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/mod-stat-p-exact.html" class="pagination-link" aria-label="Exact p-Values">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/mod-repo-check.html" class="pagination-link" aria-label="Repository Check">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Repository Check</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/mod-stat-effect-size.html" class="pagination-link" aria-label="Effect Sizes">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

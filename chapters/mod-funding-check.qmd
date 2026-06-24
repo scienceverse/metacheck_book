@@ -1,0 +1,83 @@
+---
+title: "Funding Statement"
+vignette: >
+  %\VignetteIndexEntry{Funding Statement}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `funding_check` module looks for a **funding statement** — a sentence disclosing the financial support behind the research (or stating that it received none). Declaring funding is expected by most journals and reporting guidelines, because the source of support is relevant to how readers weigh a study.
+
+The module searches the text for the phrases funding statements usually contain and returns the sentence(s) it finds. It does not judge the funding itself; it only checks whether a statement is present.
+
+This module is **fully offline**.
+
+## Running the module
+
+The demo paper contains no funding statement, so the module returns a `red` light:
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "funding_check")
+```
+
+When a statement *is* found, the `table` holds the matching sentence(s):
+
+```{r}
+funded <- test_paper("This work was supported by the National Science Foundation (grant 1234567).")
+mo <- module_run(funded, "funding_check")
+mo$traffic_light
+mo$summary_text
+mo$table |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+mo <- module_run(psychsci[1:20], "funding_check")
+head(mo$summary_table) |>
+  knitr::kable()
+```
+
+## Interpreting the result
+
+A `red` light means *no* funding statement was detected — which may be because the paper genuinely omits one, or because the statement is phrased in a way the regular expressions miss (for example buried in an acknowledgements footnote). Read the relevant section to confirm before concluding a statement is absent.
+
+## Options
+
+`funding_check` takes only the `paper` argument.
+
+## Notes
+
+This module incorporates code from [rtransparent](https://github.com/serghiou/rtransparent), whose approach was validated by Serghiou and colleagues ([2021](https://doi.org/10.1371/journal.pbio.3001107)). The companion [COI statement](mod-coi-check.qmd) module works the same way for conflict-of-interest disclosures.
+
+## What patterns it searches for
+
+Under the hood, `funding_check` does not match a single keyword. It runs roughly three dozen separate regular-expression patterns over the sentences of the paper and flags a funding statement if **any** of them matches. The patterns are built from interchangeable word lists, so each one tolerates a wide range of phrasings rather than a fixed string. The families of patterns are:
+
+**Section and statement headings.** Lines that look like a dedicated heading — *Funding*, *Funding source(s)*, *Source(s) of funding*, *Funding statement*, *Financial support*, *Financial disclosure*, *Grant support*, *Grant sponsorship*, and the combined *Funding and conflict of interest* — as well as a *Disclosure* or *Declaration* heading immediately followed by a line that mentions funds, a grant, or financial support.
+
+**"This work was funded by …" sentences.** The most common form: a subject (*This/These/The/Our* + *work/study/research/project/trial/program/analysis/protocol/cohort/collaboration*), a linking verb (*is/are/was/were/has been*), a funding verb (*funded/financed/supported/sponsored/resourced/aided*), and an agent (*by/from/under*). Variants cover *"funded by [a grant/fellowship/award/scholarship/stipend/bursary]"* and *"funded by [a foundation/institute/university/ministry/council/agency/NIH/NSF/HHMI/…]"*.
+
+**"Received …" and "recipient of …" sentences.** Phrasings where someone *received / was awarded / was granted / was given* funding, financial support, or an award, and where an author is described as a *recipient / awardee / grantee* of a grant or award.
+
+**Acknowledgement-style thanks.** Sentences that *thank / acknowledge / are grateful to* a funder or foundation for financial support, including the common case where a grant is acknowledged together with a five-digit grant number.
+
+**Grant identifiers.** Explicit grant or contract phrasing, such as *Grant sponsor*, *Contract grant*, *project number*, and recognisable funder codes like NIH grant numbers (e.g. `R01`, `P30`).
+
+**Non-English forms.** A few specific patterns for other languages, for example the French *"Cette étude a été financée par …"*.
+
+**"No funding" statements also count.** Because declaring the *absence* of funding is itself a funding statement, negative forms are matched too: *no funding was received*, *no financial support*, *no sources of funding*, *the authors received no funding for this research*, and similar.
+
+Finally, the module applies a few **filters to reduce false positives** — for example removing sentences that merely say information about funding is *not* available, and, when nothing else matches, taking a closer look at the Acknowledgements section (between the acknowledgements heading and the reference list) for funding or project-number mentions that the main patterns missed.
+
+The practical implication is the one noted under [Interpreting the result](#interpreting-the-result): the net is wide, but it is built around the vocabulary of *funding, support, grants, and financial assistance*. A statement that avoids all of that vocabulary — or one mangled by PDF extraction — can still slip through, so a `red` light is best read as "no recognisable funding statement found" rather than a definitive absence.

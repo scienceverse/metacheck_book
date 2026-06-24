@@ -1,0 +1,58 @@
+---
+title: "Reference Summary"
+vignette: >
+  %\VignetteIndexEntry{Reference Summary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `ref_summary` module does not run a check of its own. Instead it **collects the results of the other reference-section modules** — [accuracy](mod-ref-accuracy.qmd), [PubPeer](mod-ref-pubpeer.qmd), [replication](mod-ref-replication.qmd), and [retraction](mod-ref-retraction.qmd) — into a single table with one row per reference, so you can see everything known about each cited work in one place.
+
+Because it summarises the output of those modules, `ref_summary` must run **after** them, in the same report. On its own it has nothing to summarise.
+
+::: callout-note
+The modules it summarises make **live network calls**, so an internet connection is needed.
+:::
+
+## Running the module
+
+The summary needs the other reference modules to have run first. The natural way to arrange that is to run them together with `report_module_run()`, which keeps each module's output and passes the chain along (see [Creating a Metacheck Report](creating-a-report.qmd)). List `ref_summary` last:
+
+```{r}
+paper <- demopaper()
+module_output <- report_module_run(
+  paper,
+  modules = c("ref_accuracy", "ref_pubpeer",
+              "ref_replication", "ref_retraction",
+              "ref_summary")
+)
+
+mo <- module_output[["ref_summary"]]
+mo$traffic_light
+mo$summary_text
+```
+
+The combined `table` has one row per reference and one column per upstream check:
+
+```{r}
+mo$table[, c("bib_id", "accuracy_mismatch", "pubpeer",
+             "replication_type", "retractionwatch")] |>
+  knitr::kable()
+```
+
+A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.
+
+## Interpreting the result
+
+`ref_summary` inherits everything from the modules it summarises, so the same cautions apply: a filled-in cell is a prompt to look, not a verdict. Its value is convenience — instead of reading four separate tables, you scan one. The summary itself is informational (`info`); the underlying modules carry the traffic lights.
+
+## Options
+
+`ref_summary` takes only the `paper` argument, but it only produces useful output when the other `ref_*` modules have run before it in the same report.

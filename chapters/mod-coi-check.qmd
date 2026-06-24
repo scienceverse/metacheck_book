@@ -1,0 +1,87 @@
+---
+title: "Conflict of Interest Statement"
+vignette: >
+  %\VignetteIndexEntry{Conflict of Interest Statement}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+library(dplyr)
+```
+
+## What it checks
+
+The `coi_check` module looks for a **conflict of interest (COI) statement** — a disclosure of any financial or personal interests that could have influenced the research (or a declaration that there are none). Like the [funding statement](mod-funding-check.qmd), a COI declaration is expected by most journals and reporting guidelines.
+
+The module searches the text for the phrases COI statements usually contain and returns the sentence(s) it finds. It checks only that a statement is present; it does not evaluate the disclosed interests.
+
+This module is **fully offline**.
+
+## Running the module
+
+The demo paper contains a conflict of interest statement, so the module returns a `green` light:
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "coi_check")
+```
+
+The `table` holds the matching sentence(s):
+
+```{r}
+mo <- module_run(paper, "coi_check")
+mo$traffic_light
+mo$summary_text
+mo$table |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+mo <- module_run(psychsci[1:20], "coi_check")
+head(mo$summary_table) |>
+  knitr::kable()
+```
+
+## Interpreting the result
+
+A detected statement means the disclosure exists, not that it is complete or correct — read it to see what was declared. When no statement is found, the phrasing may simply differ from what the module searches for, so check the paper before concluding one is absent.
+
+## Options
+
+`coi_check` takes only the `paper` argument.
+
+## Notes
+
+This module incorporates code from [rtransparent](https://github.com/serghiou/rtransparent), whose approach was validated by Serghiou and colleagues ([2021](https://doi.org/10.1371/journal.pbio.3001107)). The companion [funding statement](mod-funding-check.qmd) module works the same way for funding disclosures.
+
+## What patterns it searches for
+
+`coi_check` works differently from most Metacheck modules: instead of exact regular expressions, it uses **approximate (fuzzy) matching**, which tolerates small spelling and spacing differences. It looks for sentences that approximately contain one of seven core phrases:
+
+- *conflict of interest*
+- *conflicts of interest*
+- *competing interest*
+- *competing financial interest*
+- *disclosure*
+- *declaration of interest*
+- *duality of interest*
+
+Because fuzzy matching alone would catch many incidental uses of these words (a paper can mention a participant's "competing interests" or a "disclosure" of something unrelated), the module then applies a set of rules to decide whether a candidate sentence is really a COI **statement** rather than a passing mention. A candidate is kept when it shows at least one of the hallmarks of a genuine statement:
+
+- it is **capitalised** as a heading or sentence start (*Conflict…*, *CONFLICT…*, *Compet…*);
+- it contains a **negation** — the common *"no conflict of interest"* / *"the authors declare no competing interests"* form;
+- it mentions the **authors** (*"The authors declare…"*);
+- it is followed by **punctuation** (a colon, period, or semicolon after "interest", as in a heading or list item); or
+- it uses a **reporting verb** — *disclosed, reported, declared, mentioned, revealed, communicated, expressed*.
+
+A bare mention of "competing interest" with none of these features is treated as a false positive and dropped.
+
+Two further refinements handle layout quirks of converted PDFs. When a hit ends with "interest:" or begins with "Disclosure:", the module treats text from that point onward as the disclosure section, and when a statement is split across short lines or set as bullet points (so the keyword sits on one line and *"None."* on the next), it stitches the adjacent lines back together so the full statement is captured. It also specifically **excludes** *"financial disclosure"* and unrelated uses of "disclosure" (such as a patient-information disclosure) that are not about conflicts of interest.
+
+As with the [funding check](mod-funding-check.qmd), the practical implication is that detection is built around a specific vocabulary. A disclosure that avoids the words *conflict, competing, disclosure, declaration,* and *duality of interest* — or one badly garbled in extraction — can be missed, so a `red` light means "no recognisable COI statement found" rather than a guaranteed absence.
