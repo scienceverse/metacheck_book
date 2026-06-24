@@ -376,19 +376,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#roxygen-documentation" id="toc-roxygen-documentation" class="nav-link active" data-scroll-target="#roxygen-documentation"><span class="header-section-number">7.1</span> Roxygen Documentation</a>
+<a href="#how-to-create-a-metacheck-module" id="toc-how-to-create-a-metacheck-module" class="nav-link active" data-scroll-target="#how-to-create-a-metacheck-module"><span class="header-section-number">7.1</span> How to create a Metacheck module</a>
   <ul class="collapse">
-<li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title"><span class="header-section-number">7.1.1</span> Title</a></li>
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description"><span class="header-section-number">7.1.2</span> Description</a></li>
-  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"><span class="header-section-number">7.1.3</span> Details</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">7.1.4</span> Validation</a></li>
-  <li><a href="#keywords" id="toc-keywords" class="nav-link" data-scroll-target="#keywords"><span class="header-section-number">7.1.5</span> Keywords</a></li>
-  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author"><span class="header-section-number">7.1.6</span> Author</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7.1.7</span> References</a></li>
-  <li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"><span class="header-section-number">7.1.8</span> Import</a></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters"><span class="header-section-number">7.1.9</span> Parameters</a></li>
-  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns"><span class="header-section-number">7.1.10</span> Returns</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">7.1.11</span> Examples</a></li>
+<li><a href="#roxygen-documentation" id="toc-roxygen-documentation" class="nav-link" data-scroll-target="#roxygen-documentation"><span class="header-section-number">7.1.1</span> Roxygen Documentation</a></li>
+  <li><a href="#title" id="toc-title" class="nav-link" data-scroll-target="#title"><span class="header-section-number">7.1.2</span> Title</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description"><span class="header-section-number">7.1.3</span> Description</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"><span class="header-section-number">7.1.4</span> Details</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">7.1.5</span> Validation</a></li>
+  <li><a href="#keywords" id="toc-keywords" class="nav-link" data-scroll-target="#keywords"><span class="header-section-number">7.1.6</span> Keywords</a></li>
+  <li><a href="#author" id="toc-author" class="nav-link" data-scroll-target="#author"><span class="header-section-number">7.1.7</span> Author</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7.1.8</span> References</a></li>
+  <li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"><span class="header-section-number">7.1.9</span> Import</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters"><span class="header-section-number">7.1.10</span> Parameters</a></li>
+  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns"><span class="header-section-number">7.1.11</span> Returns</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">7.1.12</span> Examples</a></li>
   </ul>
 </li>
   <li>
@@ -401,6 +402,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#summary-text" id="toc-summary-text" class="nav-link" data-scroll-target="#summary-text"><span class="header-section-number">7.2.5</span> Summary Text</a></li>
   <li><a href="#report" id="toc-report" class="nav-link" data-scroll-target="#report"><span class="header-section-number">7.2.6</span> Report</a></li>
   <li><a href="#return" id="toc-return" class="nav-link" data-scroll-target="#return"><span class="header-section-number">7.2.7</span> Return</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-strain-example" id="toc-sec-strain-example" class="nav-link" data-scroll-target="#sec-strain-example"><span class="header-section-number">7.3</span> A complete worked example</a>
+  <ul class="collapse">
+<li><a href="#step-1-build-and-test-the-pattern" id="toc-step-1-build-and-test-the-pattern" class="nav-link" data-scroll-target="#step-1-build-and-test-the-pattern"><span class="header-section-number">7.3.1</span> Step 1: build and test the pattern</a></li>
+  <li><a href="#step-2-write-the-module-function" id="toc-step-2-write-the-module-function" class="nav-link" data-scroll-target="#step-2-write-the-module-function"><span class="header-section-number">7.3.2</span> Step 2: write the module function</a></li>
+  <li><a href="#step-3-run-it" id="toc-step-3-run-it" class="nav-link" data-scroll-target="#step-3-run-it"><span class="header-section-number">7.3.3</span> Step 3: run it</a></li>
+  <li><a href="#going-further" id="toc-going-further" class="nav-link" data-scroll-target="#going-further"><span class="header-section-number">7.3.4</span> Going further</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/creating-modules.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -423,7 +433,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Modules are user-created patterns for checking a paper or set of papers. Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation.</p>
+</header><p>Modules are user-created patterns for checking a paper or set of papers. Metacheck wants to make it possible for anyone to create their own modules. This makes it possible for toolbuilders to incorporate their automated checks in Metacheck, increases the probability that their automated check will be used. In line with our value to make sure that Metacheck will reflect and respect the needs of a diverse range of research communities, and benefit their research practices, allowing anyone to make a module enables research communities to create checks relevant to their field. If you work in a field where mice and rats are studies, you might need to follow <a href="https://www.informatics.jax.org/mgihome/nomen/strains.shtml">reporting guidelines specific to the use of mice and rats</a>. Any member of that community can build a module that will check if these guidelines are reported.</p>
+<p>If you want to learn more about how to build a module, the information below should be helpful. But if you are mainly interested in using Metacheck, we recommend skipping the rest of this chapter.</p>
+<section id="how-to-create-a-metacheck-module" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="how-to-create-a-metacheck-module">
+<span class="header-section-number">7.1</span> How to create a Metacheck module</h2>
+<p>Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation.</p>
 <div class="cell">
 <pre><code>#' Module Title
 #'
@@ -527,24 +541,24 @@ module_name &lt;- function(paper, ...) {
   )
 }</code></pre>
 </div>
-<section id="roxygen-documentation" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="roxygen-documentation">
-<span class="header-section-number">7.1</span> Roxygen Documentation</h2>
+<section id="roxygen-documentation" class="level3" data-number="7.1.1"><h3 data-number="7.1.1" class="anchored" data-anchor-id="roxygen-documentation">
+<span class="header-section-number">7.1.1</span> Roxygen Documentation</h3>
 <p>The module file starts with standard function documentation using roxygen2. Roxygen documentation always starts with <code>#'</code>.</p>
-<section id="title" class="level3" data-number="7.1.1"><h3 data-number="7.1.1" class="anchored" data-anchor-id="title">
-<span class="header-section-number">7.1.1</span> Title</h3>
+</section><section id="title" class="level3" data-number="7.1.2"><h3 data-number="7.1.2" class="anchored" data-anchor-id="title">
+<span class="header-section-number">7.1.2</span> Title</h3>
 <p>On the first line, give your module a short title, which will be used as a section header in reports.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' Module Name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="description" class="level3" data-number="7.1.2"><h3 data-number="7.1.2" class="anchored" data-anchor-id="description">
-<span class="header-section-number">7.1.2</span> Description</h3>
+</section><section id="description" class="level3" data-number="7.1.3"><h3 data-number="7.1.3" class="anchored" data-anchor-id="description">
+<span class="header-section-number">7.1.3</span> Description</h3>
 <p>You can skip a line and write a 1-sentence description, which will be shown in <code>module_list()</code>, or optionally start this with <code>@description</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @description</span></span>
 <span><span class="co">#' A short description of the module</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="details" class="level3" data-number="7.1.3"><h3 data-number="7.1.3" class="anchored" data-anchor-id="details">
-<span class="header-section-number">7.1.3</span> Details</h3>
+</section><section id="details" class="level3" data-number="7.1.4"><h3 data-number="7.1.4" class="anchored" data-anchor-id="details">
+<span class="header-section-number">7.1.4</span> Details</h3>
 <p>You can write more detailed help under the tag <code>@details</code>, which will be shown when calling <code>module_help()</code>. This is optional.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @details</span></span>
@@ -556,8 +570,8 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#' * check it twice</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you have experience writing R functions with roxygen, you can also omit the <code>@description</code> and <code>@details</code> tags and rely on paragraph spacing to distinguish description from details.</p>
-</section><section id="validation" class="level3" data-number="7.1.4"><h3 data-number="7.1.4" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">7.1.4</span> Validation</h3>
+</section><section id="validation" class="level3" data-number="7.1.5"><h3 data-number="7.1.5" class="anchored" data-anchor-id="validation">
+<span class="header-section-number">7.1.5</span> Validation</h3>
 <p>Our <a href="https://www.scienceverse.org/metacheck/#our-values">values statement</a> lists quality control as a core value. Validation information gets special styling in the report, so is put at the end of the details section and marked with <code>&lt;validation&gt;</code> at the start and <code>&lt;/validation&gt;</code> at the end.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' &lt;validation&gt;</span></span>
@@ -571,21 +585,21 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#' &lt;/validation&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The example above works well for modules that detect a practice that may happen zero or more times per paper. Communicating validation information clearly and succinctly is challenging, so feel free to use other wordings. We encourage you to also include a link to a repository that contains more detailed information and evidence.</p>
-</section><section id="keywords" class="level3" data-number="7.1.5"><h3 data-number="7.1.5" class="anchored" data-anchor-id="keywords">
-<span class="header-section-number">7.1.5</span> Keywords</h3>
+</section><section id="keywords" class="level3" data-number="7.1.6"><h3 data-number="7.1.6" class="anchored" data-anchor-id="keywords">
+<span class="header-section-number">7.1.6</span> Keywords</h3>
 <p>Choose one section category for your module to be displayed under in reports.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @keywords general|intro|method|results|discussion|reference</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="author" class="level3" data-number="7.1.6"><h3 data-number="7.1.6" class="anchored" data-anchor-id="author">
-<span class="header-section-number">7.1.6</span> Author</h3>
+</section><section id="author" class="level3" data-number="7.1.7"><h3 data-number="7.1.7" class="anchored" data-anchor-id="author">
+<span class="header-section-number">7.1.7</span> Author</h3>
 <p>Include the module authors so they can get credit! Add a new <code>@author</code> tag for each author, and optionally add their email address.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @author Lisa DeBruine (\email{debruine@gmail.com})</span></span>
 <span><span class="co">#' @author Daniel Lakens (\email{lakens@gmail.com})</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="references" class="level3" data-number="7.1.7"><h3 data-number="7.1.7" class="anchored" data-anchor-id="references">
-<span class="header-section-number">7.1.7</span> References</h3>
+</section><section id="references" class="level3" data-number="7.1.8"><h3 data-number="7.1.8" class="anchored" data-anchor-id="references">
+<span class="header-section-number">7.1.8</span> References</h3>
 <p>Optionally include references that you would want available to users. If you are building a module that uses citable resources, please list them here.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @references</span></span>
@@ -594,29 +608,29 @@ module_name &lt;- function(paper, ...) {
 <span><span class="co">#' ISSN: 2692-4579. [Cited 2025-05-20].</span></span>
 <span><span class="co">#' Available from: http://retractiondatabase.org/.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="import" class="level3" data-number="7.1.8"><h3 data-number="7.1.8" class="anchored" data-anchor-id="import">
-<span class="header-section-number">7.1.8</span> Import</h3>
+</section><section id="import" class="level3" data-number="7.1.9"><h3 data-number="7.1.9" class="anchored" data-anchor-id="import">
+<span class="header-section-number">7.1.9</span> Import</h3>
 <p>If you are using packages other than <code>metacheck</code>, add each with an <code>@import</code> statement.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @import dplyr</span></span>
 <span><span class="co">#' @import tidyr</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Technically, you can then use functions from these packages in your function code without the package name prefix, but it is still best practice to use the package name prefix for all functions, like <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">dplyr::case_when()</a></code>, and we require this for contributed modules.</p>
-</section><section id="parameters" class="level3" data-number="7.1.9"><h3 data-number="7.1.9" class="anchored" data-anchor-id="parameters">
-<span class="header-section-number">7.1.9</span> Parameters</h3>
-<p>Each argument should be defined for a function. All metacheck modules require the first argument to be <code>paper</code>. The last argument can optionally be <code>...</code>. This allows the <code>module_run()</code> function to pass any arguments, and your code can use them by name (e.g., <code>extra_args &lt;- list(...)</code>).</p>
+</section><section id="parameters" class="level3" data-number="7.1.10"><h3 data-number="7.1.10" class="anchored" data-anchor-id="parameters">
+<span class="header-section-number">7.1.10</span> Parameters</h3>
+<p>Each argument should be defined for a function. All Metacheck modules require the first argument to be <code>paper</code>. The last argument can optionally be <code>...</code>. This allows the <code>module_run()</code> function to pass any arguments, and your code can use them by name (e.g., <code>extra_args &lt;- list(...)</code>).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @param paper a paper object or paperlist object</span></span>
 <span><span class="co">#' @param ... further arguments (not used)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="returns" class="level3" data-number="7.1.10"><h3 data-number="7.1.10" class="anchored" data-anchor-id="returns">
-<span class="header-section-number">7.1.10</span> Returns</h3>
+</section><section id="returns" class="level3" data-number="7.1.11"><h3 data-number="7.1.11" class="anchored" data-anchor-id="returns">
+<span class="header-section-number">7.1.11</span> Returns</h3>
 <p>It is good practice to explain what your function returns. This is usually the default list with table, summary, traffic light, and report text, but you can edit this. It’s just a human-readable string.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @returns a list</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="examples" class="level3" data-number="7.1.11"><h3 data-number="7.1.11" class="anchored" data-anchor-id="examples">
-<span class="header-section-number">7.1.11</span> Examples</h3>
+</section><section id="examples" class="level3" data-number="7.1.12"><h3 data-number="7.1.12" class="anchored" data-anchor-id="examples">
+<span class="header-section-number">7.1.12</span> Examples</h3>
 <p>You can add an example of how to use this module with the <code>module_run()</code> function. Give a paper or list of papers in the example so you can demonstrate the purpose of this module and it doesn’t take too much time to run the example.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#' @examples</span></span>
@@ -690,7 +704,7 @@ module_name &lt;- function(paper, ...) {
 <span>  <span class="co"># this is stored to use in later modules in a report or pipeline</span></span>
 <span>  <span class="va">table</span> <span class="op">&lt;-</span> <span class="fu">text_search</span><span class="op">(</span><span class="va">paper</span>, <span class="va">pattern</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>You will need to make sure that your module works with both single paper objects and lists of paper objects. The metacheck functions <code>text_search()</code> and <code>llm()</code> are already vectorised for paper lists.</p>
+<p>You will need to make sure that your module works with both single paper objects and lists of paper objects. The Metacheck functions <code>text_search()</code> and <code>llm()</code> are already vectorised for paper lists.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"module_name"</span><span class="op">)</span> <span class="co"># 1 paper</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"module_name"</span><span class="op">)</span> <span class="co"># 10 papers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -915,6 +929,114 @@ module_name &lt;- function(paper, ...) {
 <span>    report <span class="op">=</span> <span class="va">report</span></span>
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section></section><section id="sec-strain-example" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="sec-strain-example">
+<span class="header-section-number">7.3</span> A complete worked example</h2>
+<p>The sections above describe each piece in isolation. Here we put them together into a complete, working module you can run. It is inspired by the <code>ethics_check</code> and <code>coi_check</code> modules, which scan a paper’s sentences for specific terms.</p>
+<p>Many fields have reporting guidelines for <em>how</em> something should be named or described. In animal research, mouse and rat strains have a strict nomenclature maintained by <a href="https://www.informatics.jax.org/mgihome/nomen/strains.shtml">MGI and RGD</a>: inbred strains are written in uppercase Roman letters and numbers (<code>C57BL/6J</code>, <code>BALB/c</code>, <code>DBA/2</code>), substrains add a laboratory code after a slash (<code>A/He</code>), and so on. A simple but useful module is one that flags sentences mentioning a recognised strain, so an author or reviewer can check the nomenclature is correct.</p>
+<p>We will call it <code>strain_check</code>. Because every module operates on a paper object, we can develop it interactively using <code>text_search()</code> (see <a href="../chapters/text-search.html">Text Search</a>).</p>
+<section id="step-1-build-and-test-the-pattern" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="step-1-build-and-test-the-pattern">
+<span class="header-section-number">7.3.1</span> Step 1: build and test the pattern</h3>
+<p>We start from a list of common strain names and turn it into one regular expression. Testing on a sentence we type ourselves with <code>test_paper()</code> confirms the pattern matches what we expect:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">strains</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"C57BL/6[A-Za-z]*"</span>, <span class="st">"C57BL/10[A-Za-z]*"</span>, <span class="st">"BALB/c[A-Za-z]*"</span>,</span>
+<span>  <span class="st">"DBA/[12][A-Za-z]*"</span>, <span class="st">"C3H/[A-Za-z]+"</span>, <span class="st">"CBA/[A-Za-z]+"</span>,</span>
+<span>  <span class="st">"A/[A-Z][a-z]?"</span>, <span class="st">"129[A-Z][0-9A-Za-z]*"</span>, <span class="st">"FVB/[A-Za-z]+"</span>,</span>
+<span>  <span class="st">"NOD/[A-Za-z]+"</span>, <span class="st">"SJL/[A-Za-z]+"</span>, <span class="st">"Wistar"</span>, <span class="st">"Sprague[- ]Dawley"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">strains</span>, collapse <span class="op">=</span> <span class="st">"|"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span></span>
+<span>  <span class="st">"Subjects were male C57BL/6J mice (n = 20) and BALB/c controls.</span></span>
+<span><span class="st">   We also bred DBA/2 and 129S1 lines, and Sprague-Dawley rats."</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># return = "match" shows exactly which strings matched</span></span>
+<span><span class="fu">text_search</span><span class="op">(</span><span class="va">example</span>, <span class="va">pattern</span>, return <span class="op">=</span> <span class="st">"match"</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">text</span></span>
+<span><span class="co">#&gt; [1] "C57BL/6J"       "BALB/c"         "DBA/2"          "129S1"         </span></span>
+<span><span class="co">#&gt; [5] "Sprague-Dawley"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="step-2-write-the-module-function" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="step-2-write-the-module-function">
+<span class="header-section-number">7.3.2</span> Step 2: write the module function</h3>
+<p>Now we wrap the pattern in a function with the standard signature and return list. The structure mirrors <code>coi_check</code>: search the text, build a per-paper <code>summary_table</code> with <code>dplyr::summarise(.by = ...)</code>, set a <code>traffic_light</code>, and assemble a <code>report</code> with the helper functions <code>scroll_table()</code> and <code>plural()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">strain_check</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">strains</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"C57BL/6[A-Za-z]*"</span>, <span class="st">"C57BL/10[A-Za-z]*"</span>, <span class="st">"BALB/c[A-Za-z]*"</span>,</span>
+<span>    <span class="st">"DBA/[12][A-Za-z]*"</span>, <span class="st">"C3H/[A-Za-z]+"</span>, <span class="st">"CBA/[A-Za-z]+"</span>,</span>
+<span>    <span class="st">"A/[A-Z][a-z]?"</span>, <span class="st">"129[A-Z][0-9A-Za-z]*"</span>, <span class="st">"FVB/[A-Za-z]+"</span>,</span>
+<span>    <span class="st">"NOD/[A-Za-z]+"</span>, <span class="st">"SJL/[A-Za-z]+"</span>, <span class="st">"Wistar"</span>, <span class="st">"Sprague[- ]Dawley"</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="va">pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">strains</span>, collapse <span class="op">=</span> <span class="st">"|"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># table ----</span></span>
+<span>  <span class="va">table</span> <span class="op">&lt;-</span> <span class="fu">text_search</span><span class="op">(</span><span class="va">paper</span>, <span class="va">pattern</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># summary_table ----</span></span>
+<span>  <span class="va">summary_table</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="va">table</span>,</span>
+<span>    strains_mentioned <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    .by <span class="op">=</span> <span class="va">paper_id</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># traffic_light ----</span></span>
+<span>  <span class="co"># "na" when no strains are found (the module simply does not apply)</span></span>
+<span>  <span class="va">tl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="st">"green"</span>, <span class="st">"na"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># summary_text and report ----</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">tl</span> <span class="op">==</span> <span class="st">"green"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">summary_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span></span>
+<span>      <span class="st">"Found %d sentence%s mentioning a recognised mouse or rat strain."</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span>, <span class="fu">plural</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span></span>
+<span>        <span class="st">"We detected references to standard mouse or rat strains."</span>,</span>
+<span>        <span class="st">"Check that the nomenclature follows the"</span>,</span>
+<span>        <span class="st">"[MGI/RGD guidelines](https://www.informatics.jax.org/mgihome/nomen/strains.shtml)."</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu">scroll_table</span><span class="op">(</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"header"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="va">summary_text</span> <span class="op">&lt;-</span> <span class="st">"No recognised mouse or rat strain names were detected."</span></span>
+<span>    <span class="va">report</span> <span class="op">&lt;-</span> <span class="va">summary_text</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="co"># return list ----</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    table <span class="op">=</span> <span class="va">table</span>,</span>
+<span>    summary_table <span class="op">=</span> <span class="va">summary_table</span>,</span>
+<span>    na_replace <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    traffic_light <span class="op">=</span> <span class="va">tl</span>,</span>
+<span>    summary_text <span class="op">=</span> <span class="va">summary_text</span>,</span>
+<span>    report <span class="op">=</span> <span class="va">report</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="step-3-run-it" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="step-3-run-it">
+<span class="header-section-number">7.3.3</span> Step 3: run it</h3>
+<p>Because the function follows the module template, you can call it directly, or register it and run it through <code>module_run()</code>. Calling it on our example paper:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">strain_check</span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result</span><span class="op">$</span><span class="va">traffic_light</span></span>
+<span><span class="co">#&gt; [1] "green"</span></span>
+<span><span class="va">result</span><span class="op">$</span><span class="va">summary_text</span></span>
+<span><span class="co">#&gt; [1] "Found 1 sentence mentioning a recognised mouse or rat strain."</span></span>
+<span><span class="va">result</span><span class="op">$</span><span class="va">summary_table</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;   paper_id       strains_mentioned</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 ebe487a2d6bce7                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>On a paper that does not study animals — such as the bundled <code>demopaper()</code> — no strains are found and the traffic light is <code>"na"</code>, meaning the check simply does not apply:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">strain_check</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">traffic_light</span></span>
+<span><span class="co">#&gt; [1] "na"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="going-further" class="level3" data-number="7.3.4"><h3 data-number="7.3.4" class="anchored" data-anchor-id="going-further">
+<span class="header-section-number">7.3.4</span> Going further</h3>
+<p>This module only checks whether strain names are <em>present</em>; a more sophisticated version could validate the nomenclature itself (for example, flagging a missing laboratory code, or a lowercase strain symbol that should be uppercase), or use <a href="../chapters/llms.html">an LLM</a> to judge whether the strain is described with all the detail the guidelines require. The same pattern — search, summarise, judge, report — applies whatever the check.</p>
+<p>Once you are happy with a module, save it as a standalone <code>.R</code> file (named to match the function) with the roxygen documentation described earlier, and validate it against hand-coded papers as shown in the validation sections above.</p>
 
 
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
