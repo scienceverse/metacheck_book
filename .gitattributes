@@ -1,0 +1,33 @@
+# Normalize line endings for all text files. Git stores them as LF in the
+# repository and checks them out with each platform's native endings. This
+# makes line-ending handling explicit and independent of anyone's local
+# core.autocrlf setting, which eliminates the "LF will be replaced by CRLF"
+# warnings on Windows.
+* text=auto
+
+# Files that must keep LF on every platform (scripts, config, web assets).
+*.sh        text eol=lf
+*.qmd       text eol=lf
+*.Rmd       text eol=lf
+*.R         text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.json      text eol=lf
+*.css       text eol=lf
+*.scss      text eol=lf
+*.js        text eol=lf
+*.html      text eol=lf
+*.md        text eol=lf
+*.bib       text eol=lf
+*.csl       text eol=lf
+
+# Treat known binary assets as binary (never convert).
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.svg       binary
+*.woff2     binary
+*.Rds       binary
+*.rds       binary
+*.RData     binary
