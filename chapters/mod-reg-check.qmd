@@ -1,0 +1,103 @@
+---
+title: "Preregistration Comparison with RegCheck"
+vignette: >
+  %\VignetteIndexEntry{Preregistration Comparison with RegCheck}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `reg_check` module compares a paper against its **preregistration** using [RegCheck](https://github.com/JamieCummins/regcheck), an LLM-based tool that judges, dimension by dimension, whether the paper is consistent with what was preregistered. Where the [prereg_check](mod-prereg-check.qmd) module simply *retrieves* the preregistration, `reg_check` goes a step further and *compares* the two documents.
+
+For each dimension — sample size, data source, inclusion and exclusion criteria, hypotheses, manipulated and measured variables, transformations, statistical models, and handling of missing data — RegCheck judges whether the paper:
+
+- **deviates** from the preregistration (`"yes"`),
+- is **consistent** with it (`"no"`), or
+- there is **insufficient information** to tell (`"missing"`).
+
+The comparison is done by a large language model, so the judgements are **pointers for manual checking, never automated conclusions**. Each comparison makes one LLM call per dimension and can take several minutes per preregistration.
+
+::: callout-note
+This module sends the full paper and preregistration text to a **RegCheck server**. The example in this chapter uses the **hosted RegCheck app** (`client = "groq"`), which sends text to that server and the Groq LLM provider. You can instead run everything **locally** so no text leaves your machine — see [running RegCheck locally](#running-locally) below. All RegCheck servers require an API token in the `REGCHECK_API_TOKEN` environment variable.
+:::
+
+## Running the module
+
+`reg_check` builds on `prereg_check`: it needs the preregistration(s) for a paper. If you run it on its own it calls `prereg_check` for you first; you can also chain them so the preregistrations are retrieved only once:
+
+```{r}
+#| eval: false
+paper |>
+  module_run("prereg_check") |>
+  module_run("reg_check", client = "groq")
+```
+
+Here we run it on `demopaper()`, which links to two preregistrations (an OSF registration and an AsPredicted), using the hosted app via Groq. (The comparison was run once and its result is loaded here, since each run takes several minutes and sends text to an external service.)
+
+```{r}
+#| eval: false
+mo <- module_run(demopaper(), "reg_check", client = "groq")
+```
+
+```{r}
+#| echo: false
+mo <- readRDS("_regcheck_demo.Rds")
+mo$traffic_light
+mo$summary_text
+```
+
+The `table` has one row per dimension per preregistration, with the judgement and supporting detail:
+
+```{r}
+#| echo: false
+mo$table[, c("dimension", "deviation_judgement", "prereg_id")] |>
+  head(10) |>
+  knitr::kable()
+```
+
+The overall split of judgements:
+
+```{r}
+#| echo: false
+table(mo$table$deviation_judgement)
+```
+
+## Reading a flagged deviation
+
+For any dimension judged a deviation (`"yes"`), the `deviation_information` column explains *what* differs, with quotes from both documents. For example, on **sample size** RegCheck noticed that although the planned *n* matched, the paper revealed the data were simulated:
+
+```{r}
+#| echo: false
+dev <- mo$table[mo$table$deviation_judgement == "yes", ]
+cat(dev$deviation_information[1])
+```
+
+These explanations are the useful output: they point a reviewer straight to the sentences to read, rather than asserting that a deviation is necessarily a problem (a preregistered study can deviate for good, disclosed reasons).
+
+## Options
+
+| Argument | Default | Effect |
+|---|---|---|
+| `paper` | — | the paper or paperlist to check |
+| `client` | `"ollama"` | which RegCheck backend: `"ollama"` (local), or `"groq"`, `"openai"`, `"deepseek"` (hosted app) |
+| `base_url` | server default | override the RegCheck server URL |
+| `dimensions` | RegCheck default | a data frame of custom dimensions to compare on |
+
+The lower-level `regcheck_compare()` function exposes the same comparison directly on raw text (a paper string plus either a preregistration string or a clinical-trial `registration_id`); see `?regcheck_compare`.
+
+## Running locally {#running-locally}
+
+By default (`client = "ollama"`) `reg_check` uses a RegCheck server running **on your own machine** with Ollama, so no paper or preregistration text is sent to an external service. This requires a one-time setup of the local RegCheck server (via Docker or Python) and a local Ollama model.
+
+The setup and the helper functions for this — `regcheck_setup_local()`, `regcheck_start_local()`, and `regcheck_stop_local()` — are described in the [Local AI with Ollama](ollama.qmd) chapter. Once a local server is running, the only change to the code above is dropping the `client` argument (or setting `client = "ollama"`):
+
+```{r}
+#| eval: false
+module_run(demopaper(), "reg_check")   # client = "ollama" by default
+```

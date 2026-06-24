@@ -1,0 +1,69 @@
+---
+title: "Ethics Approval Check"
+vignette: >
+  %\VignetteIndexEntry{Ethics Approval Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `ethics_check` module searches a paper for a statement that the research received **ethics approval** — for example from an Institutional Review Board (IRB), a Research Ethics Committee, or an animal-care committee — or that it was explicitly exempted or waived. Reporting ethics approval is expected for studies involving human or animal participants.
+
+The module recognises a wide range of committee names and approval phrasing across several languages and conventions, including:
+
+- **Human research committees** — Institutional Review Board (IRB), Independent Ethics Committee (IEC), Research/Medical Ethics Committee, and abbreviations such as REC, REB, ERB, METC, DEC.
+- **Animal research committees** — IACUC, Animal Welfare Ethical Review Body (AWERB), and language variants.
+- **Approval phrasing** — "approved by the … ethics committee", "ethically approved", "approved under protocol …".
+- **Waivers and exemptions** — "ethics waiver", "deemed exempt", "IRB exemption".
+- **Declaration of Helsinki** statements.
+
+This module is **fully offline** — it uses only regular expressions, so all the code below runs with just the metacheck package.
+
+## Running the module
+
+The module only flags a *missing* statement when a paper appears to involve **live data collection** (so re-analyses of existing data are not penalised). We run it across the first ten papers of the built-in `psychsci` dataset.
+
+```{r}
+mo <- module_run(psychsci[1:10], "ethics_check")
+mo$traffic_light
+mo$summary_text
+```
+
+The `summary_table` has one row per paper, with an `ethics_approved` flag and the matched statement(s):
+
+```{r}
+mo$summary_table[, c("paper_id", "ethics_approved")] |>
+  knitr::kable()
+```
+
+## A clean example and one with problems
+
+Papers that report approval show the exact sentence the module matched — useful for confirming it found a genuine statement:
+
+```{r}
+approved <- mo$summary_table[mo$summary_table$ethics_approved %in% TRUE, ]
+approved$ethics_statements[[1]]
+```
+
+Papers that appear to collect data but contain **no** approval statement are the ones to check. These are what turn the traffic light red:
+
+```{r}
+mo$summary_table[mo$summary_table$needs_ethics %in% TRUE &
+                 mo$summary_table$ethics_approved %in% FALSE, "paper_id"]
+```
+
+A missing statement is not proof that approval was never obtained — many authors simply omit it — but it flags papers where a reviewer should confirm the ethics reporting.
+
+## Options
+
+`ethics_check` takes only the `paper` argument.
+
+## Notes
+
+Because the module matches committee names and approval phrasing with regular expressions, it can miss unusually worded statements, and may occasionally match a sentence that mentions ethics for another reason. As with every module, treat the output as a prompt for human judgement rather than a verdict.

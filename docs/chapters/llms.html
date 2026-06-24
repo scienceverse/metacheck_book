@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/modules.html" rel="next">
+<link href="../chapters/papers-databases.html" rel="next">
 <link href="../chapters/text-search.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting up Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -182,6 +182,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -195,18 +207,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
@@ -219,56 +219,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
       </ul>
@@ -276,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Working with Papers</span></a>
+ <span class="menu-text">Using Metacheck Locally</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -284,8 +296,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -293,35 +311,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Using Metacheck Locally</span></a>
+ <span class="menu-text">Appendices</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
@@ -358,10 +353,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="#querying-papers-directly-with-llm" id="toc-querying-papers-directly-with-llm" class="nav-link" data-scroll-target="#querying-papers-directly-with-llm"><span class="header-section-number">5.5</span> Querying papers directly with <code>llm()</code></a>
   <ul class="collapse">
 <li><a href="#free-text-vs.-structured-output" id="toc-free-text-vs.-structured-output" class="nav-link" data-scroll-target="#free-text-vs.-structured-output"><span class="header-section-number">5.5.1</span> Free text vs.&nbsp;structured output</a></li>
-  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">5.5.2</span> Rate limiting</a></li>
+  <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">5.5.2</span> A worked example: extracting power analyses</a></li>
+  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">5.5.3</span> Rate limiting</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/llms.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></a></li></ol></nav><div class="quarto-title">
@@ -381,8 +377,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Most of metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do <em>more</em> when a large language model (LLM) is available — most notably the <a href="mod-power.html">power</a> module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the <a href="mod-prereg-check.html">prereg_check</a> module.</p>
-<p>This chapter explains how LLM support works in metacheck: how to turn it on, how to choose a model, how to run a model locally with Ollama or through a cloud API, and how to query papers directly with <code>llm()</code>.</p>
+</header><p>Most of Metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do <em>more</em> when a large language model (LLM) is available — most notably the <a href="../chapters/mod-power.html">power</a> module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the <a href="../chapters/mod-prereg-check.html">prereg_check</a> module. Furthermore, you might want to use LLMs directly to categorize information retrieved through the text search, or extract information from papers.</p>
+<p>This chapter explains how LLM support works in Metacheck: how to turn it on, how to choose a model, how to run a model locally with Ollama or through a cloud API, and how to query papers directly with <code>llm()</code>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -393,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>LLM use is <strong>entirely optional and opt-in</strong>. metacheck restricts LLMs to <em>classification of existing text</em>, never evaluation of quality. We prioritise non-LLM methods, and the vast majority of modules work without any LLM. When you do use one, the recommended setup runs the model <strong>locally</strong> so no data leaves your computer.</p>
+<p>LLM use is <strong>entirely optional and opt-in</strong>. Metacheck restricts LLMs to <em>classification of existing text</em>, never evaluation of quality. We prioritise non-LLM methods, and the vast majority of modules work without any LLM. When you do use one, the recommended setup runs the model <strong>locally</strong> so no data leaves your computer.</p>
 </div>
 </div>
 <p>Because the code in this chapter needs an LLM to be installed and configured, the examples below are shown but not executed when this book is built. You can run all of them yourself once you have set up either Ollama or a cloud API key, as described below.</p>
@@ -424,7 +420,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>                           <span class="co"># the default Groq cloud model</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/llama-3.3-70b-versatile"</span><span class="op">)</span>   <span class="co"># a specific Groq model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When metacheck starts, it checks for known API keys (for example <code>GROQ_API_KEY</code>) in your environment and sets a sensible default model automatically.</p>
+<p>When Metacheck starts, it checks for known API keys (for example <code>GROQ_API_KEY</code>) in your environment and sets a sensible default model automatically.</p>
 <section id="listing-available-models" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="listing-available-models">
 <span class="header-section-number">5.2.1</span> Listing available models</h3>
 <p><code>llm_model_list()</code> returns the models metacheck can see across all configured providers. Pass a provider name to narrow it down.</p>
@@ -517,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>For a full walkthrough — system requirements, verifying the server is running, choosing a model size for your hardware, and troubleshooting — see the dedicated <a href="ollama.html">Local AI with Ollama</a> chapter.</p>
+<p>For a full walkthrough — system requirements, verifying the server is running, choosing a model size for your hardware, and troubleshooting — see the dedicated <a href="../chapters/ollama.html">Local AI with Ollama</a> chapter.</p>
 </section><section id="option-2-use-a-cloud-api" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
 <span class="header-section-number">5.4</span> Option 2: Use a cloud API</h2>
 <p>You can use any cloud model ellmer supports. This is faster than running locally but requires an account and API key with the provider, and <strong>sends text to an external service</strong> — keep this in mind for unpublished manuscripts.</p>
@@ -532,35 +528,250 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">5.5</span> Querying papers directly with <code>llm()</code>
 </h2>
 <p>Beyond the modules, you can send any text to an LLM with <code>llm()</code>. Narrow the text down first with <code>text_search()</code> so you only send relevant sentences (this also keeps the number of queries — and any costs — low).</p>
+<p>As an example, suppose we want to know whether a paper states any <strong>constraints on the generalizability</strong> of its findings. A plain text search for “generaliz” finds candidate sentences, but it cannot tell the difference between a sentence about <em>constraints on generality</em> and one that merely mentions a “generalized linear model”. That judgement is exactly the kind of classification an LLM can do. Here we take one paper from <code>psychsci</code>, find every sentence mentioning generalizability, and ask the model a yes/no question about each:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">power_sentences</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">text_search</span><span class="op">(</span><span class="st">"power"</span><span class="op">)</span> <span class="op">|&gt;</span>      <span class="co"># sentences mentioning power</span></span>
-<span>  <span class="fu">text_search</span><span class="op">(</span><span class="st">"[0-9]"</span><span class="op">)</span>          <span class="co"># and containing at least one number</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">generaliz</span> <span class="op">&lt;-</span> <span class="fu">text_search</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[[</span><span class="st">"09567976231222836"</span><span class="op">]</span><span class="op">]</span>, <span class="st">"generaliz"</span>,</span>
+<span>                         ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">system_prompt</span> <span class="op">&lt;-</span> <span class="st">"Does this sentence report an a priori power analysis? Answer only TRUE or FALSE."</span></span>
+<span><span class="va">system_prompt</span> <span class="op">&lt;-</span> <span class="st">"Do the authors state any constraints on the generalizability of their findings? Answer only TRUE or FALSE."</span></span>
 <span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">power_sentences</span>, <span class="va">system_prompt</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">generaliz</span>, <span class="va">system_prompt</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The result adds an <code>answer</code> column to the searched sentences. Of the 15 sentences found in this paper, the model classified 6 as describing constraints on generalizability and 9 as not:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; FALSE  TRUE 
+#&gt;     9     6</code></pre>
+</div>
+</div>
+<p>The sentences it flagged are the substantive ones — for example statements that the findings come from a single population, or that “there is no guarantee that evidence from WEIRD populations will generalize to other populations” — while the sentences it answered <code>FALSE</code> to are mostly methodological mentions of “generalized linear mixed models”:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup><col style="width: 100%"></colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">Sentences flagged as constraints on generalizability</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Finding that English speakers treat suffixed words as more similar to each other than prefixed words could simply reflect their extensive experience with a language which happens to adhere to the cross-linguistic generalization.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">By definition, languages that violate cross-linguistic generalizations are relatively rare, and sometimes extremely rare, and thus accessing participant populations can be challenging.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">But there is no guarantee that evidence from WEIRD populations will generalize to other populations.</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <section id="free-text-vs.-structured-output" class="level3" data-number="5.5.1"><h3 data-number="5.5.1" class="anchored" data-anchor-id="free-text-vs.-structured-output">
 <span class="header-section-number">5.5.1</span> Free text vs.&nbsp;structured output</h3>
 <p>By default <code>llm()</code> returns free-text responses in an <code>answer</code> column. For reliable extraction, pass an ellmer <code>type</code> specification so the provider returns structured fields:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">type_spec</span> <span class="op">&lt;-</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/type_boolean.html">type_object</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">type_spec</span> <span class="op">&lt;-</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/type_boolean.html">type_object</a></span><span class="op">(</span></span>
 <span>  apriori <span class="op">=</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/type_boolean.html">type_boolean</a></span><span class="op">(</span><span class="st">"Whether this is an a priori power analysis"</span><span class="op">)</span>,</span>
 <span>  sample  <span class="op">=</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/type_boolean.html">type_integer</a></span><span class="op">(</span><span class="st">"The planned sample size"</span>, required <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">power_sentences</span>, <span class="st">"Extract power analysis details."</span>, type <span class="op">=</span> <span class="va">type_spec</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If you ask for JSON in the prompt instead of using a <code>type</code>, <code>json_expand()</code> turns the JSON column into proper columns and handles malformed responses gracefully (setting an <code>error</code> column rather than failing):</p>
+</section><section id="a-worked-example-extracting-power-analyses" class="level3" data-number="5.5.2"><h3 data-number="5.5.2" class="anchored" data-anchor-id="a-worked-example-extracting-power-analyses">
+<span class="header-section-number">5.5.2</span> A worked example: extracting power analyses</h3>
+<p>You can also ask for JSON directly in the prompt. Below we narrow the first ten <code>psychsci</code> papers to sentences that mention “power” and contain a number, then ask the model to return structured details as JSON:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">json_expand</span><span class="op">(</span><span class="va">result</span>, <span class="st">"answer"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">power</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">text_search</span><span class="op">(</span><span class="st">"power"</span><span class="op">)</span> <span class="op">|&gt;</span>   <span class="co"># sentences containing the word power</span></span>
+<span>  <span class="fu">text_search</span><span class="op">(</span><span class="st">"[0-9]"</span><span class="op">)</span>      <span class="co"># and containing at least one number</span></span>
+<span></span>
+<span><span class="va">system_prompt</span> <span class="op">&lt;-</span> <span class="st">'Does this sentence report an a priori power analysis? If so, return the test, sample size, critical alpha criterion, power level, effect size and effect size metric plus any other relevant parameters, in JSON format like:</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">{</span></span>
+<span><span class="st">  "apriori": true,</span></span>
+<span><span class="st">  "test": "paired samples t-test",</span></span>
+<span><span class="st">  "sample": 20,</span></span>
+<span><span class="st">  "alpha": 0.05,</span></span>
+<span><span class="st">  "power": 0.8,</span></span>
+<span><span class="st">  "es": 0.4,</span></span>
+<span><span class="st">  "es_metric": "cohen\'s D"</span></span>
+<span><span class="st">}</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">If not, return {"apriori": false}</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">Answer only in valid JSON format, starting with { and ending with }.'</span></span>
+<span></span>
+<span><span class="va">llm_power</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">power</span>, <span class="va">system_prompt</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="rate-limiting" class="level3" data-number="5.5.2"><h3 data-number="5.5.2" class="anchored" data-anchor-id="rate-limiting">
-<span class="header-section-number">5.5.2</span> Rate limiting</h3>
+<p><code>json_expand()</code> turns the JSON <code>answer</code> column into proper columns, and handles malformed responses gracefully (setting an <code>error</code> column rather than failing):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">llm_response</span> <span class="op">&lt;-</span> <span class="fu">json_expand</span><span class="op">(</span><span class="va">llm_power</span>, <span class="st">"answer"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">text</span>, <span class="va">apriori</span><span class="op">:</span><span class="va">es_metric</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 87%">
+<col style="width: 1%">
+<col style="width: 4%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 0%">
+<col style="width: 1%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">text</th>
+<th style="text-align: left;">apriori</th>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">sample</th>
+<th style="text-align: right;">alpha</th>
+<th style="text-align: right;">power</th>
+<th style="text-align: right;">es</th>
+<th style="text-align: left;">es_metric</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">It is possible that less-consistent effects were observed on trials with errors because of reduced power to detect an effect on these trials, which by design were less numerous (~25%).</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Figure 1 shows that CY had very little predictive power for CLIM, but the fit in the transposed plot has an obvious bell-shaped curve.</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sample size was calculated with an a priori power analysis, using the effect sizes reported by Küpper et al.&nbsp;(2014), who used identical procedures, materials, and dependent measures.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">We determined that a minimum sample size of 7 per group would be necessary for 95% power to detect an effect.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">t-test</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">For the first part of the task, 11 static visual images, one from each of the scenes in the film were presented once each on a black background for 2 s using Power-Point.</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A sample size of 26 per group was required to ensure 80% power to detect this difference at the 5% significance level.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">two-sample t-test</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A sample size of 18 per condition was required in order to ensure an 80% power to detect this difference at the 5% significance level.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">t-test</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">The 13,500 selected loan requests conservatively achieved a power of .98 for an effect size of .07 at an alpha level of .05.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">13500</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">On the basis of simulations over a range of expected effect sizes for contrasts of fMRI activity, we estimated that a sample size of 24 would provide .80 power at a conservative brainwide alpha threshold of .002 (although such thresholds ideally should be relaxed for detecting activity in regions where an effect is predicted).</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">fMRI activity contrast</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Stimulus sample size was determined via power analysis of the sole existing similar study, which used neural activity to predict Internet downloads of music (Berns &amp; Moore, 2012).</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The effect size from that study implied that a sample size of 72 loan requests would be required to achieve .80 power at an alpha level of .05.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Categorical ratings of the emotional expressions in the loan photographs had a similarly powerful impact on loan-request success; requests with “happy” photographs received $5.15 more per hour than requests with “sad” photographs, on average; they achieved full funding in 7.6% less time.</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Although previous research has provided mixed evidence about the impact of positive versus negative affect on charitable giving (Andreoni, 1990;Small &amp; Verrochi, 2009), by simultaneously assessing affect at both Internet-aggregate and laboratory-sample levels of analysis, our studies provide consistent evidence that photograph-elicited positive arousal most powerfully promoted lending rates and outcomes (Tables 1 and 2, Fig. 2a, and Fig.</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="rate-limiting" class="level3" data-number="5.5.3"><h3 data-number="5.5.3" class="anchored" data-anchor-id="rate-limiting">
+<span class="header-section-number">5.5.3</span> Rate limiting</h3>
 <p><code>llm()</code> makes one query per row of text. To guard against runaway costs from a coding mistake, metacheck caps the number of queries (default 30). Change the cap with <code>llm_max_calls()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="op">)</span>      <span class="co"># check current limit</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="op">)</span>      <span class="co"># check current limit</span></span>
 <span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>   <span class="co"># raise it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See <code>?llm</code> for the full set of arguments and details.</p>
@@ -971,8 +1182,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/modules.html" class="pagination-link" aria-label="Modules">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/papers-databases.html" class="pagination-link" aria-label="Using the Paper Database Corpora">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -983,7 +1194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>

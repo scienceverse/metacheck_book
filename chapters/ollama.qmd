@@ -186,7 +186,52 @@ result <- module_run(paper, "power")
 
 Processing the full dataset takes considerably longer (and could take hours, depending on your hardware, the number of power related sentences detected, and model size).
 
+## Running RegCheck locally
 
+The [RegCheck module](mod-reg-check.qmd) compares a paper against its preregistration. By default it sends text to a hosted RegCheck app, but you can run the whole comparison **on your own machine** with Ollama, so no paper or preregistration text leaves your computer. This needs a one-time setup of a small RegCheck server (in addition to Ollama).
+
+**1. Pull the required Ollama models.** RegCheck uses a fixed embedding model plus a language model of your choice. In a terminal:
+
+``` bash
+ollama pull nomic-embed-text-v2-moe
+ollama pull llama3.2          # or llama3.1, mistral, qwen3.5:9b, etc.
+```
+
+Use the largest language model that fits your hardware — bigger models generally give better judgements.
+
+**2. Start the local RegCheck server.** There are two ways. The **Docker** path is recommended and needs no Python:
+
+```{r}
+#| eval: false
+# Docker (recommended) — first run builds the image (~5 minutes), then it is instant
+regcheck_start_local(method = "docker")
+```
+
+The **Python** path needs Python 3.12+ and a one-time environment setup:
+
+```{r}
+#| eval: false
+regcheck_setup_local()                    # once: build the Python environment
+regcheck_start_local(method = "python")   # start the server
+```
+
+Either way the server runs at `http://localhost:8000`, Ollama must be running with the models pulled, and the API token is set automatically to `"metacheck-local"` — no token configuration needed. By default `regcheck_start_local()` auto-selects the largest language model you have pulled; pass `model = "..."` to choose a specific one.
+
+**3. Run `reg_check` — it uses the local server automatically.** With the local server running, the default `client = "ollama"` routes the comparison through it:
+
+```{r}
+#| eval: false
+module_run(demopaper(), "reg_check")   # client = "ollama" by default → local server
+```
+
+**4. Stop the server when finished:**
+
+```{r}
+#| eval: false
+regcheck_stop_local()
+```
+
+See the [RegCheck module chapter](mod-reg-check.qmd) for what the comparison returns and how to read the results.
 
 ## Troubleshooting
 

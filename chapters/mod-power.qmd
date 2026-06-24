@@ -13,7 +13,7 @@ library(metacheck)
 
 ## What it checks
 
-The `power` module uses regular expressions to find sentences that describe a statistical **power analysis**, and classifies each as *a priori*, *sensitivity*, or *post-hoc*. When [LLM support](llms.html) is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.
+The `power` module uses regular expressions to find sentences that describe a statistical **power analysis**, and classifies each as *a priori*, *sensitivity*, or *post-hoc*. When [LLM support](llms.qmd) is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.
 
 A priori power analyses are the useful kind; post-hoc ("observed") power is rarely informative.
 
@@ -61,7 +61,7 @@ The `power_type` column tells you which statements are a priori (worth keeping) 
 
 ## Options: using an LLM
 
-The regular-expression behaviour above runs with no setup. To also **extract structured details** — the statistical test, sample size, alpha, power, and effect size — turn on [LLM support](llms.html). The module reads the same switch (`llm_use()`) and model (`llm_model()`) described in the LLM chapter; there is no special module argument. When an LLM is enabled, the result table gains columns such as `statistical_test`, `sample_size`, `power`, `effect_size`, and `effect_size_metric`.
+The regular-expression behaviour above runs with no setup. To also **extract structured details** — the statistical test, sample size, alpha, power, and effect size — turn on [LLM support](llms.qmd). The module reads the same switch (`llm_use()`) and model (`llm_model()`) described in the LLM chapter; there is no special module argument. When an LLM is enabled, the result table gains columns such as `statistical_test`, `sample_size`, `power`, `effect_size`, and `effect_size_metric`.
 
 Below we run exactly the same call three ways — with no LLM, with a local Ollama model, and with a cloud model on Groq — on `demopaper()`, and compare what each returns. (The LLM outputs shown here were captured from real runs; running the LLM at build time would require Ollama or an API key, so the results are loaded from saved objects.)
 
@@ -125,7 +125,7 @@ The two models behaved noticeably differently on the same input:
 - **Extraction detail.** Both correctly pulled Cohen's *d* = 0.5 and power = 0.8 for the sensitivity analysis. Neither marked any analysis as `complete`, because the demo paper does not report every required field.
 - **Speed vs. privacy.** Groq returned in ~11 s versus ~105 s locally, but the local run kept the manuscript on the machine. For unpublished work, the slower local model is usually the right trade-off.
 
-There is no single "correct" answer here — the output depends on the model. A larger or more capable model generally gives cleaner extraction with fewer false positives, which is exactly why the model you choose matters. This is also why module output is meant to **prompt human judgement** rather than serve as a verdict: a person reading these tables quickly sees that the abstract and the code line are not real power analyses. See the [Local AI with Ollama](ollama.html) chapter for more on choosing and running local models.
+There is no single "correct" answer here — the output depends on the model. A larger or more capable model generally gives cleaner extraction with fewer false positives, which is exactly why the model you choose matters. This is also why module output is meant to **prompt human judgement** rather than serve as a verdict: a person reading these tables quickly sees that the abstract and the code line are not real power analyses. See the [Local AI with Ollama](ollama.qmd) chapter for more on choosing and running local models.
 
 ### Reproducibility
 

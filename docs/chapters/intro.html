@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+
 <title>1&nbsp; Introducing metacheck – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
@@ -20,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -78,6 +46,7 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -96,7 +65,8 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-2ba038287b8416a85275a829d41e9991.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e86f8a212565eb69fb543cc01c7f280b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-e86f8a212565eb69fb543cc01c7f280b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -123,11 +93,16 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -138,11 +113,17 @@ div.csl-indent {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
@@ -157,7 +138,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
@@ -171,8 +152,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
@@ -181,7 +162,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting up Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -202,21 +183,10 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">Modules</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
+  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -225,6 +195,17 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Modules</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
@@ -239,110 +220,105 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Working with Papers</span></a>
+ <span class="menu-text">Using Metacheck Locally</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Using Metacheck Locally</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
@@ -355,27 +331,32 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem"><span class="header-section-number">1.1</span> The Problem</a></li>
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem"><span class="header-section-number">1.1</span> The Problem</a></li>
   <li><a href="#a-solution" id="toc-a-solution" class="nav-link" data-scroll-target="#a-solution"><span class="header-section-number">1.2</span> A Solution</a></li>
-  <li><a href="#metacheck" id="toc-metacheck" class="nav-link" data-scroll-target="#metacheck"><span class="header-section-number">1.3</span> Metacheck</a></li>
-  <li><a href="#future-plans" id="toc-future-plans" class="nav-link" data-scroll-target="#future-plans"><span class="header-section-number">1.4</span> Future Plans</a></li>
-  <li><a href="#metacheck-team" id="toc-metacheck-team" class="nav-link" data-scroll-target="#metacheck-team"><span class="header-section-number">1.5</span> Metacheck Team</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/intro.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  <li><a href="#our-values" id="toc-our-values" class="nav-link" data-scroll-target="#our-values"><span class="header-section-number">1.3</span> Our Values</a></li>
+  <li><a href="#metacheck" id="toc-metacheck" class="nav-link" data-scroll-target="#metacheck"><span class="header-section-number">1.4</span> Metacheck</a></li>
+  <li><a href="#future-plans" id="toc-future-plans" class="nav-link" data-scroll-target="#future-plans"><span class="header-section-number">1.5</span> Future Plans</a></li>
+  <li><a href="#metacheck-team" id="toc-metacheck-team" class="nav-link" data-scroll-target="#metacheck-team"><span class="header-section-number">1.6</span> Metacheck Team</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title">
-<span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span>
-</h1>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></h1>
 <p class="subtitle lead">An Automated Tool to Check for Best Practices in Scientific Articles</p>
 </div>
 
@@ -390,132 +371,60 @@ div.csl-indent {
   
 
 
-</header><section id="the-problem" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="the-problem">
-<span class="header-section-number">1.1</span> The Problem</h2>
+</header>
+
+
+<section id="the-problem" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="the-problem"><span class="header-section-number">1.1</span> The Problem</h2>
 <p>Metascientific research reveals substantial opportunities to improve how scientists design studies, report results, and implement open science practices. For example, researchers often use invalid and unreliable measures <span class="citation" data-cites="goos2024assessing">(<a href="#ref-goos2024assessing" role="doc-biblioref">Goos et al., 2024</a>)</span>, misinterpret non-significant results <span class="citation" data-cites="aczel2018quantifying">(<a href="#ref-aczel2018quantifying" role="doc-biblioref">Aczel et al., 2018</a>)</span>, write insufficiently specific preregistrations <span class="citation" data-cites="van2024potential">(<a href="#ref-van2024potential" role="doc-biblioref"><span class="nocase">Akker et al.</span>, 2024</a>)</span>, make mistakes in power analyses <span class="citation" data-cites="thibault2024evaluation">(<a href="#ref-thibault2024evaluation" role="doc-biblioref">Thibault et al., 2024</a>)</span>, and misuse Bayes factors <span class="citation" data-cites="tendeiro2024diagnosing">(<a href="#ref-tendeiro2024diagnosing" role="doc-biblioref">Tendeiro et al., 2024</a>)</span>.</p>
 <p>Despite the growing availability of best practices, their adoption remains slow <span class="citation" data-cites="sharpe_why_2013">(<a href="#ref-sharpe_why_2013" role="doc-biblioref">Sharpe, 2013</a>)</span>. While scientists are responsible for staying informed, time constraints and the rapid pace of new developments pose significant challenges. Peer reviewers face similarly have a lack of time, and may overlook the absence of best practices. Checklists have been proposed to promote adherence, but in practice they have limited impact <span class="citation" data-cites="dexter2017narrative">(<a href="#ref-dexter2017narrative" role="doc-biblioref">Dexter &amp; Shafer, 2017</a>)</span>, as researchers might be unaware of them, and even when used, evaluating adherence still requires considerable expertise.</p>
-</section><section id="a-solution" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="a-solution">
-<span class="header-section-number">1.2</span> A Solution</h2>
+</section>
+<section id="a-solution" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="a-solution"><span class="header-section-number">1.2</span> A Solution</h2>
 <p>Human factors research suggests that automation, where researchers stay in the loop, can offer a partial solution to automatically check if best practices are followed. For example, algorithms could detect passages that describe an a priori power analysis, and whether researchers check whether it is fully reported and specifies the alpha level, desired power, the effect size metric, and a justification for the effect size <span class="citation" data-cites="lakens_justification_2022">(<a href="#ref-lakens_justification_2022" role="doc-biblioref">Lakens, 2022</a>)</span>.</p>
 <p>Algorithms are also useful for automating straightforward but time consuming tasks. For example, a reviewer could manually check if all p-values in a manuscript are reported exactly (e.g., p = 0.007 instead of p &lt; .05), and check whether authors unknowingly cite retracted papers . However, these tasks can be easily automated (as is for example done by the reference manager <a href="https://www.zotero.org/blog/retracted-item-notifications/">Zotero</a>).</p>
 <p>Recent progress in machine learning and artificial intelligence has made it increasingly viable to implement automated checks with sufficient accuracy, supporting broader adoption and adherence to best practices in scientific manuscripts. For example, the GROBID machine learning library <span class="citation" data-cites="GROBID">(<a href="#ref-GROBID" role="doc-biblioref"><em>GROBID</em>, 2008--2025</a>)</span> can turn scientific PDFs into structured text files from which specific content can be extracted. While many automated checks for best practices will require only simple text matching based on regular expression, more complex text extraction is possible by using large language models (LLMs).</p>
-<p>As a team, we have a specific philosophy on how to create useful automated checks. First, automated checks should make users aware of a potential points of improvement, and can point to sources to learn how to implement improvements, but the user decides whether and how to incorporate suggestions. Second, algorithms should be validated against community-annotated ground truth where possible, and the error rates should be transparently communicated. We use open software and tools, and as much as possible, open data. For each research practice to detect or check, domain experts should establish what best practices are, and automated checks should continually be revised and updated based on criticism. Any use of AI must be minimal, optional, and based on open source tools that guarantee data privacy. As a matter of principle, we start the development modules without the use of LLMs. Finally, the creation of modules should be open to the entire scientific community, such that any domain expert who wants to contribute an automated check can easily do so.</p>
-</section><section id="metacheck" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="metacheck">
-<span class="header-section-number">1.3</span> Metacheck</h2>
+</section>
+<section id="our-values" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="our-values"><span class="header-section-number">1.3</span> Our Values</h2>
+<p>The values below guide our priorities and decision-making for all Scienceverse projects, including Metacheck.</p>
+<p>Quality Control: The knowledge, data, code and software we create will be verified for accuracy, using publicly available methods and measures, such that users have enough context to interpret the results.</p>
+<p>Transparency: We are committed to open source software and open access datasets for validation.</p>
+<p>AI Optional: The use of large language models (LLMs) will be restricted to classification of existing text, not evaluation of the quality of practice. The use of LLMs will always be opt-in and transparently declared. We will prioritise non-LLM functions where possible, and limit use to cases where it provides substantial benefits that cannot be realised with other methods, such as regular expressions.</p>
+<p>No Automated Evaluation: While our software is designed to assist the evaluation of research by highlighting aspects where practice may be improved, we will never support automated quality assessments, rankings or scoring.</p>
+<p>Data Privacy: We will be fully transparent about what data we have access to and how those data will be used, as well as what will be shared with external services. Wherever possible, we will prioritise functions that share minimal data and services that have robust data protection. We will meet all EU data privacy regulations.</p>
+<p>Accessibility: We will provide our knowledge, data, code and software to all potential users with minimal barriers to access. We will prioritise access that is not unduly limited by wealth, disability or technical knowledge.</p>
+<p>Community Engagement: Our work will reflect and respect the needs of a diverse range of research communities, and benefit their research practices. We are open to critique from the research community.</p>
+<p>Sustainability: We are committed to the long-term viability of our work. We will actively protect and future-proof our work through technical maintenance, governance structures and strategic planning to make it a durable and relevant public good.</p>
+<p>Fair Recognition and Reward: Contributions to knowledge, data, code, and software will be uniquely and persistently identified, and benefit a diverse range of contributors.</p>
+</section>
+<section id="metacheck" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="metacheck"><span class="header-section-number">1.4</span> Metacheck</h2>
 <div class="quarto-figure quarto-figure-center" style="float:right; width: 10em;">
-<figure class="figure"><p><img src="https://scienceverse.github.io/metacheck/logo.png" class="img-fluid figure-img" alt="metacheck Logo, a green hexagon with METACHECK in art deco font"></p>
-<figcaption>metacheck Logo, a green hexagon with METACHECK in art deco font</figcaption></figure>
+<figure class="figure">
+<p><img src="https://scienceverse.github.io/metacheck/logo.png" class="img-fluid figure-img" alt="metacheck Logo, a green hexagon with METACHECK in art deco font"></p>
+<figcaption>metacheck Logo, a green hexagon with METACHECK in art deco font</figcaption>
+</figure>
 </div>
-<p>In this post, we introduce <a href="https://scienceverse.github.io/metacheck/">metacheck</a>, a new tool that leverages text search, code, and large language models to extract and supplement information from scientific documents (including manuscripts, submitted or published articles, or preregistration documents) and provides automated suggestions for improvement.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Inspired by practices in software development, where automated checks (e.g., CRAN checks for R packages) are used to identify issues before release, metacheck aims to screen scientific manuscripts to identify potential issues or areas for improvement and guide researchers in adopting best practices.</p>
-<p>metacheck is modular, with each module focused on a specific practice that the scientific community wants to improve, and for which automation is viable. This modularity allows the tool to be extended and customized by the community, enabling the development of specialized modules tailored to the standards and best practices of different scientific fields. It can also offer an overarching platform to integrate existing tools (e.g., checks for retracted articles, Statcheck, etc).</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>An example of the “stat_p_exact” module
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/demopaper.html">demopaper</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
-</div>
-</div>
-<p>In addition to the initial modules already introduced on the <a href="https://scienceverse.github.io/metacheck/">metacheck website</a>, we demonstrate Metacheck’s capabilities in a series of vignettes:</p>
-<ol type="1">
-<li><p>Identifying adherence to the American Psychological Association’s Journal Article Reporting Standards (JARS), such as reporting exact <em>p</em>-values and including effect sizes alongside their corresponding statistical test results;</p></li>
-<li><p>Reviewing the content of data repositories, such listing if data and/or code files are shared, and if the repository includes a README file, code book, or data dictionary;</p></li>
-<li><p>Extracting sample sizes from AsPredicted preregistrations and checking the preregistered sample size for consistency with the final study sample size reported in the manuscript;</p></li>
-<li><p>Detecting the presence of a priori power analyses and checking if they are fully reported to make them reproducible.</p></li>
-</ol>
-<p>These examples are intended to demonstrate the breadth of practices that can be automatically checked. The automated checks can be performed as part of an individual or metascientific workflow. In the individual workflow, an author or editor can run selected modules on a single paper and receive a report highlighting potential areas for improvement and explanations or links to further resources. In the metascientific workflow, a single module can be run on a batch of hundreds of papers, producing tabular data that can be used to address metascientific questions, such as how prevalent a practice is in a specific field. For the individual workflow our philosophy is that error rates can be higher than in the meta-scientific workflow, as the user will check whether to implement each recommendation or not. For a tool to be used in a metascientific workflow, the module needs to be shown to have low error rates when run on manually coded ground truth files.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># run the module on 250 open access papers from Psychological Science</span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">psychsci</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 18%">
-<col style="width: 21%">
-<col style="width: 18%">
-<col style="width: 21%">
-</colgroup>
-<thead><tr class="header">
-<th style="text-align: left;">paper_id</th>
-<th style="text-align: right;">ttests_with_es</th>
-<th style="text-align: right;">ttests_without_es</th>
-<th style="text-align: right;">Ftests_with_es</th>
-<th style="text-align: right;">Ftests_without_es</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">0956797613520608</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0956797614522816</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">0956797614527830</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0956797614557697</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">0956797614560771</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0956797614566469</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section><section id="future-plans" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="future-plans">
-<span class="header-section-number">1.4</span> Future Plans</h2>
-<p>There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. In addition to the modules demonstrated in the four blog posts, future modules could be developed to check if open data and materials are Findable, Accessible, Interoperable, and Reusable (FAIR) <span class="citation" data-cites="wilkinson_fair">(<a href="#ref-wilkinson_fair" role="doc-biblioref"><span class="nocase">Wilkinson et al.</span>, 2016</a>)</span>, to perform checks on specific types of articles (e.g., meta-analyses), check journal-specific reporting guidelines, or perform checks on the references. We see great potential for new modules; the only limitation is your own creativity and your engineering skills.</p>
+<p>Metacheck is modular, with each module focused on a specific practice that the scientific community wants to improve, and for which automation is viable. This modularity allows the tool to be extended and customized by the community, enabling the development of specialized modules tailored to the standards and best practices of different scientific fields. It can also offer an overarching platform to integrate existing tools (e.g., checks for retracted articles, Statcheck, etc).</p>
+<p>The automated checks can be performed as part of an individual or metascientific workflow. In the individual workflow, an author or editor can run selected modules on a single paper and receive a report highlighting potential areas for improvement and explanations or links to further resources. In the metascientific workflow, a single module can be run on a batch of hundreds of papers, producing tabular data that can be used to address metascientific questions, such as how prevalent a practice is in a specific field. For the individual workflow our philosophy is that error rates can be higher than in the meta-scientific workflow, as the user will check whether to implement each recommendation or not. For a tool to be used in a metascientific workflow, the module needs to be shown to have low error rates when run on manually coded ground truth files.</p>
+</section>
+<section id="future-plans" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="future-plans"><span class="header-section-number">1.5</span> Future Plans</h2>
+<p>There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. Future modules could be developed to check if open data and materials are Findable, Accessible, Interoperable, and Reusable (FAIR) <span class="citation" data-cites="wilkinson_fair">(<a href="#ref-wilkinson_fair" role="doc-biblioref"><span class="nocase">Wilkinson et al.</span>, 2016</a>)</span>, to perform checks on specific types of articles (e.g., meta-analyses), check journal-specific reporting guidelines, check for mis-citations, develop checks for meta-analyses and systematic reviews, etc. We see great potential for new modules; the only limitation is your own creativity and your engineering skills.</p>
 <p>We are excited to continue developing metacheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore metacheck on GitHub: <a href="https://scienceverse.github.io/metacheck/" class="uri">https://scienceverse.github.io/metacheck/</a>. If you want to contribute to new metacheck modules, validate existing modules in your own scientific discipline, or explore the use of metacheck for metascientific projects, reach out to <a href="mailto:lisa.debruine@glasgow.ac.uk?subject=metacheck">Lisa DeBruine</a> or <a href="mailto:d.lakens@tue.nl?subject=metacheck">Daniel Lakens</a>.</p>
-</section><section id="metacheck-team" class="level2" data-number="1.5"><h2 data-number="1.5" class="anchored" data-anchor-id="metacheck-team">
-<span class="header-section-number">1.5</span> Metacheck Team</h2>
-<p>Metacheck is developed by a collaborative team of researchers, consisting of (from left to right in the picture below) <a href="https://debruine.github.io">Lisa DeBruine</a> (developer and maintainer) and <a href="https://sites.google.com/site/lakens2/Home">Daniël Lakens</a> (developer), <a href="https://research.vu.nl/en/persons/rene-bekkers">René Bekkers</a> (collaborator and PI of Transparency Check), <a href="https://ssreplicationcentre.com/author/cristian-mesquida/">Cristian Mesquida</a> (postdoctoral researcher), and Max Littel and Jakub Werner (research assistants).</p>
+</section>
+<section id="metacheck-team" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="metacheck-team"><span class="header-section-number">1.6</span> Metacheck Team</h2>
+<p>Metacheck is developed by a collaborative team of researchers, consisting of Lisa DeBruine (developer and maintainer, UofG), Daniël Lakens (developer, TU/e), Cristian Mesquida (postdoctoral researcher, TU/e), Jakub Werner (RA, TUE), Lavinia Ion (RA, TU/e), Hadeel Khawatmy (RA, TU/e), Levi Baruch (RA, TU/e), Mink Veltman (RA, TU/e) René Bekkers (collaborator and PI of Transparency Check, VUE), and Max Littel (RA, VUE).</p>
+<p>Metacheck was initially developed by Lisa and Daniël in 2024 during Lisa’s visiting professorship at the Eindhoven Artificial Intelligence Systems Institute (EAISI).</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/team.png" class="img-fluid figure-img" alt="The faces of the metacheck team"></p>
-<figcaption>The faces of the metacheck team</figcaption></figure>
+<figure class="figure">
+<p><img src="../images/team.png" class="img-fluid figure-img" alt="The faces of the metacheck team"></p>
+<figcaption>The faces of the metacheck team</figcaption>
+</figure>
 </div>
-<p>Metacheck is partly financed by the Dutch Research Council (NWO) via the Thematic Digital Competence Centre Social Sciences &amp; Humanities (TDCC-SSH) as part of the project Research Transparency Check with file number ICT.001.TDCC.018 under the grant <a href="https://doi.org/10.61686/ENWVD61320" class="uri">https://doi.org/10.61686/ENWVD61320</a>. Our funded project priorities are described in more detail in our grant proposal, available here: <a href="https://osf.io/cpv4d/" class="uri">https://osf.io/cpv4d/</a>.</p>
+<p>Metacheck is partly financed by the Dutch Research Council (NWO) via VICI grant VI.C.241.013 to Daniel Lakens, the Thematic Digital Competence Centre Social Sciences &amp; Humanities grant ICT.001.TDCC.018 awarded to René Bekkers and Daniel Lakens, and the Ammodo Science Award 2023 for the Social Sciences awarded to Daniel Lakens.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
@@ -550,7 +459,10 @@ Thibault, R. T., Zavalis, E. A., Malički, M., &amp; Pedder, H. (2024). An evalu
 <span class="nocase">Wilkinson, M. D., Dumontier, M., Aalbersberg, Ij. J., Appleton, G., Axton, M., Baak, A., Blomberg, N., Boiten, J.-W., da Silva Santos, L. B., Bourne, P. E., Bouwman, J., Brookes, A. J., Clark, T., Crosas, M., Dillo, I., Dumon, O., Edmunds, S., Evelo, C. T., Finkers, R., … Mons, B.</span> (2016). The <span>FAIR Guiding Principles</span> for scientific data management and stewardship. <em>Scientific Data</em>, <em>3</em>(1), 1–9. <a href="https://doi.org/10.1038/sdata.2016.18">https://doi.org/10.1038/sdata.2016.18</a>
 </div>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -949,30 +861,35 @@ Thibault, R. T., Zavalis, E. A., Malički, M., &amp; Pedder, H. (2024). An evalu
       }
     }
   });
-  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
       <a href="../index.html" class="pagination-link" aria-label="Welcome">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Welcome</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/get-started.html" class="pagination-link" aria-label="metacheck">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/get-started.html" class="pagination-link" aria-label="Setting up Metacheck">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting up Metacheck</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
 <p>Built with <a href="https://quarto.org">Quarto</a>.</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/intro.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>
+
+
 
 
 </body></html>

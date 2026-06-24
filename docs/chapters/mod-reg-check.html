@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>20&nbsp; Replication Check – The Metacheck Manual</title>
+<title>10&nbsp; Preregistration Comparison with RegCheck – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/local-files.html" rel="next">
-<link href="../chapters/mod-ref-retraction.html" rel="prev">
+<link href="../chapters/mod-ethics-check.html" rel="next">
+<link href="../chapters/mod-prereg-check.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-ref-replication.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-reg-check.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -219,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
   </div>
 </li>
@@ -279,7 +279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link active">
+  <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
@@ -339,18 +339,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">20.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">20.2</span> Running the module</a></li>
-  <li><a href="#option-show-replication-outcomes" id="toc-option-show-replication-outcomes" class="nav-link" data-scroll-target="#option-show-replication-outcomes"><span class="header-section-number">20.3</span> Option: show replication outcomes</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">20.4</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">20.5</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">20.6</span> Options</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-replication.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">10.1</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">10.2</span> Running the module</a></li>
+  <li><a href="#reading-a-flagged-deviation" id="toc-reading-a-flagged-deviation" class="nav-link" data-scroll-target="#reading-a-flagged-deviation"><span class="header-section-number">10.3</span> Reading a flagged deviation</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">10.4</span> Options</a></li>
+  <li><a href="#running-locally" id="toc-running-locally" class="nav-link" data-scroll-target="#running-locally"><span class="header-section-number">10.5</span> Running locally</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-reg-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-ref-replication.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-reg-check.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span>
+<span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span>
 </h1>
 </div>
 
@@ -365,9 +364,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">20.1</span> What it checks</h2>
-<p>The <code>ref_replication</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://forrt.org/">FLoRA</a> replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication’s outcome.</p>
+</header><section id="what-it-checks" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">10.1</span> What it checks</h2>
+<p>The <code>reg_check</code> module compares a paper against its <strong>preregistration</strong> using <a href="https://github.com/JamieCummins/regcheck">RegCheck</a>, an LLM-based tool that judges, dimension by dimension, whether the paper is consistent with what was preregistered. Where the <a href="../chapters/mod-prereg-check.html">prereg_check</a> module simply <em>retrieves</em> the preregistration, <code>reg_check</code> goes a step further and <em>compares</em> the two documents.</p>
+<p>For each dimension — sample size, data source, inclusion and exclusion criteria, hypotheses, manipulated and measured variables, transformations, statistical models, and handling of missing data — RegCheck judges whether the paper:</p>
+<ul>
+<li>
+<strong>deviates</strong> from the preregistration (<code>"yes"</code>),</li>
+<li>is <strong>consistent</strong> with it (<code>"no"</code>), or</li>
+<li>there is <strong>insufficient information</strong> to tell (<code>"missing"</code>).</li>
+</ul>
+<p>The comparison is done by a large language model, so the judgements are <strong>pointers for manual checking, never automated conclusions</strong>. Each comparison makes one LLM call per dimension and can take several minutes per preregistration.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -378,84 +385,112 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module makes <strong>live network calls</strong> to the FLoRA replication database. You need an internet connection to run the code below.</p>
+<p>This module sends the full paper and preregistration text to a <strong>RegCheck server</strong>. The example in this chapter uses the <strong>hosted RegCheck app</strong> (<code>client = "groq"</code>), which sends text to that server and the Groq LLM provider. You can instead run everything <strong>locally</strong> so no text leaves your machine — see <a href="#running-locally">running RegCheck locally</a> below. All RegCheck servers require an API token in the <code>REGCHECK_API_TOKEN</code> environment variable.</p>
 </div>
 </div>
-</section><section id="running-the-module" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">20.2</span> Running the module</h2>
-<p><code>demopaper()</code> cites an original study that has a recorded replication.</p>
+</section><section id="running-the-module" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">10.2</span> Running the module</h2>
+<p><code>reg_check</code> builds on <code>prereg_check</code>: it needs the preregistration(s) for a paper. If you run it on its own it calls <code>prereg_check</code> for you first; you can also chain them so the preregistrations are retrieved only once:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">module_run</span><span class="op">(</span><span class="st">"prereg_check"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">module_run</span><span class="op">(</span><span class="st">"reg_check"</span>, client <span class="op">=</span> <span class="st">"groq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here we run it on <code>demopaper()</code>, which links to two preregistrations (an OSF registration and an AsPredicted), using the hosted app via Groq. (The comparison was run once and its result is loaded here, since each run takes several minutes and sends text to an external service.)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"reg_check"</span>, client <span class="op">=</span> <span class="st">"groq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "info"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "We found 1 replication for 1 original you cited."</code></pre>
+<pre><code>#&gt; [1] "RegCheck compared the paper with 2 preregistrations on 20 dimensions, and flagged 10 potential deviations (6 dimensions not specified in the preregistration)."</code></pre>
 </div>
 </div>
-<p>The <code>table</code> matches each cited original to its replication(s):</p>
+<p>The <code>table</code> has one row per dimension per preregistration, with the judgement and supporting detail:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"replication_doi"</span>, <span class="st">"replication_url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
-<th style="text-align: left;">doi</th>
-<th style="text-align: left;">replication_doi</th>
-<th style="text-align: left;">replication_url</th>
+<th style="text-align: left;">dimension</th>
+<th style="text-align: left;">deviation_judgement</th>
+<th style="text-align: left;">prereg_id</th>
 </tr></thead>
-<tbody><tr class="odd">
-<td style="text-align: left;">10.1037/0003-066x.54.6.408</td>
-<td style="text-align: left;">10.1177/1474704919852921</td>
-<td style="text-align: left;">NA</td>
-</tr></tbody>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sample size</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Data source</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Inclusion criteria</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Exclusion criteria</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Incomplete and missing data</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hypotheses</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Manipulated variables</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Measured variables</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transformations</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Statistical models</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">48ncu</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-</section><section id="option-show-replication-outcomes" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="option-show-replication-outcomes">
-<span class="header-section-number">20.3</span> Option: show replication outcomes</h2>
-<p>By default the module reports <em>that</em> a replication exists. Set <code>show_outcomes = TRUE</code> to also include the outcome of each replication (for example, whether it was successful), which adds the <code>replication_outcome</code> and <code>replication_type</code> information to the report:</p>
+<p>The overall split of judgements:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"replication_doi"</span>, <span class="st">"replication_outcome"</span>, <span class="st">"replication_type"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 28%">
-<col style="width: 22%">
-<col style="width: 19%">
-</colgroup>
-<thead><tr class="header">
-<th style="text-align: left;">doi</th>
-<th style="text-align: left;">replication_doi</th>
-<th style="text-align: left;">replication_outcome</th>
-<th style="text-align: left;">replication_type</th>
-</tr></thead>
-<tbody><tr class="odd">
-<td style="text-align: left;">10.1037/0003-066x.54.6.408</td>
-<td style="text-align: left;">10.1177/1474704919852921</td>
-<td style="text-align: left;">failed</td>
-<td style="text-align: left;">replication</td>
-</tr></tbody>
-</table>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; missing      no     yes 
+#&gt;       6       4      10</code></pre>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">20.4</span> Running on many papers</h2>
+</section><section id="reading-a-flagged-deviation" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="reading-a-flagged-deviation">
+<span class="header-section-number">10.3</span> Reading a flagged deviation</h2>
+<p>For any dimension judged a deviation (<code>"yes"</code>), the <code>deviation_information</code> column explains <em>what</em> differs, with quotes from both documents. For example, on <strong>sample size</strong> RegCheck noticed that although the planned <em>n</em> matched, the paper revealed the data were simulated:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; While the number of participants per group (50) is consistent between the registration [PREREG_0001, PREREG_0002] and the paper [PAPER_0002], the paper reveals that the data was simulated [PAPER_0003], which deviates from the registration's implication of collecting real data from 100 researchers [PREREG_0002].</code></pre>
 </div>
-</section><section id="interpreting-the-result" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">20.5</span> Interpreting the result</h2>
-<p>A match means a replication of a cited study exists in the database — it is an invitation to check whether the replication’s result changes how you should cite the original. As always, the module surfaces information for human judgement.</p>
-</section><section id="options" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="options">
-<span class="header-section-number">20.6</span> Options</h2>
+</div>
+<p>These explanations are the useful output: they point a reviewer straight to the sentences to read, rather than asserting that a deviation is necessarily a problem (a preregistered study can deviate for good, disclosed reasons).</p>
+</section><section id="options" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="options">
+<span class="header-section-number">10.4</span> Options</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -474,12 +509,30 @@ Note
 <td>the paper or paperlist to check</td>
 </tr>
 <tr class="even">
-<td><code>show_outcomes</code></td>
-<td><code>FALSE</code></td>
-<td>include the outcome and type of each replication</td>
+<td><code>client</code></td>
+<td><code>"ollama"</code></td>
+<td>which RegCheck backend: <code>"ollama"</code> (local), or <code>"groq"</code>, <code>"openai"</code>, <code>"deepseek"</code> (hosted app)</td>
+</tr>
+<tr class="odd">
+<td><code>base_url</code></td>
+<td>server default</td>
+<td>override the RegCheck server URL</td>
+</tr>
+<tr class="even">
+<td><code>dimensions</code></td>
+<td>RegCheck default</td>
+<td>a data frame of custom dimensions to compare on</td>
 </tr>
 </tbody>
 </table>
+<p>The lower-level <code>regcheck_compare()</code> function exposes the same comparison directly on raw text (a paper string plus either a preregistration string or a clinical-trial <code>registration_id</code>); see <code>?regcheck_compare</code>.</p>
+</section><section id="running-locally" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="running-locally">
+<span class="header-section-number">10.5</span> Running locally</h2>
+<p>By default (<code>client = "ollama"</code>) <code>reg_check</code> uses a RegCheck server running <strong>on your own machine</strong> with Ollama, so no paper or preregistration text is sent to an external service. This requires a one-time setup of the local RegCheck server (via Docker or Python) and a local Ollama model.</p>
+<p>The setup and the helper functions for this — <code>regcheck_setup_local()</code>, <code>regcheck_start_local()</code>, and <code>regcheck_stop_local()</code> — are described in the <a href="../chapters/ollama.html">Local AI with Ollama</a> chapter. Once a local server is running, the only change to the code above is dropping the <code>client</code> argument (or setting <code>client = "ollama"</code>):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"reg_check"</span><span class="op">)</span>   <span class="co"># client = "ollama" by default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -882,13 +935,13 @@ Note
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-ref-retraction.html" class="pagination-link" aria-label="Retraction Watch">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span>
+      <a href="../chapters/mod-prereg-check.html" class="pagination-link" aria-label="Preregistration Check">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/local-files.html" class="pagination-link" aria-label="Checking Local Files with repo_check and code_check">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/mod-ethics-check.html" class="pagination-link" aria-label="Ethics Approval Check">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -899,7 +952,7 @@ Note
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-replication.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-reg-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>

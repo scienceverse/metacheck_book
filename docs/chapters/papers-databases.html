@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>19&nbsp; Using the Paper Database Corpora – The Metacheck Manual</title>
+<title>6&nbsp; Using the Paper Database Corpora – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/local-files.html" rel="next">
-<link href="../chapters/mod-ref-replication.html" rel="prev">
+<link href="../chapters/creating-modules.html" rel="next">
+<link href="../chapters/llms.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/papers-databases.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/papers-databases.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/papers-databases.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -145,13 +145,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Getting Started</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">metacheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting up Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -182,6 +182,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -195,18 +207,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
@@ -219,73 +219,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Working with Papers</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Using Metacheck Locally</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -293,35 +311,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">Using Metacheck Locally</span></a>
+ <span class="menu-text">Appendices</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
-  </div>
-</li>
-      </ul>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
@@ -344,21 +339,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#discovering-available-corpora" id="toc-discovering-available-corpora" class="nav-link active" data-scroll-target="#discovering-available-corpora"><span class="header-section-number">19.1</span> Discovering available corpora</a></li>
-  <li><a href="#loading-a-corpus" id="toc-loading-a-corpus" class="nav-link" data-scroll-target="#loading-a-corpus"><span class="header-section-number">19.2</span> Loading a corpus</a></li>
-  <li><a href="#corpus-metadata" id="toc-corpus-metadata" class="nav-link" data-scroll-target="#corpus-metadata"><span class="header-section-number">19.3</span> Corpus metadata</a></li>
+<li><a href="#discovering-available-corpora" id="toc-discovering-available-corpora" class="nav-link active" data-scroll-target="#discovering-available-corpora"><span class="header-section-number">6.1</span> Discovering available corpora</a></li>
+  <li><a href="#loading-a-corpus" id="toc-loading-a-corpus" class="nav-link" data-scroll-target="#loading-a-corpus"><span class="header-section-number">6.2</span> Loading a corpus</a></li>
+  <li><a href="#corpus-metadata" id="toc-corpus-metadata" class="nav-link" data-scroll-target="#corpus-metadata"><span class="header-section-number">6.3</span> Corpus metadata</a></li>
   <li>
-<a href="#three-fast-local-modules" id="toc-three-fast-local-modules" class="nav-link" data-scroll-target="#three-fast-local-modules"><span class="header-section-number">19.4</span> Three fast, local modules</a>
+<a href="#three-fast-local-modules" id="toc-three-fast-local-modules" class="nav-link" data-scroll-target="#three-fast-local-modules"><span class="header-section-number">6.4</span> Three fast, local modules</a>
   <ul class="collapse">
-<li><a href="#stat_check-on-jdm" id="toc-stat_check-on-jdm" class="nav-link" data-scroll-target="#stat_check-on-jdm"><span class="header-section-number">19.4.1</span> <code>stat_check</code> on JDM</a></li>
+<li><a href="#stat_check-on-jdm" id="toc-stat_check-on-jdm" class="nav-link" data-scroll-target="#stat_check-on-jdm"><span class="header-section-number">6.4.1</span> <code>stat_check</code> on JDM</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/papers-databases.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/papers-databases.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/papers-databases.html">Working with Papers</a></li><li class="breadcrumb-item"><a href="../chapters/papers-databases.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/papers-databases.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span>
+<span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span>
 </h1>
 </div>
 
@@ -377,17 +372,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <a href="https://github.com/scienceverse/papers">scienceverse/papers</a> GitHub repository hosts pre-built <code>paperlist</code> corpora – collections of open-access articles already converted to metacheck’s internal format with GROBID, ready to load to run modules on a set of papers. The goal of these paper databases is to provide a set of open access scientific papers that modules can be validated against. These databases are useful when developing new modules in Metacheck, but also to test different automated screening tools like MEtacheck against each other. This vignette shows how to discover, download, and use these corpora, and demonstrates three fast text-based modules on real papers from each one.</p>
-<section id="discovering-available-corpora" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="discovering-available-corpora">
-<span class="header-section-number">19.1</span> Discovering available corpora</h2>
-<p><code>papers_available()</code> queries the GitHub Releases API and lists every corpus currently published, along with its size and whether you already have a cached local copy.</p>
+<section id="discovering-available-corpora" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="discovering-available-corpora">
+<span class="header-section-number">6.1</span> Discovering available corpora</h2>
+<p><code><a href="https://scienceverse.github.io/metacheck/reference/papers_available.html">papers_available()</a></code> queries the GitHub Releases API and lists every corpus currently published, along with its size and whether you already have a cached local copy.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">papers_available</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_available.html">papers_available</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           name                    tag size_mb cached</span></span>
 <span><span class="co">#&gt; 1         ece3        ece3-2026-06-21    55.3  FALSE</span></span>
 <span><span class="co">#&gt; 2        elife       elife-2026-06-21    51.9  FALSE</span></span>
 <span><span class="co">#&gt; 3     openmind    openmind-2026-06-21    12.6  FALSE</span></span>
 <span><span class="co">#&gt; 4    frontiers   frontiers-2026-06-21    35.7  FALSE</span></span>
-<span><span class="co">#&gt; 5          jdm         jdm-2026-06-21    24.9  FALSE</span></span>
+<span><span class="co">#&gt; 5          jdm         jdm-2026-06-21    24.9   TRUE</span></span>
 <span><span class="co">#&gt; 6        iperc       iperc-2026-06-21    12.4  FALSE</span></span>
 <span><span class="co">#&gt; 7         scan        scan-2026-06-21    29.1  FALSE</span></span>
 <span><span class="co">#&gt; 8          joc         joc-2026-06-20    15.6  FALSE</span></span>
@@ -399,33 +394,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; 14     bmcoral     bmcoral-2026-06-19    21.4  FALSE</span></span>
 <span><span class="co">#&gt; 15        ijos        ijos-2026-06-19    22.0  FALSE</span></span>
 <span><span class="co">#&gt; 16      bmcmed      bmcmed-2026-06-19    30.5  FALSE</span></span>
-<span><span class="co">#&gt; 17     plosmed     plosmed-2026-06-19    30.2  FALSE</span></span>
+<span><span class="co">#&gt; 17     plosmed     plosmed-2026-06-19    30.2   TRUE</span></span>
 <span><span class="co">#&gt; 18    collabra    collabra-2026-06-19    31.7  FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="loading-a-corpus" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="loading-a-corpus">
-<span class="header-section-number">19.2</span> Loading a corpus</h2>
-<p><code>papers_load()</code> downloads the corpus and returns it as a <code>paperlist</code> object. By default (<code>cache = FALSE</code>), the file is downloaded to a temporary location and discarded once loaded – the right choice if you only need the corpus for a single session.</p>
+</section><section id="loading-a-corpus" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="loading-a-corpus">
+<span class="header-section-number">6.2</span> Loading a corpus</h2>
+<p><code><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load()</a></code> downloads the corpus and returns it as a <code>paperlist</code> object. By default (<code>cache = FALSE</code>), the file is downloaded to a temporary location and discarded once loaded – the right choice if you only need the corpus for a single session.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">jdm</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you expect to use a corpus repeatedly across sessions – for example, while developing and testing a new module – set <code>cache = TRUE</code> so the file is saved to your user data directory and reused on subsequent calls instead of being re-downloaded every time:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"jdm"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"jdm"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calling <code>papers_load("jdm", cache = TRUE)</code> again later in the same or a different session will load instantly from the cached copy rather than contacting GitHub. Pass <code>overwrite = TRUE</code> if you want to force a fresh download (e.g.&nbsp;after a corpus has been updated):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"jdm"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"jdm"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Use <code>papers_remove()</code> to delete a cached copy and free up disk space:</p>
+<p>Use <code><a href="https://scienceverse.github.io/metacheck/reference/papers_remove.html">papers_remove()</a></code> to delete a cached copy and free up disk space:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">papers_remove</span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_remove.html">papers_remove</a></span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="corpus-metadata" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="corpus-metadata">
-<span class="header-section-number">19.3</span> Corpus metadata</h2>
-<p>The corpus <code>.rds</code> file itself is just a list of papers – it carries no metadata about how it was built, what it covers, or its license. That provenance lives in a <code>metadata.json</code> file alongside each corpus on the <a href="https://github.com/scienceverse/papers">papers repository</a>, following the <a href="http://dublincore.org/documents/dcmi-terms/">Dublin Core</a> metadata standard. <code>papers_metadata()</code> fetches and parses it for you:</p>
+</section><section id="corpus-metadata" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="corpus-metadata">
+<span class="header-section-number">6.3</span> Corpus metadata</h2>
+<p>The corpus <code>.rds</code> file itself is just a list of papers – it carries no metadata about how it was built, what it covers, or its license. That provenance lives in a <code>metadata.json</code> file alongside each corpus on the <a href="https://github.com/scienceverse/papers">papers repository</a>, following the <a href="http://dublincore.org/documents/dcmi-terms/">Dublin Core</a> metadata standard. <code><a href="https://scienceverse.github.io/metacheck/reference/papers_metadata.html">papers_metadata()</a></code> fetches and parses it for you:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">papers_metadata</span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_metadata.html">papers_metadata</a></span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span>
 <span><span class="va">meta</span><span class="op">$</span><span class="va">dc_title</span></span>
 <span><span class="co">#&gt; [1] "Judgment and Decision Making - Complete Open-Access Corpus (2006-2022)"</span></span>
 <span><span class="va">meta</span><span class="op">$</span><span class="va">dc_coverage</span></span>
@@ -440,9 +435,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">meta</span><span class="op">$</span><span class="va">dc_provenance</span><span class="op">$</span><span class="va">doi_matching</span></span>
 <span><span class="co">#&gt; [1] "CrossRef title search + manual verification (2026-06-17)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>papers_metadata()</code> only covers the structured fields above. For the full narrative – known gaps, data-quality caveats, exact sampling procedure – see each corpus’s <code>README.md</code> on the papers repository, or fetch it directly with <code>github_readme("scienceverse/papers")</code>.</p>
-</section><section id="three-fast-local-modules" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="three-fast-local-modules">
-<span class="header-section-number">19.4</span> Three fast, local modules</h2>
+<p><code><a href="https://scienceverse.github.io/metacheck/reference/papers_metadata.html">papers_metadata()</a></code> only covers the structured fields above. For the full narrative – known gaps, data-quality caveats, exact sampling procedure – see each corpus’s <code>README.md</code> on the papers repository, or fetch it directly with <code>github_readme("scienceverse/papers")</code>.</p>
+</section><section id="three-fast-local-modules" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="three-fast-local-modules">
+<span class="header-section-number">6.4</span> Three fast, local modules</h2>
 <p>The modules below only search the paper’s text with regular expressions – no external API calls, no LLM queries – so they run quickly even across hundreds of papers.</p>
 <table class="caption-top table">
 <colgroup>
@@ -470,8 +465,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>All three return a list with <code>$traffic_light</code> (“green”, “yellow”, “red”, or “na”), <code>$summary_text</code>, and <code>$table</code> with row-level detail. See <code>vignette("stats", package = "metacheck")</code> for a fuller walkthrough of all five statistical-reporting modules using the bundled <code>psychsci</code> dataset.</p>
 <hr>
-<section id="stat_check-on-jdm" class="level3" data-number="19.4.1"><h3 data-number="19.4.1" class="anchored" data-anchor-id="stat_check-on-jdm">
-<span class="header-section-number">19.4.1</span> <code>stat_check</code> on JDM</h3>
+<section id="stat_check-on-jdm" class="level3" data-number="6.4.1"><h3 data-number="6.4.1" class="anchored" data-anchor-id="stat_check-on-jdm">
+<span class="header-section-number">6.4.1</span> <code>stat_check</code> on JDM</h3>
 <p><code>stat_check</code> runs <a href="https://statcheck.io/">StatCheck</a> on every t-test and F-test it finds and reports whether the stated p-value is mathematically consistent with the test statistic and degrees of freedom. The code below performs this check only on the first 20 papers in the paper database.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">jdm</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_check"</span><span class="op">)</span></span>
@@ -499,7 +494,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can repeat this analysis on a journal in medicine:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plosmed</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"plosmed"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plosmed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"plosmed"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">plosmed</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">plosmed</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_check"</span><span class="op">)</span></span>
@@ -919,13 +914,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-ref-replication.html" class="pagination-link" aria-label="Replication Check">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Replication Check</span></span>
+      <a href="../chapters/llms.html" class="pagination-link" aria-label="Using Large Language Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/local-files.html" class="pagination-link" aria-label="Checking Local Files with repo_check and code_check">
-        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/creating-modules.html" class="pagination-link" aria-label="Creating Modules">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -936,7 +931,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/papers-databases.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/papers-databases.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
