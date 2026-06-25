@@ -18,20 +18,57 @@ library(metacheck)
 
 ## Installation
 
-You can install the Metacheck from [GitHub](https://github.com/scienceverse/metacheck) with:
+Before you install Metacheck, you need two things on your computer:
+
+1. **R**, version **4.3.0 or newer**. Download it for your operating system from [https://cran.r-project.org/](https://cran.r-project.org/) and install it with the default options.
+2. **RStudio** Desktop (the free edition), from [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/). RStudio is not strictly required, but we assume it throughout this book. Recent versions of RStudio also bundle the Quarto command-line tool, which Metacheck uses to generate reports.
+
+With R and RStudio installed, the recommended way to install Metacheck is from the **scienceverse R-universe**. R-universe provides ready-to-use, pre-compiled versions of Metacheck for Windows and macOS, so you do **not** need any additional build tools, and installation is a single command. Open RStudio and run:
 
 ``` r
+install.packages("metacheck",
+  repos = c("https://scienceverse.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+This tells R to look for Metacheck on the scienceverse R-universe first, and to pull any other required packages from the regular CRAN mirror. On Windows and macOS this installs binary versions of every package, so nothing is built from source and the installation works on a fresh machine without any extra setup. The download includes Metacheck's dependencies, so on a first installation it may take a few minutes.
+
+After installation, you can load the Metacheck library.
+
+```{r}
+#| eval: false
+library(metacheck)
+```
+
+::: {.callout-tip}
+## Installing for a group
+
+If you are installing Metacheck for a workshop or a class, ask participants to install R and RStudio and run the `install.packages()` command above *before* the session, and to confirm it works by running `library(metacheck)`. The R-universe install avoids the build-tools requirement that often trips people up, but downloading many packages over a single shared network connection at once can still be slow, so installing in advance avoids that bottleneck.
+:::
+
+### Installing from GitHub (development version)
+
+Metacheck is under active development. Installing directly from [GitHub](https://github.com/scienceverse/metacheck) gives you the very latest version, which often has new modules or functions, but may also have more bugs. The R-universe install above is built from the same source and is updated automatically, so for most users it is the better choice; install from GitHub only if you specifically need a change that has not been built yet, or a particular development branch.
+
+Installing from GitHub builds Metacheck from source, which requires a compiler toolchain that does not ship with R by default. You therefore need one extra step compared to the R-universe install:
+
+- **Windows:** Install **Rtools**, matching the version to your R version (Rtools44 for R 4.4.x, Rtools43 for R 4.3.x, and so on), from [https://cran.r-project.org/bin/windows/Rtools/](https://cran.r-project.org/bin/windows/Rtools/). Use the default options. This is a large download.
+- **macOS:** Install the Xcode command-line tools by running `xcode-select --install` in the Terminal. For some packages you may also need a Fortran compiler, available from [https://mac.r-project.org/tools/](https://mac.r-project.org/tools/).
+- **Linux:** Install the standard development tools (for example `build-essential` and `gfortran` on Debian/Ubuntu), along with the development versions of system libraries such as `libcurl`, `libxml2`, and `libssl`.
+
+With the build tools in place, install the `pak` package and then install Metacheck from GitHub:
+
+``` r
+install.packages("pak")
 pak::pkg_install("scienceverse/metacheck")
 ```
 
-Metacheck is under active development. If you install the development version of Metacheck, you will often be able to use new modules or functions, but the development version might als have more bugs. 
-You can install the development version of Metacheck from [GitHub](https://github.com/scienceverse/metacheck) with:
+To install a specific development branch, append it after an `@`:
 
 ``` r
 pak::pkg_install("scienceverse/metacheck@dev")
 ```
 
-After installation, you can load the Metacheck library.
+After installation, you can load the Metacheck library as usual with `library(metacheck)`.
 
 ```{r}
 #| eval: false
