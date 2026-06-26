@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>26&nbsp; Creating a Metacheck Report – The Metacheck Manual</title>
+<title>27&nbsp; Creating a Metacheck Report – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/creating-a-report.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/creating-a-report.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -237,86 +237,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -333,13 +339,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,35 +381,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#loading-a-paper" id="toc-loading-a-paper" class="nav-link active" data-scroll-target="#loading-a-paper"><span class="header-section-number">26.1</span> Loading a paper</a></li>
+<li><a href="#loading-a-paper" id="toc-loading-a-paper" class="nav-link active" data-scroll-target="#loading-a-paper"><span class="header-section-number">27.1</span> Loading a paper</a></li>
   <li>
-<a href="#the-quick-way-report" id="toc-the-quick-way-report" class="nav-link" data-scroll-target="#the-quick-way-report"><span class="header-section-number">26.2</span> The quick way: <code>report()</code></a>
+<a href="#the-quick-way-report" id="toc-the-quick-way-report" class="nav-link" data-scroll-target="#the-quick-way-report"><span class="header-section-number">27.2</span> The quick way: <code>report()</code></a>
   <ul class="collapse">
-<li><a href="#choosing-modules" id="toc-choosing-modules" class="nav-link" data-scroll-target="#choosing-modules"><span class="header-section-number">26.2.1</span> Choosing modules</a></li>
-  <li><a href="#choosing-the-output-format" id="toc-choosing-the-output-format" class="nav-link" data-scroll-target="#choosing-the-output-format"><span class="header-section-number">26.2.2</span> Choosing the output format</a></li>
+<li><a href="#choosing-modules" id="toc-choosing-modules" class="nav-link" data-scroll-target="#choosing-modules"><span class="header-section-number">27.2.1</span> Choosing modules</a></li>
+  <li><a href="#choosing-the-output-format" id="toc-choosing-the-output-format" class="nav-link" data-scroll-target="#choosing-the-output-format"><span class="header-section-number">27.2.2</span> Choosing the output format</a></li>
   </ul>
 </li>
   <li>
-<a href="#running-a-single-module" id="toc-running-a-single-module" class="nav-link" data-scroll-target="#running-a-single-module"><span class="header-section-number">26.3</span> Running a single module</a>
+<a href="#running-a-single-module" id="toc-running-a-single-module" class="nav-link" data-scroll-target="#running-a-single-module"><span class="header-section-number">27.3</span> Running a single module</a>
   <ul class="collapse">
-<li><a href="#exact-p-values" id="toc-exact-p-values" class="nav-link" data-scroll-target="#exact-p-values"><span class="header-section-number">26.3.1</span> ⚠️ Exact P-Values</a></li>
+<li><a href="#exact-p-values" id="toc-exact-p-values" class="nav-link" data-scroll-target="#exact-p-values"><span class="header-section-number">27.3.1</span> ⚠️ Exact P-Values</a></li>
   </ul>
 </li>
-  <li><a href="#running-multiple-modules" id="toc-running-multiple-modules" class="nav-link" data-scroll-target="#running-multiple-modules"><span class="header-section-number">26.4</span> Running multiple modules</a></li>
+  <li><a href="#running-multiple-modules" id="toc-running-multiple-modules" class="nav-link" data-scroll-target="#running-multiple-modules"><span class="header-section-number">27.4</span> Running multiple modules</a></li>
   <li>
-<a href="#passing-settings-to-modules" id="toc-passing-settings-to-modules" class="nav-link" data-scroll-target="#passing-settings-to-modules"><span class="header-section-number">26.5</span> Passing settings to modules</a>
+<a href="#passing-settings-to-modules" id="toc-passing-settings-to-modules" class="nav-link" data-scroll-target="#passing-settings-to-modules"><span class="header-section-number">27.5</span> Passing settings to modules</a>
   <ul class="collapse">
-<li><a href="#one-module-pass-arguments-directly" id="toc-one-module-pass-arguments-directly" class="nav-link" data-scroll-target="#one-module-pass-arguments-directly"><span class="header-section-number">26.5.1</span> One module: pass arguments directly</a></li>
-  <li><a href="#several-modules-the-args-list" id="toc-several-modules-the-args-list" class="nav-link" data-scroll-target="#several-modules-the-args-list"><span class="header-section-number">26.5.2</span> Several modules: the <code>args</code> list</a></li>
+<li><a href="#one-module-pass-arguments-directly" id="toc-one-module-pass-arguments-directly" class="nav-link" data-scroll-target="#one-module-pass-arguments-directly"><span class="header-section-number">27.5.1</span> One module: pass arguments directly</a></li>
+  <li><a href="#several-modules-the-args-list" id="toc-several-modules-the-args-list" class="nav-link" data-scroll-target="#several-modules-the-args-list"><span class="header-section-number">27.5.2</span> Several modules: the <code>args</code> list</a></li>
   </ul>
 </li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">26.6</span> Summary</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">27.6</span> Summary</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/creating-a-report.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/creating-a-report.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/creating-a-report.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span>
+<span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span>
 </h1>
 </div>
 
@@ -420,8 +426,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><p>So far we have looked at individual modules in isolation. In practice you usually want to run <em>several</em> checks on a paper at once and collect the results into a single document you can read, save, or hand to a co-author. This chapter shows how to go from a single paper object to a full Metacheck report.</p>
 <p>We start with the all-in-one <code>report()</code> function, then unpack what it does — running one module with <code>module_run()</code>, running several with <code>report_module_run()</code>, and turning the result into a document with <code>report_qmd()</code>. Finally we cover the slightly tricky part: passing settings through to the modules.</p>
-<section id="loading-a-paper" class="level2" data-number="26.1"><h2 data-number="26.1" class="anchored" data-anchor-id="loading-a-paper">
-<span class="header-section-number">26.1</span> Loading a paper</h2>
+<section id="loading-a-paper" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="loading-a-paper">
+<span class="header-section-number">27.1</span> Loading a paper</h2>
 <p>Every report starts from a <strong>paper object</strong>, created with <code>read()</code> (see <a href="../chapters/reading-a-paper.html">Reading in a Paper</a>). Throughout this chapter we use the bundled demo paper, which <code>demopaper()</code> returns directly so the examples run without a network connection:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -435,8 +441,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="st">"converted/my_manuscript.json"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Everything below works on this single <code>paper</code> object. The same functions also accept a <em>paperlist</em> (a list of papers), so the same code scales to a whole corpus — see <a href="../chapters/reading-a-paper.html">Batch processing</a> and <a href="../chapters/papers-databases.html">Using the Paper Database Corpora</a>.</p>
-</section><section id="the-quick-way-report" class="level2" data-number="26.2"><h2 data-number="26.2" class="anchored" data-anchor-id="the-quick-way-report">
-<span class="header-section-number">26.2</span> The quick way: <code>report()</code>
+</section><section id="the-quick-way-report" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="the-quick-way-report">
+<span class="header-section-number">27.2</span> The quick way: <code>report()</code>
 </h2>
 <p><code>report()</code> runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the <strong>default battery</strong> of sixteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration (<a href="../chapters/mod-prereg-check.html"><code>prereg_check</code></a>), funding and conflict-of-interest statements (<a href="../chapters/mod-funding-check.html"><code>funding_check</code></a>, <a href="../chapters/mod-coi-check.html"><code>coi_check</code></a>), statistical power (<a href="../chapters/mod-power.html"><code>power</code></a>), data and code availability (<a href="../chapters/mod-repo-check.html"><code>repo_check</code></a>, <a href="../chapters/mod-code-check.html"><code>code_check</code></a>), the reporting of statistics (<a href="../chapters/mod-stat-check.html"><code>stat_check</code></a>, <a href="../chapters/mod-stat-p-exact.html"><code>stat_p_exact</code></a>, <a href="../chapters/mod-stat-p-nonsig.html"><code>stat_p_nonsig</code></a>, <a href="../chapters/mod-stat-effect-size.html"><code>stat_effect_size</code></a>, <a href="../chapters/mod-marginal.html"><code>marginal</code></a>), and the reference list (<a href="../chapters/mod-ref-accuracy.html"><code>ref_accuracy</code></a>, <a href="../chapters/mod-ref-replication.html"><code>ref_replication</code></a>, <a href="../chapters/mod-ref-retraction.html"><code>ref_retraction</code></a>, <a href="../chapters/mod-ref-pubpeer.html"><code>ref_pubpeer</code></a>, <a href="../chapters/mod-ref-summary.html"><code>ref_summary</code></a>).</p>
 <div class="cell">
@@ -444,16 +450,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; "[paper_id]_report.html"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The function returns the path to the file it wrote. By default that is <code>"&lt;paper_id&gt;_report.html"</code> in the working directory; set <code>output_file</code> to choose your own name and location.</p>
-<section id="choosing-modules" class="level3" data-number="26.2.1"><h3 data-number="26.2.1" class="anchored" data-anchor-id="choosing-modules">
-<span class="header-section-number">26.2.1</span> Choosing modules</h3>
+<section id="choosing-modules" class="level3" data-number="27.2.1"><h3 data-number="27.2.1" class="anchored" data-anchor-id="choosing-modules">
+<span class="header-section-number">27.2.1</span> Choosing modules</h3>
 <p>You rarely need all the default checks. Pass a <code>modules</code> vector to run exactly the ones you want, in the order you want them reported:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>,</span>
 <span>       modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"stat_p_exact"</span>, <span class="st">"stat_p_nonsig"</span>, <span class="st">"marginal"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Use <code>module_list()</code> to see every built-in module, or <code>module_help("module_name")</code> for the details of one. Custom modules are given by file path instead of name (see <a href="../chapters/creating-modules.html">Creating Modules</a>).</p>
-</section><section id="choosing-the-output-format" class="level3" data-number="26.2.2"><h3 data-number="26.2.2" class="anchored" data-anchor-id="choosing-the-output-format">
-<span class="header-section-number">26.2.2</span> Choosing the output format</h3>
+</section><section id="choosing-the-output-format" class="level3" data-number="27.2.2"><h3 data-number="27.2.2" class="anchored" data-anchor-id="choosing-the-output-format">
+<span class="header-section-number">27.2.2</span> Choosing the output format</h3>
 <p><code>report()</code> can write either a rendered <strong>HTML</strong> file or the intermediate <strong>Quarto</strong> source (<code>qmd</code>). The <code>qmd</code> option is useful when you want to edit the report before rendering, or render it yourself with different options:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>,</span>
@@ -466,8 +472,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>       output_format <span class="op">=</span> <span class="st">"qmd"</span><span class="op">)</span>    <span class="co"># write the Quarto source instead</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Rendering to HTML requires <a href="https://quarto.org">Quarto</a> to be installed. If rendering fails for any reason, <code>report()</code> falls back to saving the <code>qmd</code> source (and warns you), so you never lose the result of running the modules.</p>
-</section></section><section id="running-a-single-module" class="level2" data-number="26.3"><h2 data-number="26.3" class="anchored" data-anchor-id="running-a-single-module">
-<span class="header-section-number">26.3</span> Running a single module</h2>
+</section></section><section id="running-a-single-module" class="level2" data-number="27.3"><h2 data-number="27.3" class="anchored" data-anchor-id="running-a-single-module">
+<span class="header-section-number">27.3</span> Running a single module</h2>
 <p><code>report()</code> is convenient, but it always writes a file. While you are exploring a paper interactively it is often handier to run one module and look at the result in the console. That is what <code>module_run()</code> does:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -573,8 +579,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Printing the object gives a compact summary, and <code>module_report()</code> formats the same output as the Markdown section that would appear in a report:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_report</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="exact-p-values" class="level3 red" data-number="26.3.1"><h3 class="red anchored" data-number="26.3.1" data-anchor-id="exact-p-values">
-<span class="header-section-number">26.3.1</span> ⚠️ Exact P-Values</h3>
+<section id="exact-p-values" class="level3 red" data-number="27.3.1"><h3 class="red anchored" data-number="27.3.1" data-anchor-id="exact-p-values">
+<span class="header-section-number">27.3.1</span> ⚠️ Exact P-Values</h3>
 <p>We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
 <details><summary>
 View detailed feedback
@@ -629,8 +635,8 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <p class="validation">
 <strong>Validation</strong>: In a sample of 225 papers containing 405 instances of non-exact p-values, the module correctly detected 269 cases (true positives) and incorrectly identified 78 (false positives). It missed 136 instances of imprecisely reported p-values (false negatives) and correctly identified 4557 cases of precisely reported p-values (true negative). Additionally, 78% of positive detections were correct (positive predictive value).
 </p>
-</section></section><section id="running-multiple-modules" class="level2" data-number="26.4"><h2 data-number="26.4" class="anchored" data-anchor-id="running-multiple-modules">
-<span class="header-section-number">26.4</span> Running multiple modules</h2>
+</section></section><section id="running-multiple-modules" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="running-multiple-modules">
+<span class="header-section-number">27.4</span> Running multiple modules</h2>
 <p>To run several modules and keep their combined output <em>without</em> writing a file, use <code>report_module_run()</code>. It takes the same <code>modules</code> vector as <code>report()</code> and returns a list of module outputs:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span> <span class="op">&lt;-</span> <span class="fu">report_module_run</span><span class="op">(</span></span>
@@ -659,8 +665,8 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="va">report_text</span>, <span class="st">"demo_report.qmd"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Splitting the work this way — run the modules once with <code>report_module_run()</code>, then format with <code>report_qmd()</code> — is useful when the modules are slow (for example reference checks that query external services) and you want to render the report more than once without re-running them.</p>
-</section><section id="passing-settings-to-modules" class="level2" data-number="26.5"><h2 data-number="26.5" class="anchored" data-anchor-id="passing-settings-to-modules">
-<span class="header-section-number">26.5</span> Passing settings to modules</h2>
+</section><section id="passing-settings-to-modules" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="passing-settings-to-modules">
+<span class="header-section-number">27.5</span> Passing settings to modules</h2>
 <p>This is the part that trips people up. Some modules take <strong>extra arguments</strong> beyond <code>paper</code>. For example:</p>
 <ul>
 <li>
@@ -691,15 +697,15 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </div>
 </div>
 <p>How you supply these arguments depends on which function you are using.</p>
-<section id="one-module-pass-arguments-directly" class="level3" data-number="26.5.1"><h3 data-number="26.5.1" class="anchored" data-anchor-id="one-module-pass-arguments-directly">
-<span class="header-section-number">26.5.1</span> One module: pass arguments directly</h3>
+<section id="one-module-pass-arguments-directly" class="level3" data-number="27.5.1"><h3 data-number="27.5.1" class="anchored" data-anchor-id="one-module-pass-arguments-directly">
+<span class="header-section-number">27.5.1</span> One module: pass arguments directly</h3>
 <p>With <code>module_run()</code>, extra arguments go straight through the <code>...</code>, exactly as if you were calling the module function itself:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="several-modules-the-args-list" class="level3" data-number="26.5.2"><h3 data-number="26.5.2" class="anchored" data-anchor-id="several-modules-the-args-list">
-<span class="header-section-number">26.5.2</span> Several modules: the <code>args</code> list</h3>
+</section><section id="several-modules-the-args-list" class="level3" data-number="27.5.2"><h3 data-number="27.5.2" class="anchored" data-anchor-id="several-modules-the-args-list">
+<span class="header-section-number">27.5.2</span> Several modules: the <code>args</code> list</h3>
 <p>When you run <em>several</em> modules at once with <code>report()</code> or <code>report_module_run()</code>, you cannot use <code>...</code>, because an argument like <code>seed</code> would be ambiguous — which module is it for? Instead you pass a single <code>args</code> argument: <strong>a named list of lists</strong>, where each name matches a module name and each value is the list of arguments for that module.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
@@ -743,8 +749,8 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <span>  output_file <span class="op">=</span> <span class="st">"demo_report.html"</span></span>
 <span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="summary" class="level2" data-number="26.6"><h2 data-number="26.6" class="anchored" data-anchor-id="summary">
-<span class="header-section-number">26.6</span> Summary</h2>
+</section></section><section id="summary" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">27.6</span> Summary</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1187,12 +1193,12 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/mod-ref-summary.html" class="pagination-link" aria-label="Reference Summary">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Summary</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reference Summary</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/local-files.html" class="pagination-link" aria-label="Checking Local Files with repo_check and code_check">
-        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

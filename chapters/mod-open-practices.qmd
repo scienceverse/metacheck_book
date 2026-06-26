@@ -1,0 +1,100 @@
+---
+title: "Open Practices"
+vignette: >
+  %\VignetteIndexEntry{Open Practices}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+## What it checks
+
+The `open_practices` module searches the text of a paper for **statements that data, code, materials, or a preregistration are openly available**. It returns the sentences it finds, and records for each open-practice type whether a statement was detected. It also flags statements that data or materials are available only *on request*.
+
+It is important to be precise about what this module does and does not do. It checks whether the paper *says* something is shared; it does **not** verify that anything actually was. A sentence such as "All data are available on the Open Science Framework" is reported as a detected data statement even if the link is dead, the repository is empty, or the files are not what the sentence claims.
+
+This module is **fully offline**: it reads only the manuscript text and makes no network calls.
+
+::: callout-important
+## Not yet validated
+
+`open_practices` has **not yet been validated**. We have not measured its accuracy against a hand-coded reference set, so the detection rates below should be read as illustrative, not as performance guarantees. We initially used the [ODDPub](https://github.com/quest-bih/oddpub) package, but as this package is made for the biomedical literature, it missed too many real data sharing statements in the psychology literature we mainly work with. Compared with the older ODDPub-based approach, this module has a *lower false-negative rate but a higher false-positive rate*. Treat its output as a set of statements to **review**, not as a verdict. See [Module Validation](../index.qmd) for what validation means in Metacheck. This module is still work in progress, and we are actively exploring the best solution to the detection of open practices statements. If you want to contribute to this development, reach out to the team. 
+:::
+
+## How it differs from `repo_check` and `code_check`
+
+Three modules touch on open data and code, and it is easy to confuse them. They answer different questions and work in fundamentally different ways:
+
+| Module | Question it answers | How it works | Network |
+|---|---|---|---|
+| **`open_practices`** | Does the paper *claim* data/code/materials/preregistration are shared? | Text search of the manuscript for sharing **statements** | Offline |
+| [`repo_check`](mod-repo-check.qmd) | What is *actually in* the linked repositories? | Follows OSF/GitHub/Zenodo links and lists the **files** found | Live calls |
+| [`code_check`](mod-code-check.qmd) | What do the shared **code files** look like? | Analyses the R/SAS/SPSS/Stata files that `repo_check` discovered | Live calls |
+
+In short: `open_practices` reads what the authors *wrote*, while `repo_check` and `code_check` inspect what the authors *deposited*. A paper can trigger `open_practices` (it says "data are on OSF") yet fail `repo_check` (the OSF project turns out to be empty), and vice versa — a repository can hold data and code that the manuscript never mentions in a formal statement. Because `open_practices` never leaves the text, it is the right tool when you have no internet access, when the linked repository is private or behind login, or when you only want to know what the paper *discloses*. Use `repo_check` and `code_check` when you want to confirm the disclosure against the real contents.
+
+## Running the module
+
+The `summary_text` and traffic light summarise what was found, and the `table` holds the matching sentence(s):
+
+```{r}
+#| results: asis
+paper <- psychsci[[4]]
+module_run(paper, "open_practices")
+```
+
+## A good example and a false positive
+
+A single paper often shows both ends of the module's behaviour at once. Paper 4 of the `psychsci` corpus returns three "data" statements:
+
+```{r}
+mo <- module_run(psychsci[[4]], "open_practices")
+mo$traffic_light
+mo$summary_text
+mo$table[, c("text", "data", "code")] |>
+  knitr::kable()
+```
+
+One of these is a **good detection**:
+
+> "All data have been made publicly available via Open Science Framework and can be accessed at https://osf.io/e2aks/."
+
+This is exactly what the module is meant to catch — a clear, specific statement pointing to an open repository.
+
+The other two are **false positives**. They are the generic Sage journal footer ("Additional supporting information can be found at http://pss.sagepub.com/content/by/supplemental-data" and "The complete Open Practices Disclosure for this article can be found at …"). This boilerplate appears on a large share of *Psychological Science* articles regardless of whether any data were actually shared, but the module reads it as a data statement. Across the `psychsci` corpus this kind of journal boilerplate accounts for a meaningful fraction of all "data" hits, which is one reason the data-detection rate looks high in that corpus specifically.
+
+The detector also occasionally misfires on the **type** of practice. In other papers, a methods sentence such as "the position data were polynomially interpolated using Qualisys Track Manager" is flagged as `code = TRUE`, simply because of the vocabulary it contains, even though no code was shared. Again: the flag means "a candidate statement was found", not "this practice was verified".
+
+The practical takeaway mirrors the [funding](mod-funding-check.qmd) and [COI](mod-coi-check.qmd) modules: read the matched sentence before trusting the flag.
+
+## Running on many papers
+
+The per-paper `summary_table` records, for each paper, whether a statement of each type was detected:
+
+```{r}
+mo <- module_run(psychsci[1:20], "open_practices")
+mo$summary_table[, c("paper_id", "data_open", "code_open", "materials_open", "prereg_open", "on_request")] |>
+  knitr::kable()
+```
+
+Detection rates vary widely and **legitimately** across journals and eras. In a sample of *Psychological Science* articles — a journal that adopted open-practice badges early — a large majority mention shared data. Corpora loaded through the [paper databases](papers-databases.qmd) tell a different story: in a sample of *Journal of Decision Making* articles almost none do, while *PLOS Medicine* articles fall in between. These differences reflect real variation in disclosure norms, not a malfunction of the module. (They are also a reminder that the module measures *statements*, so a high rate partly reflects journal boilerplate, as shown above.)
+
+## Interpreting the result
+
+- A **detection** (`data_open`, `code_open`, etc. is `TRUE`) means a sharing statement was found — not that the resource exists or is usable. Confirm with [`repo_check`](mod-repo-check.qmd) where possible, or by following the link yourself.
+- **No detection** means no recognisable statement was found. The paper may genuinely share nothing, or it may share something using wording the module does not match, or the relevant sentence may have been mangled during PDF extraction (garbled URLs such as `osf .io/ideta` are common and can cause both false positives and missed links).
+- An **`on_request`** flag means the paper says data or materials are available *on request*, which is worth noting because such availability is frequently not honoured in practice.
+
+## Options
+
+`open_practices` takes only the `paper` argument; it has no additional options.
+
+## Related
+
+- [`repo_check`](mod-repo-check.qmd) follows the links a paper provides and reports what is actually in the linked repositories.
+- [`code_check`](mod-code-check.qmd) analyses the code files that `repo_check` discovers.
+- [`funding_check`](mod-funding-check.qmd) and [`coi_check`](mod-coi-check.qmd) are companion text-search modules that look for funding and conflict-of-interest statements in the same way.

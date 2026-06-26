@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>18&nbsp; Effect Sizes – The Metacheck Manual</title>
+<title>19&nbsp; Effect Sizes – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-effect-size.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-effect-size.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -237,86 +237,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -333,13 +339,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,20 +381,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">18.1</span> What it checks</a></li>
-  <li><a href="#how-the-coherence-check-works-and-its-limits" id="toc-how-the-coherence-check-works-and-its-limits" class="nav-link" data-scroll-target="#how-the-coherence-check-works-and-its-limits"><span class="header-section-number">18.2</span> How the coherence check works (and its limits)</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">18.3</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">18.4</span> Running on many papers</a></li>
-  <li><a href="#a-real-example-of-an-incorrect-effect-size" id="toc-a-real-example-of-an-incorrect-effect-size" class="nav-link" data-scroll-target="#a-real-example-of-an-incorrect-effect-size"><span class="header-section-number">18.5</span> A real example of an incorrect effect size</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">18.6</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">18.7</span> Options</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">18.8</span> Validation</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">19.1</span> What it checks</a></li>
+  <li><a href="#how-the-coherence-check-works-and-its-limits" id="toc-how-the-coherence-check-works-and-its-limits" class="nav-link" data-scroll-target="#how-the-coherence-check-works-and-its-limits"><span class="header-section-number">19.2</span> How the coherence check works (and its limits)</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">19.3</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">19.4</span> Running on many papers</a></li>
+  <li><a href="#a-real-example-of-an-incorrect-effect-size" id="toc-a-real-example-of-an-incorrect-effect-size" class="nav-link" data-scroll-target="#a-real-example-of-an-incorrect-effect-size"><span class="header-section-number">19.5</span> A real example of an incorrect effect size</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">19.6</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">19.7</span> Options</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">19.8</span> Validation</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-effect-size.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-effect-size.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-effect-size.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span>
+<span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span>
 </h1>
 </div>
 
@@ -403,13 +409,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="18.1"><h2 data-number="18.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">18.1</span> What it checks</h2>
+</header><section id="what-it-checks" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">19.1</span> What it checks</h2>
 <p>The <code>stat_effect_size</code> module checks whether <strong>effect sizes are reported</strong> for <em>t</em>-tests and <em>F</em>-tests, and whether the reported effect size is <strong>coherent</strong> with the test statistic and degrees of freedom. Reporting a standardized effect size alongside a test is an APA Journal Article Reporting Standard, and it is what makes a result usable in a meta-analysis.</p>
 <p>The module looks for the common ways effect sizes are written, then recomputes what the effect size <em>should</em> be from the test statistic and degrees of freedom. It checks Cohen’s <em>d</em> and <em>g</em> for <em>t</em>-tests, and partial η² and partial ω² for <em>F</em>-tests. It flags two things: tests that report <strong>no</strong> effect size, and reported effect sizes that <strong>do not match</strong> the value implied by the test.</p>
 <p>This module is <strong>fully offline</strong>.</p>
-</section><section id="how-the-coherence-check-works-and-its-limits" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="how-the-coherence-check-works-and-its-limits">
-<span class="header-section-number">18.2</span> How the coherence check works (and its limits)</h2>
+</section><section id="how-the-coherence-check-works-and-its-limits" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="how-the-coherence-check-works-and-its-limits">
+<span class="header-section-number">19.2</span> How the coherence check works (and its limits)</h2>
 <p>A test statistic does not always pin down a single effect size. For a <em>t</em>-test, the value of Cohen’s <em>d</em> you recover depends on the <strong>design</strong>: a paired <em>t</em>-test, an independent-samples <em>t</em>-test with equal group sizes, and one with unequal group sizes all imply different effect sizes from the same <em>t</em> and <em>df</em>. The reporting style rarely says which design was used, so the module computes <em>d</em> under several plausible assumptions — paired (<em>d<sub>z</sub></em>), independent with equal <em>n</em>, and a range for independent with unequal <em>n</em> — and asks whether the reported value matches <strong>any</strong> of them. That is what the <code>d_coherence</code> value <code>match_under_assumptions</code> means.</p>
 <p>This is the crucial caveat: <strong>a match under assumptions is not proof the effect size is correct.</strong> The check only establishes that the reported value is <em>possible</em> for some design consistent with the test statistic. If the authors ran a paired test but the reported <em>d</em> happens to coincide with the equal-<em>n</em> independent-samples value, the module will report a match even though the reported effect size is wrong for the design that was actually used. A match means “not obviously contradictory”; it does not mean “verified”.</p>
 <p>The verdicts you will see are:</p>
@@ -422,8 +428,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <strong><code>indeterminate</code></strong> — the module cannot recover an effect size to compare against (for example a Welch’s <em>t</em>-test with non-integer <em>df</em>, where the group sizes cannot be determined).</li>
 </ul>
 <p><em>F</em>-tests are a partial exception. When the numerator degrees of freedom is 1 (<code>df1 = 1</code>), partial η² is fixed by a single assumption-free formula, η²<sub>p</sub> = <em>F</em> / (<em>F</em> + <em>df2</em>), so a <code>no_match</code> there is an unambiguous arithmetic inconsistency rather than a design ambiguity.</p>
-</section><section id="running-the-module" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">18.3</span> Running the module</h2>
+</section><section id="running-the-module" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">19.3</span> Running the module</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Effect Sizes in t-tests and F-tests: We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes</p>
@@ -476,8 +482,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>In the demo paper one <em>t</em>-test reports <code>d = 0.59</code> while another reports no effect size at all, which is why the module returns a <code>yellow</code> light. The <code>d_coherence_note</code> column explains why a value could not be verified — for example a Welch’s <em>t</em>-test (non-integer <em>df</em>), where sample sizes cannot be recovered from the test alone.</p>
-</section><section id="running-on-many-papers" class="level2" data-number="18.4"><h2 data-number="18.4" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">18.4</span> Running on many papers</h2>
+</section><section id="running-on-many-papers" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">19.4</span> Running on many papers</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -545,8 +551,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="a-real-example-of-an-incorrect-effect-size" class="level2" data-number="18.5"><h2 data-number="18.5" class="anchored" data-anchor-id="a-real-example-of-an-incorrect-effect-size">
-<span class="header-section-number">18.5</span> A real example of an incorrect effect size</h2>
+</section><section id="a-real-example-of-an-incorrect-effect-size" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="a-real-example-of-an-incorrect-effect-size">
+<span class="header-section-number">19.5</span> A real example of an incorrect effect size</h2>
 <p>The <code>no_match</code> verdict catches genuine mistakes. The <em>Psychological Science</em> article “Going All In: Unfavorable Sex Ratios Attenuate Choice Diversification” (DOI <a href="https://doi.org/10.1177/0956797616636631">10.1177/0956797616636631</a>) reports, in a single sentence, two main effects:</p>
 <blockquote class="blockquote">
 <p>Main effects of sex ratio emerged for reward responsiveness, <em>F</em>(1, 361) = 3.59, <em>p</em> = .029, η²<sub>p</sub> = .02 […] and mating-impression management, <em>F</em>(1, 361) = 5.89, <em>p</em> &lt; .01, η²<sub>p</sub> = .03.</p>
@@ -596,19 +602,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Because <code>df1 = 1</code> leaves no room for an alternative design, this is not a “possible under some assumption” case — the reported numbers are simply inconsistent with the test statistics. This is exactly the kind of error the check exists to surface, and the kind a reader would otherwise have to recompute by hand.</p>
-</section><section id="interpreting-the-result" class="level2" data-number="18.6"><h2 data-number="18.6" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">18.6</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">19.6</span> Interpreting the result</h2>
 <p>The two verdicts call for very different responses:</p>
 <ul>
 <li>A <strong><code>no_match</code></strong> is worth checking carefully — as the example above shows, it can be a real inconsistency. But it can also be an artifact: an effect size reported to fewer than two decimals, a test statistic the module mis-parsed (for example an <em>F</em> value written with a thousands separator like <code>5,509.53</code>), or an effect size in a style the module does not recognise. Read the original sentence before concluding there is an error.</li>
 <li>A <strong><code>match_under_assumptions</code></strong> should <em>not</em> be read as a clean bill of health. As explained above, it only means the value is possible for some design — the reported effect size can still be wrong for the design the authors actually used. The module cannot confirm correctness; it can only rule out impossibility.</li>
 </ul>
 <p>A missing effect size, by contrast, is unambiguous: it is usually worth adding.</p>
-</section><section id="options" class="level2" data-number="18.7"><h2 data-number="18.7" class="anchored" data-anchor-id="options">
-<span class="header-section-number">18.7</span> Options</h2>
+</section><section id="options" class="level2" data-number="19.7"><h2 data-number="19.7" class="anchored" data-anchor-id="options">
+<span class="header-section-number">19.7</span> Options</h2>
 <p><code>stat_effect_size</code> takes only the <code>paper</code> argument.</p>
-</section><section id="validation" class="level2" data-number="18.8"><h2 data-number="18.8" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">18.8</span> Validation</h2>
+</section><section id="validation" class="level2" data-number="19.8"><h2 data-number="19.8" class="anchored" data-anchor-id="validation">
+<span class="header-section-number">19.8</span> Validation</h2>
 <blockquote class="blockquote">
 <p>In a sample of 161 papers with 1469 tests, this module correctly detected 1106 reported effect sizes (true positives) and correctly identified 295 cases where no effect size was present (true negatives). However, it missed 23 that were reported (false negatives), and incorrectly identified 45 effect sizes when none were reported (false positives). Among all instances detected by the module, 96% were true cases (positive predictive value). In a validation against 221 reported Cohen’s <em>d</em> effect sizes, it correctly indicated coherence in 218 cases (99%). In a validation against 485 partial eta-squared effect sizes, it correctly indicated coherence in 480 (99%).</p>
 </blockquote>
@@ -1015,12 +1021,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/mod-stat-p-nonsig.html" class="pagination-link" aria-label="Non-Significant p-Values">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/mod-repo-check.html" class="pagination-link" aria-label="Repository Check">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Repository Check</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Repository Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

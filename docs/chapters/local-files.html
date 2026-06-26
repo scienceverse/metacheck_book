@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>27&nbsp; Checking Local Files with repo_check and code_check – The Metacheck Manual</title>
+<title>28&nbsp; Checking Local Files with repo_check and code_check – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/local-files.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/local-files.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -237,86 +237,92 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -333,13 +339,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,43 +381,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">27.1</span> Overview</a></li>
-  <li><a href="#before-you-start" id="toc-before-you-start" class="nav-link" data-scroll-target="#before-you-start"><span class="header-section-number">27.2</span> Before you start</a></li>
+<li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">28.1</span> Overview</a></li>
+  <li><a href="#before-you-start" id="toc-before-you-start" class="nav-link" data-scroll-target="#before-you-start"><span class="header-section-number">28.2</span> Before you start</a></li>
   <li>
-<a href="#part-1-repo_check-on-local-files" id="toc-part-1-repo_check-on-local-files" class="nav-link" data-scroll-target="#part-1-repo_check-on-local-files"><span class="header-section-number">27.3</span> Part 1: <code>repo_check</code> on local files</a>
+<a href="#part-1-repo_check-on-local-files" id="toc-part-1-repo_check-on-local-files" class="nav-link" data-scroll-target="#part-1-repo_check-on-local-files"><span class="header-section-number">28.3</span> Part 1: <code>repo_check</code> on local files</a>
   <ul class="collapse">
-<li><a href="#what-repo_check-checks" id="toc-what-repo_check-checks" class="nav-link" data-scroll-target="#what-repo_check-checks"><span class="header-section-number">27.3.1</span> What <code>repo_check</code> checks</a></li>
-  <li><a href="#checking-a-single-folder" id="toc-checking-a-single-folder" class="nav-link" data-scroll-target="#checking-a-single-folder"><span class="header-section-number">27.3.2</span> Checking a single folder</a></li>
-  <li><a href="#checking-multiple-folders" id="toc-checking-multiple-folders" class="nav-link" data-scroll-target="#checking-multiple-folders"><span class="header-section-number">27.3.3</span> Checking multiple folders</a></li>
+<li><a href="#what-repo_check-checks" id="toc-what-repo_check-checks" class="nav-link" data-scroll-target="#what-repo_check-checks"><span class="header-section-number">28.3.1</span> What <code>repo_check</code> checks</a></li>
+  <li><a href="#checking-a-single-folder" id="toc-checking-a-single-folder" class="nav-link" data-scroll-target="#checking-a-single-folder"><span class="header-section-number">28.3.2</span> Checking a single folder</a></li>
+  <li><a href="#checking-multiple-folders" id="toc-checking-multiple-folders" class="nav-link" data-scroll-target="#checking-multiple-folders"><span class="header-section-number">28.3.3</span> Checking multiple folders</a></li>
   </ul>
 </li>
   <li>
-<a href="#part-2-code_check-on-local-files" id="toc-part-2-code_check-on-local-files" class="nav-link" data-scroll-target="#part-2-code_check-on-local-files"><span class="header-section-number">27.4</span> Part 2: <code>code_check</code> on local files</a>
+<a href="#part-2-code_check-on-local-files" id="toc-part-2-code_check-on-local-files" class="nav-link" data-scroll-target="#part-2-code_check-on-local-files"><span class="header-section-number">28.4</span> Part 2: <code>code_check</code> on local files</a>
   <ul class="collapse">
-<li><a href="#what-code_check-checks" id="toc-what-code_check-checks" class="nav-link" data-scroll-target="#what-code_check-checks"><span class="header-section-number">27.4.1</span> What <code>code_check</code> checks</a></li>
-  <li><a href="#checking-your-own-code" id="toc-checking-your-own-code" class="nav-link" data-scroll-target="#checking-your-own-code"><span class="header-section-number">27.4.2</span> Checking your own code</a></li>
-  <li><a href="#checking-multiple-projects" id="toc-checking-multiple-projects" class="nav-link" data-scroll-target="#checking-multiple-projects"><span class="header-section-number">27.4.3</span> Checking multiple projects</a></li>
-  <li><a href="#checking-more-than-20-code-files" id="toc-checking-more-than-20-code-files" class="nav-link" data-scroll-target="#checking-more-than-20-code-files"><span class="header-section-number">27.4.4</span> Checking more than 20 code files</a></li>
-  <li><a href="#peer-review-files-sent-as-a-zip-archive" id="toc-peer-review-files-sent-as-a-zip-archive" class="nav-link" data-scroll-target="#peer-review-files-sent-as-a-zip-archive"><span class="header-section-number">27.4.5</span> Peer review — files sent as a zip archive</a></li>
-  <li><a href="#code-hosted-on-an-unsupported-repository" id="toc-code-hosted-on-an-unsupported-repository" class="nav-link" data-scroll-target="#code-hosted-on-an-unsupported-repository"><span class="header-section-number">27.4.6</span> Code hosted on an unsupported repository</a></li>
+<li><a href="#what-code_check-checks" id="toc-what-code_check-checks" class="nav-link" data-scroll-target="#what-code_check-checks"><span class="header-section-number">28.4.1</span> What <code>code_check</code> checks</a></li>
+  <li><a href="#checking-your-own-code" id="toc-checking-your-own-code" class="nav-link" data-scroll-target="#checking-your-own-code"><span class="header-section-number">28.4.2</span> Checking your own code</a></li>
+  <li><a href="#checking-multiple-projects" id="toc-checking-multiple-projects" class="nav-link" data-scroll-target="#checking-multiple-projects"><span class="header-section-number">28.4.3</span> Checking multiple projects</a></li>
+  <li><a href="#checking-more-than-20-code-files" id="toc-checking-more-than-20-code-files" class="nav-link" data-scroll-target="#checking-more-than-20-code-files"><span class="header-section-number">28.4.4</span> Checking more than 20 code files</a></li>
+  <li><a href="#peer-review-files-sent-as-a-zip-archive" id="toc-peer-review-files-sent-as-a-zip-archive" class="nav-link" data-scroll-target="#peer-review-files-sent-as-a-zip-archive"><span class="header-section-number">28.4.5</span> Peer review — files sent as a zip archive</a></li>
+  <li><a href="#code-hosted-on-an-unsupported-repository" id="toc-code-hosted-on-an-unsupported-repository" class="nav-link" data-scroll-target="#code-hosted-on-an-unsupported-repository"><span class="header-section-number">28.4.6</span> Code hosted on an unsupported repository</a></li>
   </ul>
 </li>
-  <li><a href="#part-3-combining-a-paper-with-local-files" id="toc-part-3-combining-a-paper-with-local-files" class="nav-link" data-scroll-target="#part-3-combining-a-paper-with-local-files"><span class="header-section-number">27.5</span> Part 3: Combining a paper with local files</a></li>
-  <li><a href="#part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" id="toc-part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" class="nav-link" data-scroll-target="#part-4-running-repo_check-and-code_check-as-a-two-step-pipeline"><span class="header-section-number">27.6</span> Part 4: Running <code>repo_check</code> and <code>code_check</code> as a two-step pipeline</a></li>
+  <li><a href="#part-3-combining-a-paper-with-local-files" id="toc-part-3-combining-a-paper-with-local-files" class="nav-link" data-scroll-target="#part-3-combining-a-paper-with-local-files"><span class="header-section-number">28.5</span> Part 3: Combining a paper with local files</a></li>
+  <li><a href="#part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" id="toc-part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" class="nav-link" data-scroll-target="#part-4-running-repo_check-and-code_check-as-a-two-step-pipeline"><span class="header-section-number">28.6</span> Part 4: Running <code>repo_check</code> and <code>code_check</code> as a two-step pipeline</a></li>
   <li>
-<a href="#understanding-the-output" id="toc-understanding-the-output" class="nav-link" data-scroll-target="#understanding-the-output"><span class="header-section-number">27.7</span> Understanding the output</a>
+<a href="#understanding-the-output" id="toc-understanding-the-output" class="nav-link" data-scroll-target="#understanding-the-output"><span class="header-section-number">28.7</span> Understanding the output</a>
   <ul class="collapse">
-<li><a href="#repo_check-output" id="toc-repo_check-output" class="nav-link" data-scroll-target="#repo_check-output"><span class="header-section-number">27.7.1</span> <code>repo_check</code> output</a></li>
-  <li><a href="#code_check-output" id="toc-code_check-output" class="nav-link" data-scroll-target="#code_check-output"><span class="header-section-number">27.7.2</span> <code>code_check</code> output</a></li>
+<li><a href="#repo_check-output" id="toc-repo_check-output" class="nav-link" data-scroll-target="#repo_check-output"><span class="header-section-number">28.7.1</span> <code>repo_check</code> output</a></li>
+  <li><a href="#code_check-output" id="toc-code_check-output" class="nav-link" data-scroll-target="#code_check-output"><span class="header-section-number">28.7.2</span> <code>code_check</code> output</a></li>
   </ul>
 </li>
-  <li><a href="#downloading-osf-files-to-check-locally" id="toc-downloading-osf-files-to-check-locally" class="nav-link" data-scroll-target="#downloading-osf-files-to-check-locally"><span class="header-section-number">27.8</span> Downloading OSF files to check locally</a></li>
+  <li><a href="#downloading-osf-files-to-check-locally" id="toc-downloading-osf-files-to-check-locally" class="nav-link" data-scroll-target="#downloading-osf-files-to-check-locally"><span class="header-section-number">28.8</span> Downloading OSF files to check locally</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/local-files.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/local-files.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/local-files.html">Using Metacheck Locally</a></li><li class="breadcrumb-item"><a href="../chapters/local-files.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span>
+<span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span>
 </h1>
 </div>
 
@@ -429,8 +435,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="overview" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="overview">
-<span class="header-section-number">27.1</span> Overview</h2>
+<section id="overview" class="level2" data-number="28.1"><h2 data-number="28.1" class="anchored" data-anchor-id="overview">
+<span class="header-section-number">28.1</span> Overview</h2>
 <p>Metacheck has two modules that work together to check research code:</p>
 <ul>
 <li><p><strong><code>repo_check</code></strong> lists all files in a repository and checks for basic organisational quality: is there a README? Are there unextracted zip files? How many code, data, and other files are there?</p></li>
@@ -442,8 +448,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>you are reviewing a paper whose files were sent as a zip attachment</li>
 <li>the authors used a repository service that Metacheck does not yet support automatically (GitLab, Figshare, Dataverse, and others)</li>
 </ul>
-<hr></section><section id="before-you-start" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="before-you-start">
-<span class="header-section-number">27.2</span> Before you start</h2>
+<hr></section><section id="before-you-start" class="level2" data-number="28.2"><h2 data-number="28.2" class="anchored" data-anchor-id="before-you-start">
+<span class="header-section-number">28.2</span> Before you start</h2>
 <p>Load the package and note the path format for your operating system:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -466,10 +472,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Both forward slashes <code>/</code> and backslashes <code>\\</code> work on Windows inside R.</p>
 <p>When you provide a local path, the folder is treated as a repository in exactly the same way as an OSF project or GitHub repo. Each folder gets its own row in the summary tables and its own traffic light.</p>
-<hr></section><section id="part-1-repo_check-on-local-files" class="level2" data-number="27.3"><h2 data-number="27.3" class="anchored" data-anchor-id="part-1-repo_check-on-local-files">
-<span class="header-section-number">27.3</span> Part 1: <code>repo_check</code> on local files</h2>
-<section id="what-repo_check-checks" class="level3" data-number="27.3.1"><h3 data-number="27.3.1" class="anchored" data-anchor-id="what-repo_check-checks">
-<span class="header-section-number">27.3.1</span> What <code>repo_check</code> checks</h3>
+<hr></section><section id="part-1-repo_check-on-local-files" class="level2" data-number="28.3"><h2 data-number="28.3" class="anchored" data-anchor-id="part-1-repo_check-on-local-files">
+<span class="header-section-number">28.3</span> Part 1: <code>repo_check</code> on local files</h2>
+<section id="what-repo_check-checks" class="level3" data-number="28.3.1"><h3 data-number="28.3.1" class="anchored" data-anchor-id="what-repo_check-checks">
+<span class="header-section-number">28.3.1</span> What <code>repo_check</code> checks</h3>
 <p>For each folder you provide, <code>repo_check</code> will:</p>
 <ul>
 <li>
@@ -482,8 +488,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <strong>Report counts</strong> — how many code files, data files, and so on</li>
 </ul>
 <p>The traffic light is <code>"green"</code> when a README is present and there are no unextracted archives, and <code>"yellow"</code> otherwise.</p>
-</section><section id="checking-a-single-folder" class="level3" data-number="27.3.2"><h3 data-number="27.3.2" class="anchored" data-anchor-id="checking-a-single-folder">
-<span class="header-section-number">27.3.2</span> Checking a single folder</h3>
+</section><section id="checking-a-single-folder" class="level3" data-number="28.3.2"><h3 data-number="28.3.2" class="anchored" data-anchor-id="checking-a-single-folder">
+<span class="header-section-number">28.3.2</span> Checking a single folder</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"repo_check"</span>,</span>
 <span>                   local_path <span class="op">=</span> <span class="st">"C:/projects/reaction_time_study_2024"</span><span class="op">)</span></span>
@@ -508,8 +514,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>We found 8 files in 1 repository.
 We found 0 README files and 1 repository without READMEs.</code></pre>
 <p>And <code>$summary_table</code> will have columns: <code>repo_n</code>, <code>files_n</code>, <code>files_code</code>, <code>files_data</code>, <code>files_readme</code>, <code>files_zip</code>.</p>
-</section><section id="checking-multiple-folders" class="level3" data-number="27.3.3"><h3 data-number="27.3.3" class="anchored" data-anchor-id="checking-multiple-folders">
-<span class="header-section-number">27.3.3</span> Checking multiple folders</h3>
+</section><section id="checking-multiple-folders" class="level3" data-number="28.3.3"><h3 data-number="28.3.3" class="anchored" data-anchor-id="checking-multiple-folders">
+<span class="header-section-number">28.3.3</span> Checking multiple folders</h3>
 <p>Pass a vector of paths to check several folders at once. Each is treated as a separate repository, so you get one summary row per folder:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
@@ -527,10 +533,10 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is a quick way to compare whether several projects all have READMEs and no stray zip files before you submit or share them.</p>
-<hr></section></section><section id="part-2-code_check-on-local-files" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="part-2-code_check-on-local-files">
-<span class="header-section-number">27.4</span> Part 2: <code>code_check</code> on local files</h2>
-<section id="what-code_check-checks" class="level3" data-number="27.4.1"><h3 data-number="27.4.1" class="anchored" data-anchor-id="what-code_check-checks">
-<span class="header-section-number">27.4.1</span> What <code>code_check</code> checks</h3>
+<hr></section></section><section id="part-2-code_check-on-local-files" class="level2" data-number="28.4"><h2 data-number="28.4" class="anchored" data-anchor-id="part-2-code_check-on-local-files">
+<span class="header-section-number">28.4</span> Part 2: <code>code_check</code> on local files</h2>
+<section id="what-code_check-checks" class="level3" data-number="28.4.1"><h3 data-number="28.4.1" class="anchored" data-anchor-id="what-code_check-checks">
+<span class="header-section-number">28.4.1</span> What <code>code_check</code> checks</h3>
 <p><code>code_check</code> builds on <code>repo_check</code>: it first runs the file inventory, then reads every code file (R, Rmd, Qmd, SAS, SPSS, Stata) and checks for:</p>
 <ul>
 <li>
@@ -541,8 +547,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <strong>Library loading</strong> — are all <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> / <code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls grouped together near the top of the script, or are they scattered throughout?</li>
 <li>
 <strong>Missing data files</strong> — if the script loads <code>read.csv("data.csv")</code> but <code>data.csv</code> is not in the folder, that is flagged.</li>
-</ul></section><section id="checking-your-own-code" class="level3" data-number="27.4.2"><h3 data-number="27.4.2" class="anchored" data-anchor-id="checking-your-own-code">
-<span class="header-section-number">27.4.2</span> Checking your own code</h3>
+</ul></section><section id="checking-your-own-code" class="level3" data-number="28.4.2"><h3 data-number="28.4.2" class="anchored" data-anchor-id="checking-your-own-code">
+<span class="header-section-number">28.4.2</span> Checking your own code</h3>
 <p>You have finished a project and want to review the quality of your scripts before sharing:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
@@ -563,8 +569,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <blockquote class="blockquote">
 <p><strong>Note on cloud-sync folders:</strong> If your files are on OneDrive, iCloud, or another cloud-sync service and are not fully downloaded, you will see the message <em>“If folders are stored online, the check might be slow as all files need to be downloaded.”</em> In that case, right-click the folder and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) before running the check.</p>
 </blockquote>
-</section><section id="checking-multiple-projects" class="level3" data-number="27.4.3"><h3 data-number="27.4.3" class="anchored" data-anchor-id="checking-multiple-projects">
-<span class="header-section-number">27.4.3</span> Checking multiple projects</h3>
+</section><section id="checking-multiple-projects" class="level3" data-number="28.4.3"><h3 data-number="28.4.3" class="anchored" data-anchor-id="checking-multiple-projects">
+<span class="header-section-number">28.4.3</span> Checking multiple projects</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"C:/projects/study_1_power_analysis"</span>,</span>
@@ -584,8 +590,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">file_name</span>, <span class="va">percentage_comment</span>, <span class="va">code_abs_path</span>, <span class="va">loaded_files_missing</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>repo_url</code> column contains the folder path, so you can always identify which folder a code file came from. Each folder has its own independent <code>file_limit</code> (default 20 files).</p>
-</section><section id="checking-more-than-20-code-files" class="level3" data-number="27.4.4"><h3 data-number="27.4.4" class="anchored" data-anchor-id="checking-more-than-20-code-files">
-<span class="header-section-number">27.4.4</span> Checking more than 20 code files</h3>
+</section><section id="checking-more-than-20-code-files" class="level3" data-number="28.4.4"><h3 data-number="28.4.4" class="anchored" data-anchor-id="checking-more-than-20-code-files">
+<span class="header-section-number">28.4.4</span> Checking more than 20 code files</h3>
 <p>By default <code>code_check</code> analyses at most 20 code files per folder. This prevents accidentally processing hundreds of files in, say, an R package repository. If your folder has more code files than that and you want them all checked, raise the limit or remove it entirely:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># analyse up to 100 code files per folder</span></span>
@@ -599,8 +605,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span>                     file_limit <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The summary text will tell you if the limit was applied: <code>"Only the first 20 files per repository were analysed."</code> If you see this message and want complete results, re-run with a higher <code>file_limit</code>.</p>
-</section><section id="peer-review-files-sent-as-a-zip-archive" class="level3" data-number="27.4.5"><h3 data-number="27.4.5" class="anchored" data-anchor-id="peer-review-files-sent-as-a-zip-archive">
-<span class="header-section-number">27.4.5</span> Peer review — files sent as a zip archive</h3>
+</section><section id="peer-review-files-sent-as-a-zip-archive" class="level3" data-number="28.4.5"><h3 data-number="28.4.5" class="anchored" data-anchor-id="peer-review-files-sent-as-a-zip-archive">
+<span class="header-section-number">28.4.5</span> Peer review — files sent as a zip archive</h3>
 <p>When reviewing a paper, authors sometimes supply code and data as a zip file attached to the submission. Once you unzip it, you have a local folder:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># After unzipping the submission to a folder:</span></span>
@@ -609,8 +615,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">report</span>   <span class="co"># copy this into your review</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="code-hosted-on-an-unsupported-repository" class="level3" data-number="27.4.6"><h3 data-number="27.4.6" class="anchored" data-anchor-id="code-hosted-on-an-unsupported-repository">
-<span class="header-section-number">27.4.6</span> Code hosted on an unsupported repository</h3>
+</section><section id="code-hosted-on-an-unsupported-repository" class="level3" data-number="28.4.6"><h3 data-number="28.4.6" class="anchored" data-anchor-id="code-hosted-on-an-unsupported-repository">
+<span class="header-section-number">28.4.6</span> Code hosted on an unsupported repository</h3>
 <p>Metacheck currently retrieves files automatically from <strong>OSF, GitHub, ResearchBox, and Zenodo</strong>. Many other services exist that are not yet supported. If the paper links to one of these, download the files manually and point <code>code_check</code> at the downloaded folder.</p>
 <p>The workflow is the same for all of them:</p>
 <ol type="1">
@@ -628,8 +634,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span><span class="va">result</span><span class="op">$</span><span class="va">summary_text</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section></section><section id="part-3-combining-a-paper-with-local-files" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="part-3-combining-a-paper-with-local-files">
-<span class="header-section-number">27.5</span> Part 3: Combining a paper with local files</h2>
+<hr></section></section><section id="part-3-combining-a-paper-with-local-files" class="level2" data-number="28.5"><h2 data-number="28.5" class="anchored" data-anchor-id="part-3-combining-a-paper-with-local-files">
+<span class="header-section-number">28.5</span> Part 3: Combining a paper with local files</h2>
 <p>Sometimes a paper links to an online repository that Metacheck supports, but there are also supplementary files that were shared separately — for example, the main data is on OSF but additional analysis scripts were sent as a zip by the editor. You can check both at once:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/read.html">read</a></span><span class="op">(</span><span class="st">"garcia_2024.pdf"</span><span class="op">)</span></span>
@@ -650,8 +656,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">summary_table</span></span>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section><section id="part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="part-4-running-repo_check-and-code_check-as-a-two-step-pipeline">
-<span class="header-section-number">27.6</span> Part 4: Running <code>repo_check</code> and <code>code_check</code> as a two-step pipeline</h2>
+<hr></section><section id="part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" class="level2" data-number="28.6"><h2 data-number="28.6" class="anchored" data-anchor-id="part-4-running-repo_check-and-code_check-as-a-two-step-pipeline">
+<span class="header-section-number">28.6</span> Part 4: Running <code>repo_check</code> and <code>code_check</code> as a two-step pipeline</h2>
 <p>By default, <code>code_check</code> runs <code>repo_check</code> internally and you do not see its output. If you want to inspect the file inventory before the code analysis, or save the <code>repo_check</code> results separately, run them as two steps. When you pass a <code>repo_check</code> result as the first argument to <code>code_check</code>, the file list is reused — the folder is not re-read:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/projects/reaction_time_study_2024"</span></span>
@@ -671,10 +677,10 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span><span class="va">code</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is especially useful when the folder is on a cloud-sync drive: any slow file downloads happen once (during <code>code_check</code>), not twice.</p>
-<hr></section><section id="understanding-the-output" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="understanding-the-output">
-<span class="header-section-number">27.7</span> Understanding the output</h2>
-<section id="repo_check-output" class="level3" data-number="27.7.1"><h3 data-number="27.7.1" class="anchored" data-anchor-id="repo_check-output">
-<span class="header-section-number">27.7.1</span> <code>repo_check</code> output</h3>
+<hr></section><section id="understanding-the-output" class="level2" data-number="28.7"><h2 data-number="28.7" class="anchored" data-anchor-id="understanding-the-output">
+<span class="header-section-number">28.7</span> Understanding the output</h2>
+<section id="repo_check-output" class="level3" data-number="28.7.1"><h3 data-number="28.7.1" class="anchored" data-anchor-id="repo_check-output">
+<span class="header-section-number">28.7.1</span> <code>repo_check</code> output</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -709,8 +715,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <td>Formatted report explaining any README or zip issues</td>
 </tr>
 </tbody>
-</table></section><section id="code_check-output" class="level3" data-number="27.7.2"><h3 data-number="27.7.2" class="anchored" data-anchor-id="code_check-output">
-<span class="header-section-number">27.7.2</span> <code>code_check</code> output</h3>
+</table></section><section id="code_check-output" class="level3" data-number="28.7.2"><h3 data-number="28.7.2" class="anchored" data-anchor-id="code_check-output">
+<span class="header-section-number">28.7.2</span> <code>code_check</code> output</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -790,8 +796,8 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </tr>
 </tbody>
 </table>
-<hr></section></section><section id="downloading-osf-files-to-check-locally" class="level2" data-number="27.8"><h2 data-number="27.8" class="anchored" data-anchor-id="downloading-osf-files-to-check-locally">
-<span class="header-section-number">27.8</span> Downloading OSF files to check locally</h2>
+<hr></section></section><section id="downloading-osf-files-to-check-locally" class="level2" data-number="28.8"><h2 data-number="28.8" class="anchored" data-anchor-id="downloading-osf-files-to-check-locally">
+<span class="header-section-number">28.8</span> Downloading OSF files to check locally</h2>
 <p>Often the files you want to check live in an OSF project rather than on your own disk. You can download them first, then point <code>repo_check</code> / <code>code_check</code> at the downloaded folder using the local-file options above.</p>
 <p>OSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.</p>
 <p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than <code>max_file_size</code> (defaults to 10 MB) up to a total size of <code>max_download_size</code> (defaults to 100 MB).</p>
@@ -1240,12 +1246,12 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/creating-a-report.html" class="pagination-link" aria-label="Creating a Metacheck Report">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/ollama.html" class="pagination-link" aria-label="Local AI with Ollama">
-        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
