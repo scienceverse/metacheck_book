@@ -13,7 +13,12 @@ library(metacheck)
 
 ## What it checks
 
-The `stat_p_exact` module flags **p-values reported with insufficient precision** — for example `p < .05` or `p = n.s.` instead of an exact value like `p = .031` — and p-values reported as **exactly zero** (`p = .000`), which is mathematically impossible and should be written `p < .001`.
+The `stat_p_exact` module flags two kinds of problematic p-values:
+
+- **Imprecise p-values** — for example `p < .05` or `p = n.s.` instead of an exact value like `p = .031`.
+- **P-values reported as exactly zero** — for example `p = .000` or `p = 0.00`. A p-value is never exactly zero; `p = .000` is a rounding artifact (the true value is simply smaller than the reported precision) and should be written `p < .001`.
+
+Each detected value carries an `imprecise` flag and a `zero` flag, and either kind turns the traffic light **red**. When a `p = .000` is found, the report includes its own guidance explaining why exactly-zero p-values should be reported as `p < .001`.
 
 Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.
 
@@ -46,6 +51,8 @@ mo$table[mo$table$imprecise | mo$table$zero, c("text", "expanded")] |>
 
 ## Running on many papers
 
+The `summary_table` reports a per-paper count for each problem type: `n_imprecise` (imprecise p-values) and `n_zero` (p-values reported as exactly zero).
+
 ```{r}
 mo <- module_run(psychsci[1:20], "stat_p_exact")
 head(mo$summary_table) |>
@@ -59,6 +66,13 @@ A known paper that reports imprecise p-values:
 ```{r}
 #| results: asis
 module_run(psychsci$`0956797614560771`, "stat_p_exact")
+```
+
+A paper that reports a p-value as exactly zero (`p = .000`). This is flagged separately from imprecise values, with its own guidance that exactly-zero p-values should be reported as `p < .001`:
+
+```{r}
+#| results: asis
+module_run(psychsci$`0956797615603702`, "stat_p_exact")
 ```
 
 A paper that reports all p-values exactly returns green:
