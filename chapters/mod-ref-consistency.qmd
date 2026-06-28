@@ -1,0 +1,75 @@
+---
+title: "Reference Consistency"
+vignette: >
+  %\VignetteIndexEntry{Reference Consistency}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+::: callout-important
+This module is **not currently useful**. It depends on the cross-references and bibliography that [GROBID](https://github.com/kermitt2/grobid) extracts from the PDF, and that extraction is too low in quality for the check to be reliable: GROBID frequently fails to link in-text citations to their reference, and mis-parses parts of the reference list into spurious entries. In practice the overwhelming majority of the discrepancies this module reports are artefacts of that extraction rather than real inconsistencies in the paper.
+
+We are building a more accurate tool to convert PDFs to text, which should make this check dependable. Until then, treat its output as a measure of extraction quality rather than as a list of problems with the paper.
+:::
+
+## What it checks
+
+The `ref_consistency` module checks the bibliography and the in-text citations against each other, in both directions:
+
+- **Extra references** — entries in the reference list that are never cited anywhere in the text.
+- **Missing references** — in-text citations that do not point to any entry in the reference list.
+
+A paper where every reference is cited and every citation resolves to a reference is internally consistent; anything else is flagged.
+
+## Running the module
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "ref_consistency")
+mo$traffic_light
+mo$summary_text
+```
+
+The `summary_table` gives per-paper counts: the number of bibliography entries (`n_bib`), the number of in-text cross-references (`n_xrefs`), and how many were flagged as `n_extra` (uncited references) or `n_missing` (citations with no matching reference):
+
+```{r}
+mo$summary_table |>
+  knitr::kable()
+```
+
+The `table` has one row per flagged discrepancy. A row with `contents = NA` is an **extra** reference (a bibliography entry with no matching citation); a row with a citation in `contents` but no `reference` is a **missing** reference:
+
+```{r}
+mo$table[, c("bib_id", "reference", "contents")] |>
+  knitr::kable()
+```
+
+## Running on many papers
+
+```{r}
+#| eval: false
+mo <- module_run(psychsci[1:10], "ref_consistency")
+mo$summary_table
+```
+
+## Interpreting the result
+
+As the callout above warns, a flag here is much more likely to reflect imperfect PDF extraction than a real problem with the paper. The two most common failure modes are:
+
+- **Unlinked citations.** GROBID detects an in-text citation but cannot attach it to a reference, so the citation is reported as *missing* even though the work is in the reference list. These dominate the "missing" flags.
+- **Mis-parsed references.** GROBID splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography "entry". These appear as *extra* references that were never really in the paper.
+
+A genuinely uncited reference, or a citation to a work that is truly absent from the reference list, does occur — but it is the exception, and you can only confirm it by looking at the original PDF. Once the more accurate extraction tool is in place, this section will be revisited.
+
+## Options
+
+`ref_consistency` takes only the `paper` argument.
+
+## Notes
+
+This module sits alongside the other reference-section checks: [accuracy](mod-ref-accuracy.qmd), [PubPeer](mod-ref-pubpeer.qmd), [retraction](mod-ref-retraction.qmd), and [replication](mod-ref-replication.qmd), with the [reference summary](mod-ref-summary.qmd) collecting several of them into a single table.

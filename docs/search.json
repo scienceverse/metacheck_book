@@ -2317,5 +2317,82 @@
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Function reference for new users</span>"
     ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html",
+    "href": "chapters/mod-ref-consistency.html",
+    "title": "\n22  Reference Consistency\n",
+    "section": "",
+    "text": "22.1 What it checks\nThe ref_consistency module checks the bibliography and the in-text citations against each other, in both directions:\nA paper where every reference is cited and every citation resolves to a reference is internally consistent; anything else is flagged.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html#what-it-checks",
+    "href": "chapters/mod-ref-consistency.html#what-it-checks",
+    "title": "\n22  Reference Consistency\n",
+    "section": "",
+    "text": "Extra references — entries in the reference list that are never cited anywhere in the text.\n\nMissing references — in-text citations that do not point to any entry in the reference list.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html#running-the-module",
+    "href": "chapters/mod-ref-consistency.html#running-the-module",
+    "title": "\n22  Reference Consistency\n",
+    "section": "\n22.2 Running the module",
+    "text": "22.2 Running the module\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_consistency\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"There are cross-references that are not in the bibliography and/or bibliography entries not cross-referenced in the text\"\n\n\nThe summary_table gives per-paper counts: the number of bibliography entries (n_bib), the number of in-text cross-references (n_xrefs), and how many were flagged as n_extra (uncited references) or n_missing (citations with no matching reference):\n\nmo$summary_table |&gt;\n  knitr::kable()\n\n\n\npaper_id\nn_bib\nn_xrefs\nn_extra\n\n\nto_err_is_human\n5\n0\n5\n\n\n\n\nThe table has one row per flagged discrepancy. A row with contents = NA is an extra reference (a bibliography entry with no matching citation); a row with a citation in contents but no reference is a missing reference:\n\nmo$table[, c(\"bib_id\", \"reference\", \"contents\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\nbib_id\nreference\ncontents\n\n\n\n0\nDeBruine, Lisa. 2025. Faux: Simulation for Factorial Designs. Zenodo. https: //doi.org/10.5281/10.5281/zenodo.2669586.\nNA\n\n\n1\nEagly, Alice H., and Wendy Wood. 1999. “The Origins of Sex Differences in Human Behavior: Evolved Dispositions Versus Social Roles.” American Psychologist 54 (6): 408-23. https://doi.org/10.1037/0003-066x.54.6.408.\nNA\n\n\n2\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.\nNA\n\n\n3\nLakens, Daniël. 2018. “Equivalence Testing for Psychological Research.” Ad- vances in Methods and Practices in Psychological Science 1: 259-70.\nNA\n\n\n4\nSmith, F. 2021. “Human Error Is a Symptom of a Poor Design.” Journal of Journals. https://doi.org/10.0000/0123456789.\nNA",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html#running-on-many-papers",
+    "href": "chapters/mod-ref-consistency.html#running-on-many-papers",
+    "title": "\n22  Reference Consistency\n",
+    "section": "\n22.3 Running on many papers",
+    "text": "22.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_consistency\")\nmo$summary_table",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html#interpreting-the-result",
+    "href": "chapters/mod-ref-consistency.html#interpreting-the-result",
+    "title": "\n22  Reference Consistency\n",
+    "section": "\n22.4 Interpreting the result",
+    "text": "22.4 Interpreting the result\nAs the callout above warns, a flag here is much more likely to reflect imperfect PDF extraction than a real problem with the paper. The two most common failure modes are:\n\n\nUnlinked citations. GROBID detects an in-text citation but cannot attach it to a reference, so the citation is reported as missing even though the work is in the reference list. These dominate the “missing” flags.\n\nMis-parsed references. GROBID splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography “entry”. These appear as extra references that were never really in the paper.\n\nA genuinely uncited reference, or a citation to a work that is truly absent from the reference list, does occur — but it is the exception, and you can only confirm it by looking at the original PDF. Once the more accurate extraction tool is in place, this section will be revisited.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html#options",
+    "href": "chapters/mod-ref-consistency.html#options",
+    "title": "\n22  Reference Consistency\n",
+    "section": "\n22.5 Options",
+    "text": "22.5 Options\nref_consistency takes only the paper argument.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html#notes",
+    "href": "chapters/mod-ref-consistency.html#notes",
+    "title": "\n22  Reference Consistency\n",
+    "section": "\n22.6 Notes",
+    "text": "22.6 Notes\nThis module sits alongside the other reference-section checks: accuracy, PubPeer, retraction, and replication, with the reference summary collecting several of them into a single table.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>Reference Consistency</span>"
+    ]
   }
 ]
