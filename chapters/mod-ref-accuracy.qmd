@@ -9,31 +9,46 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+suppressMessages(library(dplyr))
 ```
 
 ## What it checks
 
-The `ref_accuracy` module checks each cited reference against the metadata retrieved from [CrossRef](https://www.crossref.org/), to catch **inaccurate references**. Citation errors are common — a wrong year, a garbled title, a missing or extra author — and they make the cited work harder to find and the citation harder to verify.
+The `ref_accuracy` module looks for **incoherent references**. A reference is incoherent when the details the paper cites for it — the title, authors, journal, or year — do not match the record that the reference's own DOI points to. If you cite a paper as appearing in one journal but its DOI resolves to a different journal, something is wrong: a wrong DOI, a mis-named journal, or (increasingly) an AI-fabricated citation.
 
-For every reference that has a CrossRef match, the module compares the title (ignoring capitalisation) and the author last names against the retrieved record, and flags any mismatch.
+The module does not claim a flagged reference is fabricated. It surfaces the discrepancy so you can check the original source and decide what happened.
+
+::: callout-important
+**Only references that supply their own DOI are checked.** A reference with no DOI is *not* checked, because the only record we could find for it comes from a CrossRef title search, which frequently returns the wrong paper — so a "mismatch" would be CrossRef's error, not the citation's. References without a DOI are listed separately, with a suggested DOI offered only when CrossRef found a confident match.
+:::
 
 ::: callout-note
-This module relies on the paper's `bib_match` table, which holds reference metadata retrieved from CrossRef. It is populated when you convert a paper with `crossref_lookup = TRUE`, or you can add or refresh it at any time with `add_bibmatch()`. Building it makes **live network calls**, so you need an internet connection.
+This module relies on the paper's `bib_match` table, which holds reference metadata retrieved from CrossRef. It is populated when you convert a paper with `crossref_lookup = TRUE`, or you can add or refresh it at any time with `add_bib_match()`. Building it makes **live network calls**, so you need an internet connection.
 :::
 
 ## Running the module
 
 ```{r}
-paper <- demopaper()
+paper <- add_bib_match(demopaper())
 mo <- module_run(paper, "ref_accuracy")
 mo$traffic_light
 mo$summary_text
 ```
 
-The `table` has one row per reference, with a set of `*_mismatch` flags and a `no_match` flag for references CrossRef could not find:
+The `summary_table` reports, per paper, how many references were checked (had their own DOI), how many were flagged as incoherent, and how many had no DOI and so could not be checked:
 
 ```{r}
-mo$table[, c("bib_id", "title.orig", "title_mismatch", "author_mismatch", "no_match")] |>
+mo$summary_table |>
+  knitr::kable()
+```
+
+The full `table` has one row per reference, with a `tier` column (`"provided"` for references that supplied their own DOI, `"none"` for references without one) and an `incoherent` flag, alongside the individual `*_mismatch` columns:
+
+```{r}
+mo$table |>
+  dplyr::select(bib_id, tier, incoherent,
+                title_mismatch, author_mismatch,
+                container_mismatch, year_mismatch) |>
   knitr::kable()
 ```
 
@@ -41,56 +56,134 @@ mo$table[, c("bib_id", "title.orig", "title_mismatch", "author_mismatch", "no_ma
 
 ```{r}
 #| eval: false
-mo <- module_run(psychsci[1:10], "ref_accuracy")
+papers <- add_bib_match(psychsci[1:10])
+mo <- module_run(papers, "ref_accuracy")
 mo$summary_table
 ```
 
-## Worked examples
+## How a reference is flagged
 
-The demo paper's reference list contains two real mismatches worth looking at:
+For each checked reference the module compares five fields against the DOI's record. Two of them are treated as *reliable* signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as *weaker* signals.
+
+| Field | Signal | Notes |
+|---|---|---|
+| DOI | reliable | only when the reference printed a DOI that differs from the record |
+| Journal | reliable | abbreviation-tolerant (ISO-4, `&`/`and`, `the`) |
+| Year | reliable | allows a `year_tolerance` difference (online-first vs print) |
+| Title | weaker | character similarity, ignoring case/punctuation/footnotes |
+| Author | weaker | leading surnames only; diacritics ignored |
+
+A reference is flagged when any reliable field mismatches, **or** when at least `min_mismatches` of the weaker fields (title, author) mismatch. By default `min_mismatches = 2`, so a lone title or author difference — which is usually a parsing artefact — is not enough on its own.
+
+## Parameters
+
+`ref_accuracy` exposes the thresholds behind each check so you can tune the trade-off between catching more errors and raising fewer false alarms.
+
+### `min_mismatches` (default `1`)
+
+How many of the parsing-sensitive fields (title and author) must disagree before a reference is flagged. The default of `1` flags a single title or author mismatch, which catches roughly twice as many genuine errors. The extra false positives this adds are minor compared with the false positives that already come from imperfect reference parsing, so the more sensitive setting is the better trade-off. Set it to `2` to be more conservative and require two of these fields to disagree before flagging.
 
 ```{r}
-paper <- demopaper()
+#| eval: false
+# default: a single title or author mismatch is flagged
+module_run(paper, "ref_accuracy", min_mismatches = 1)
+
+# conservative: require two parsing-sensitive fields to disagree
+module_run(paper, "ref_accuracy", min_mismatches = 2)
+```
+
+### `year_tolerance` (default `1`)
+
+How many years the cited year may differ from the record before the year is flagged. The default allows a one-year difference, because the online-first and print publication years of an article routinely differ by a year. Set it to `0` to require an exact match, or higher to be more lenient.
+
+```{r}
+#| eval: false
+# require the cited year to match exactly
+module_run(paper, "ref_accuracy", year_tolerance = 0)
+```
+
+### `title_similarity` (default `0.7`)
+
+The minimum character-level similarity (0–1, after stripping case, punctuation, footnote markers and diacritics) for a cited title to count as matching the record's title. Lower values tolerate more formatting noise; a title below the threshold is flagged. Raise it to be stricter about title differences.
+
+```{r}
+#| eval: false
+# stricter: smaller title differences are flagged
+module_run(paper, "ref_accuracy", title_similarity = 0.85)
+```
+
+### `max_authors` (default `6`)
+
+How many of the leading author surnames to require in the cited author list. Author lists are routinely shortened with "et al." (APA abbreviates after seven authors), and PDF parsing often drops the tail of long lists, so only the first `max_authors` surnames are checked.
+
+```{r}
+#| eval: false
+# only require the first three surnames to match
+module_run(paper, "ref_accuracy", max_authors = 3)
+```
+
+### `suggest_score` (default `70`)
+
+For references **without** a DOI, the minimum CrossRef relevance score for a DOI found by title search to be offered as a suggestion in the "references without a DOI" list. Low-scoring matches are usually the wrong paper, so they are withheld. Raise it to suggest fewer (more conservative) DOIs, lower it to suggest more.
+
+```{r}
+#| eval: false
+# only suggest a DOI when CrossRef is very confident
+module_run(paper, "ref_accuracy", suggest_score = 90)
+```
+
+## Worked examples: real errors in the wild
+
+The two examples below are genuine citation errors found in the `psychsci` corpus. Both papers also produce *false* positives (see the next section), which is the normal situation: a real error usually sits among a few parsing artefacts, and the value of the module is making the small set of candidates visible so you can check them.
+
+### A wrong DOI
+
+In one paper, Webster, Georgeson, and Webster (2002), "Neural adjustments of image blur", is cited as appearing in *Nature Neuroscience* — which is correct. But the DOI attached to the reference, `10.1167/1.3.441`, resolves to a *Journal of Vision* article. The cited journal is right; the DOI is wrong (the correct DOI is `10.1038/nn906`). The module catches the inconsistency through the journal mismatch:
+
+```{r}
+paper <- add_bib_match(psychsci[["0956797617705391"]])
 mo <- module_run(paper, "ref_accuracy")
 mo$table |>
-  dplyr::filter(title_mismatch | author_mismatch | doi_mismatch) |>
-  _[, c("bib_id", "title.orig", "title.match")] |>
+  dplyr::filter(incoherent, grepl("Webster", text)) |>
+  dplyr::select(container.orig, container.match, doi.match) |>
   knitr::kable()
 ```
 
-The first (`bib_id` 2) is informative: the paper cites *"Evil Genius? How Dishonesty Can Lead to Greater Creativity"*, but the title CrossRef returns now begins with **"Retracted:"** — the article was retracted after this paper cited it. The mismatch is not a citation error at all; it is a signal the cited work has since been retracted (which the [retraction](mod-ref-retraction.qmd) module checks directly).
+A reader who followed that DOI would land on the wrong paper — exactly the kind of error the check is for.
 
-The second (`bib_id` 3) is a citation that is genuinely incomplete. The paper cites Lakens (2018) as *"Equivalence Testing for Psychological Research"* with **no DOI** and a single author, while CrossRef has the full title (*"...: A Tutorial"*), three authors, and a DOI:
+### A wrong journal name
+
+In another paper, Võ, Boettcher, and Draschkow (2019) is cited as appearing in a journal called *"Attention & Perception"*. The DOI resolves to the correct paper, with the correct title and year, but the real journal is *Current Opinion in Psychology* — *"Attention & Perception"* is not a real journal. Here the cited details are wrong and the DOI is right:
 
 ```{r}
+paper <- add_bib_match(psychsci[["09567976231190546"]])
+mo <- module_run(paper, "ref_accuracy")
 mo$table |>
-  dplyr::filter(bib_id == 3) |>
-  _[, c("authors.orig", "doi.orig", "doi.match")] |>
+  dplyr::filter(incoherent, container_mismatch) |>
+  dplyr::select(container.orig, container.match, year.orig, year.match) |>
   knitr::kable()
 ```
-
-A clear example also shows up in the `psychsci` corpus. In one article, a cited title differs by a single word — *"...is made **prior to** basic-level distinctions..."* in the reference list versus *"...is made **before** basic-level..."* in the published record:
-
-```{r}
-psy <- module_run(psychsci[["0956797614522816"]], "ref_accuracy")
-psy$table |>
-  dplyr::filter(bib_id == 8) |>
-  _[, c("title.orig", "title.match", "title_mismatch")] |>
-  knitr::kable()
-```
-
-This is the kind of small transcription slip — easy to make, hard to spot by eye — that the module surfaces automatically. (Differences in capitalisation and punctuation alone are ignored, so only substantive changes like this one are flagged.)
 
 ## Interpreting the result
 
-A flagged reference is a candidate problem, not a confirmed error. Mismatches can come from three sources: a real citation mistake in the paper, an imperfect parse of the reference out of the PDF, or an inaccuracy in CrossRef's own record. The module makes the discrepancy visible so you can look at the original reference and decide which it is.
+A flagged reference is a candidate to check, not a confirmed error. From reviewing many flags across fields, the discrepancies fall into a handful of recurring causes:
 
-References with `no_match = TRUE` were not found in CrossRef at all — often because they lack a DOI, or are books, preprints, or grey literature CrossRef does not index. These are not errors; they simply could not be checked.
+- **Merged references.** The PDF parser sometimes joins two references into one entry, keeping the first reference's authors and year but the second's DOI. Every field then "mismatches". This is the single most common cause of false positives. A tell-tale sign is a reference that contains two author–date blocks.
+- **Renamed journals.** A journal can change its name over time (for example, *American Journal of Optometry and Physiological Optics* became *Optometry and Vision Science* in 1991). The citation correctly uses the name at the time of publication, while CrossRef stores the current name, so the journal appears to mismatch.
+- **Reprint and edition DOIs.** A book or chapter cited in its original year may carry a DOI registered for a later digital edition, so the year mismatches even though the work is the same.
+- **Aliased DOIs.** A single work occasionally has more than one valid DOI (an older and a newer format). The citation uses one; CrossRef's canonical record lists the other.
+- **Real citation errors.** A genuinely wrong DOI, journal, year, title, or author list — the cases the module exists to surface.
+
+Because most flags are data or parsing issues rather than authorial mistakes, treat each one as "look at the original source", not as a confirmed error. A journal mismatch on an older reference is often a renaming; a journal *and* year mismatch together more often points to a wrong DOI.
+
+::: callout-note
+Many of the false positives above — merged references, journal names pulled from the wrong place, DOIs attached to the wrong entry — come from how references are currently extracted from the PDF, not from the citations themselves. We are working on a more accurate reference-import tool, which should remove most of these artefacts and make the flags that remain far more likely to be genuine errors.
+:::
 
 ## Options
 
-`ref_accuracy` takes only the `paper` argument.
+`ref_accuracy` takes the `paper` argument plus the five tuning parameters described above: `min_mismatches`, `year_tolerance`, `title_similarity`, `max_authors`, and `suggest_score`.
 
 ## Notes
 
-This is one of four reference-section checks. The [reference summary](mod-ref-summary.qmd) module collects the results of all of them — accuracy, [PubPeer](mod-ref-pubpeer.qmd), [retraction](mod-ref-retraction.qmd), and [replication](mod-ref-replication.qmd) — into a single per-reference table.
+This is one of the reference-section checks. The [reference summary](mod-ref-summary.qmd) module collects the results of several of them — accuracy, [PubPeer](mod-ref-pubpeer.qmd), [retraction](mod-ref-retraction.qmd), and [replication](mod-ref-replication.qmd) — into a single per-reference table.
