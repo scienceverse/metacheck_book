@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
@@ -422,10 +442,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-findings-table" id="toc-the-findings-table" class="nav-link" data-scroll-target="#the-findings-table"><span class="header-section-number">23.3</span> The findings table</a></li>
   <li><a href="#outliers-and-distributions-in-a-report" id="toc-outliers-and-distributions-in-a-report" class="nav-link" data-scroll-target="#outliers-and-distributions-in-a-report"><span class="header-section-number">23.4</span> Outliers and distributions in a report</a></li>
   <li><a href="#personal-information-screening" id="toc-personal-information-screening" class="nav-link" data-scroll-target="#personal-information-screening"><span class="header-section-number">23.5</span> Personal-information screening</a></li>
-  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">23.6</span> The traffic light</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">23.7</span> Options</a></li>
-  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.8</span> What you get back</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.9</span> Related</a></li>
+  <li><a href="#demographic-variables" id="toc-demographic-variables" class="nav-link" data-scroll-target="#demographic-variables"><span class="header-section-number">23.6</span> Demographic variables</a></li>
+  <li><a href="#qualtrics-survey-metadata" id="toc-qualtrics-survey-metadata" class="nav-link" data-scroll-target="#qualtrics-survey-metadata"><span class="header-section-number">23.7</span> Qualtrics survey metadata</a></li>
+  <li>
+<a href="#careless-responding" id="toc-careless-responding" class="nav-link" data-scroll-target="#careless-responding"><span class="header-section-number">23.8</span> Careless responding</a>
+  <ul class="collapse">
+<li><a href="#two-real-examples" id="toc-two-real-examples" class="nav-link" data-scroll-target="#two-real-examples"><span class="header-section-number">23.8.1</span> Two real examples</a></li>
+  </ul>
+</li>
+  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">23.9</span> The traffic light</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">23.10</span> Options</a></li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.11</span> What you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.12</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-validate.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -520,7 +548,7 @@ Note
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; We ran automated data-quality checks on 5 columns; 4 columns have at least one potential issue (2 columns with potential outliers; 1 column with inconsistent category casing; 1 column with a single constant value; 1 column with sparsely populated categories).</code></pre>
+<pre><code>#&gt; We ran automated data-quality checks on 5 columns; 4 columns have at least one potential issue (2 columns with potential outliers; 1 column with inconsistent category casing; 1 column with a single constant value; 1 column with sparsely populated categories). We detected demographic column for Age.</code></pre>
 </div>
 </div>
 <p>Running <code>data_validate</code> automatically runs <code>data_check</code> first (to read and classify the columns) and then applies the quality checks to the result.</p>
@@ -546,12 +574,12 @@ Note
 <tr class="odd">
 <td style="text-align: left;">reaction</td>
 <td style="text-align: left;">Outliers</td>
-<td style="text-align: left;">1 outlier value outside [356, 651]: 5000</td>
+<td style="text-align: left;">1 outlier value outside [340, 662]: 5000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">age</td>
 <td style="text-align: left;">Outliers</td>
-<td style="text-align: left;">1 outlier value outside [17.3, 43.4]: -99</td>
+<td style="text-align: left;">2 outlier values outside [17.7, 40.5]: -99, 16.75</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">condition</td>
@@ -633,9 +661,185 @@ Note
 </table>
 </div>
 </div>
-<p>The screen looks at both the <strong>values</strong> (patterns that look like emails, IPs, IDs, phone or card numbers) and the <strong>column name</strong> (names such as <code>email</code>, <code>name</code>, <code>address</code>), plus geographic coordinates and free-text columns that may contain identifying prose.</p>
-</section><section id="the-traffic-light" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="the-traffic-light">
-<span class="header-section-number">23.6</span> The traffic light</h2>
+<p>The screen looks at both the <strong>values</strong> (patterns that look like emails, IP addresses, national IDs, or credit-card numbers) and the <strong>column name</strong> (names such as <code>email</code>, <code>firstname</code>, <code>address</code>, <code>dob</code>), plus geographic coordinates and open typed free-text columns that may contain identifying prose.</p>
+</section><section id="demographic-variables" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="demographic-variables">
+<span class="header-section-number">23.6</span> Demographic variables</h2>
+<p>Almost every human-subjects study reports the same three demographic variables about its sample — <strong>age, gender/sex, and race/ethnicity</strong> — so <code>data_validate</code> picks them out and lists them. Detection requires the column <strong>name and values to agree</strong>: an <code>age</code> column is only tagged when its name looks like age <em>and</em> its values fall in a plausible human range (a <code>condition</code> column coded <code>1</code>/<code>2</code> is therefore never mistaken for gender). It reuses the same <code>data_check_demographic()</code> rule the <a href="../chapters/mod-data-check.html">Data Check</a> facet model uses.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"demo_demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">demo</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  id        <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>,</span>
+<span>  age       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">18</span><span class="op">:</span><span class="fl">65</span>, <span class="fl">30</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  gender    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Non-binary"</span><span class="op">)</span>, <span class="fl">30</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  ethnicity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Hispanic"</span>, <span class="st">"Non-Hispanic"</span><span class="op">)</span>, <span class="fl">30</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  score     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span>
+<span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">demo</span>, <span class="st">"data"</span>, <span class="st">"study.csv"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mo_demo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>                      local_path <span class="op">=</span> <span class="va">demo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mo_demo</span><span class="op">$</span><span class="va">demographics</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">source_file</th>
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">demographic</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">study.csv</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: left;">age</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">study.csv</td>
+<td style="text-align: left;">gender</td>
+<td style="text-align: left;">gender</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">study.csv</td>
+<td style="text-align: left;">ethnicity</td>
+<td style="text-align: left;">race</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This is an <strong>inventory, not a problem flag</strong> — it simply helps a reviewer see at a glance whether the shared data documents its sample’s demographics (and, with the <a href="#personal-information-screening">personal-information screen</a> above, whether doing so raises any disclosure concerns). The result is returned in <code>$demographics</code> and summarised in a <em>Demographic Variables</em> report section.</p>
+</section><section id="qualtrics-survey-metadata" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="qualtrics-survey-metadata">
+<span class="header-section-number">23.7</span> Qualtrics survey metadata</h2>
+<p>Qualtrics exports have a fixed, recognisable shape — a set of reserved response-metadata columns (<code>StartDate</code>, <code>Duration (in seconds)</code>, <code>Finished</code>, <code>ResponseId</code>, …) and, for the “use choice text” export, extra header rows. <code>data_check</code> detects these files (<code>data_check_is_qualtrics()</code>) and strips the extra header rows so the data types correctly; <code>data_validate</code> then summarises the metadata that is <strong>reliably extractable from any Qualtrics file</strong>:</p>
+<ul>
+<li>
+<strong>preview / unfinished responses</strong> — rows where <code>Status</code> marks a preview or spam, <code>Finished</code> is false, or <code>Progress</code> is below 100, which usually need dropping before analysis;</li>
+<li>the <strong>completion-time distribution</strong> — the median <code>Duration</code>, with a count of implausibly fast responses;</li>
+<li>the <strong>data-collection window</strong> — the date range from <code>RecordedDate</code> / <code>StartDate</code>; and</li>
+<li>which <strong>Qualtrics personal-information fields</strong> are present (IP address, email, location, external reference).</li>
+</ul>
+<p>The substantive question columns are deliberately <em>not</em> interpreted here — that is the job of the scale-block detection in <a href="../chapters/mod-codebook-check.html">Codebook Check</a>. The summary is returned in <code>$qualtrics</code> and appears as a <em>Qualtrics Survey Metadata</em> report section; the summary text also notes how many rows look like previews or unfinished responses to review.</p>
+</section><section id="careless-responding" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="careless-responding">
+<span class="header-section-number">23.8</span> Careless responding</h2>
+<p>For <strong>survey data</strong>, <code>data_validate</code> additionally screens for <strong>careless responding</strong> — respondents who straightline (give the same answer to every item) or answer unusually flatly or erratically. This uses the <a href="https://cran.r-project.org/package=careless"><code>careless</code></a> package’s <em>longstring</em> and <em>intra-individual response variability</em> (IRV) indices.</p>
+<p>Because these indices only make sense on a block of items measured on a common scale, and a finding is only actionable if you can point to <em>which</em> respondent, the check runs only when <strong>both</strong> conditions hold:</p>
+<ol type="1">
+<li>the file contains a <strong>block of Likert-type items</strong> — a run of adjacent integer columns (3–11 response options) sharing a variable-name prefix, with at least five items; and</li>
+<li>the file has an <strong>identifier column</strong> (so flagged respondents can be located).</li>
+</ol>
+<p>Item blocks are split by their variable-name prefix, so <code>panas_1 … panas_10</code> and <code>rse_1 … rse_5</code> are treated as two separate scales even when they sit next to each other.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">survey</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"careless_demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">survey</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">60</span></span>
+<span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, <span class="va">n</span> <span class="op">*</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">items</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"mood_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co"># add one straightliner (all 3s) and one erratic responder (1,5,1,5,...)</span></span>
+<span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">items</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">10</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">items</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">items</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">survey_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>participant_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">n</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span>, <span class="va">items</span><span class="op">)</span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">survey_df</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">survey</span>, <span class="st">"data"</span>, <span class="st">"mood.csv"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mo_car</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>                     local_path <span class="op">=</span> <span class="va">survey</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mo_car</span><span class="op">$</span><span class="va">careless</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 5%">
+<col style="width: 32%">
+<col style="width: 13%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">scale</th>
+<th style="text-align: left;">respondent</th>
+<th style="text-align: right;">longstring</th>
+<th style="text-align: right;">irv</th>
+<th style="text-align: left;">reason</th>
+<th style="text-align: left;">source_file</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">mood (1-5, 10 items)</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: left;">IRV outlier</td>
+<td style="text-align: left;">mood.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mood (1-5, 10 items)</td>
+<td style="text-align: left;">55</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: left;">IRV outlier</td>
+<td style="text-align: left;">mood.csv</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mood (1-5, 10 items)</td>
+<td style="text-align: left;">61</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: left;">straightlining + IRV outlier</td>
+<td style="text-align: left;">mood.csv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mood (1-5, 10 items)</td>
+<td style="text-align: left;">62</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.11</td>
+<td style="text-align: left;">IRV outlier</td>
+<td style="text-align: left;">mood.csv</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Each flagged respondent is reported with the scale, their <code>longstring</code> (longest run of identical answers) and <code>IRV</code> scores, and the reason. These are <strong>prompts to inspect those rows</strong>, not automatic exclusions — an honest respondent can occasionally look extreme, so the decision stays with the researcher.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The careless check needs the optional <code>careless</code> package. If it is not installed, the check is skipped and the report notes how many survey files it would have screened.</p>
+</div>
+</div>
+<section id="two-real-examples" class="level3" data-number="23.8.1"><h3 data-number="23.8.1" class="anchored" data-anchor-id="two-real-examples">
+<span class="header-section-number">23.8.1</span> Two real examples</h3>
+<p>The synthetic example above shows the mechanics. To see the check on real research data, here are two openly shared datasets. The code is shown but not executed here (the data are not redistributed with this book); run it yourself against a local copy of each repository to reproduce the output.</p>
+<p><strong>A long scale with a clear straightliner.</strong> The replication data of <span class="citation" data-cites="gervais_divine">Gervais et al. (<a href="#ref-gervais_divine" role="doc-biblioref">2017</a>)</span> — two preregistered replications of the “anticipating divine protection” hypothesis — include a 40-item scale (variable prefix <code>dos</code>, responses 1–5) alongside a participant id.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>                 local_path <span class="op">=</span> <span class="st">"divine-protection-replication"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">careless</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"scale"</span>, <span class="st">"respondent"</span>, <span class="st">"longstring"</span>, <span class="st">"irv"</span>, <span class="st">"reason"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>                scale respondent longstring  irv                      reason
+1 dos (1-5, 40 items)        129         40 0.00 straightlining + IRV outlier
+2 dos (1-5, 40 items)        ...          9 0.63                 IRV outlier
+# ... 19 respondents flagged in total</code></pre>
+<p>Respondent 129 answered <strong>all 40 items identically</strong> (<code>longstring = 40</code>, <code>IRV = 0</code>) — an unambiguous straightliner. A further 18 respondents are flagged as IRV outliers (unusually flat or erratic answering) for a closer look.</p>
+<p><strong>Several short scales, split by prefix.</strong> The “Parents’ Failure Mindsets” data of <span class="citation" data-cites="haimovitz_failure">Haimovitz &amp; Dweck (<a href="#ref-haimovitz_failure" role="doc-biblioref">2016</a>)</span> contain three separate failure-mindset scales in adjacent columns, named <code>fail_*</code>, <code>failbad_*</code>, and <code>failgood_*</code>, all on a 1–6 metric.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>                 local_path <span class="op">=</span> <span class="st">"parents-failure-mindsets"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">careless</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>[1] "fail (1-6, 6 items)"     "failbad (1-6, 5 items)"  "failgood (2-6, 5 items)"</code></pre>
+<p>Even though the three scales sit next to each other on the same response metric, the variable-name prefix splits them into <strong>three distinct blocks</strong>, and careless indices are computed within each — so a respondent who straightlines one scale is flagged for that scale specifically, rather than the three being merged into one meaningless block.</p>
+</section></section><section id="the-traffic-light" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="the-traffic-light">
+<span class="header-section-number">23.9</span> The traffic light</h2>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Light</th>
@@ -659,16 +863,16 @@ Note
 <td>there were no readable tabular data files to validate</td>
 </tr>
 </tbody>
-</table></section><section id="options" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="options">
-<span class="header-section-number">23.7</span> Options</h2>
+</table></section><section id="options" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="options">
+<span class="header-section-number">23.10</span> Options</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># make the outlier rule stricter or more lenient (default k = 1.5)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># make the outlier rule stricter or more lenient (default k = 1.5)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
 <span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span>, outlier_k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A larger <code>outlier_k</code> widens the fences, so only more extreme values are flagged.</p>
-</section><section id="what-you-get-back" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="what-you-get-back">
-<span class="header-section-number">23.8</span> What you get back</h2>
+</section><section id="what-you-get-back" class="level2" data-number="23.11"><h2 data-number="23.11" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">23.11</span> What you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -701,12 +905,25 @@ Note
 </td>
 </tr>
 <tr class="odd">
+<td><code>$demographics</code></td>
+<td>one row per detected demographic column: <code>source_file</code>, <code>column</code>, <code>demographic</code> (age/gender/race)</td>
+</tr>
+<tr class="even">
+<td><code>$qualtrics</code></td>
+<td>one row per detected Qualtrics export: response count, preview/unfinished rows, median time, collection window, PII fields present</td>
+</tr>
+<tr class="odd">
+<td><code>$careless</code></td>
+<td>one row per flagged respondent (survey data): <code>scale</code>, <code>respondent</code>, <code>longstring</code>, <code>irv</code>, <code>reason</code>
+</td>
+</tr>
+<tr class="even">
 <td><code>$report</code></td>
-<td>formatted report with the issue breakdown, outlier table, and combined distribution figure</td>
+<td>formatted report with the issue breakdown, outlier table, combined distribution figure, demographic inventory, and Qualtrics summary</td>
 </tr>
 </tbody>
-</table></section><section id="related" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="related">
-<span class="header-section-number">23.9</span> Related</h2>
+</table></section><section id="related" class="level2" data-number="23.12"><h2 data-number="23.12" class="anchored" data-anchor-id="related">
+<span class="header-section-number">23.12</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-data-check.html">Data Check</a> is run first and supplies the columns.</li>
@@ -717,6 +934,14 @@ Note
 </ul>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-gervais_divine" class="csl-entry" role="listitem">
+Gervais, W. M., McKee, S., &amp; Malik, S. (2017). <em>Divine protection replication</em>. Open Science Framework. <a href="https://osf.io/64ct2/">https://osf.io/64ct2/</a>
+</div>
+<div id="ref-haimovitz_failure" class="csl-entry" role="listitem">
+Haimovitz, K., &amp; Dweck, C. S. (2016). What predicts children’s fixed and growth intelligence mind-sets? Not their parents’ views of intelligence but their parents’ views of failure. <em>Psychological Science</em>, <em>27</em>(6), 859–869. <a href="https://doi.org/10.1177/0956797616639727">https://doi.org/10.1177/0956797616639727</a>
+</div>
+</div>
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

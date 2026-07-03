@@ -79,6 +79,44 @@ Here `rt` and `cond` are **labelled** (matched to the codebook), while `id` is *
 
 Matching is not purely literal: names are normalised (case, separators, and simple stemming) so that `reaction_time` in the data matches `Reaction Time` in the codebook. This tolerance is important because codebooks and data files rarely use byte-identical names.
 
+## Richer variable metadata
+
+A good codebook records more than a one-line label. Following the [DDI](https://ddialliance.org/) standard, `codebook_check` also captures four further per-variable properties whenever a source supplies them, and carries them onto the matched data columns:
+
+| Column | DDI concept | What it holds |
+|---|---|---|
+| `value_labels` | CodeList / ValueDomain | the code → label mapping, e.g. `1 = "Male", 2 = "Female"` |
+| `missing_values` | MissingValues | which codes denote missingness (e.g. `-99 = "Refused"`) |
+| `question` | QuestionText | the question the respondent was asked |
+| `universe` | Universe | the population / filter the variable applies to |
+
+These come from **two sources for free**. From SPSS/Stata/SAS files, `codebook_check` reads the embedded **value labels** and **declared missing values** that haven attaches to each column — information most tools discard. From a text codebook, it parses a *"values"* / *"coding"* column (understanding common encodings like `1 = Male; 2 = Female` or `0: no | 1: yes`) and dedicated *question* and *universe* columns.
+
+Let's document `sex` with a coding column and a question:
+
+```{r}
+repo2 <- file.path(tempdir(), "codebook_values_demo")
+dir.create(file.path(repo2, "data"), recursive = TRUE, showWarnings = FALSE)
+
+utils::write.csv(
+  data.frame(sex = c(1, 2, 1, 2, -99), age = c(20, 30, 40, 50, 25)),
+  file.path(repo2, "data", "study.csv"), row.names = FALSE)
+
+writeLines(c("variable,description,values,question",
+             "sex,Participant sex,1 = Male; 2 = Female; -99 = Refused,What is your sex?",
+             "age,Age in years,,How old are you?"),
+           file.path(repo2, "data", "codebook.csv"))
+
+mo2 <- module_run(test_paper(), "codebook_check",
+                  local_path = repo2, local_only = TRUE)
+mo2$table[, c("column_name", "value_labels", "missing_values", "question")] |>
+  knitr::kable()
+```
+
+The code list is stored as a compact JSON string (`{"1":"Male","2":"Female","-99":"Refused"}`); a code whose label reads as missingness (`Refused`, `N/A`, `Prefer not to answer`, …) is additionally recorded in `missing_values`, so a sentinel like `-99` is flagged as a missing code rather than a real value.
+
+All four properties are exported into the Psych-DS metadata by `convert_psychds()`: the code list becomes a schema.org **code list** (one `PropertyValue` per code), and the missing scheme, question, and universe become namespaced `metacheck:` fields — so they travel with the converted dataset.
+
 ## The summary counts
 
 ```{r}
@@ -117,6 +155,45 @@ module_run(test_paper(), "codebook_check",
 
 See the [LLMs](llms.qmd) chapter for model configuration.
 
+## Identifying psychometric scales
+
+With an LLM enabled, `codebook_check` also tries to recognise the **psychometric scales** in the data. It looks for blocks of Likert-type items — runs of adjacent integer columns (3–11 response options) that share a variable-name prefix, five items or more — and asks the model which published instrument each block is (PANAS, the Rosenberg Self-Esteem Scale, and so on), using the item wording from the codebook where available and the variable-name prefix otherwise.
+
+Each identified scale is recorded in two new columns of the `$table`:
+
+- **`scale`** — the instrument name (e.g. `"PANAS"`), for every item column of the block;
+- **`scale_confidence`** — `high`, `medium`, or `low` (low-confidence and unrecognised blocks are left blank rather than guessed).
+
+The report gains a **Scales** section listing what was found. When a block *looks* like a scale but could not be named, the module says so and gives concrete advice — because a scale that a language model cannot identify is usually one a human reader will struggle with too:
+
+- name variables consistently after the instrument (`panas_1 … panas_10`) rather than `Q1`, `V3`, or `item5`;
+- document the item wording in a codebook or embedded value labels — the item text is what identifies a scale;
+- state the scale name and reference, the response options, and any reverse-coded items.
+
+Without an LLM, the columns are still present but empty, and the report notes that identification was skipped.
+
+### How scales are recorded (and why)
+
+No metadata standard metacheck writes to has a first-class "scale" concept. [Psych-DS](https://psych-ds.github.io/) describes each variable in isolation, and schema.org — its foundation — has no property for grouping variables into a construct. The closest existing concept is DDI Codebook's variable group with `type="analysis"` ("variables combined into the same index"), but that is a separate XML format psychologists rarely use.
+
+Rather than invent a proprietary field or emit a second file, metacheck extends the Psych-DS metadata **in place**:
+
+- the scale **name** goes in schema.org's own [`measurementTechnique`](https://schema.org/measurementTechnique) property — its intended use is exactly to name the instrument a variable was measured with;
+- the **grouping** (which variables belong to the scale, and the confidence) goes in a namespaced `metacheck:scale` / `metacheck:scales` extension, since schema.org has no native grouping and Psych-DS tolerates namespaced JSON-LD.
+
+`convert_psychds()` and `convert_codebook()` both emit these, so the scale information travels with the converted dataset. The [Data Validate](mod-data-validate.qmd) module reuses the identified names, labelling its careless-responding findings with the real scale (e.g. "PANAS") instead of a bare column prefix.
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("groq/openai/gpt-oss-20b")
+cc <- module_run(test_paper(), "codebook_check",
+                 local_path = repo, local_only = TRUE)
+
+# the identified scales, one row per (column, scale)
+unique(cc$table[!is.na(cc$table$scale), c("column_name", "scale", "scale_confidence")])
+```
+
 ## What you get back
 
 | Element | What it contains |
@@ -124,8 +201,8 @@ See the [LLMs](llms.qmd) chapter for model configuration.
 | `$traffic_light` | `green` / `yellow` / `red` / `na` |
 | `$summary_text` | plain-text coverage summary |
 | `$summary_table` | the counts described above |
-| `$table` | one row per column: `column_name`, `label`, `label_status`, `codebook_variable`, ... |
-| `$report` | formatted report of documented vs. undocumented columns |
+| `$table` | one row per column: `column_name`, `label`, `label_status`, `codebook_variable`, `value_labels`, `missing_values`, `question`, `universe`, `scale`, `scale_confidence`, ... |
+| `$report` | formatted report of documented vs. undocumented columns, plus identified scales and improvement advice |
 
 ## Related
 

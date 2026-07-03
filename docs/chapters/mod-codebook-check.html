@@ -420,11 +420,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">25.1</span> What it checks</a></li>
   <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">25.2</span> A worked example</a></li>
   <li><a href="#the-coverage-table" id="toc-the-coverage-table" class="nav-link" data-scroll-target="#the-coverage-table"><span class="header-section-number">25.3</span> The coverage table</a></li>
-  <li><a href="#the-summary-counts" id="toc-the-summary-counts" class="nav-link" data-scroll-target="#the-summary-counts"><span class="header-section-number">25.4</span> The summary counts</a></li>
-  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">25.5</span> The traffic light</a></li>
-  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">25.6</span> Using an LLM</a></li>
-  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">25.7</span> What you get back</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">25.8</span> Related</a></li>
+  <li><a href="#richer-variable-metadata" id="toc-richer-variable-metadata" class="nav-link" data-scroll-target="#richer-variable-metadata"><span class="header-section-number">25.4</span> Richer variable metadata</a></li>
+  <li><a href="#the-summary-counts" id="toc-the-summary-counts" class="nav-link" data-scroll-target="#the-summary-counts"><span class="header-section-number">25.5</span> The summary counts</a></li>
+  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">25.6</span> The traffic light</a></li>
+  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">25.7</span> Using an LLM</a></li>
+  <li>
+<a href="#identifying-psychometric-scales" id="toc-identifying-psychometric-scales" class="nav-link" data-scroll-target="#identifying-psychometric-scales"><span class="header-section-number">25.8</span> Identifying psychometric scales</a>
+  <ul class="collapse">
+<li><a href="#how-scales-are-recorded-and-why" id="toc-how-scales-are-recorded-and-why" class="nav-link" data-scroll-target="#how-scales-are-recorded-and-why"><span class="header-section-number">25.8.1</span> How scales are recorded (and why)</a></li>
+  </ul>
+</li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">25.9</span> What you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">25.10</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-codebook-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -566,10 +573,100 @@ Note
 </div>
 <p>Here <code>rt</code> and <code>cond</code> are <strong>labelled</strong> (matched to the codebook), while <code>id</code> is <strong>unlabelled</strong> — there was no codebook entry for it.</p>
 <p>Matching is not purely literal: names are normalised (case, separators, and simple stemming) so that <code>reaction_time</code> in the data matches <code>Reaction Time</code> in the codebook. This tolerance is important because codebooks and data files rarely use byte-identical names.</p>
-</section><section id="the-summary-counts" class="level2" data-number="25.4"><h2 data-number="25.4" class="anchored" data-anchor-id="the-summary-counts">
-<span class="header-section-number">25.4</span> The summary counts</h2>
+</section><section id="richer-variable-metadata" class="level2" data-number="25.4"><h2 data-number="25.4" class="anchored" data-anchor-id="richer-variable-metadata">
+<span class="header-section-number">25.4</span> Richer variable metadata</h2>
+<p>A good codebook records more than a one-line label. Following the <a href="https://ddialliance.org/">DDI</a> standard, <code>codebook_check</code> also captures four further per-variable properties whenever a source supplies them, and carries them onto the matched data columns:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Column</th>
+<th>DDI concept</th>
+<th>What it holds</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>value_labels</code></td>
+<td>CodeList / ValueDomain</td>
+<td>the code → label mapping, e.g.&nbsp;<code>1 = "Male", 2 = "Female"</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>missing_values</code></td>
+<td>MissingValues</td>
+<td>which codes denote missingness (e.g.&nbsp;<code>-99 = "Refused"</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>question</code></td>
+<td>QuestionText</td>
+<td>the question the respondent was asked</td>
+</tr>
+<tr class="even">
+<td><code>universe</code></td>
+<td>Universe</td>
+<td>the population / filter the variable applies to</td>
+</tr>
+</tbody>
+</table>
+<p>These come from <strong>two sources for free</strong>. From SPSS/Stata/SAS files, <code>codebook_check</code> reads the embedded <strong>value labels</strong> and <strong>declared missing values</strong> that haven attaches to each column — information most tools discard. From a text codebook, it parses a <em>“values”</em> / <em>“coding”</em> column (understanding common encodings like <code>1 = Male; 2 = Female</code> or <code>0: no | 1: yes</code>) and dedicated <em>question</em> and <em>universe</em> columns.</p>
+<p>Let’s document <code>sex</code> with a coding column and a question:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_values_demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo2</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="op">-</span><span class="fl">99</span><span class="op">)</span>, age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">50</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo2</span>, <span class="st">"data"</span>, <span class="st">"study.csv"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"variable,description,values,question"</span>,</span>
+<span>             <span class="st">"sex,Participant sex,1 = Male; 2 = Female; -99 = Refused,What is your sex?"</span>,</span>
+<span>             <span class="st">"age,Age in years,,How old are you?"</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo2</span>, <span class="st">"data"</span>, <span class="st">"codebook.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mo2</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
+<span>                  local_path <span class="op">=</span> <span class="va">repo2</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mo2</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"value_labels"</span>, <span class="st">"missing_values"</span>, <span class="st">"question"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 46%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">column_name</th>
+<th style="text-align: left;">value_labels</th>
+<th style="text-align: left;">missing_values</th>
+<th style="text-align: left;">question</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sex</td>
+<td style="text-align: left;">{“1”:“Male”,“2”:“Female”,“-99”:“Refused”}</td>
+<td style="text-align: left;">{“-99”:“Refused”}</td>
+<td style="text-align: left;">What is your sex?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">age</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">How old are you?</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The code list is stored as a compact JSON string (<code>{"1":"Male","2":"Female","-99":"Refused"}</code>); a code whose label reads as missingness (<code>Refused</code>, <code>N/A</code>, <code>Prefer not to answer</code>, …) is additionally recorded in <code>missing_values</code>, so a sentinel like <code>-99</code> is flagged as a missing code rather than a real value.</p>
+<p>All four properties are exported into the Psych-DS metadata by <code>convert_psychds()</code>: the code list becomes a schema.org <strong>code list</strong> (one <code>PropertyValue</code> per code), and the missing scheme, question, and universe become namespaced <code>metacheck:</code> fields — so they travel with the converted dataset.</p>
+</section><section id="the-summary-counts" class="level2" data-number="25.5"><h2 data-number="25.5" class="anchored" data-anchor-id="the-summary-counts">
+<span class="header-section-number">25.5</span> The summary counts</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -594,7 +691,7 @@ Note
 <th style="text-align: right;">unused_var_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">985551b045b216</td>
+<td style="text-align: left;">e927e60102c08e</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
@@ -643,8 +740,8 @@ Note
 <td>codebook entries not used by any column</td>
 </tr>
 </tbody>
-</table></section><section id="the-traffic-light" class="level2" data-number="25.5"><h2 data-number="25.5" class="anchored" data-anchor-id="the-traffic-light">
-<span class="header-section-number">25.5</span> The traffic light</h2>
+</table></section><section id="the-traffic-light" class="level2" data-number="25.6"><h2 data-number="25.6" class="anchored" data-anchor-id="the-traffic-light">
+<span class="header-section-number">25.6</span> The traffic light</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -668,18 +765,53 @@ Note
 <td>no codebook was found, or documentation coverage is very low</td>
 </tr>
 </tbody>
-</table></section><section id="using-an-llm" class="level2" data-number="25.6"><h2 data-number="25.6" class="anchored" data-anchor-id="using-an-llm">
-<span class="header-section-number">25.6</span> Using an LLM</h2>
+</table></section><section id="using-an-llm" class="level2" data-number="25.7"><h2 data-number="25.7" class="anchored" data-anchor-id="using-an-llm">
+<span class="header-section-number">25.7</span> Using an LLM</h2>
 <p>Many repositories document their variables in prose — a README paragraph, a methods section, or a non-tabular codebook — rather than a tidy <code>variable,description</code> table. With <code>llm_use(TRUE)</code>, <code>codebook_check</code> can read those unstructured sources and propose labels for otherwise unlabelled columns, marking them with the <strong>llm</strong> status so you can tell inferred labels from author-supplied ones. For large repositories the LLM calls are batched to stay within request limits.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
 <span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="../chapters/llms.html">LLMs</a> chapter for model configuration.</p>
-</section><section id="what-you-get-back" class="level2" data-number="25.7"><h2 data-number="25.7" class="anchored" data-anchor-id="what-you-get-back">
-<span class="header-section-number">25.7</span> What you get back</h2>
+</section><section id="identifying-psychometric-scales" class="level2" data-number="25.8"><h2 data-number="25.8" class="anchored" data-anchor-id="identifying-psychometric-scales">
+<span class="header-section-number">25.8</span> Identifying psychometric scales</h2>
+<p>With an LLM enabled, <code>codebook_check</code> also tries to recognise the <strong>psychometric scales</strong> in the data. It looks for blocks of Likert-type items — runs of adjacent integer columns (3–11 response options) that share a variable-name prefix, five items or more — and asks the model which published instrument each block is (PANAS, the Rosenberg Self-Esteem Scale, and so on), using the item wording from the codebook where available and the variable-name prefix otherwise.</p>
+<p>Each identified scale is recorded in two new columns of the <code>$table</code>:</p>
+<ul>
+<li>
+<strong><code>scale</code></strong> — the instrument name (e.g.&nbsp;<code>"PANAS"</code>), for every item column of the block;</li>
+<li>
+<strong><code>scale_confidence</code></strong> — <code>high</code>, <code>medium</code>, or <code>low</code> (low-confidence and unrecognised blocks are left blank rather than guessed).</li>
+</ul>
+<p>The report gains a <strong>Scales</strong> section listing what was found. When a block <em>looks</em> like a scale but could not be named, the module says so and gives concrete advice — because a scale that a language model cannot identify is usually one a human reader will struggle with too:</p>
+<ul>
+<li>name variables consistently after the instrument (<code>panas_1 … panas_10</code>) rather than <code>Q1</code>, <code>V3</code>, or <code>item5</code>;</li>
+<li>document the item wording in a codebook or embedded value labels — the item text is what identifies a scale;</li>
+<li>state the scale name and reference, the response options, and any reverse-coded items.</li>
+</ul>
+<p>Without an LLM, the columns are still present but empty, and the report notes that identification was skipped.</p>
+<section id="how-scales-are-recorded-and-why" class="level3" data-number="25.8.1"><h3 data-number="25.8.1" class="anchored" data-anchor-id="how-scales-are-recorded-and-why">
+<span class="header-section-number">25.8.1</span> How scales are recorded (and why)</h3>
+<p>No metadata standard metacheck writes to has a first-class “scale” concept. <a href="https://psych-ds.github.io/">Psych-DS</a> describes each variable in isolation, and schema.org — its foundation — has no property for grouping variables into a construct. The closest existing concept is DDI Codebook’s variable group with <code>type="analysis"</code> (“variables combined into the same index”), but that is a separate XML format psychologists rarely use.</p>
+<p>Rather than invent a proprietary field or emit a second file, metacheck extends the Psych-DS metadata <strong>in place</strong>:</p>
+<ul>
+<li>the scale <strong>name</strong> goes in schema.org’s own <a href="https://schema.org/measurementTechnique"><code>measurementTechnique</code></a> property — its intended use is exactly to name the instrument a variable was measured with;</li>
+<li>the <strong>grouping</strong> (which variables belong to the scale, and the confidence) goes in a namespaced <code>metacheck:scale</code> / <code>metacheck:scales</code> extension, since schema.org has no native grouping and Psych-DS tolerates namespaced JSON-LD.</li>
+</ul>
+<p><code>convert_psychds()</code> and <code>convert_codebook()</code> both emit these, so the scale information travels with the converted dataset. The <a href="../chapters/mod-data-validate.html">Data Validate</a> module reuses the identified names, labelling its careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
+<span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
+<span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># the identified scales, one row per (column, scale)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">cc</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">cc</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"scale"</span>, <span class="st">"scale_confidence"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section></section><section id="what-you-get-back" class="level2" data-number="25.9"><h2 data-number="25.9" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">25.9</span> What you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -706,15 +838,15 @@ Note
 </tr>
 <tr class="even">
 <td><code>$table</code></td>
-<td>one row per column: <code>column_name</code>, <code>label</code>, <code>label_status</code>, <code>codebook_variable</code>, …</td>
+<td>one row per column: <code>column_name</code>, <code>label</code>, <code>label_status</code>, <code>codebook_variable</code>, <code>value_labels</code>, <code>missing_values</code>, <code>question</code>, <code>universe</code>, <code>scale</code>, <code>scale_confidence</code>, …</td>
 </tr>
 <tr class="odd">
 <td><code>$report</code></td>
-<td>formatted report of documented vs.&nbsp;undocumented columns</td>
+<td>formatted report of documented vs.&nbsp;undocumented columns, plus identified scales and improvement advice</td>
 </tr>
 </tbody>
-</table></section><section id="related" class="level2" data-number="25.8"><h2 data-number="25.8" class="anchored" data-anchor-id="related">
-<span class="header-section-number">25.8</span> Related</h2>
+</table></section><section id="related" class="level2" data-number="25.10"><h2 data-number="25.10" class="anchored" data-anchor-id="related">
+<span class="header-section-number">25.10</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-data-check.html">Data Check</a> supplies the columns being documented.</li>

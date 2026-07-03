@@ -25,7 +25,7 @@ remotes::install_github("scienceverse/metacheck@data_check")
 The `data_check` module is the foundation for all of Metacheck's data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:
 
 1. **Classifies every file** by what it is: tabular *data*, *code*, a *codebook*, a *README*, an *archive*, or a raw file (image, PDF, binary).
-2. **Reads each tabular data file** and, for every column, works out its **type** (continuous, binary, categorical, ordinal, date, ID, text, constant, empty) and basic **summary statistics**.
+2. **Reads each tabular data file** and describes every column along several independent **facets** — how it is stored, its measurement level, what it measures, and how it functions — together with basic **summary statistics**.
 3. **Makes the extracted columns available** to the other data modules — `data_validate`, `excel_check`, `codebook_check`, and `psychds_check` all build on `data_check`'s output rather than re-reading the files.
 
 On its own, `data_check` gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.
@@ -46,6 +46,7 @@ study <- data.frame(
   participant_id = 1:20,
   condition      = rep(c("control", "treatment"), each = 10),
   age            = sample(18:65, 20, replace = TRUE),
+  rt             = round(runif(20, 300, 900)),
   score          = round(rnorm(20, 50, 10), 1),
   passed         = sample(c(0, 1), 20, replace = TRUE)
 )
@@ -99,29 +100,47 @@ For our example folder — a `data/` directory holding `study.csv`, plus a top-l
 
 This same tree is the starting point for the [Psych-DS Check](mod-psychds-check.qmd), which compares a repository's actual tree against the tree the Psych-DS standard says it *should* have.
 
-## Column extraction
+## Column facets
 
-For every readable tabular file, `data_check` reads the data and classifies each column. The per-column results are in the `table` element:
+For every readable tabular file, `data_check` reads the data and describes each column. Earlier versions gave each column a single `col_type` value — but that conflated things that are not really alternatives: *how* a value is stored (a number), *what level* it is measured on (nominal, ordinal, …), and *what it actually measures* (a reaction time, an age). Following the [DDI](https://ddialliance.org/) metadata standard, `data_check` now describes each column with several **orthogonal facets** instead, so these independent properties are recorded independently. The per-column results are in the `table` element:
 
 ```{r}
-mo$table[, c("source_file", "column_name", "col_type", "n_missing")] |>
+mo$table[, c("column_name", "representation", "measurement_level",
+             "concept", "role", "unit")] |>
   knitr::kable()
 ```
 
-The `col_type` column is the rule-based classification of each variable:
+The facets are:
 
-| Type | Rule |
-|---|---|
-| `id` | the column name matches an identifier pattern (`id`, `participant`, `subject`, `*_id`, ...) |
-| `constant` | only one unique value |
-| `binary` | exactly two unique values |
-| `continuous` | numeric with many values |
-| `categorical` / `ordinal` | a small set of repeated values (the ordinal/categorical split is only made when an LLM is enabled) |
-| `date` | parses as a date |
-| `text` | long free-text strings |
-| `empty` | all values missing |
+| Facet | Values | What it captures (DDI analogue) |
+|---|---|---|
+| `representation` | `numeric`, `text`, `datetime`, `code`, `empty` | how the value is stored (RepresentedVariable representation) |
+| `measurement_level` | `nominal`, `ordinal`, `interval`, `ratio` | the Stevens level (DDI `@classificationLevel`) |
+| `concept` | `reaction_time`, `accuracy`, `age`, `gender`, `race`, `likert`, `condition`, `id`, `date`, `timestamp`, … | what the column *measures* (DDI Variable → Concept) |
+| `role` | `identifier`, `measure`, `condition`, `timestamp` | how it functions in the dataset (DDI VariableRole) |
+| `unit` | `seconds`, `milliseconds`, `years`, … | the unit of measure (DDI UnitType) |
+| `quality` | `ok`, `empty`, `constant` | a data-quality *state*, kept separate from type |
 
-`data_check` deliberately keeps the rule-based path fully offline and deterministic. When you enable an LLM (see below), it additionally refines ambiguous integer columns into `ordinal` vs `categorical` and can assign an analysis `group` to each file.
+Because the facets are independent, an `age` column is `numeric` **and** `ratio` **and** the `age` concept **and** measured in `years` — each fact recorded in its own field rather than crammed into one label. A `participant_id` is `text` with the `identifier` role and the `id` concept; a Likert item is `numeric`, `ordinal`, with the `likert` concept.
+
+Concepts are detected by **name-and-value agreement**: a column is only tagged (say) `reaction_time` when its name looks like a reaction time *and* its values are plausible durations, which keeps false positives low. The demographic concepts (`age`, `gender`, `race`) use the exported helper `data_check_demographic()`; a reaction-time column additionally seeds its `unit` (`milliseconds` vs `seconds`) from the value magnitude.
+
+`data_check` keeps this rule-based path fully offline and deterministic. When you enable an LLM (see below), it fills in the `concept` and `measurement_level` for columns the rules left blank — for example a reaction time hidden behind a cryptic name like `q3`.
+
+::: callout-note
+The old single `col_type` field has been replaced by these facets. If you have code that read `mo$table$col_type`, read the relevant facet instead — most often `representation` (numeric vs text) or `concept`. The Psych-DS export (`convert_psychds()`) still accepts an older `col_type`-only table for backward compatibility.
+:::
+
+## Unit of observation
+
+`data_check` also infers, for each data file, what **one row represents** — a `person`, a `trial`, a `session`, or a `dyad` (DDI's `analysisUnit`). This matters because it tells a reviewer whether rows are independent (one per participant) or nested (many trials per participant), which changes how the data should be analysed. It is inferred from the identifier column(s) and whether they are unique per row: a unique-per-row id is person-level; a repeating id alongside a `trial`/`item` column is trial-level (long format); a repeating id with a `session`/`wave` column is a repeated-measures unit; two id columns suggest a dyad.
+
+```{r}
+unique(mo$table[, c("source_file", "analysis_unit")]) |>
+  knitr::kable()
+```
+
+Each row of our `study.csv` is one participant, so the file is `person`-level. When a repository **mixes** units — say a person-level file next to a trial-level file — the report flags it, because combining files at different levels without aggregating is a common and easily-missed error.
 
 ## What you get back
 
@@ -130,7 +149,7 @@ The `col_type` column is the rule-based classification of each variable:
 | `$traffic_light` | `"green"` when data files were read successfully, `"na"` when there is nothing to check |
 | `$summary_text` | plain-text summary: how many files, how many columns |
 | `$summary_table` | per-paper counts |
-| `$table` | one row per column, with `col_type` and summary statistics |
+| `$table` | one row per column, with the facets (`representation`, `measurement_level`, `concept`, `role`, `unit`, `quality`), the inferred `analysis_unit`, and summary statistics |
 | `$structure` | one row per file, with `file_type` and `data_type` |
 | `$previews` | the full data frames that were read (used by `data_validate`) |
 
@@ -155,9 +174,10 @@ When downloading from an online repository, files above `max_file_size` (default
 
 ## Using an LLM
 
-With `llm_use(TRUE)`, `data_check` adds two things the rules cannot do reliably:
+With `llm_use(TRUE)`, `data_check` adds things the rules cannot do reliably:
 
-- **Refined column types** for ambiguous integer columns (ordinal vs categorical).
+- **Concepts for cryptically-named columns** — the rules only tag a concept when the name gives it away, so a reaction time called `q3` stays blank; the LLM fills it in.
+- **Refined measurement levels** for ambiguous integer columns (nominal vs ordinal vs ratio).
 - **A study `group`** for each file, inferring which experiment or study a data file belongs to from its name and context — useful when a repository bundles several studies together.
 
 ```{r}
@@ -166,7 +186,8 @@ llm_use(TRUE)
 llm_model("groq/openai/gpt-oss-20b")
 mo <- module_run(test_paper(), "data_check",
                  local_path = repo, local_only = TRUE)
-mo$table$group   # study grouping, otherwise NA
+mo$table$concept   # filled in for cryptic names
+mo$table$group     # study grouping, otherwise NA
 ```
 
 See the [LLMs](llms.qmd) chapter for how to configure a model.

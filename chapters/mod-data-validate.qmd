@@ -111,7 +111,116 @@ mo_pii$table[, c("column", "check")] |>
   knitr::kable()
 ```
 
-The screen looks at both the **values** (patterns that look like emails, IPs, IDs, phone or card numbers) and the **column name** (names such as `email`, `name`, `address`), plus geographic coordinates and free-text columns that may contain identifying prose.
+The screen looks at both the **values** (patterns that look like emails, IP addresses, national IDs, or credit-card numbers) and the **column name** (names such as `email`, `firstname`, `address`, `dob`), plus geographic coordinates and open typed free-text columns that may contain identifying prose.
+
+## Demographic variables
+
+Almost every human-subjects study reports the same three demographic variables about its sample — **age, gender/sex, and race/ethnicity** — so `data_validate` picks them out and lists them. Detection requires the column **name and values to agree**: an `age` column is only tagged when its name looks like age *and* its values fall in a plausible human range (a `condition` column coded `1`/`2` is therefore never mistaken for gender). It reuses the same `data_check_demographic()` rule the [Data Check](mod-data-check.qmd) facet model uses.
+
+```{r}
+demo <- file.path(tempdir(), "demo_demo")
+dir.create(file.path(demo, "data"), recursive = TRUE, showWarnings = FALSE)
+utils::write.csv(data.frame(
+  id        = 1:30,
+  age       = sample(18:65, 30, replace = TRUE),
+  gender    = sample(c("Male", "Female", "Non-binary"), 30, replace = TRUE),
+  ethnicity = sample(c("Hispanic", "Non-Hispanic"), 30, replace = TRUE),
+  score     = rnorm(30)
+), file.path(demo, "data", "study.csv"), row.names = FALSE)
+
+mo_demo <- module_run(test_paper(), "data_validate",
+                      local_path = demo, local_only = TRUE)
+mo_demo$demographics |>
+  knitr::kable()
+```
+
+This is an **inventory, not a problem flag** — it simply helps a reviewer see at a glance whether the shared data documents its sample's demographics (and, with the [personal-information screen](#personal-information-screening) above, whether doing so raises any disclosure concerns). The result is returned in `$demographics` and summarised in a *Demographic Variables* report section.
+
+## Qualtrics survey metadata
+
+Qualtrics exports have a fixed, recognisable shape — a set of reserved response-metadata columns (`StartDate`, `Duration (in seconds)`, `Finished`, `ResponseId`, …) and, for the "use choice text" export, extra header rows. `data_check` detects these files (`data_check_is_qualtrics()`) and strips the extra header rows so the data types correctly; `data_validate` then summarises the metadata that is **reliably extractable from any Qualtrics file**:
+
+- **preview / unfinished responses** — rows where `Status` marks a preview or spam, `Finished` is false, or `Progress` is below 100, which usually need dropping before analysis;
+- the **completion-time distribution** — the median `Duration`, with a count of implausibly fast responses;
+- the **data-collection window** — the date range from `RecordedDate` / `StartDate`; and
+- which **Qualtrics personal-information fields** are present (IP address, email, location, external reference).
+
+The substantive question columns are deliberately *not* interpreted here — that is the job of the scale-block detection in [Codebook Check](mod-codebook-check.qmd). The summary is returned in `$qualtrics` and appears as a *Qualtrics Survey Metadata* report section; the summary text also notes how many rows look like previews or unfinished responses to review.
+
+## Careless responding
+
+For **survey data**, `data_validate` additionally screens for **careless responding** — respondents who straightline (give the same answer to every item) or answer unusually flatly or erratically. This uses the [`careless`](https://cran.r-project.org/package=careless) package's *longstring* and *intra-individual response variability* (IRV) indices.
+
+Because these indices only make sense on a block of items measured on a common scale, and a finding is only actionable if you can point to *which* respondent, the check runs only when **both** conditions hold:
+
+1. the file contains a **block of Likert-type items** — a run of adjacent integer columns (3–11 response options) sharing a variable-name prefix, with at least five items; and
+2. the file has an **identifier column** (so flagged respondents can be located).
+
+Item blocks are split by their variable-name prefix, so `panas_1 … panas_10` and `rse_1 … rse_5` are treated as two separate scales even when they sit next to each other.
+
+```{r}
+survey <- file.path(tempdir(), "careless_demo")
+dir.create(file.path(survey, "data"), recursive = TRUE, showWarnings = FALSE)
+
+set.seed(1)
+n <- 60
+items <- as.data.frame(matrix(sample(2:4, n * 10, replace = TRUE), nrow = n))
+names(items) <- paste0("mood_", 1:10)
+# add one straightliner (all 3s) and one erratic responder (1,5,1,5,...)
+items <- rbind(items,
+               as.data.frame(matrix(rep(3, 10), nrow = 1)) |> setNames(names(items)),
+               as.data.frame(matrix(rep(c(1, 5), 5), nrow = 1)) |> setNames(names(items)))
+survey_df <- cbind(participant_id = seq_len(n + 2), items)
+utils::write.csv(survey_df, file.path(survey, "data", "mood.csv"), row.names = FALSE)
+
+mo_car <- module_run(test_paper(), "data_validate",
+                     local_path = survey, local_only = TRUE)
+mo_car$careless |>
+  knitr::kable()
+```
+
+Each flagged respondent is reported with the scale, their `longstring` (longest run of identical answers) and `IRV` scores, and the reason. These are **prompts to inspect those rows**, not automatic exclusions — an honest respondent can occasionally look extreme, so the decision stays with the researcher.
+
+::: callout-note
+The careless check needs the optional `careless` package. If it is not installed, the check is skipped and the report notes how many survey files it would have screened.
+:::
+
+### Two real examples
+
+The synthetic example above shows the mechanics. To see the check on real research data, here are two openly shared datasets. The code is shown but not executed here (the data are not redistributed with this book); run it yourself against a local copy of each repository to reproduce the output.
+
+**A long scale with a clear straightliner.** The replication data of @gervais_divine — two preregistered replications of the "anticipating divine protection" hypothesis — include a 40-item scale (variable prefix `dos`, responses 1–5) alongside a participant id.
+
+```{r}
+#| eval: false
+mo <- module_run(test_paper(), "data_validate",
+                 local_path = "divine-protection-replication", local_only = TRUE)
+mo$careless[, c("scale", "respondent", "longstring", "irv", "reason")]
+```
+
+```
+                scale respondent longstring  irv                      reason
+1 dos (1-5, 40 items)        129         40 0.00 straightlining + IRV outlier
+2 dos (1-5, 40 items)        ...          9 0.63                 IRV outlier
+# ... 19 respondents flagged in total
+```
+
+Respondent 129 answered **all 40 items identically** (`longstring = 40`, `IRV = 0`) — an unambiguous straightliner. A further 18 respondents are flagged as IRV outliers (unusually flat or erratic answering) for a closer look.
+
+**Several short scales, split by prefix.** The "Parents' Failure Mindsets" data of @haimovitz_failure contain three separate failure-mindset scales in adjacent columns, named `fail_*`, `failbad_*`, and `failgood_*`, all on a 1–6 metric.
+
+```{r}
+#| eval: false
+mo <- module_run(test_paper(), "data_validate",
+                 local_path = "parents-failure-mindsets", local_only = TRUE)
+unique(mo$careless$scale)
+```
+
+```
+[1] "fail (1-6, 6 items)"     "failbad (1-6, 5 items)"  "failgood (2-6, 5 items)"
+```
+
+Even though the three scales sit next to each other on the same response metric, the variable-name prefix splits them into **three distinct blocks**, and careless indices are computed within each — so a respondent who straightlines one scale is flagged for that scale specifically, rather than the three being merged into one meaningless block.
 
 ## The traffic light
 
@@ -141,7 +250,10 @@ A larger `outlier_k` widens the fences, so only more extreme values are flagged.
 | `$summary_text` | plain-text summary with a per-check breakdown |
 | `$summary_table` | `paper_id`, `column_n`, `flagged_n` |
 | `$table` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` |
-| `$report` | formatted report with the issue breakdown, outlier table, and combined distribution figure |
+| `$demographics` | one row per detected demographic column: `source_file`, `column`, `demographic` (age/gender/race) |
+| `$qualtrics` | one row per detected Qualtrics export: response count, preview/unfinished rows, median time, collection window, PII fields present |
+| `$careless` | one row per flagged respondent (survey data): `scale`, `respondent`, `longstring`, `irv`, `reason` |
+| `$report` | formatted report with the issue breakdown, outlier table, combined distribution figure, demographic inventory, and Qualtrics summary |
 
 ## Related
 
