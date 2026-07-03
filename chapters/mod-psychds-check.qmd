@@ -1,0 +1,139 @@
+---
+title: "Psych-DS Check"
+vignette: >
+  %\VignetteIndexEntry{Psych-DS Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+llm_use(FALSE)
+```
+
+::: callout-warning
+This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+
+```r
+remotes::install_github("scienceverse/metacheck@data_check")
+```
+:::
+
+## What it checks
+
+[Psych-DS](https://psych-ds.github.io/) is a community standard for organising a psychology dataset so that both humans and machines can find their way around it: data live in a `data/` folder, analysis code in `analysis/`, materials in `materials/`, and a machine-readable `dataset_description.json` at the root describes the dataset and its variables.
+
+The `psychds_check` module compares a repository against this standard and reports the **compliance gap**: for every file, where it currently sits, where the Psych-DS layout says it should go, and what (if anything) is missing at the top level.
+
+It answers three questions:
+
+- Are the **required** pieces present (a `dataset_description.json`, a `data/` directory)?
+- Are the **recommended** pieces present (a README, a `CHANGES` file)?
+- Which files are **misplaced** relative to the standard, and where should they move?
+
+::: callout-note
+This chapter runs offline against a small repository that does *not* follow the standard, so we can see the gap the module reports.
+:::
+
+## A worked example
+
+```{r}
+repo <- file.path(tempdir(), "psychds_check_demo")
+dir.create(repo, recursive = TRUE, showWarnings = FALSE)
+
+# a flat repo: data and code sitting at the top level, no metadata
+utils::write.csv(data.frame(id = 1:5, score = rnorm(5)),
+                 file.path(repo, "study_data.csv"), row.names = FALSE)
+writeLines("# analysis\n", file.path(repo, "analysis.R"))
+writeLines("A short readme.", file.path(repo, "README.md"))
+```
+
+```{r}
+mo <- module_run(test_paper(), "psychds_check",
+                 local_path = repo, local_only = TRUE)
+
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+## The compliance table
+
+The `table` lists each file with its current path and the Psych-DS target path, plus a `status` saying what needs to happen:
+
+```{r}
+mo$table[, c("file_name", "data_type", "current_path", "target_path", "status")] |>
+  knitr::kable()
+```
+
+A `status` of `move` means the file is in the wrong place for a Psych-DS dataset — for example `study_data.csv` should move into `data/`, and `analysis.R` into `analysis/`. This gives the author a concrete to-do list rather than an abstract "does not comply".
+
+## The target tree
+
+The most useful part of the report is the **target tree**: a drawing of the Psych-DS layout the repository *should* have, with the current files placed where they belong and the missing pieces marked. It turns the compliance table into a single picture you can act on.
+
+The tree uses colour and annotations to show three states:
+
+- **files in <span style="color:#c0392b">red</span>** with a *← missing* marker are required by Psych-DS but absent (for example `dataset_description.json` and `CHANGES`);
+- **files annotated <span style="color:#b9770e">(move from ...)</span>** exist in the repository but need relocating into the standard folder — the annotation tells you exactly where they are now;
+- **plain files** are already in the right place.
+
+The tree is emitted as HTML in the module's report. Here it is for our example repository:
+
+```{r}
+#| results: asis
+tree_html <- grep("<pre", mo$report, value = TRUE)
+cat(tree_html)
+```
+
+Reading this top to bottom is a complete migration plan: create the two missing metadata files, move the data file into `data/` (renamed to the Psych-DS `source-*` convention) and the script into `analysis/`, and the repository will comply. The `convert_psychds()` function performs exactly these steps automatically.
+
+## The summary counts
+
+```{r}
+mo$summary_table |>
+  knitr::kable()
+```
+
+| Column | Meaning |
+|---|---|
+| `required_met` / `required_missing` | required Psych-DS elements present / absent |
+| `recommended_met` / `recommended_missing` | recommended elements present / absent |
+| `misplaced_n` | files that are not in their Psych-DS location |
+
+## The traffic light
+
+| Light | Meaning |
+|---|---|
+| **green** | the repository already follows the Psych-DS layout |
+| **yellow** | some elements are missing or files are misplaced |
+| **red** | required elements (like `data/` or the description file) are absent |
+| **na** | there were no files to assess |
+
+## From gap report to a compliant dataset
+
+`psychds_check` tells you *what* is missing; the companion function `convert_psychds()` acts on it. Given the same repository, it writes out a Psych-DS-compliant copy — moving files into `data/`, `analysis/`, and so on, and generating the `dataset_description.json` metadata from the columns `data_check` extracted:
+
+```{r}
+#| eval: false
+res <- report(paper, c("data_check", "psychds_check"))
+convert_psychds(res, overwrite = TRUE)
+```
+
+The generated dataset is validated with `psychds_validate()`, Metacheck's built-in checker for the standard, so the converted output is guaranteed to pass.
+
+## What you get back
+
+| Element | What it contains |
+|---|---|
+| `$traffic_light` | `green` / `yellow` / `red` / `na` |
+| `$summary_text` | plain-text compliance summary |
+| `$summary_table` | the required/recommended/misplaced counts above |
+| `$table` | one row per file: `file_name`, `data_type`, `current_path`, `target_path`, `status` |
+| `$report` | formatted report, including the target directory tree with missing pieces marked |
+
+## Related
+
+- [Data Check](mod-data-check.qmd) classifies the files that `psychds_check` re-organises.
+- [Codebook Check](mod-codebook-check.qmd) checks variable *documentation*, which becomes the `variableMeasured` metadata in a Psych-DS dataset.
+- See the [OSF Prereg Schemas](osf-schemas.qmd) appendix for related standards Metacheck understands.

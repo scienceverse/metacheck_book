@@ -1,0 +1,134 @@
+---
+title: "Codebook Check"
+vignette: >
+  %\VignetteIndexEntry{Codebook Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+llm_use(FALSE)
+```
+
+::: callout-warning
+This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+
+```r
+remotes::install_github("scienceverse/metacheck@data_check")
+```
+:::
+
+## What it checks
+
+Shared data is only reusable if others can tell what each column *means*. The `codebook_check` module measures **documentation coverage**: for every data column extracted by [`data_check`](mod-data-check.qmd), it asks whether that column is described in a codebook (a data dictionary) shared alongside the data.
+
+It reports, for each column, one of these statuses:
+
+- **labelled** — the column is matched to an entry in a codebook file.
+- **unlabelled** — no documentation was found for the column.
+- **conflicted** — the codebook contains more than one, disagreeing, description.
+- **llm** — the label was inferred by an LLM (only when one is enabled).
+
+It also reports **unused** codebook entries: variables documented in the codebook that do not correspond to any column in the data.
+
+::: callout-note
+This chapter runs offline against a small folder containing a data file and a codebook.
+:::
+
+## A worked example
+
+We create a study with a `codebook.csv` documenting two of its three columns:
+
+```{r}
+repo <- file.path(tempdir(), "codebook_check_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+utils::write.csv(
+  data.frame(id = 1:6,
+             rt = c(510, 490, 505, 512, 498, 530),
+             cond = c(0, 1, 0, 1, 0, 1)),
+  file.path(repo, "data", "study.csv"), row.names = FALSE)
+
+# a codebook documenting rt and cond (but not id)
+writeLines(c("variable,description",
+             "rt,reaction time in milliseconds",
+             "cond,condition: 0 = control, 1 = treatment"),
+           file.path(repo, "codebook.csv"))
+```
+
+```{r}
+mo <- module_run(test_paper(), "codebook_check",
+                 local_path = repo, local_only = TRUE)
+
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+## The coverage table
+
+The `table` gives one row per data column with its documentation status and, where matched, the label found:
+
+```{r}
+mo$table[, c("column_name", "label_status", "label", "codebook_variable")] |>
+  knitr::kable()
+```
+
+Here `rt` and `cond` are **labelled** (matched to the codebook), while `id` is **unlabelled** — there was no codebook entry for it.
+
+Matching is not purely literal: names are normalised (case, separators, and simple stemming) so that `reaction_time` in the data matches `Reaction Time` in the codebook. This tolerance is important because codebooks and data files rarely use byte-identical names.
+
+## The summary counts
+
+```{r}
+mo$summary_table |>
+  knitr::kable()
+```
+
+| Column | Meaning |
+|---|---|
+| `column_n` | total data columns |
+| `matched_n` | columns matched to a codebook entry |
+| `unmatched_n` | columns with no documentation |
+| `clean_n` / `conflicted_n` | matched columns with a single vs. a contradictory definition |
+| `codebook_var_n` | entries found in the codebook(s) |
+| `unused_var_n` | codebook entries not used by any column |
+
+## The traffic light
+
+| Light | Meaning |
+|---|---|
+| **green** | all (or nearly all) columns are documented |
+| **yellow** | some columns are undocumented |
+| **red** | no codebook was found, or documentation coverage is very low |
+
+## Using an LLM
+
+Many repositories document their variables in prose — a README paragraph, a methods section, or a non-tabular codebook — rather than a tidy `variable,description` table. With `llm_use(TRUE)`, `codebook_check` can read those unstructured sources and propose labels for otherwise unlabelled columns, marking them with the **llm** status so you can tell inferred labels from author-supplied ones. For large repositories the LLM calls are batched to stay within request limits.
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("groq/openai/gpt-oss-20b")
+module_run(test_paper(), "codebook_check",
+           local_path = repo, local_only = TRUE)
+```
+
+See the [LLMs](llms.qmd) chapter for model configuration.
+
+## What you get back
+
+| Element | What it contains |
+|---|---|
+| `$traffic_light` | `green` / `yellow` / `red` / `na` |
+| `$summary_text` | plain-text coverage summary |
+| `$summary_table` | the counts described above |
+| `$table` | one row per column: `column_name`, `label`, `label_status`, `codebook_variable`, ... |
+| `$report` | formatted report of documented vs. undocumented columns |
+
+## Related
+
+- [Data Check](mod-data-check.qmd) supplies the columns being documented.
+- The `convert_codebook()` function turns this output into a fully **labelled** data frame and a runnable codebook document — see the [Creating a Report](creating-a-report.qmd) workflow.
+- [Psych-DS Check](mod-psychds-check.qmd) checks the repository's *structure* against a standard, complementing this check of its *documentation*.

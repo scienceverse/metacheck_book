@@ -1,0 +1,179 @@
+---
+title: "Data Check"
+vignette: >
+  %\VignetteIndexEntry{Data Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+llm_use(FALSE)
+```
+
+::: callout-warning
+This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+
+```r
+remotes::install_github("scienceverse/metacheck@data_check")
+```
+:::
+
+## What it checks
+
+The `data_check` module is the foundation for all of Metacheck's data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:
+
+1. **Classifies every file** by what it is: tabular *data*, *code*, a *codebook*, a *README*, an *archive*, or a raw file (image, PDF, binary).
+2. **Reads each tabular data file** and, for every column, works out its **type** (continuous, binary, categorical, ordinal, date, ID, text, constant, empty) and basic **summary statistics**.
+3. **Makes the extracted columns available** to the other data modules — `data_validate`, `excel_check`, `codebook_check`, and `psychds_check` all build on `data_check`'s output rather than re-reading the files.
+
+On its own, `data_check` gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.
+
+::: callout-note
+This chapter runs entirely offline. We build a small example repository in a temporary folder and point `data_check` at it with `local_path`. The same calls work against a real downloaded repository — see the [Local Files](local-files.qmd) chapter.
+:::
+
+## A worked example
+
+We create a tiny study folder with one data file and a code file:
+
+```{r}
+repo <- file.path(tempdir(), "data_check_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+study <- data.frame(
+  participant_id = 1:20,
+  condition      = rep(c("control", "treatment"), each = 10),
+  age            = sample(18:65, 20, replace = TRUE),
+  score          = round(rnorm(20, 50, 10), 1),
+  passed         = sample(c(0, 1), 20, replace = TRUE)
+)
+utils::write.csv(study, file.path(repo, "data", "study.csv"), row.names = FALSE)
+writeLines("# analysis\nd <- read.csv('study.csv')",
+           file.path(repo, "analysis.R"))
+```
+
+Now run the module. `test_paper()` supplies a minimal paper object with no repository links, and `local_only = TRUE` means only the local folder is inspected.
+
+```{r}
+mo <- module_run(test_paper(), "data_check",
+                 local_path = repo, local_only = TRUE)
+
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+## File classification
+
+The first thing `data_check` produces is a classification of every file it found. This is available in the `structure` element:
+
+```{r}
+mo$structure[, c("file_name", "file_type", "data_type")] |>
+  knitr::kable()
+```
+
+Each file is sorted into a category by its name and extension:
+
+| Category | Examples |
+|---|---|
+| `data` | `.csv`, `.tsv`, `.xlsx`, `.sav`, `.dta`, `.rds` |
+| `code` | `.R`, `.Rmd`, `.qmd`, `.py`, `.do`, `.sps` |
+| `codebook` | files whose name or contents look like a data dictionary |
+| `readme` | `README`, `read me` |
+| `archive` | `.zip`, `.tar`, `.7z` |
+| `raw` | images, PDFs, and other non-tabular binaries |
+
+## The data tree
+
+To make the layout of a repository easy to see at a glance, `data_check`'s report includes a **data tree** — the folder structure of the repository drawn as an indented tree. Directories are listed before files and both are sorted alphabetically, so the same repository always produces the same tree. In the rendered report the tree appears inside a collapsible *"Data Tree"* callout (one per repository, when several are linked).
+
+The tree is part of the module's `report`. We can pull the tree lines out of the report to show them here:
+
+```{r}
+tree_lines <- grep("^[│├└ ]", unlist(strsplit(mo$report, "\n")), value = TRUE)
+cat(tree_lines, sep = "\n")
+```
+
+For our example folder — a `data/` directory holding `study.csv`, plus a top-level `analysis.R` — the tree makes the organisation obvious. On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level.
+
+This same tree is the starting point for the [Psych-DS Check](mod-psychds-check.qmd), which compares a repository's actual tree against the tree the Psych-DS standard says it *should* have.
+
+## Column extraction
+
+For every readable tabular file, `data_check` reads the data and classifies each column. The per-column results are in the `table` element:
+
+```{r}
+mo$table[, c("source_file", "column_name", "col_type", "n_missing")] |>
+  knitr::kable()
+```
+
+The `col_type` column is the rule-based classification of each variable:
+
+| Type | Rule |
+|---|---|
+| `id` | the column name matches an identifier pattern (`id`, `participant`, `subject`, `*_id`, ...) |
+| `constant` | only one unique value |
+| `binary` | exactly two unique values |
+| `continuous` | numeric with many values |
+| `categorical` / `ordinal` | a small set of repeated values (the ordinal/categorical split is only made when an LLM is enabled) |
+| `date` | parses as a date |
+| `text` | long free-text strings |
+| `empty` | all values missing |
+
+`data_check` deliberately keeps the rule-based path fully offline and deterministic. When you enable an LLM (see below), it additionally refines ambiguous integer columns into `ordinal` vs `categorical` and can assign an analysis `group` to each file.
+
+## What you get back
+
+| Element | What it contains |
+|---|---|
+| `$traffic_light` | `"green"` when data files were read successfully, `"na"` when there is nothing to check |
+| `$summary_text` | plain-text summary: how many files, how many columns |
+| `$summary_table` | per-paper counts |
+| `$table` | one row per column, with `col_type` and summary statistics |
+| `$structure` | one row per file, with `file_type` and `data_type` |
+| `$previews` | the full data frames that were read (used by `data_validate`) |
+
+The `$structure` and `$previews` elements are what the downstream modules consume, which is why you rarely need to run `data_check` by itself — running `data_validate` or `codebook_check` triggers it automatically and reuses the result.
+
+## Handling large or private repositories
+
+`data_check` reads readable data files so it can extract columns. Two options control the cost of that:
+
+```{r}
+#| eval: false
+# cap how many tabular files are column-extracted (default 20)
+module_run(test_paper(), "data_check",
+           local_path = repo, local_only = TRUE, file_limit = 5)
+
+# when following online links, cap the download sizes (in MB)
+module_run(paper, "data_check",
+           max_file_size = 5, max_download_size = 50)
+```
+
+When downloading from an online repository, files above `max_file_size` (default 10 MB) or beyond `max_download_size` (default 100 MB total) are classified but not read; the summary text tells you how many were skipped and how to raise the caps.
+
+## Using an LLM
+
+With `llm_use(TRUE)`, `data_check` adds two things the rules cannot do reliably:
+
+- **Refined column types** for ambiguous integer columns (ordinal vs categorical).
+- **A study `group`** for each file, inferring which experiment or study a data file belongs to from its name and context — useful when a repository bundles several studies together.
+
+```{r}
+#| eval: false
+llm_use(TRUE)
+llm_model("groq/openai/gpt-oss-20b")
+mo <- module_run(test_paper(), "data_check",
+                 local_path = repo, local_only = TRUE)
+mo$table$group   # study grouping, otherwise NA
+```
+
+See the [LLMs](llms.qmd) chapter for how to configure a model.
+
+## Related
+
+- [Data Validate](mod-data-validate.qmd) runs automated data-quality checks on the columns `data_check` extracts.
+- [Excel Check](mod-excel-check.qmd) inspects `.xlsx` files for non-machine-readable formatting.
+- [Codebook Check](mod-codebook-check.qmd) checks whether the columns are documented.
+- [Psych-DS Check](mod-psychds-check.qmd) checks the repository against the Psych-DS standard.

@@ -1,0 +1,111 @@
+---
+title: "Excel Check"
+vignette: >
+  %\VignetteIndexEntry{Excel Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+llm_use(FALSE)
+```
+
+::: callout-warning
+This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+
+```r
+remotes::install_github("scienceverse/metacheck@data_check")
+```
+:::
+
+## What it checks
+
+Excel files are convenient to make but easy to make in ways that lose information when the data are read by a program or exported to CSV. The `excel_check` module inspects every `.xlsx` file shared with a paper and flags four kinds of **non-machine-readable formatting**:
+
+- **Colour coding** — cells whose *fill colour* is used to encode information (for example, marking excluded participants in red). Colour is invisible to any analysis script and is lost on CSV export.
+- **Merged cells** — merged ranges break the rectangular grid that data frames require, and typically indicate multi-level headers that a program cannot parse.
+- **Empty rows** — fully blank rows inside the data range.
+- **Empty or unnamed columns** — columns with a blank header, or a header with no data beneath it.
+
+None of these are errors in Excel itself; they are problems only when the file is meant to be *shared data*. `excel_check` surfaces them so the author can flatten the workbook into a clean, rectangular, machine-readable table.
+
+::: callout-note
+This chapter builds example `.xlsx` files with the `openxlsx` package. If you do not have it installed, the code chunks will not run, but the explanations still apply.
+:::
+
+## A worked example
+
+We make a folder with one messy workbook (colour, a merge, and an empty column) and one clean one:
+
+```{r}
+#| eval: !expr requireNamespace("openxlsx", quietly = TRUE)
+repo <- file.path(tempdir(), "excel_check_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+# Messy workbook
+wb <- openxlsx::createWorkbook()
+openxlsx::addWorksheet(wb, "Data")
+df <- data.frame(id = 1:4, group = c("a", "b", "a", "b"),
+                 notes = rep(NA, 4), score = c(10, 20, 30, 40))
+openxlsx::writeData(wb, "Data", df)
+openxlsx::addStyle(wb, "Data", openxlsx::createStyle(fgFill = "#FFCC00"),
+                   rows = 2, cols = 4)                 # a colour-coded cell
+openxlsx::mergeCells(wb, "Data", cols = 1:2, rows = 7) # a merged range
+openxlsx::saveWorkbook(wb, file.path(repo, "data", "messy.xlsx"),
+                       overwrite = TRUE)
+
+# Clean workbook
+openxlsx::write.xlsx(data.frame(id = 1:3, score = c(1.1, 2.2, 3.3)),
+                     file.path(repo, "data", "clean.xlsx"))
+```
+
+```{r}
+#| eval: !expr requireNamespace("openxlsx", quietly = TRUE)
+mo <- module_run(test_paper(), "excel_check",
+                 local_path = repo, local_only = TRUE)
+
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+## The findings table
+
+Each issue is reported as one row naming the file, the worksheet, the issue type, and a human-readable detail:
+
+```{r}
+#| eval: !expr requireNamespace("openxlsx", quietly = TRUE)
+mo$table |>
+  knitr::kable()
+```
+
+Notice that only `messy.xlsx` is flagged — the clean workbook produces no rows. The `summary_table` counts each issue type across all files (`color_n`, `merge_n`, `empty_row_n`, `empty_col_n`) alongside how many files were inspected and how many had at least one problem.
+
+## The traffic light
+
+| Light | Meaning |
+|---|---|
+| **green** | Excel files were found and none had formatting problems |
+| **yellow** | at least one file has colour coding, merges, empty rows, or empty columns |
+| **na** | no Excel files were found |
+
+## A note on `.xls` and speed
+
+- **Legacy `.xls`** files cannot be inspected for colour and merges the same way; they are reported as *"un-inspectable"* with a suggestion to convert to `.xlsx`.
+- `excel_check` reads the workbook's XML directly to find colour and merge information that `readxl` discards. This is done efficiently even for very wide survey exports (thousands of columns), so it stays fast on large files.
+
+## What you get back
+
+| Element | What it contains |
+|---|---|
+| `$traffic_light` | `green` / `yellow` / `na` |
+| `$summary_text` | plain-text summary of the issues found |
+| `$summary_table` | `file_n`, `flagged_file_n`, `color_n`, `merge_n`, `empty_row_n`, `empty_col_n` |
+| `$table` | one row per issue: `File`, `Sheet`, `Issue`, `Detail` |
+| `$report` | formatted report listing the issues per file |
+
+## Related
+
+- [Data Check](mod-data-check.qmd) reads the *contents* of Excel files; `excel_check` inspects their *formatting*, which is lost once a file is read into a data frame.
+- [Data Validate](mod-data-validate.qmd) checks the values inside the columns.

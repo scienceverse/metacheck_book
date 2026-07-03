@@ -1,0 +1,150 @@
+---
+title: "Data Validate"
+vignette: >
+  %\VignetteIndexEntry{Data Validate}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+llm_use(FALSE)
+```
+
+::: callout-warning
+This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+
+```r
+remotes::install_github("scienceverse/metacheck@data_check")
+```
+:::
+
+## What it checks
+
+The `data_validate` module runs automated **data-quality checks** on every column extracted by [`data_check`](mod-data-check.qmd), flagging the kinds of problems that are easy to miss by eye but common in shared data:
+
+- **Outliers** — numeric values outside the Tukey 1.5×IQR fences.
+- **Miscoded missing values** — sentinel numbers like `-99` or `999` used instead of a proper `NA`.
+- **Constant columns** — a column with a single repeated value that carries no information.
+- **Numeric-as-text** — a mostly-numeric column contaminated by a few text entries (often a stray note or a coding legend typed into a data cell).
+- **Category casing** — the same category written two ways (`"Male"` and `"male"`).
+- **Sparse levels** — categories with very few observations.
+- **Whitespace** — leading/trailing spaces that split what should be one category.
+- **Personal information** — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, phone numbers, geographic coordinates, free text).
+
+It also draws a **single combined figure** of the numeric column distributions, with the outlier fences marked, so a reviewer can scan every variable at once.
+
+::: callout-note
+This chapter is offline. We build a small folder with some deliberately planted problems and check it with `local_path`.
+:::
+
+## A worked example
+
+```{r}
+repo <- file.path(tempdir(), "data_validate_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+study <- data.frame(
+  id        = 1:40,
+  reaction  = c(rnorm(39, 500, 60), 5000),          # one clear outlier
+  age       = c(rnorm(39, 30, 5), -99),             # miscoded missing
+  condition = c(rep("Control", 20), rep("control", 19), "X"),  # casing + sparse
+  constant  = rep(1, 40)                            # no information
+)
+utils::write.csv(study, file.path(repo, "data", "study.csv"), row.names = FALSE)
+```
+
+```{r}
+mo <- module_run(test_paper(), "data_validate",
+                 local_path = repo, local_only = TRUE)
+
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+Running `data_validate` automatically runs `data_check` first (to read and classify the columns) and then applies the quality checks to the result.
+
+## The findings table
+
+Every flagged column appears in the `table`, one row per (column, check):
+
+```{r}
+mo$table[, c("column", "check", "detail")] |>
+  knitr::kable()
+```
+
+The `check` column names the category of problem, and `detail` explains it in words — for example how many values were outside the fences, or which categories differ only in casing.
+
+## Outliers and distributions in a report
+
+When you generate the module's report (or include it in a full `report()`), `data_validate` produces two things for the numeric columns:
+
+- an **Outliers table**, one row per numeric column that has values outside the fences, listing the count, the `[low, high]` bounds, and a few example values; and
+- a **single combined distribution figure** — one small histogram per numeric column, with the outlier fences drawn as dashed red lines.
+
+Earlier versions drew one plot per column, which was slow and unreadable on wide files (a survey export can have hundreds of numeric columns). The combined figure renders once and caps the number of panels, noting how many columns were shown if it truncates.
+
+```{r}
+#| eval: false
+# the report section is a character vector; the figure is embedded as a
+# self-contained image so a moved report keeps its plot
+cat(mo$report, sep = "\n")
+```
+
+## Personal-information screening
+
+`data_validate` also screens each column for content that should not be shared openly. It reports these as *"review before sharing"* prompts and **never echoes the matching value**:
+
+```{r}
+pii <- file.path(tempdir(), "pii_demo")
+dir.create(file.path(pii, "data"), recursive = TRUE, showWarnings = FALSE)
+utils::write.csv(data.frame(
+  participant = 1:3,
+  email       = c("a@example.com", "b@example.com", "c@example.com"),
+  full_name   = c("Ada Lovelace", "Alan Turing", "Grace Hopper")
+), file.path(pii, "data", "responses.csv"), row.names = FALSE)
+
+mo_pii <- module_run(test_paper(), "data_validate",
+                     local_path = pii, local_only = TRUE)
+mo_pii$table[, c("column", "check")] |>
+  knitr::kable()
+```
+
+The screen looks at both the **values** (patterns that look like emails, IPs, IDs, phone or card numbers) and the **column name** (names such as `email`, `name`, `address`), plus geographic coordinates and free-text columns that may contain identifying prose.
+
+## The traffic light
+
+| Light | Meaning |
+|---|---|
+| **green** | columns were checked and no issues were found |
+| **yellow** | fewer than a quarter of columns were flagged |
+| **red** | a quarter or more of columns were flagged |
+| **na** | there were no readable tabular data files to validate |
+
+## Options
+
+```{r}
+#| eval: false
+# make the outlier rule stricter or more lenient (default k = 1.5)
+module_run(test_paper(), "data_validate",
+           local_path = repo, local_only = TRUE, outlier_k = 3)
+```
+
+A larger `outlier_k` widens the fences, so only more extreme values are flagged.
+
+## What you get back
+
+| Element | What it contains |
+|---|---|
+| `$traffic_light` | `green` / `yellow` / `red` / `na` |
+| `$summary_text` | plain-text summary with a per-check breakdown |
+| `$summary_table` | `paper_id`, `column_n`, `flagged_n` |
+| `$table` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` |
+| `$report` | formatted report with the issue breakdown, outlier table, and combined distribution figure |
+
+## Related
+
+- [Data Check](mod-data-check.qmd) is run first and supplies the columns.
+- [Codebook Check](mod-codebook-check.qmd) checks whether those columns are documented — the `label` column here comes from its output when available.
+- [Excel Check](mod-excel-check.qmd) catches spreadsheet-formatting problems that `data_validate` cannot see once a file is read into a data frame.

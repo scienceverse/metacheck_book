@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>32&nbsp; Reference Summary – The Metacheck Manual</title>
+<title>25&nbsp; Codebook Check – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/creating-a-report.html" rel="next">
-<link href="../chapters/mod-ref-accuracy.html" rel="prev">
+<link href="../chapters/mod-psychds-check.html" rel="next">
+<link href="../chapters/mod-excel-check.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-ref-summary.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-codebook-check.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -309,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
@@ -351,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link active">
+  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
@@ -417,16 +417,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">32.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">32.2</span> Running the module</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">32.3</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">32.4</span> Options</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-summary.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">25.1</span> What it checks</a></li>
+  <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">25.2</span> A worked example</a></li>
+  <li><a href="#the-coverage-table" id="toc-the-coverage-table" class="nav-link" data-scroll-target="#the-coverage-table"><span class="header-section-number">25.3</span> The coverage table</a></li>
+  <li><a href="#the-summary-counts" id="toc-the-summary-counts" class="nav-link" data-scroll-target="#the-summary-counts"><span class="header-section-number">25.4</span> The summary counts</a></li>
+  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">25.5</span> The traffic light</a></li>
+  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">25.6</span> Using an LLM</a></li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">25.7</span> What you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">25.8</span> Related</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-codebook-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-ref-summary.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-codebook-check.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span>
+<span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span>
 </h1>
 </div>
 
@@ -441,10 +445,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="32.1"><h2 data-number="32.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">32.1</span> What it checks</h2>
-<p>The <code>ref_summary</code> module does not run a check of its own. Instead it <strong>collects the results of the other reference-section modules</strong> — <a href="../chapters/mod-ref-accuracy.html">accuracy</a>, <a href="../chapters/mod-ref-pubpeer.html">PubPeer</a>, <a href="../chapters/mod-ref-replication.html">replication</a>, and <a href="../chapters/mod-ref-retraction.html">retraction</a> — into a single table with one row per reference, so you can see everything known about each cited work in one place.</p>
-<p>Because it summarises the output of those modules, <code>ref_summary</code> must run <strong>after</strong> them, in the same report. On its own it has nothing to summarise.</p>
+</header><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<section id="what-it-checks" class="level2" data-number="25.1"><h2 data-number="25.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">25.1</span> What it checks</h2>
+<p>Shared data is only reusable if others can tell what each column <em>means</em>. The <code>codebook_check</code> module measures <strong>documentation coverage</strong>: for every data column extracted by <a href="../chapters/mod-data-check.html"><code>data_check</code></a>, it asks whether that column is described in a codebook (a data dictionary) shared alongside the data.</p>
+<p>It reports, for each column, one of these statuses:</p>
+<ul>
+<li>
+<strong>labelled</strong> — the column is matched to an entry in a codebook file.</li>
+<li>
+<strong>unlabelled</strong> — no documentation was found for the column.</li>
+<li>
+<strong>conflicted</strong> — the codebook contains more than one, disagreeing, description.</li>
+<li>
+<strong>llm</strong> — the label was inferred by an LLM (only when one is enabled).</li>
+</ul>
+<p>It also reports <strong>unused</strong> codebook entries: variables documented in the codebook that do not correspond to any column in the data.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -455,99 +484,244 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The modules it summarises make <strong>live network calls</strong>, so an internet connection is needed.</p>
+<p>This chapter runs offline against a small folder containing a data file and a codebook.</p>
 </div>
 </div>
-</section><section id="running-the-module" class="level2" data-number="32.2"><h2 data-number="32.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">32.2</span> Running the module</h2>
-<p>The summary needs the other reference modules to have run first. The natural way to arrange that is to run them together with <code>report_module_run()</code>, which keeps each module’s output and passes the chain along (see <a href="../chapters/creating-a-report.html">Creating a Metacheck Report</a>). List <code>ref_summary</code> last:</p>
+</section><section id="a-worked-example" class="level2" data-number="25.2"><h2 data-number="25.2" class="anchored" data-anchor-id="a-worked-example">
+<span class="header-section-number">25.2</span> A worked example</h2>
+<p>We create a study with a <code>codebook.csv</code> documenting two of its three columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">module_output</span> <span class="op">&lt;-</span> <span class="fu">report_module_run</span><span class="op">(</span></span>
-<span>  <span class="va">paper</span>,</span>
-<span>  modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ref_accuracy"</span>, <span class="st">"ref_pubpeer"</span>,</span>
-<span>              <span class="st">"ref_replication"</span>, <span class="st">"ref_retraction"</span>,</span>
-<span>              <span class="st">"ref_summary"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check_demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="va">module_output</span><span class="op">[[</span><span class="st">"ref_summary"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>,</span>
+<span>             rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">510</span>, <span class="fl">490</span>, <span class="fl">505</span>, <span class="fl">512</span>, <span class="fl">498</span>, <span class="fl">530</span><span class="op">)</span>,</span>
+<span>             cond <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span>, <span class="st">"study.csv"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># a codebook documenting rt and cond (but not id)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"variable,description"</span>,</span>
+<span>             <span class="st">"rt,reaction time in milliseconds"</span>,</span>
+<span>             <span class="st">"cond,condition: 0 = control, 1 = treatment"</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"codebook.csv"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
+<span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "info"</code></pre>
+<pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "Summary information provided for 5 references"</code></pre>
+<pre><code>#&gt; 
+#&gt; -  We parsed 2 variable definitions from codebook/README files.
+#&gt; -  2 of 3 data columns (67%) are documented in a codebook; 1 is not.</code></pre>
 </div>
 </div>
-<p>The combined <code>table</code> has one row per reference and one column per upstream check:</p>
+</section><section id="the-coverage-table" class="level2" data-number="25.3"><h2 data-number="25.3" class="anchored" data-anchor-id="the-coverage-table">
+<span class="header-section-number">25.3</span> The coverage table</h2>
+<p>The <code>table</code> gives one row per data column with its documentation status and, where matched, the label found:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"accuracy_mismatch"</span>, <span class="st">"pubpeer"</span>,</span>
-<span>             <span class="st">"replication_type"</span>, <span class="st">"retractionwatch"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"label_status"</span>, <span class="st">"label"</span>, <span class="st">"codebook_variable"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 4%">
-<col style="width: 11%">
-<col style="width: 63%">
-<col style="width: 10%">
-<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 41%">
+<col style="width: 24%">
 </colgroup>
 <thead><tr class="header">
-<th style="text-align: right;">bib_id</th>
-<th style="text-align: left;">accuracy_mismatch</th>
-<th style="text-align: left;">pubpeer</th>
-<th style="text-align: left;">replication_type</th>
-<th style="text-align: left;">retractionwatch</th>
+<th style="text-align: left;">column_name</th>
+<th style="text-align: left;">label_status</th>
+<th style="text-align: left;">label</th>
+<th style="text-align: left;">codebook_variable</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">no match</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">unlabelled</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">replication</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">rt</td>
+<td style="text-align: left;">labelled</td>
+<td style="text-align: left;">reaction time in milliseconds</td>
+<td style="text-align: left;">rt</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">title</td>
-<td style="text-align: left;"><a href="https://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56" target="_blank">Link</a></td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">Retraction</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">doi, author</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">no match</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">cond</td>
+<td style="text-align: left;">labelled</td>
+<td style="text-align: left;">condition: 0 = control</td>
+<td style="text-align: left;">cond</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.</p>
-</section><section id="interpreting-the-result" class="level2" data-number="32.3"><h2 data-number="32.3" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">32.3</span> Interpreting the result</h2>
-<p><code>ref_summary</code> inherits everything from the modules it summarises, so the same cautions apply: a filled-in cell is a prompt to look, not a verdict. Its value is convenience — instead of reading four separate tables, you scan one. The summary itself is informational (<code>info</code>); the underlying modules carry the traffic lights.</p>
-</section><section id="options" class="level2" data-number="32.4"><h2 data-number="32.4" class="anchored" data-anchor-id="options">
-<span class="header-section-number">32.4</span> Options</h2>
-<p><code>ref_summary</code> takes only the <code>paper</code> argument, but it only produces useful output when the other <code>ref_*</code> modules have run before it in the same report.</p>
+<p>Here <code>rt</code> and <code>cond</code> are <strong>labelled</strong> (matched to the codebook), while <code>id</code> is <strong>unlabelled</strong> — there was no codebook entry for it.</p>
+<p>Matching is not purely literal: names are normalised (case, separators, and simple stemming) so that <code>reaction_time</code> in the data matches <code>Reaction Time</code> in the codebook. This tolerance is important because codebooks and data files rarely use byte-identical names.</p>
+</section><section id="the-summary-counts" class="level2" data-number="25.4"><h2 data-number="25.4" class="anchored" data-anchor-id="the-summary-counts">
+<span class="header-section-number">25.4</span> The summary counts</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 13%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">paper_id</th>
+<th style="text-align: right;">column_n</th>
+<th style="text-align: right;">matched_n</th>
+<th style="text-align: right;">unmatched_n</th>
+<th style="text-align: right;">clean_n</th>
+<th style="text-align: right;">conflicted_n</th>
+<th style="text-align: right;">codebook_var_n</th>
+<th style="text-align: right;">unused_var_n</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">985551b045b216</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Column</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>column_n</code></td>
+<td>total data columns</td>
+</tr>
+<tr class="even">
+<td><code>matched_n</code></td>
+<td>columns matched to a codebook entry</td>
+</tr>
+<tr class="odd">
+<td><code>unmatched_n</code></td>
+<td>columns with no documentation</td>
+</tr>
+<tr class="even">
+<td>
+<code>clean_n</code> / <code>conflicted_n</code>
+</td>
+<td>matched columns with a single vs.&nbsp;a contradictory definition</td>
+</tr>
+<tr class="odd">
+<td><code>codebook_var_n</code></td>
+<td>entries found in the codebook(s)</td>
+</tr>
+<tr class="even">
+<td><code>unused_var_n</code></td>
+<td>codebook entries not used by any column</td>
+</tr>
+</tbody>
+</table></section><section id="the-traffic-light" class="level2" data-number="25.5"><h2 data-number="25.5" class="anchored" data-anchor-id="the-traffic-light">
+<span class="header-section-number">25.5</span> The traffic light</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Light</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>green</strong></td>
+<td>all (or nearly all) columns are documented</td>
+</tr>
+<tr class="even">
+<td><strong>yellow</strong></td>
+<td>some columns are undocumented</td>
+</tr>
+<tr class="odd">
+<td><strong>red</strong></td>
+<td>no codebook was found, or documentation coverage is very low</td>
+</tr>
+</tbody>
+</table></section><section id="using-an-llm" class="level2" data-number="25.6"><h2 data-number="25.6" class="anchored" data-anchor-id="using-an-llm">
+<span class="header-section-number">25.6</span> Using an LLM</h2>
+<p>Many repositories document their variables in prose — a README paragraph, a methods section, or a non-tabular codebook — rather than a tidy <code>variable,description</code> table. With <code>llm_use(TRUE)</code>, <code>codebook_check</code> can read those unstructured sources and propose labels for otherwise unlabelled columns, marking them with the <strong>llm</strong> status so you can tell inferred labels from author-supplied ones. For large repositories the LLM calls are batched to stay within request limits.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
+<span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>See the <a href="../chapters/llms.html">LLMs</a> chapter for model configuration.</p>
+</section><section id="what-you-get-back" class="level2" data-number="25.7"><h2 data-number="25.7" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">25.7</span> What you get back</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Element</th>
+<th>What it contains</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>$traffic_light</code></td>
+<td>
+<code>green</code> / <code>yellow</code> / <code>red</code> / <code>na</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>$summary_text</code></td>
+<td>plain-text coverage summary</td>
+</tr>
+<tr class="odd">
+<td><code>$summary_table</code></td>
+<td>the counts described above</td>
+</tr>
+<tr class="even">
+<td><code>$table</code></td>
+<td>one row per column: <code>column_name</code>, <code>label</code>, <code>label_status</code>, <code>codebook_variable</code>, …</td>
+</tr>
+<tr class="odd">
+<td><code>$report</code></td>
+<td>formatted report of documented vs.&nbsp;undocumented columns</td>
+</tr>
+</tbody>
+</table></section><section id="related" class="level2" data-number="25.8"><h2 data-number="25.8" class="anchored" data-anchor-id="related">
+<span class="header-section-number">25.8</span> Related</h2>
+<ul>
+<li>
+<a href="../chapters/mod-data-check.html">Data Check</a> supplies the columns being documented.</li>
+<li>The <code>convert_codebook()</code> function turns this output into a fully <strong>labelled</strong> data frame and a runnable codebook document — see the <a href="../chapters/creating-a-report.html">Creating a Report</a> workflow.</li>
+<li>
+<a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> checks the repository’s <em>structure</em> against a standard, complementing this check of its <em>documentation</em>.</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -950,13 +1124,13 @@ Note
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-ref-accuracy.html" class="pagination-link" aria-label="Reference Accuracy">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span>
+      <a href="../chapters/mod-excel-check.html" class="pagination-link" aria-label="Excel Check">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Excel Check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/creating-a-report.html" class="pagination-link" aria-label="Creating a Metacheck Report">
-        <span class="nav-page-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/mod-psychds-check.html" class="pagination-link" aria-label="Psych-DS Check">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -967,7 +1141,7 @@ Note
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-summary.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-codebook-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>32&nbsp; Reference Summary – The Metacheck Manual</title>
+<title>23&nbsp; Data Validate – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/creating-a-report.html" rel="next">
-<link href="../chapters/mod-ref-accuracy.html" rel="prev">
+<link href="../chapters/mod-excel-check.html" rel="next">
+<link href="../chapters/mod-data-check.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-ref-summary.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-validate.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -297,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
   </div>
 </li>
@@ -351,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link active">
+  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
@@ -417,16 +417,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">32.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">32.2</span> Running the module</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">32.3</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">32.4</span> Options</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-summary.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">23.1</span> What it checks</a></li>
+  <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">23.2</span> A worked example</a></li>
+  <li><a href="#the-findings-table" id="toc-the-findings-table" class="nav-link" data-scroll-target="#the-findings-table"><span class="header-section-number">23.3</span> The findings table</a></li>
+  <li><a href="#outliers-and-distributions-in-a-report" id="toc-outliers-and-distributions-in-a-report" class="nav-link" data-scroll-target="#outliers-and-distributions-in-a-report"><span class="header-section-number">23.4</span> Outliers and distributions in a report</a></li>
+  <li><a href="#personal-information-screening" id="toc-personal-information-screening" class="nav-link" data-scroll-target="#personal-information-screening"><span class="header-section-number">23.5</span> Personal-information screening</a></li>
+  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">23.6</span> The traffic light</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">23.7</span> Options</a></li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.8</span> What you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.9</span> Related</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-validate.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-ref-summary.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-validate.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span>
+<span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span>
 </h1>
 </div>
 
@@ -441,10 +446,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="32.1"><h2 data-number="32.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">32.1</span> What it checks</h2>
-<p>The <code>ref_summary</code> module does not run a check of its own. Instead it <strong>collects the results of the other reference-section modules</strong> — <a href="../chapters/mod-ref-accuracy.html">accuracy</a>, <a href="../chapters/mod-ref-pubpeer.html">PubPeer</a>, <a href="../chapters/mod-ref-replication.html">replication</a>, and <a href="../chapters/mod-ref-retraction.html">retraction</a> — into a single table with one row per reference, so you can see everything known about each cited work in one place.</p>
-<p>Because it summarises the output of those modules, <code>ref_summary</code> must run <strong>after</strong> them, in the same report. On its own it has nothing to summarise.</p>
+</header><div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<section id="what-it-checks" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">23.1</span> What it checks</h2>
+<p>The <code>data_validate</code> module runs automated <strong>data-quality checks</strong> on every column extracted by <a href="../chapters/mod-data-check.html"><code>data_check</code></a>, flagging the kinds of problems that are easy to miss by eye but common in shared data:</p>
+<ul>
+<li>
+<strong>Outliers</strong> — numeric values outside the Tukey 1.5×IQR fences.</li>
+<li>
+<strong>Miscoded missing values</strong> — sentinel numbers like <code>-99</code> or <code>999</code> used instead of a proper <code>NA</code>.</li>
+<li>
+<strong>Constant columns</strong> — a column with a single repeated value that carries no information.</li>
+<li>
+<strong>Numeric-as-text</strong> — a mostly-numeric column contaminated by a few text entries (often a stray note or a coding legend typed into a data cell).</li>
+<li>
+<strong>Category casing</strong> — the same category written two ways (<code>"Male"</code> and <code>"male"</code>).</li>
+<li>
+<strong>Sparse levels</strong> — categories with very few observations.</li>
+<li>
+<strong>Whitespace</strong> — leading/trailing spaces that split what should be one category.</li>
+<li>
+<strong>Personal information</strong> — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, phone numbers, geographic coordinates, free text).</li>
+</ul>
+<p>It also draws a <strong>single combined figure</strong> of the numeric column distributions, with the outlier fences marked, so a reviewer can scan every variable at once.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -455,99 +492,229 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The modules it summarises make <strong>live network calls</strong>, so an internet connection is needed.</p>
+<p>This chapter is offline. We build a small folder with some deliberately planted problems and check it with <code>local_path</code>.</p>
 </div>
 </div>
-</section><section id="running-the-module" class="level2" data-number="32.2"><h2 data-number="32.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">32.2</span> Running the module</h2>
-<p>The summary needs the other reference modules to have run first. The natural way to arrange that is to run them together with <code>report_module_run()</code>, which keeps each module’s output and passes the chain along (see <a href="../chapters/creating-a-report.html">Creating a Metacheck Report</a>). List <code>ref_summary</code> last:</p>
+</section><section id="a-worked-example" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="a-worked-example">
+<span class="header-section-number">23.2</span> A worked example</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">module_output</span> <span class="op">&lt;-</span> <span class="fu">report_module_run</span><span class="op">(</span></span>
-<span>  <span class="va">paper</span>,</span>
-<span>  modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ref_accuracy"</span>, <span class="st">"ref_pubpeer"</span>,</span>
-<span>              <span class="st">"ref_replication"</span>, <span class="st">"ref_retraction"</span>,</span>
-<span>              <span class="st">"ref_summary"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate_demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="va">module_output</span><span class="op">[[</span><span class="st">"ref_summary"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">study</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  id        <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
+<span>  reaction  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">39</span>, <span class="fl">500</span>, <span class="fl">60</span><span class="op">)</span>, <span class="fl">5000</span><span class="op">)</span>,          <span class="co"># one clear outlier</span></span>
+<span>  age       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">39</span>, <span class="fl">30</span>, <span class="fl">5</span><span class="op">)</span>, <span class="op">-</span><span class="fl">99</span><span class="op">)</span>,             <span class="co"># miscoded missing</span></span>
+<span>  condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="fl">19</span><span class="op">)</span>, <span class="st">"X"</span><span class="op">)</span>,  <span class="co"># casing + sparse</span></span>
+<span>  constant  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">40</span><span class="op">)</span>                            <span class="co"># no information</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">study</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span>, <span class="st">"study.csv"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "info"</code></pre>
+<pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "Summary information provided for 5 references"</code></pre>
+<pre><code>#&gt; We ran automated data-quality checks on 5 columns; 4 columns have at least one potential issue (2 columns with potential outliers; 1 column with inconsistent category casing; 1 column with a single constant value; 1 column with sparsely populated categories).</code></pre>
 </div>
 </div>
-<p>The combined <code>table</code> has one row per reference and one column per upstream check:</p>
+<p>Running <code>data_validate</code> automatically runs <code>data_check</code> first (to read and classify the columns) and then applies the quality checks to the result.</p>
+</section><section id="the-findings-table" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="the-findings-table">
+<span class="header-section-number">23.3</span> The findings table</h2>
+<p>Every flagged column appears in the <code>table</code>, one row per (column, check):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"accuracy_mismatch"</span>, <span class="st">"pubpeer"</span>,</span>
-<span>             <span class="st">"replication_type"</span>, <span class="st">"retractionwatch"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column"</span>, <span class="st">"check"</span>, <span class="st">"detail"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 4%">
-<col style="width: 11%">
-<col style="width: 63%">
-<col style="width: 10%">
-<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 68%">
 </colgroup>
 <thead><tr class="header">
-<th style="text-align: right;">bib_id</th>
-<th style="text-align: left;">accuracy_mismatch</th>
-<th style="text-align: left;">pubpeer</th>
-<th style="text-align: left;">replication_type</th>
-<th style="text-align: left;">retractionwatch</th>
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">check</th>
+<th style="text-align: left;">detail</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">no match</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">reaction</td>
+<td style="text-align: left;">Outliers</td>
+<td style="text-align: left;">1 outlier value outside [356, 651]: 5000</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">replication</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: left;">Outliers</td>
+<td style="text-align: left;">1 outlier value outside [17.3, 43.4]: -99</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">title</td>
-<td style="text-align: left;"><a href="https://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56" target="_blank">Link</a></td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">Retraction</td>
+<td style="text-align: left;">condition</td>
+<td style="text-align: left;">Case issues</td>
+<td style="text-align: left;">Categories differing only by case: Control/control</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">doi, author</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">condition</td>
+<td style="text-align: left;">Sparse levels</td>
+<td style="text-align: left;">1 level with fewer than 2 observations: X</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">no match</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">constant</td>
+<td style="text-align: left;">Constant</td>
+<td style="text-align: left;">Column is constant (one unique value).</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.</p>
-</section><section id="interpreting-the-result" class="level2" data-number="32.3"><h2 data-number="32.3" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">32.3</span> Interpreting the result</h2>
-<p><code>ref_summary</code> inherits everything from the modules it summarises, so the same cautions apply: a filled-in cell is a prompt to look, not a verdict. Its value is convenience — instead of reading four separate tables, you scan one. The summary itself is informational (<code>info</code>); the underlying modules carry the traffic lights.</p>
-</section><section id="options" class="level2" data-number="32.4"><h2 data-number="32.4" class="anchored" data-anchor-id="options">
-<span class="header-section-number">32.4</span> Options</h2>
-<p><code>ref_summary</code> takes only the <code>paper</code> argument, but it only produces useful output when the other <code>ref_*</code> modules have run before it in the same report.</p>
+<p>The <code>check</code> column names the category of problem, and <code>detail</code> explains it in words — for example how many values were outside the fences, or which categories differ only in casing.</p>
+</section><section id="outliers-and-distributions-in-a-report" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="outliers-and-distributions-in-a-report">
+<span class="header-section-number">23.4</span> Outliers and distributions in a report</h2>
+<p>When you generate the module’s report (or include it in a full <code>report()</code>), <code>data_validate</code> produces two things for the numeric columns:</p>
+<ul>
+<li>an <strong>Outliers table</strong>, one row per numeric column that has values outside the fences, listing the count, the <code>[low, high]</code> bounds, and a few example values; and</li>
+<li>a <strong>single combined distribution figure</strong> — one small histogram per numeric column, with the outlier fences drawn as dashed red lines.</li>
+</ul>
+<p>Earlier versions drew one plot per column, which was slow and unreadable on wide files (a survey export can have hundreds of numeric columns). The combined figure renders once and caps the number of panels, noting how many columns were shown if it truncates.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the report section is a character vector; the figure is embedded as a</span></span>
+<span><span class="co"># self-contained image so a moved report keeps its plot</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">report</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="personal-information-screening" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="personal-information-screening">
+<span class="header-section-number">23.5</span> Personal-information screening</h2>
+<p><code>data_validate</code> also screens each column for content that should not be shared openly. It reports these as <em>“review before sharing”</em> prompts and <strong>never echoes the matching value</strong>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"pii_demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">pii</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  participant <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
+<span>  email       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a@example.com"</span>, <span class="st">"b@example.com"</span>, <span class="st">"c@example.com"</span><span class="op">)</span>,</span>
+<span>  full_name   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Ada Lovelace"</span>, <span class="st">"Alan Turing"</span>, <span class="st">"Grace Hopper"</span><span class="op">)</span></span>
+<span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">pii</span>, <span class="st">"data"</span>, <span class="st">"responses.csv"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mo_pii</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>                     local_path <span class="op">=</span> <span class="va">pii</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mo_pii</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column"</span>, <span class="st">"check"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">check</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">email</td>
+<td style="text-align: left;">Sparse levels</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">email</td>
+<td style="text-align: left;">Personal info (values)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">email</td>
+<td style="text-align: left;">Personal info (column name)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">full_name</td>
+<td style="text-align: left;">Sparse levels</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">full_name</td>
+<td style="text-align: left;">Personal info (column name)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The screen looks at both the <strong>values</strong> (patterns that look like emails, IPs, IDs, phone or card numbers) and the <strong>column name</strong> (names such as <code>email</code>, <code>name</code>, <code>address</code>), plus geographic coordinates and free-text columns that may contain identifying prose.</p>
+</section><section id="the-traffic-light" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="the-traffic-light">
+<span class="header-section-number">23.6</span> The traffic light</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Light</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>green</strong></td>
+<td>columns were checked and no issues were found</td>
+</tr>
+<tr class="even">
+<td><strong>yellow</strong></td>
+<td>fewer than a quarter of columns were flagged</td>
+</tr>
+<tr class="odd">
+<td><strong>red</strong></td>
+<td>a quarter or more of columns were flagged</td>
+</tr>
+<tr class="even">
+<td><strong>na</strong></td>
+<td>there were no readable tabular data files to validate</td>
+</tr>
+</tbody>
+</table></section><section id="options" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="options">
+<span class="header-section-number">23.7</span> Options</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># make the outlier rule stricter or more lenient (default k = 1.5)</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
+<span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span>, outlier_k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A larger <code>outlier_k</code> widens the fences, so only more extreme values are flagged.</p>
+</section><section id="what-you-get-back" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">23.8</span> What you get back</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Element</th>
+<th>What it contains</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>$traffic_light</code></td>
+<td>
+<code>green</code> / <code>yellow</code> / <code>red</code> / <code>na</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>$summary_text</code></td>
+<td>plain-text summary with a per-check breakdown</td>
+</tr>
+<tr class="odd">
+<td><code>$summary_table</code></td>
+<td>
+<code>paper_id</code>, <code>column_n</code>, <code>flagged_n</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>$table</code></td>
+<td>one row per (column, check): <code>source_file</code>, <code>column</code>, <code>label</code>, <code>check</code>, <code>detail</code>
+</td>
+</tr>
+<tr class="odd">
+<td><code>$report</code></td>
+<td>formatted report with the issue breakdown, outlier table, and combined distribution figure</td>
+</tr>
+</tbody>
+</table></section><section id="related" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="related">
+<span class="header-section-number">23.9</span> Related</h2>
+<ul>
+<li>
+<a href="../chapters/mod-data-check.html">Data Check</a> is run first and supplies the columns.</li>
+<li>
+<a href="../chapters/mod-codebook-check.html">Codebook Check</a> checks whether those columns are documented — the <code>label</code> column here comes from its output when available.</li>
+<li>
+<a href="../chapters/mod-excel-check.html">Excel Check</a> catches spreadsheet-formatting problems that <code>data_validate</code> cannot see once a file is read into a data frame.</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -950,13 +1117,13 @@ Note
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-ref-accuracy.html" class="pagination-link" aria-label="Reference Accuracy">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span>
+      <a href="../chapters/mod-data-check.html" class="pagination-link" aria-label="Data Check">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/creating-a-report.html" class="pagination-link" aria-label="Creating a Metacheck Report">
-        <span class="nav-page-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/mod-excel-check.html" class="pagination-link" aria-label="Excel Check">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Excel Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -967,7 +1134,7 @@ Note
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-summary.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-validate.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
