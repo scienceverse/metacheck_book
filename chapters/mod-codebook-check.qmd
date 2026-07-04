@@ -153,6 +153,8 @@ module_run(test_paper(), "codebook_check",
            local_path = repo, local_only = TRUE)
 ```
 
+The `codebook_max_calls` argument (default `40`) caps how many LLM calls a single tier will make — the number of text blocks parsed from one unstructured codebook file, and the number of distinct survey layouts sent for scale identification. If a tier would need more than this, it is skipped rather than truncated, and the report says how many were needed; raise `codebook_max_calls` to include them.
+
 See the [LLMs](llms.qmd) chapter for model configuration.
 
 ## Identifying psychometric scales

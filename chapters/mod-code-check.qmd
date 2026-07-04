@@ -51,13 +51,10 @@ mo$table[, c("file_name", "absolute_paths", "loaded_files_missing", "parse_error
 
 ## Options
 
-`code_check` shares `repo_check`'s local-file options, plus a limit on how many files to inspect:
+`code_check` shares `repo_check`'s local-file options:
 
 ```{r}
 #| eval: false
-# inspect at most 5 files (default is 20)
-module_run(paper, "code_check", file_limit = 5)
-
 # check code in a local folder only, no online lookups
 module_run(paper, "code_check", local_path = "path/to/files", local_only = TRUE)
 ```

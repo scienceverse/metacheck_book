@@ -691,7 +691,7 @@ Note
 <th style="text-align: right;">unused_var_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">e927e60102c08e</td>
+<td style="text-align: left;">38302fd634e299</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
@@ -774,6 +774,7 @@ Note
 <span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
 <span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>The <code>codebook_max_calls</code> argument (default <code>40</code>) caps how many LLM calls a single tier will make — the number of text blocks parsed from one unstructured codebook file, and the number of distinct survey layouts sent for scale identification. If a tier would need more than this, it is skipped rather than truncated, and the report says how many were needed; raise <code>codebook_max_calls</code> to include them.</p>
 <p>See the <a href="../chapters/llms.html">LLMs</a> chapter for model configuration.</p>
 </section><section id="identifying-psychometric-scales" class="level2" data-number="25.8"><h2 data-number="25.8" class="anchored" data-anchor-id="identifying-psychometric-scales">
 <span class="header-section-number">25.8</span> Identifying psychometric scales</h2>

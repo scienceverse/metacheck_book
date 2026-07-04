@@ -433,9 +433,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#what-code_check-checks" id="toc-what-code_check-checks" class="nav-link" data-scroll-target="#what-code_check-checks"><span class="header-section-number">34.4.1</span> What <code>code_check</code> checks</a></li>
   <li><a href="#checking-your-own-code" id="toc-checking-your-own-code" class="nav-link" data-scroll-target="#checking-your-own-code"><span class="header-section-number">34.4.2</span> Checking your own code</a></li>
   <li><a href="#checking-multiple-projects" id="toc-checking-multiple-projects" class="nav-link" data-scroll-target="#checking-multiple-projects"><span class="header-section-number">34.4.3</span> Checking multiple projects</a></li>
-  <li><a href="#checking-more-than-20-code-files" id="toc-checking-more-than-20-code-files" class="nav-link" data-scroll-target="#checking-more-than-20-code-files"><span class="header-section-number">34.4.4</span> Checking more than 20 code files</a></li>
-  <li><a href="#peer-review-files-sent-as-a-zip-archive" id="toc-peer-review-files-sent-as-a-zip-archive" class="nav-link" data-scroll-target="#peer-review-files-sent-as-a-zip-archive"><span class="header-section-number">34.4.5</span> Peer review — files sent as a zip archive</a></li>
-  <li><a href="#code-hosted-on-an-unsupported-repository" id="toc-code-hosted-on-an-unsupported-repository" class="nav-link" data-scroll-target="#code-hosted-on-an-unsupported-repository"><span class="header-section-number">34.4.6</span> Code hosted on an unsupported repository</a></li>
+  <li><a href="#peer-review-files-sent-as-a-zip-archive" id="toc-peer-review-files-sent-as-a-zip-archive" class="nav-link" data-scroll-target="#peer-review-files-sent-as-a-zip-archive"><span class="header-section-number">34.4.4</span> Peer review — files sent as a zip archive</a></li>
+  <li><a href="#code-hosted-on-an-unsupported-repository" id="toc-code-hosted-on-an-unsupported-repository" class="nav-link" data-scroll-target="#code-hosted-on-an-unsupported-repository"><span class="header-section-number">34.4.5</span> Code hosted on an unsupported repository</a></li>
   </ul>
 </li>
   <li><a href="#part-3-combining-a-paper-with-local-files" id="toc-part-3-combining-a-paper-with-local-files" class="nav-link" data-scroll-target="#part-3-combining-a-paper-with-local-files"><span class="header-section-number">34.5</span> Part 3: Combining a paper with local files</a></li>
@@ -625,34 +624,19 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"study_2"</span>, <span class="va">repo_url</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">file_name</span>, <span class="va">percentage_comment</span>, <span class="va">code_abs_path</span>, <span class="va">loaded_files_missing</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>repo_url</code> column contains the folder path, so you can always identify which folder a code file came from. Each folder has its own independent <code>file_limit</code> (default 20 files).</p>
-</section><section id="checking-more-than-20-code-files" class="level3" data-number="34.4.4"><h3 data-number="34.4.4" class="anchored" data-anchor-id="checking-more-than-20-code-files">
-<span class="header-section-number">34.4.4</span> Checking more than 20 code files</h3>
-<p>By default <code>code_check</code> analyses at most 20 code files per folder. This prevents accidentally processing hundreds of files in, say, an R package repository. If your folder has more code files than that and you want them all checked, raise the limit or remove it entirely:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># analyse up to 100 code files per folder</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
-<span>                     local_path <span class="op">=</span> <span class="st">"C:/projects/large_project"</span>,</span>
-<span>                     file_limit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># no limit — check every code file found</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
-<span>                     local_path <span class="op">=</span> <span class="st">"C:/projects/large_project"</span>,</span>
-<span>                     file_limit <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The summary text will tell you if the limit was applied: <code>"Only the first 20 files per repository were analysed."</code> If you see this message and want complete results, re-run with a higher <code>file_limit</code>.</p>
-</section><section id="peer-review-files-sent-as-a-zip-archive" class="level3" data-number="34.4.5"><h3 data-number="34.4.5" class="anchored" data-anchor-id="peer-review-files-sent-as-a-zip-archive">
-<span class="header-section-number">34.4.5</span> Peer review — files sent as a zip archive</h3>
+<p>The <code>repo_url</code> column contains the folder path, so you can always identify which folder a code file came from. Every code file in a folder is checked.</p>
+</section><section id="peer-review-files-sent-as-a-zip-archive" class="level3" data-number="34.4.4"><h3 data-number="34.4.4" class="anchored" data-anchor-id="peer-review-files-sent-as-a-zip-archive">
+<span class="header-section-number">34.4.4</span> Peer review — files sent as a zip archive</h3>
 <p>When reviewing a paper, authors sometimes supply code and data as a zip file attached to the submission. Once you unzip it, you have a local folder:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># After unzipping the submission to a folder:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># After unzipping the submission to a folder:</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
 <span>                     local_path <span class="op">=</span> <span class="st">"C:/peer_review/garcia_2024_submission"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">report</span>   <span class="co"># copy this into your review</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="code-hosted-on-an-unsupported-repository" class="level3" data-number="34.4.6"><h3 data-number="34.4.6" class="anchored" data-anchor-id="code-hosted-on-an-unsupported-repository">
-<span class="header-section-number">34.4.6</span> Code hosted on an unsupported repository</h3>
+</section><section id="code-hosted-on-an-unsupported-repository" class="level3" data-number="34.4.5"><h3 data-number="34.4.5" class="anchored" data-anchor-id="code-hosted-on-an-unsupported-repository">
+<span class="header-section-number">34.4.5</span> Code hosted on an unsupported repository</h3>
 <p>Metacheck currently retrieves files automatically from <strong>OSF, GitHub, ResearchBox, and Zenodo</strong>. Many other services exist that are not yet supported. If the paper links to one of these, download the files manually and point <code>code_check</code> at the downloaded folder.</p>
 <p>The workflow is the same for all of them:</p>
 <ol type="1">
@@ -663,7 +647,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Author shared code on GitLab — you downloaded or cloned it locally</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Author shared code on GitLab — you downloaded or cloned it locally</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
 <span>                     local_path <span class="op">=</span> <span class="st">"C:/downloads/lee_2023_gitlab_code"</span><span class="op">)</span></span>
 <span></span>
@@ -674,7 +658,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span class="header-section-number">34.5</span> Part 3: Combining a paper with local files</h2>
 <p>Sometimes a paper links to an online repository that Metacheck supports, but there are also supplementary files that were shared separately — for example, the main data is on OSF but additional analysis scripts were sent as a zip by the editor. You can check both at once:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/read.html">read</a></span><span class="op">(</span><span class="st">"garcia_2024.pdf"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/read.html">read</a></span><span class="op">(</span><span class="st">"garcia_2024.pdf"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># repo_check fetches the OSF files AND lists the local folder</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>,</span>
@@ -685,7 +669,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </div>
 <p><code>repo_check</code> reports on each repository separately, so you can see at a glance whether the README and zip issues are in the online repo or the local folder:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>,</span>
 <span>                   local_path <span class="op">=</span> <span class="st">"C:/peer_review/garcia_2024_extra_scripts"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># One row per repository — the OSF project and the local folder</span></span>
@@ -696,7 +680,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span class="header-section-number">34.6</span> Part 4: Running <code>repo_check</code> and <code>code_check</code> as a two-step pipeline</h2>
 <p>By default, <code>code_check</code> runs <code>repo_check</code> internally and you do not see its output. If you want to inspect the file inventory before the code analysis, or save the <code>repo_check</code> results separately, run them as two steps. When you pass a <code>repo_check</code> result as the first argument to <code>code_check</code>, the file list is reused — the folder is not re-read:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/projects/reaction_time_study_2024"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/projects/reaction_time_study_2024"</span></span>
 <span></span>
 <span><span class="co"># Step 1: inventory and organisational checks</span></span>
 <span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"repo_check"</span>, local_path <span class="op">=</span> <span class="va">path</span><span class="op">)</span></span>
@@ -774,7 +758,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </tr>
 <tr class="odd">
 <td><code>$summary_table</code></td>
-<td>Counts: <code>code_n</code>, <code>code_abs_path</code>, <code>code_missing_files</code>, <code>code_min_comments</code>
+<td>Counts: <code>code_n</code>, <code>code_checked</code>, <code>code_abs_path</code>, <code>code_missing_files</code>, <code>code_min_comments</code>, <code>code_parse_errors</code>
 </td>
 </tr>
 <tr class="even">
@@ -838,7 +822,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <p>OSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.</p>
 <p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than <code>max_file_size</code> (defaults to 10 MB) up to a total size of <code>max_download_size</code> (defaults to 100 MB).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span>osf_id <span class="op">=</span> <span class="st">"pngda"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span>osf_id <span class="op">=</span> <span class="st">"pngda"</span>,</span>
 <span>                  download_to <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>                  max_file_size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                  max_download_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -848,7 +832,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 Downloading files [=====================] 24/24 00:00:35</code></pre>
 <p>The files are written into a folder named after the OSF id, preserving the project’s nested structure:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"pngda"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">"pngda"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <pre><code>#&gt;  [1] "Data/Individual/data-01.csv"                         
@@ -877,7 +861,7 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
 </div>
 <p>Once downloaded, you can run the checks on that folder exactly as shown earlier:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"pngda"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"pngda"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 

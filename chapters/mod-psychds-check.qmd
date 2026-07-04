@@ -122,6 +122,47 @@ convert_psychds(res, overwrite = TRUE)
 
 The generated dataset is validated with `psychds_validate()`, Metacheck's built-in checker for the standard, so the converted output is guaranteed to pass.
 
+## Building a whole data archive
+
+The same machinery scales up from one repository to a **data release** — a browsable, archivable copy of the data behind an entire corpus of papers, each converted to Psych-DS. This is a good way to turn scattered OSF/GitHub/Zenodo repositories into a single, structured, machine-readable collection.
+
+The recipe is: run the data pipeline over each paper with `data_check` set to fetch **all** files, then convert each to Psych-DS. Two `data_check` options (covered in the [Data Check](mod-data-check.qmd) chapter) make this practical for real-world repositories:
+
+- `download = "all"` fetches every file, not just the readable data.
+- `skip_types = "asset"` leaves out stimuli/media (which a release links to rather than hosts), and `peek_zips = TRUE` looks inside zips and only downloads those containing data.
+
+```{r}
+#| eval: false
+for (paper in papers) {
+  chain <- report(paper,
+                  c("data_check", "codebook_check", "psychds_check"),
+                  args = list(data_check = list(
+                    download = "all", skip_types = "asset", peek_zips = TRUE)))
+  convert_psychds(chain,  output_dir = file.path("archive", paper_id(paper), "psychds"))
+  convert_codebook(chain, output_dir = file.path("archive", paper_id(paper), "codebook"))
+}
+```
+
+### Zips are unpacked into the archive
+
+When `peek_zips = TRUE`, a downloaded zip that contains data is unpacked and its inner data files are placed into the archive individually — so a `data.zip` becomes real, browsable `data/` files rather than an opaque bundle. Two helper functions expose this directly:
+
+- **`zip_peek(url)`** reads a remote zip's file listing (names and sizes) via an HTTP range request, *without* downloading it.
+- **`zip_decision(url)`** peeks and classifies the contents, returning whether the zip is worth downloading (contains data) or should just be linked (only stimuli).
+
+### An archive-level catalogue
+
+A release of many datasets needs a top-level description tying them together. **`data_catalog()`** scans a built archive directory and writes a `catalog.json` — a schema.org [`DataCatalog`](https://schema.org/DataCatalog) listing every dataset with its title, authors, DOI, and file count — plus a `catalog.csv` for quick inspection. This is the object that makes the release a single discoverable archive (and is harvested by Google Dataset Search), rather than a set of unconnected folders.
+
+```{r}
+#| eval: false
+data_catalog("archive", papers = papers, name = "My data release")
+```
+
+::: callout-tip
+For a large corpus, first run `data_check` with `download = "none"` and `manifest = "..."` to write a per-paper file manifest (file names, sizes, types) *without* downloading anything. Inspecting those manifests lets you choose the size caps knowing exactly which files each value would include or exclude, before committing to a large download.
+:::
+
 ## What you get back
 
 | Element | What it contains |

@@ -424,7 +424,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#column-facets" id="toc-column-facets" class="nav-link" data-scroll-target="#column-facets"><span class="header-section-number">22.5</span> Column facets</a></li>
   <li><a href="#unit-of-observation" id="toc-unit-of-observation" class="nav-link" data-scroll-target="#unit-of-observation"><span class="header-section-number">22.6</span> Unit of observation</a></li>
   <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">22.7</span> What you get back</a></li>
-  <li><a href="#handling-large-or-private-repositories" id="toc-handling-large-or-private-repositories" class="nav-link" data-scroll-target="#handling-large-or-private-repositories"><span class="header-section-number">22.8</span> Handling large or private repositories</a></li>
+  <li>
+<a href="#downloading-files" id="toc-downloading-files" class="nav-link" data-scroll-target="#downloading-files"><span class="header-section-number">22.8</span> Downloading files</a>
+  <ul class="collapse">
+<li><a href="#size-caps" id="toc-size-caps" class="nav-link" data-scroll-target="#size-caps"><span class="header-section-number">22.8.1</span> Size caps</a></li>
+  <li><a href="#skipping-asset-types-and-peeking-inside-zips" id="toc-skipping-asset-types-and-peeking-inside-zips" class="nav-link" data-scroll-target="#skipping-asset-types-and-peeking-inside-zips"><span class="header-section-number">22.8.2</span> Skipping asset types, and peeking inside zips</a></li>
+  <li><a href="#a-file-manifest" id="toc-a-file-manifest" class="nav-link" data-scroll-target="#a-file-manifest"><span class="header-section-number">22.8.3</span> A file manifest</a></li>
+  </ul>
+</li>
   <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">22.9</span> Using an LLM</a></li>
   <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">22.10</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -606,10 +613,10 @@ Note
 #&gt; └── analysis.R
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(17L, 2L, 20L, 2L, 20L, 19L), Mean = c(38.3, 
-#&gt;     NA, NA, NA, 596.05, 52.965), SD = c(15.297, NA, NA, NA, 159.672, 
-#&gt;     11.781), Min = c(18, NA, NA, NA, 321, 33.5), Max = c(63, 
-#&gt;     NA, NA, NA, 873, 77.5)), row.names = c("age", "condition",</code></pre>
+#&gt;     0), "N Unique" = c(16L, 2L, 20L, 2L, 20L, 19L), Mean = c(40.95, 
+#&gt;     NA, NA, NA, 569.25, 49.9), SD = c(15.497, NA, NA, NA, 176.322, 
+#&gt;     7.057), Min = c(18, NA, NA, NA, 338, 38.6), Max = c(65, NA, 
+#&gt;     NA, NA, 868, 65.3)), row.names = c("age", "condition", "participant_id",</code></pre>
 </div>
 </div>
 <p>For our example folder — a <code>data/</code> directory holding <code>study.csv</code>, plus a top-level <code>analysis.R</code> — the tree makes the organisation obvious. On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level.</p>
@@ -768,7 +775,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The old single <code>col_type</code> field has been replaced by these facets. If you have code that read <code>mo$table$col_type</code>, read the relevant facet instead — most often <code>representation</code> (numeric vs text) or <code>concept</code>. The Psych-DS export (<code>convert_psychds()</code>) still accepts an older <code>col_type</code>-only table for backward compatibility.</p>
+<p>The old single <code>col_type</code> field has been replaced by these facets. If you have code that read <code>mo$table$col_type</code>, read the relevant facet instead — most often <code>representation</code> (numeric vs text) or <code>concept</code>.</p>
 </div>
 </div>
 </section><section id="unit-of-observation" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="unit-of-observation">
@@ -834,20 +841,59 @@ Note
 </tbody>
 </table>
 <p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> by itself — running <code>data_validate</code> or <code>codebook_check</code> triggers it automatically and reuses the result.</p>
-</section><section id="handling-large-or-private-repositories" class="level2" data-number="22.8"><h2 data-number="22.8" class="anchored" data-anchor-id="handling-large-or-private-repositories">
-<span class="header-section-number">22.8</span> Handling large or private repositories</h2>
-<p><code>data_check</code> reads readable data files so it can extract columns. Two options control the cost of that:</p>
+</section><section id="downloading-files" class="level2" data-number="22.8"><h2 data-number="22.8" class="anchored" data-anchor-id="downloading-files">
+<span class="header-section-number">22.8</span> Downloading files</h2>
+<p>When a paper links to an online repository, <code>data_check</code> downloads the files it needs into a shared on-disk cache (reused across runs, so a file is never fetched twice). The <code>download</code> argument controls <strong>what</strong> is fetched:</p>
+<ul>
+<li>
+<code>download = "data"</code> (the default) fetches only the machine-readable files the checks analyse — tabular data plus codebook/README files.</li>
+<li>
+<code>download = "all"</code> fetches <strong>every</strong> file in the repository (code, materials, PDFs, assets, …). This is the right choice when building a complete data archive with <code>convert_psychds()</code>.</li>
+<li>
+<code>download = "none"</code> (or <code>FALSE</code>) downloads nothing — files are only classified by name.</li>
+</ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cap how many tabular files are column-extracted (default 20)</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_check"</span>,</span>
-<span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span>, file_limit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># default: fetch only the readable data + codebook/README files</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># when following online links, cap the download sizes (in MB)</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>,</span>
-<span>           max_file_size <span class="op">=</span> <span class="fl">5</span>, max_download_size <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co"># fetch everything, for building a full data archive</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When downloading from an online repository, files above <code>max_file_size</code> (default 10 MB) or beyond <code>max_download_size</code> (default 100 MB total) are classified but not read; the summary text tells you how many were skipped and how to raise the caps.</p>
-</section><section id="using-an-llm" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="using-an-llm">
+<section id="size-caps" class="level3" data-number="22.8.1"><h3 data-number="22.8.1" class="anchored" data-anchor-id="size-caps">
+<span class="header-section-number">22.8.1</span> Size caps</h3>
+<p>Two caps bound how much is downloaded per repository. They work differently:</p>
+<ul>
+<li>
+<strong><code>max_file_size</code></strong> (default <strong>100 MB</strong>) is a <strong>per-file filter</strong>: a single file larger than this is skipped on its own, and the rest of the repository still downloads.</li>
+<li>
+<strong><code>max_download_size</code></strong> (default <strong>500 MB</strong>) is a <strong>per-repository gate</strong>: if the total of the files that would download exceeds it, the <em>whole</em> repository is skipped.</li>
+</ul>
+<p>Set either to <code>Inf</code> for no cap. A file whose size cannot be determined at all (no size in the listing and no <code>Content-Length</code> header) also causes its repository to be skipped, so nothing huge is ever fetched blind. Every skip is reported inline and recorded, so you can raise the relevant cap and re-run.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>           max_file_size <span class="op">=</span> <span class="fl">200</span>, max_download_size <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="skipping-asset-types-and-peeking-inside-zips" class="level3" data-number="22.8.2"><h3 data-number="22.8.2" class="anchored" data-anchor-id="skipping-asset-types-and-peeking-inside-zips">
+<span class="header-section-number">22.8.2</span> Skipping asset types, and peeking inside zips</h3>
+<p>When building an archive you often want the <em>data</em> but not the stimuli or media (images, audio, video) — those are usually better linked to than mirrored. Two options handle this:</p>
+<ul>
+<li>
+<strong><code>skip_types</code></strong> — a vector of file types never to download, even under <code>download = "all"</code>. Most usefully <code>skip_types = "asset"</code> leaves out stimuli/media. Skipped files are still listed in the manifest with the reason, so the release can point to them.</li>
+<li>
+<strong><code>peek_zips = TRUE</code></strong> — before downloading a <code>.zip</code>, look inside it via an HTTP range request (fetching only the zip’s tail, not the whole file) and only download zips that actually contain data or a codebook. A zip of only stimuli is left to be linked. Downloaded data-zips are unpacked and their inner data files added to the archive (inner assets dropped). See <code>zip_peek()</code> and <code>zip_decision()</code>.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># archive-building recipe: everything except media, peeking inside zips</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>           skip_types <span class="op">=</span> <span class="st">"asset"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="a-file-manifest" class="level3" data-number="22.8.3"><h3 data-number="22.8.3" class="anchored" data-anchor-id="a-file-manifest">
+<span class="header-section-number">22.8.3</span> A file manifest</h3>
+<p>Pass <code>manifest = "some/dir"</code> to write a per-paper JSON manifest listing every repository file with its URL, size, type, and whether it was downloaded (and if not, why). Unsized files are resolved with a lightweight <code>HEAD</code> request so the manifest carries real sizes — useful for auditing a corpus or choosing size caps before a large archive build.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"none"</span>, manifest <span class="op">=</span> <span class="st">"manifests"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section></section><section id="using-an-llm" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="using-an-llm">
 <span class="header-section-number">22.9</span> Using an LLM</h2>
 <p>With <code>llm_use(TRUE)</code>, <code>data_check</code> adds things the rules cannot do reliably:</p>
 <ul>
@@ -859,7 +905,7 @@ Note
 <strong>A study <code>group</code></strong> for each file, inferring which experiment or study a data file belongs to from its name and context — useful when a repository bundles several studies together.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_check"</span>,</span>
 <span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>

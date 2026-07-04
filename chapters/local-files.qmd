@@ -214,31 +214,7 @@ result$table |>
 ```
 
 The `repo_url` column contains the folder path, so you can always identify
-which folder a code file came from. Each folder has its own independent
-`file_limit` (default 20 files).
-
-### Checking more than 20 code files
-
-By default `code_check` analyses at most 20 code files per folder. This
-prevents accidentally processing hundreds of files in, say, an R package
-repository. If your folder has more code files than that and you want them all
-checked, raise the limit or remove it entirely:
-
-```{r}
-# analyse up to 100 code files per folder
-result <- module_run(test_paper(), "code_check",
-                     local_path = "C:/projects/large_project",
-                     file_limit = 100)
-
-# no limit — check every code file found
-result <- module_run(test_paper(), "code_check",
-                     local_path = "C:/projects/large_project",
-                     file_limit = Inf)
-```
-
-The summary text will tell you if the limit was applied:
-`"Only the first 20 files per repository were analysed."` If you see this
-message and want complete results, re-run with a higher `file_limit`.
+which folder a code file came from. Every code file in a folder is checked.
 
 ### Peer review — files sent as a zip archive
 
@@ -359,7 +335,7 @@ file downloads happen once (during `code_check`), not twice.
 |---|---|
 | `$traffic_light` | `"green"` (no issues), `"yellow"` (issues found), or `"na"` (no code files) |
 | `$summary_text` | Plain-text summary of all four checks across all files |
-| `$summary_table` | Counts: `code_n`, `code_abs_path`, `code_missing_files`, `code_min_comments` |
+| `$summary_table` | Counts: `code_n`, `code_checked`, `code_abs_path`, `code_missing_files`, `code_min_comments`, `code_parse_errors` |
 | `$table` | One row per code file with detailed metrics (see below) |
 | `$report` | Full formatted report suitable for pasting into a review |
 
