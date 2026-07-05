@@ -333,12 +333,21 @@ answer.
 **`llm_use(...)`** — set which model/platform to use.
 **`llm_model(model)`** / **`llm_model_list(platform)`** — pick or list models.
 **`llm_max_calls(n)`** — cap how many calls a run may make.
+**`llm_cache(enabled)`** — turn the on-disk LLM response cache on or off, or
+query it (on by default).
+**`llm_cache_clear()`** — delete every cached LLM response.
 
 ```{r}
 #| eval: false
 llm_use("ollama")                       # choose a backend
 llm("Summarise this abstract: ...")     # query the model
+llm_cache()                             # is response caching on?
+llm_cache_clear()                       # wipe cached answers
 ```
+
+Cached answers are replayed on identical later calls, so re-running a report on
+the same paper does not re-bill the provider. Downloaded repository files are
+likewise cached and reused. See the [Caching and Reuse](caching.qmd) chapter.
 
 ## Checking shared code
 

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>22&nbsp; Data Check – The Metacheck Manual</title>
+<title>23&nbsp; Data Check – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-check.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-check.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -184,14 +184,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
       </ul>
@@ -208,157 +214,157 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-check.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-excel-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Excel Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Excel Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -375,13 +381,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -417,29 +423,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">22.1</span> What it checks</a></li>
-  <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">22.2</span> A worked example</a></li>
-  <li><a href="#file-classification" id="toc-file-classification" class="nav-link" data-scroll-target="#file-classification"><span class="header-section-number">22.3</span> File classification</a></li>
-  <li><a href="#the-data-tree" id="toc-the-data-tree" class="nav-link" data-scroll-target="#the-data-tree"><span class="header-section-number">22.4</span> The data tree</a></li>
-  <li><a href="#column-facets" id="toc-column-facets" class="nav-link" data-scroll-target="#column-facets"><span class="header-section-number">22.5</span> Column facets</a></li>
-  <li><a href="#unit-of-observation" id="toc-unit-of-observation" class="nav-link" data-scroll-target="#unit-of-observation"><span class="header-section-number">22.6</span> Unit of observation</a></li>
-  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">22.7</span> What you get back</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">23.1</span> What it checks</a></li>
+  <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">23.2</span> A worked example</a></li>
+  <li><a href="#file-classification" id="toc-file-classification" class="nav-link" data-scroll-target="#file-classification"><span class="header-section-number">23.3</span> File classification</a></li>
+  <li><a href="#the-data-tree" id="toc-the-data-tree" class="nav-link" data-scroll-target="#the-data-tree"><span class="header-section-number">23.4</span> The data tree</a></li>
+  <li><a href="#column-facets" id="toc-column-facets" class="nav-link" data-scroll-target="#column-facets"><span class="header-section-number">23.5</span> Column facets</a></li>
+  <li><a href="#unit-of-observation" id="toc-unit-of-observation" class="nav-link" data-scroll-target="#unit-of-observation"><span class="header-section-number">23.6</span> Unit of observation</a></li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.7</span> What you get back</a></li>
   <li>
-<a href="#downloading-files" id="toc-downloading-files" class="nav-link" data-scroll-target="#downloading-files"><span class="header-section-number">22.8</span> Downloading files</a>
+<a href="#downloading-files" id="toc-downloading-files" class="nav-link" data-scroll-target="#downloading-files"><span class="header-section-number">23.8</span> Downloading files</a>
   <ul class="collapse">
-<li><a href="#size-caps" id="toc-size-caps" class="nav-link" data-scroll-target="#size-caps"><span class="header-section-number">22.8.1</span> Size caps</a></li>
-  <li><a href="#skipping-asset-types-and-peeking-inside-zips" id="toc-skipping-asset-types-and-peeking-inside-zips" class="nav-link" data-scroll-target="#skipping-asset-types-and-peeking-inside-zips"><span class="header-section-number">22.8.2</span> Skipping asset types, and peeking inside zips</a></li>
-  <li><a href="#a-file-manifest" id="toc-a-file-manifest" class="nav-link" data-scroll-target="#a-file-manifest"><span class="header-section-number">22.8.3</span> A file manifest</a></li>
+<li><a href="#size-caps" id="toc-size-caps" class="nav-link" data-scroll-target="#size-caps"><span class="header-section-number">23.8.1</span> Size caps</a></li>
+  <li><a href="#skipping-asset-types-and-peeking-inside-zips" id="toc-skipping-asset-types-and-peeking-inside-zips" class="nav-link" data-scroll-target="#skipping-asset-types-and-peeking-inside-zips"><span class="header-section-number">23.8.2</span> Skipping asset types, and peeking inside zips</a></li>
+  <li><a href="#a-file-manifest" id="toc-a-file-manifest" class="nav-link" data-scroll-target="#a-file-manifest"><span class="header-section-number">23.8.3</span> A file manifest</a></li>
   </ul>
 </li>
-  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">22.9</span> Using an LLM</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">22.10</span> Related</a></li>
+  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">23.9</span> Using an LLM</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.10</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-check.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-check.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span>
+<span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span>
 </h1>
 </div>
 
@@ -468,8 +474,8 @@ Warning
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<section id="what-it-checks" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">22.1</span> What it checks</h2>
+<section id="what-it-checks" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">23.1</span> What it checks</h2>
 <p>The <code>data_check</code> module is the foundation for all of Metacheck’s data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:</p>
 <ol type="1">
 <li>
@@ -493,8 +499,8 @@ Note
 <p>This chapter runs entirely offline. We build a small example repository in a temporary folder and point <code>data_check</code> at it with <code>local_path</code>. The same calls work against a real downloaded repository — see the <a href="../chapters/local-files.html">Local Files</a> chapter.</p>
 </div>
 </div>
-</section><section id="a-worked-example" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="a-worked-example">
-<span class="header-section-number">22.2</span> A worked example</h2>
+</section><section id="a-worked-example" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="a-worked-example">
+<span class="header-section-number">23.2</span> A worked example</h2>
 <p>We create a tiny study folder with one data file and a code file:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_check_demo"</span><span class="op">)</span></span>
@@ -528,8 +534,8 @@ Note
 #&gt; -  We found 1 tabular data file and extracted 6 columns from 1 of them.</code></pre>
 </div>
 </div>
-</section><section id="file-classification" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="file-classification">
-<span class="header-section-number">22.3</span> File classification</h2>
+</section><section id="file-classification" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="file-classification">
+<span class="header-section-number">23.3</span> File classification</h2>
 <p>The first thing <code>data_check</code> produces is a classification of every file it found. This is available in the <code>structure</code> element:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">structure</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"file_type"</span>, <span class="st">"data_type"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -600,8 +606,8 @@ Note
 <td>images, PDFs, and other non-tabular binaries</td>
 </tr>
 </tbody>
-</table></section><section id="the-data-tree" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="the-data-tree">
-<span class="header-section-number">22.4</span> The data tree</h2>
+</table></section><section id="the-data-tree" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="the-data-tree">
+<span class="header-section-number">23.4</span> The data tree</h2>
 <p>To make the layout of a repository easy to see at a glance, <code>data_check</code>’s report includes a <strong>data tree</strong> — the folder structure of the repository drawn as an indented tree. Directories are listed before files and both are sorted alphabetically, so the same repository always produces the same tree. In the rendered report the tree appears inside a collapsible <em>“Data Tree”</em> callout (one per repository, when several are linked).</p>
 <p>The tree is part of the module’s <code>report</code>. We can pull the tree lines out of the report to show them here:</p>
 <div class="cell">
@@ -613,16 +619,16 @@ Note
 #&gt; └── analysis.R
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(16L, 2L, 20L, 2L, 20L, 19L), Mean = c(40.95, 
-#&gt;     NA, NA, NA, 569.25, 49.9), SD = c(15.497, NA, NA, NA, 176.322, 
-#&gt;     7.057), Min = c(18, NA, NA, NA, 338, 38.6), Max = c(65, NA, 
-#&gt;     NA, NA, 868, 65.3)), row.names = c("age", "condition", "participant_id",</code></pre>
+#&gt;     0), "N Unique" = c(16L, 2L, 20L, 2L, 20L, 20L), Mean = c(43.45, 
+#&gt;     NA, NA, NA, 585.5, 52.035), SD = c(11.971, NA, NA, NA, 186.885, 
+#&gt;     7.566), Min = c(22, NA, NA, NA, 309, 35.8), Max = c(64, NA, 
+#&gt;     NA, NA, 831, 66.9)), row.names = c("age", "condition", "participant_id",</code></pre>
 </div>
 </div>
 <p>For our example folder — a <code>data/</code> directory holding <code>study.csv</code>, plus a top-level <code>analysis.R</code> — the tree makes the organisation obvious. On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level.</p>
 <p>This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
-</section><section id="column-facets" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="column-facets">
-<span class="header-section-number">22.5</span> Column facets</h2>
+</section><section id="column-facets" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="column-facets">
+<span class="header-section-number">23.5</span> Column facets</h2>
 <p>For every readable tabular file, <code>data_check</code> reads the data and describes each column. Earlier versions gave each column a single <code>col_type</code> value — but that conflated things that are not really alternatives: <em>how</em> a value is stored (a number), <em>what level</em> it is measured on (nominal, ordinal, …), and <em>what it actually measures</em> (a reaction time, an age). Following the <a href="https://ddialliance.org/">DDI</a> metadata standard, <code>data_check</code> now describes each column with several <strong>orthogonal facets</strong> instead, so these independent properties are recorded independently. The per-column results are in the <code>table</code> element:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"representation"</span>, <span class="st">"measurement_level"</span>,</span>
@@ -778,8 +784,8 @@ Note
 <p>The old single <code>col_type</code> field has been replaced by these facets. If you have code that read <code>mo$table$col_type</code>, read the relevant facet instead — most often <code>representation</code> (numeric vs text) or <code>concept</code>.</p>
 </div>
 </div>
-</section><section id="unit-of-observation" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="unit-of-observation">
-<span class="header-section-number">22.6</span> Unit of observation</h2>
+</section><section id="unit-of-observation" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="unit-of-observation">
+<span class="header-section-number">23.6</span> Unit of observation</h2>
 <p><code>data_check</code> also infers, for each data file, what <strong>one row represents</strong> — a <code>person</code>, a <code>trial</code>, a <code>session</code>, or a <code>dyad</code> (DDI’s <code>analysisUnit</code>). This matters because it tells a reviewer whether rows are independent (one per participant) or nested (many trials per participant), which changes how the data should be analysed. It is inferred from the identifier column(s) and whether they are unique per row: a unique-per-row id is person-level; a repeating id alongside a <code>trial</code>/<code>item</code> column is trial-level (long format); a repeating id with a <code>session</code>/<code>wave</code> column is a repeated-measures unit; two id columns suggest a dyad.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source_file"</span>, <span class="st">"analysis_unit"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -800,8 +806,8 @@ Note
 </div>
 </div>
 <p>Each row of our <code>study.csv</code> is one participant, so the file is <code>person</code>-level. When a repository <strong>mixes</strong> units — say a person-level file next to a trial-level file — the report flags it, because combining files at different levels without aggregating is a common and easily-missed error.</p>
-</section><section id="what-you-get-back" class="level2" data-number="22.7"><h2 data-number="22.7" class="anchored" data-anchor-id="what-you-get-back">
-<span class="header-section-number">22.7</span> What you get back</h2>
+</section><section id="what-you-get-back" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">23.7</span> What you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -841,9 +847,9 @@ Note
 </tbody>
 </table>
 <p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> by itself — running <code>data_validate</code> or <code>codebook_check</code> triggers it automatically and reuses the result.</p>
-</section><section id="downloading-files" class="level2" data-number="22.8"><h2 data-number="22.8" class="anchored" data-anchor-id="downloading-files">
-<span class="header-section-number">22.8</span> Downloading files</h2>
-<p>When a paper links to an online repository, <code>data_check</code> downloads the files it needs into a shared on-disk cache (reused across runs, so a file is never fetched twice). The <code>download</code> argument controls <strong>what</strong> is fetched:</p>
+</section><section id="downloading-files" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="downloading-files">
+<span class="header-section-number">23.8</span> Downloading files</h2>
+<p>When a paper links to an online repository, <code>data_check</code> downloads the files it needs into a shared on-disk cache (reused across runs and across modules, so a file is never fetched twice — see <a href="../chapters/caching.html">Caching and Reuse</a>). The <code>download</code> argument controls <strong>what</strong> is fetched:</p>
 <ul>
 <li>
 <code>download = "data"</code> (the default) fetches only the machine-readable files the checks analyse — tabular data plus codebook/README files.</li>
@@ -859,8 +865,8 @@ Note
 <span><span class="co"># fetch everything, for building a full data archive</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="size-caps" class="level3" data-number="22.8.1"><h3 data-number="22.8.1" class="anchored" data-anchor-id="size-caps">
-<span class="header-section-number">22.8.1</span> Size caps</h3>
+<section id="size-caps" class="level3" data-number="23.8.1"><h3 data-number="23.8.1" class="anchored" data-anchor-id="size-caps">
+<span class="header-section-number">23.8.1</span> Size caps</h3>
 <p>Two caps bound how much is downloaded per repository. They work differently:</p>
 <ul>
 <li>
@@ -873,8 +879,8 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>           max_file_size <span class="op">=</span> <span class="fl">200</span>, max_download_size <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="skipping-asset-types-and-peeking-inside-zips" class="level3" data-number="22.8.2"><h3 data-number="22.8.2" class="anchored" data-anchor-id="skipping-asset-types-and-peeking-inside-zips">
-<span class="header-section-number">22.8.2</span> Skipping asset types, and peeking inside zips</h3>
+</section><section id="skipping-asset-types-and-peeking-inside-zips" class="level3" data-number="23.8.2"><h3 data-number="23.8.2" class="anchored" data-anchor-id="skipping-asset-types-and-peeking-inside-zips">
+<span class="header-section-number">23.8.2</span> Skipping asset types, and peeking inside zips</h3>
 <p>When building an archive you often want the <em>data</em> but not the stimuli or media (images, audio, video) — those are usually better linked to than mirrored. Two options handle this:</p>
 <ul>
 <li>
@@ -887,14 +893,14 @@ Note
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>           skip_types <span class="op">=</span> <span class="st">"asset"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="a-file-manifest" class="level3" data-number="22.8.3"><h3 data-number="22.8.3" class="anchored" data-anchor-id="a-file-manifest">
-<span class="header-section-number">22.8.3</span> A file manifest</h3>
+</section><section id="a-file-manifest" class="level3" data-number="23.8.3"><h3 data-number="23.8.3" class="anchored" data-anchor-id="a-file-manifest">
+<span class="header-section-number">23.8.3</span> A file manifest</h3>
 <p>Pass <code>manifest = "some/dir"</code> to write a per-paper JSON manifest listing every repository file with its URL, size, type, and whether it was downloaded (and if not, why). Unsized files are resolved with a lightweight <code>HEAD</code> request so the manifest carries real sizes — useful for auditing a corpus or choosing size caps before a large archive build.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"none"</span>, manifest <span class="op">=</span> <span class="st">"manifests"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="using-an-llm" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="using-an-llm">
-<span class="header-section-number">22.9</span> Using an LLM</h2>
+</section></section><section id="using-an-llm" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="using-an-llm">
+<span class="header-section-number">23.9</span> Using an LLM</h2>
 <p>With <code>llm_use(TRUE)</code>, <code>data_check</code> adds things the rules cannot do reliably:</p>
 <ul>
 <li>
@@ -913,8 +919,8 @@ Note
 <span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">group</span>     <span class="co"># study grouping, otherwise NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="../chapters/llms.html">LLMs</a> chapter for how to configure a model.</p>
-</section><section id="related" class="level2" data-number="22.10"><h2 data-number="22.10" class="anchored" data-anchor-id="related">
-<span class="header-section-number">22.10</span> Related</h2>
+</section><section id="related" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="related">
+<span class="header-section-number">23.10</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-data-validate.html">Data Validate</a> runs automated data-quality checks on the columns <code>data_check</code> extracts.</li>
@@ -1328,12 +1334,12 @@ Note
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/mod-code-check.html" class="pagination-link" aria-label="Code Check">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Code Check</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/mod-data-validate.html" class="pagination-link" aria-label="Data Validate">
-        <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

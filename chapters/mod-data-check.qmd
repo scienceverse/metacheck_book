@@ -157,7 +157,7 @@ The `$structure` and `$previews` elements are what the downstream modules consum
 
 ## Downloading files
 
-When a paper links to an online repository, `data_check` downloads the files it needs into a shared on-disk cache (reused across runs, so a file is never fetched twice). The `download` argument controls **what** is fetched:
+When a paper links to an online repository, `data_check` downloads the files it needs into a shared on-disk cache (reused across runs and across modules, so a file is never fetched twice — see [Caching and Reuse](caching.qmd)). The `download` argument controls **what** is fetched:
 
 - `download = "data"` (the default) fetches only the machine-readable files the checks analyse — tabular data plus codebook/README files.
 - `download = "all"` fetches **every** file in the repository (code, materials, PDFs, assets, ...). This is the right choice when building a complete data archive with `convert_psychds()`.

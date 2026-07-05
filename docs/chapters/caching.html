@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>18&nbsp; Exact p-Values – The Metacheck Manual</title>
+<title>6&nbsp; Caching and Reuse – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/mod-stat-p-nonsig.html" rel="next">
-<link href="../chapters/mod-stat-check.html" rel="prev">
+<link href="../chapters/papers-databases.html" rel="next">
+<link href="../chapters/llms.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-p-exact.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/caching.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -145,13 +145,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Getting Started</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
   </div>
 </li>
@@ -204,13 +204,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Modules</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
@@ -267,7 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link active">
+  <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
@@ -423,18 +423,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">18.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">18.2</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">18.3</span> Running on many papers</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">18.4</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">18.5</span> Options</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">18.6</span> Validation</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-p-exact.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<li><a href="#where-the-caches-live" id="toc-where-the-caches-live" class="nav-link active" data-scroll-target="#where-the-caches-live"><span class="header-section-number">6.1</span> Where the caches live</a></li>
+  <li>
+<a href="#the-llm-response-cache" id="toc-the-llm-response-cache" class="nav-link" data-scroll-target="#the-llm-response-cache"><span class="header-section-number">6.2</span> The LLM response cache</a>
+  <ul class="collapse">
+<li><a href="#why-it-is-safe-to-cache-an-llm-answer" id="toc-why-it-is-safe-to-cache-an-llm-answer" class="nav-link" data-scroll-target="#why-it-is-safe-to-cache-an-llm-answer"><span class="header-section-number">6.2.1</span> Why it is safe to cache an LLM answer</a></li>
+  <li><a href="#what-is-stored-and-how-entries-are-keyed" id="toc-what-is-stored-and-how-entries-are-keyed" class="nav-link" data-scroll-target="#what-is-stored-and-how-entries-are-keyed"><span class="header-section-number">6.2.2</span> What is stored, and how entries are keyed</a></li>
+  <li><a href="#turning-it-on-and-off" id="toc-turning-it-on-and-off" class="nav-link" data-scroll-target="#turning-it-on-and-off"><span class="header-section-number">6.2.3</span> Turning it on and off</a></li>
+  <li><a href="#clearing-it" id="toc-clearing-it" class="nav-link" data-scroll-target="#clearing-it"><span class="header-section-number">6.2.4</span> Clearing it</a></li>
+  <li><a href="#what-this-means-in-practice" id="toc-what-this-means-in-practice" class="nav-link" data-scroll-target="#what-this-means-in-practice"><span class="header-section-number">6.2.5</span> What this means in practice</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#the-repository-file-download-cache" id="toc-the-repository-file-download-cache" class="nav-link" data-scroll-target="#the-repository-file-download-cache"><span class="header-section-number">6.3</span> The repository-file download cache</a>
+  <ul class="collapse">
+<li><a href="#what-it-does" id="toc-what-it-does" class="nav-link" data-scroll-target="#what-it-does"><span class="header-section-number">6.3.1</span> What it does</a></li>
+  <li><a href="#how-entries-are-keyed" id="toc-how-entries-are-keyed" class="nav-link" data-scroll-target="#how-entries-are-keyed"><span class="header-section-number">6.3.2</span> How entries are keyed</a></li>
+  <li><a href="#it-is-always-on" id="toc-it-is-always-on" class="nav-link" data-scroll-target="#it-is-always-on"><span class="header-section-number">6.3.3</span> It is always on</a></li>
+  <li><a href="#controlling-what-gets-downloaded" id="toc-controlling-what-gets-downloaded" class="nav-link" data-scroll-target="#controlling-what-gets-downloaded"><span class="header-section-number">6.3.4</span> Controlling what gets downloaded</a></li>
+  <li><a href="#clearing-it-1" id="toc-clearing-it-1" class="nav-link" data-scroll-target="#clearing-it-1"><span class="header-section-number">6.3.5</span> Clearing it</a></li>
+  </ul>
+</li>
+  <li><a href="#how-the-caches-work-together-in-a-full-run" id="toc-how-the-caches-work-together-in-a-full-run" class="nav-link" data-scroll-target="#how-the-caches-work-together-in-a-full-run"><span class="header-section-number">6.4</span> How the caches work together in a full run</a></li>
+  <li><a href="#a-note-on-the-in-memory-synonym-cache" id="toc-a-note-on-the-in-memory-synonym-cache" class="nav-link" data-scroll-target="#a-note-on-the-in-memory-synonym-cache"><span class="header-section-number">6.5</span> A note on the in-memory synonym cache</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.6</span> Summary</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/caching.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-stat-p-exact.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/caching.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span>
+<span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span>
 </h1>
 </div>
 
@@ -449,160 +467,202 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="18.1"><h2 data-number="18.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">18.1</span> What it checks</h2>
-<p>The <code>stat_p_exact</code> module flags two kinds of problematic p-values:</p>
+</header><p>The two slowest and most expensive parts of a Metacheck run are <strong>querying a language model</strong> and <strong>downloading files from an online repository</strong>. Both are re-encountered constantly: you re-run a report after tweaking a module, you process the same paper in several modules, or you build an archive from hundreds of repositories overnight and it stops halfway. To avoid paying for the same work twice, Metacheck keeps two on-disk caches — one for LLM responses, one for downloaded repository files — plus a small in-memory cache used by a single module.</p>
+<p>This chapter explains what each cache stores, where it lives, how entries are keyed (i.e.&nbsp;what counts as “the same” request), when it is reused, and how to inspect or clear it.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The short version
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>Imprecise p-values</strong> — for example <code>p &lt; .05</code> or <code>p = n.s.</code> instead of an exact value like <code>p = .031</code>.</li>
+<strong>LLM responses</strong> are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with <code>llm_cache()</code>; wipe with <code>llm_cache_clear()</code>.</li>
 <li>
-<strong>P-values reported as exactly zero</strong> — for example <code>p = .000</code> or <code>p = 0.00</code>. A p-value is never exactly zero; <code>p = .000</code> is a rounding artifact (the true value is simply smaller than the reported precision) and should be written <code>p &lt; .001</code>.</li>
+<strong>Downloaded repository files</strong> are cached automatically (always on). The same file is fetched once and reused by every module and every later session. Clear it by deleting the cache directory.</li>
+<li>Both caches live in a persistent per-user location (via <code>rappdirs</code>), so they survive across R sessions.</li>
 </ul>
-<p>Each detected value carries an <code>imprecise</code> flag and a <code>zero</code> flag, and either kind turns the traffic light <strong>red</strong>. When a <code>p = .000</code> is found, the report includes its own guidance explaining why exactly-zero p-values should be reported as <code>p &lt; .001</code>.</p>
-<p>Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.</p>
-<p>This module is <strong>fully offline</strong>.</p>
-</section><section id="running-the-module" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">18.2</span> Running the module</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
-<p>The <code>table</code> lists every detected p-value, with <code>imprecise</code> and <code>zero</code> flags:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "red"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "We found 1 imprecise *p* value out of 3 detected *p* values."</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"imprecise"</span>, <span class="st">"zero"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead><tr class="header">
-<th style="text-align: left;">text</th>
-<th style="text-align: left;">p_comp</th>
-<th style="text-align: right;">p_value</th>
-<th style="text-align: left;">imprecise</th>
-<th style="text-align: left;">zero</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">p = 0.005</td>
-<td style="text-align: left;">=</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">p =0.152</td>
-<td style="text-align: left;">=</td>
-<td style="text-align: right;">0.152</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">p &gt; .05</td>
-<td style="text-align: left;">&gt;</td>
-<td style="text-align: right;">0.050</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
-<p>To see only the problematic ones:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">imprecise</span> <span class="op">|</span> <span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">zero</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"expanded"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<section id="where-the-caches-live" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="where-the-caches-live">
+<span class="header-section-number">6.1</span> Where the caches live</h2>
+<p>Both on-disk caches are stored in the standard per-user cache location for your operating system, resolved by the <code>rappdirs</code> package under <code>scienceverse/metacheck</code>. You never need to create or manage these directories by hand — Metacheck creates them on first use.</p>
+<table class="caption-top table">
 <colgroup>
-<col style="width: 5%">
-<col style="width: 94%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead><tr class="header">
-<th style="text-align: left;">text</th>
-<th style="text-align: left;">expanded</th>
-</tr></thead>
-<tbody><tr class="odd">
-<td style="text-align: left;">p &gt; .05</td>
-<td style="text-align: left;">There was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).</td>
-</tr></tbody>
-</table>
-</div>
-</div>
-</section><section id="running-on-many-papers" class="level2" data-number="18.3"><h2 data-number="18.3" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">18.3</span> Running on many papers</h2>
-<p>The <code>summary_table</code> reports a per-paper count for each problem type: <code>n_imprecise</code> (imprecise p-values) and <code>n_zero</code> (p-values reported as exactly zero).</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead><tr class="header">
-<th style="text-align: left;">paper_id</th>
-<th style="text-align: right;">n_imprecise</th>
-<th style="text-align: right;">n_zero</th>
+<th>Cache</th>
+<th>Directory (under the user cache dir)</th>
+<th>Contents</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">0956797613520608</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
+<td>LLM responses</td>
+<td><code>metacheck/llm/</code></td>
+<td>one <code>.rds</code> per distinct LLM call</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">0956797614522816</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">0956797614527830</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0956797614557697</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">0956797614560771</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0956797614566469</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
+<td>Repository files</td>
+<td><code>metacheck/repo_files/</code></td>
+<td>one sub-folder per repository, mirroring its files</td>
 </tr>
 </tbody>
 </table>
+<p>You can see the exact paths on your machine with:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_cache_dir.html">user_cache_dir</a></span><span class="op">(</span><span class="st">"metacheck/llm"</span>, <span class="st">"scienceverse"</span><span class="op">)</span></span>
+<span><span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_cache_dir.html">user_cache_dir</a></span><span class="op">(</span><span class="st">"metacheck/repo_files"</span>, <span class="st">"scienceverse"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>On Windows these sit under <code>…/AppData/Local/scienceverse/metacheck/Cache/</code>, on macOS under <code>~/Library/Caches/…</code>, and on Linux under <code>~/.cache/…</code>.</p>
+</section><section id="the-llm-response-cache" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="the-llm-response-cache">
+<span class="header-section-number">6.2</span> The LLM response cache</h2>
+<section id="why-it-is-safe-to-cache-an-llm-answer" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="why-it-is-safe-to-cache-an-llm-answer">
+<span class="header-section-number">6.2.1</span> Why it is safe to cache an LLM answer</h3>
+<p>Normally you would not cache a language-model call: ask the same question twice and you can get two different answers. Metacheck sidesteps this by forcing <strong>temperature 0</strong> on every <code>llm()</code> call. At temperature 0 the model is (as close as providers allow) deterministic: the same inputs produce the same output. That makes the answer <em>reproducible</em>, and a reproducible answer is one you can safely store and replay. The cache is therefore not a shortcut that changes results — replaying a cached answer gives you the same thing a fresh call would have.</p>
+<p>This is the same property that makes Metacheck’s LLM use reproducible in the first place: it is documented alongside the LLM workflow in the <a href="../chapters/llms.html">Using Large Language Models</a> chapter.</p>
+</section><section id="what-is-stored-and-how-entries-are-keyed" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="what-is-stored-and-how-entries-are-keyed">
+<span class="header-section-number">6.2.2</span> What is stored, and how entries are keyed</h3>
+<p>The cache is <strong>keyed by everything that determines the answer</strong>. When <code>llm()</code> is about to make a call, it builds a key from five inputs:</p>
+<ul>
+<li>the <strong>model</strong> name,</li>
+<li>the <strong>system prompt</strong>,</li>
+<li>the <strong>input text</strong> (the row of text being classified),</li>
+<li>the <strong>type specification</strong> (the structure the answer must take), and</li>
+<li>any <strong>params</strong> (e.g.&nbsp;a seed).</li>
+</ul>
+<p>These are serialised to a canonical byte stream and reduced to an MD5 hash, which becomes the filename (<code>&lt;hash&gt;.rds</code>). Two details make the key robust:</p>
+<ul>
+<li>
+<strong><code>params</code> are sorted by name</strong> before hashing, so <code>list(seed = 1, top_p = 1)</code> and <code>list(top_p = 1, seed = 1)</code> hit the same entry — list order does not matter.</li>
+<li>
+<strong>The type spec is reduced to its printed form</strong>, so if you change the requested output structure (add a field, change a description), the key changes and you get a fresh call rather than a stale answer for the old structure.</li>
+</ul>
+<p>Change <em>any</em> of these five inputs and the key changes, so the cache misses and a real call is made. This is exactly what you want: a different question is a different question.</p>
+<p>Each entry stores not just the parsed answer (the data frame <code>llm()</code> returns) but also the raw provider result and, where the provider exposes it, the model’s reasoning/thinking trace — so nothing is lost by going through the cache.</p>
+</section><section id="turning-it-on-and-off" class="level3" data-number="6.2.3"><h3 data-number="6.2.3" class="anchored" data-anchor-id="turning-it-on-and-off">
+<span class="header-section-number">6.2.3</span> Turning it on and off</h3>
+<p>The cache is <strong>on by default</strong>. Query or set it with <code>llm_cache()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># is the cache on? (TRUE by default)</span></span>
+<span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>     <span class="co"># force every call to hit the provider afresh</span></span>
+<span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># re-enable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="18.4"><h2 data-number="18.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">18.4</span> A clean example and one with problems</h2>
-<p>A known paper that reports imprecise p-values:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797614560771`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 4 detected <em>p</em> values.</p>
-<p>A paper that reports a p-value as exactly zero (<code>p = .000</code>). This is flagged separately from imprecise values, with its own guidance that exactly-zero p-values should be reported as <code>p &lt; .001</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797615603702`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exact P-Values: We found 1 <em>p</em> value reported as exactly zero out of 8 detected <em>p</em> values.</p>
-<p>A paper that reports all p-values exactly returns green:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797616665351`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exact P-Values: We found no imprecise <em>p</em> values or <em>p</em>-values of exactly zero out of 8 detected.</p>
-</section><section id="options" class="level2" data-number="18.5"><h2 data-number="18.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">18.5</span> Options</h2>
-<p><code>stat_p_exact</code> takes only the <code>paper</code> argument.</p>
-</section><section id="validation" class="level2" data-number="18.6"><h2 data-number="18.6" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">18.6</span> Validation</h2>
-<blockquote class="blockquote">
-<p>In a sample of 225 papers containing 405 instances of non-exact p-values, the module correctly detected 269 cases (true positives) and incorrectly identified 78 (false positives). It missed 136 instances (false negatives) and correctly identified 4557 cases of precisely reported p-values (true negatives). 78% of positive detections were correct (positive predictive value).</p>
-</blockquote>
+<p>Disabling it is mostly useful when you are deliberately testing provider behaviour or measuring latency, and want to be sure no answer is being replayed.</p>
+</section><section id="clearing-it" class="level3" data-number="6.2.4"><h3 data-number="6.2.4" class="anchored" data-anchor-id="clearing-it">
+<span class="header-section-number">6.2.4</span> Clearing it</h3>
+<p>To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use <code>llm_cache_clear()</code>, which deletes all cache entries and returns how many it removed:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># returns the number of entries deleted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You do not normally need to clear the cache to pick up a <em>changed</em> prompt or model: because those are part of the key, a change produces a fresh call automatically. Clearing is for reclaiming space or forcing a clean slate.</p>
+</section><section id="what-this-means-in-practice" class="level3" data-number="6.2.5"><h3 data-number="6.2.5" class="anchored" data-anchor-id="what-this-means-in-practice">
+<span class="header-section-number">6.2.5</span> What this means in practice</h3>
+<p>Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module’s <em>non-LLM</em> code, or to regenerate a report, without watching your API bill climb. It also means the <a href="../chapters/llms.html"><code>llm_max_calls()</code></a> cap counts <em>actual</em> provider calls — cached replays do not consume it.</p>
+</section></section><section id="the-repository-file-download-cache" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="the-repository-file-download-cache">
+<span class="header-section-number">6.3</span> The repository-file download cache</h2>
+<section id="what-it-does" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="what-it-does">
+<span class="header-section-number">6.3.1</span> What it does</h3>
+<p>Modules that read file <em>contents</em> — <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-code-check.html">code_check</a> — need local copies of the files a repository shares. <code>repo_check</code> only <em>lists</em> the files on OSF, GitHub, and Zenodo (it does not fetch them). When a content-reading module needs a file, it is downloaded once into a shared cache and read from there. Every later read — by another module in the same run, or by any module in a later session — reuses the cached copy instead of downloading again.</p>
+<p>This is why, in a long archive-building run, an interruption is cheap to recover from: the files already fetched are still on disk, and resuming skips straight past them.</p>
+</section><section id="how-entries-are-keyed" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="how-entries-are-keyed">
+<span class="header-section-number">6.3.2</span> How entries are keyed</h3>
+<p>Each repository gets its own sub-folder, named by a filesystem-safe encoding of its URL (the scheme is stripped and any awkward characters are replaced), so two different repositories never collide and the <em>same</em> repository always resolves to the same folder across sessions. Inside that folder, each file is stored <strong>at its repository-relative path</strong>, not just its basename — so two files both called <code>data.csv</code> in different sub-folders are kept apart rather than overwriting each other.</p>
+<p>Reuse is decided by a simple, robust test: if the target path already exists <strong>and is non-empty</strong>, it is treated as already downloaded and reused. A zero-byte file (the fingerprint of a download that failed partway) is <em>not</em> trusted — it is re-fetched. This means a broken partial download never silently poisons later runs.</p>
+</section><section id="it-is-always-on" class="level3" data-number="6.3.3"><h3 data-number="6.3.3" class="anchored" data-anchor-id="it-is-always-on">
+<span class="header-section-number">6.3.3</span> It is always on</h3>
+<p>Unlike the LLM cache, the download cache has <strong>no on/off switch</strong> — reuse of already-fetched files is always active, because there is no downside: the file on disk is a byte-for-byte copy of the remote file. What you <em>can</em> control is how much gets downloaded in the first place, through the <code>data_check</code> arguments described below.</p>
+</section><section id="controlling-what-gets-downloaded" class="level3" data-number="6.3.4"><h3 data-number="6.3.4" class="anchored" data-anchor-id="controlling-what-gets-downloaded">
+<span class="header-section-number">6.3.4</span> Controlling what gets downloaded</h3>
+<p>The download cache stores whatever the modules fetch, and <code>data_check</code> gives you fine control over that:</p>
+<ul>
+<li>
+<strong><code>download</code></strong> — <code>"data"</code> (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); <code>"all"</code> fetches every file in the repository (the right choice when building a complete archive with <code>convert_psychds()</code>); <code>FALSE</code>/<code>"none"</code> downloads nothing and classifies files by name only.</li>
+<li>
+<strong><code>skip_types</code></strong> — a vector of file <em>types</em> never to download even under <code>download = "all"</code> — e.g.&nbsp;<code>"asset"</code> for stimuli and media a release links to rather than mirrors.</li>
+<li>
+<strong><code>peek_zips</code></strong> — look <em>inside</em> each <code>.zip</code> using an HTTP range request (without downloading the whole archive) and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead.</li>
+<li>
+<strong><code>max_file_size</code></strong> / <strong><code>max_download_size</code></strong> — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository’s total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.</li>
+</ul>
+<p>These arguments decide <em>what enters the cache</em>; once a file is in, it stays and is reused. See the <a href="../chapters/mod-data-check.html">data_check</a> chapter for full details and examples.</p>
+</section><section id="clearing-it-1" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="clearing-it-1">
+<span class="header-section-number">6.3.5</span> Clearing it</h3>
+<p>There is no dedicated clearing function; the cache is just files on disk. To reclaim space or force fresh downloads, delete the directory (or a single repository’s sub-folder within it):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the whole download cache</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_cache_dir.html">user_cache_dir</a></span><span class="op">(</span><span class="st">"metacheck/repo_files"</span>, <span class="st">"scienceverse"</span><span class="op">)</span>,</span>
+<span>       recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Because entries are keyed by repository URL and relative path, deleting is safe: anything still needed is simply re-downloaded on the next run.</p>
+</section></section><section id="how-the-caches-work-together-in-a-full-run" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="how-the-caches-work-together-in-a-full-run">
+<span class="header-section-number">6.4</span> How the caches work together in a full run</h2>
+<p>When you run several modules on a paper — or build an archive across a corpus — the two caches complement each other:</p>
+<ol type="1">
+<li>
+<code>repo_check</code> lists the repository’s files (no download).</li>
+<li>
+<code>data_check</code> / <code>code_check</code> download the files they need into the <strong>repository-file cache</strong>; a second module reading the same file reuses it.</li>
+<li>When an LLM is enabled, <code>data_check</code>, <code>codebook_check</code>, and other LLM-using modules send text to <code>llm()</code>, whose answers are stored in the <strong>LLM response cache</strong>.</li>
+<li>Re-running the whole pipeline, or resuming an interrupted archive build, replays both caches: files are read from disk and LLM answers are replayed, so only genuinely new work is done.</li>
+</ol>
+<p>Modules such as <code>codebook_check</code> do not have a <em>separate</em> results cache of their own — their re-run savings come entirely from these two shared caches (the files they read and the LLM answers they request). This keeps the caching story simple: there are two on-disk caches, and every module benefits from them without needing its own.</p>
+</section><section id="a-note-on-the-in-memory-synonym-cache" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="a-note-on-the-in-memory-synonym-cache">
+<span class="header-section-number">6.5</span> A note on the in-memory synonym cache</h2>
+<p>One module, <a href="../chapters/mod-funding-check.html">funding_check</a>, builds a list of organisation-name synonyms once and keeps it in memory for the rest of the session (an ordinary in-memory cache, not on disk). It is an implementation detail with no user-facing controls: it simply avoids rebuilding the same lookup repeatedly within a single R session, and disappears when the session ends. You never need to manage it.</p>
+</section><section id="summary" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">6.6</span> Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead><tr class="header">
+<th>Cache</th>
+<th>Scope</th>
+<th>On by default</th>
+<th>Key</th>
+<th>Toggle</th>
+<th>Clear</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>LLM responses</td>
+<td>on disk, cross-session</td>
+<td>yes</td>
+<td>model + prompt + text + type + params</td>
+<td><code>llm_cache()</code></td>
+<td><code>llm_cache_clear()</code></td>
+</tr>
+<tr class="even">
+<td>Repository files</td>
+<td>on disk, cross-session</td>
+<td>yes (always on)</td>
+<td>repo URL + relative path</td>
+<td>— (control via <code>data_check</code> download args)</td>
+<td>delete the cache directory</td>
+</tr>
+<tr class="odd">
+<td>Funding synonyms</td>
+<td>in memory, per session</td>
+<td>yes</td>
+<td>—</td>
+<td>—</td>
+<td>ends with the session</td>
+</tr>
+</tbody>
+</table>
+<p>The guiding principle is the same for both on-disk caches: <strong>cache only what is reproducible, and key it on everything that could change the result.</strong> LLM answers are cached because temperature 0 makes them reproducible; downloaded files are cached because a byte-for-byte copy of a remote file is trivially reproducible. In both cases, changing the thing that matters — a prompt, a model, a repository — produces a fresh result automatically, so the caches speed you up without ever giving you a stale answer.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1005,13 +1065,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-stat-check.html" class="pagination-link" aria-label="StatCheck">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span>
+      <a href="../chapters/llms.html" class="pagination-link" aria-label="Using Large Language Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/mod-stat-p-nonsig.html" class="pagination-link" aria-label="Non-Significant p-Values">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/papers-databases.html" class="pagination-link" aria-label="Using the Paper Database Corpora">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1022,7 +1082,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-p-exact.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/caching.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>

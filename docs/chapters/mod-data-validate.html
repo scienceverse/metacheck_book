@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>23&nbsp; Data Validate – The Metacheck Manual</title>
+<title>24&nbsp; Data Validate – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -131,7 +131,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-validate.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-validate.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -204,14 +204,20 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
       </ul>
@@ -228,157 +234,157 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-excel-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Excel Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Excel Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -395,13 +401,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -437,29 +443,29 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">23.1</span> What it checks</a></li>
-  <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">23.2</span> A worked example</a></li>
-  <li><a href="#the-findings-table" id="toc-the-findings-table" class="nav-link" data-scroll-target="#the-findings-table"><span class="header-section-number">23.3</span> The findings table</a></li>
-  <li><a href="#outliers-and-distributions-in-a-report" id="toc-outliers-and-distributions-in-a-report" class="nav-link" data-scroll-target="#outliers-and-distributions-in-a-report"><span class="header-section-number">23.4</span> Outliers and distributions in a report</a></li>
-  <li><a href="#personal-information-screening" id="toc-personal-information-screening" class="nav-link" data-scroll-target="#personal-information-screening"><span class="header-section-number">23.5</span> Personal-information screening</a></li>
-  <li><a href="#demographic-variables" id="toc-demographic-variables" class="nav-link" data-scroll-target="#demographic-variables"><span class="header-section-number">23.6</span> Demographic variables</a></li>
-  <li><a href="#qualtrics-survey-metadata" id="toc-qualtrics-survey-metadata" class="nav-link" data-scroll-target="#qualtrics-survey-metadata"><span class="header-section-number">23.7</span> Qualtrics survey metadata</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">24.1</span> What it checks</a></li>
+  <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">24.2</span> A worked example</a></li>
+  <li><a href="#the-findings-table" id="toc-the-findings-table" class="nav-link" data-scroll-target="#the-findings-table"><span class="header-section-number">24.3</span> The findings table</a></li>
+  <li><a href="#outliers-and-distributions-in-a-report" id="toc-outliers-and-distributions-in-a-report" class="nav-link" data-scroll-target="#outliers-and-distributions-in-a-report"><span class="header-section-number">24.4</span> Outliers and distributions in a report</a></li>
+  <li><a href="#personal-information-screening" id="toc-personal-information-screening" class="nav-link" data-scroll-target="#personal-information-screening"><span class="header-section-number">24.5</span> Personal-information screening</a></li>
+  <li><a href="#demographic-variables" id="toc-demographic-variables" class="nav-link" data-scroll-target="#demographic-variables"><span class="header-section-number">24.6</span> Demographic variables</a></li>
+  <li><a href="#qualtrics-survey-metadata" id="toc-qualtrics-survey-metadata" class="nav-link" data-scroll-target="#qualtrics-survey-metadata"><span class="header-section-number">24.7</span> Qualtrics survey metadata</a></li>
   <li>
-<a href="#careless-responding" id="toc-careless-responding" class="nav-link" data-scroll-target="#careless-responding"><span class="header-section-number">23.8</span> Careless responding</a>
+<a href="#careless-responding" id="toc-careless-responding" class="nav-link" data-scroll-target="#careless-responding"><span class="header-section-number">24.8</span> Careless responding</a>
   <ul class="collapse">
-<li><a href="#two-real-examples" id="toc-two-real-examples" class="nav-link" data-scroll-target="#two-real-examples"><span class="header-section-number">23.8.1</span> Two real examples</a></li>
+<li><a href="#two-real-examples" id="toc-two-real-examples" class="nav-link" data-scroll-target="#two-real-examples"><span class="header-section-number">24.8.1</span> Two real examples</a></li>
   </ul>
 </li>
-  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">23.9</span> The traffic light</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">23.10</span> Options</a></li>
-  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.11</span> What you get back</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.12</span> Related</a></li>
+  <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">24.9</span> The traffic light</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">24.10</span> Options</a></li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">24.11</span> What you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">24.12</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-validate.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-validate.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-data-validate.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Validate</span>
+<span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span>
 </h1>
 </div>
 
@@ -488,8 +494,8 @@ Warning
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<section id="what-it-checks" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">23.1</span> What it checks</h2>
+<section id="what-it-checks" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">24.1</span> What it checks</h2>
 <p>The <code>data_validate</code> module runs automated <strong>data-quality checks</strong> on every column extracted by <a href="../chapters/mod-data-check.html"><code>data_check</code></a>, flagging the kinds of problems that are easy to miss by eye but common in shared data:</p>
 <ul>
 <li>
@@ -523,8 +529,8 @@ Note
 <p>This chapter is offline. We build a small folder with some deliberately planted problems and check it with <code>local_path</code>.</p>
 </div>
 </div>
-</section><section id="a-worked-example" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="a-worked-example">
-<span class="header-section-number">23.2</span> A worked example</h2>
+</section><section id="a-worked-example" class="level2" data-number="24.2"><h2 data-number="24.2" class="anchored" data-anchor-id="a-worked-example">
+<span class="header-section-number">24.2</span> A worked example</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate_demo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -552,8 +558,8 @@ Note
 </div>
 </div>
 <p>Running <code>data_validate</code> automatically runs <code>data_check</code> first (to read and classify the columns) and then applies the quality checks to the result.</p>
-</section><section id="the-findings-table" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="the-findings-table">
-<span class="header-section-number">23.3</span> The findings table</h2>
+</section><section id="the-findings-table" class="level2" data-number="24.3"><h2 data-number="24.3" class="anchored" data-anchor-id="the-findings-table">
+<span class="header-section-number">24.3</span> The findings table</h2>
 <p>Every flagged column appears in the <code>table</code>, one row per (column, check):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column"</span>, <span class="st">"check"</span>, <span class="st">"detail"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -601,8 +607,8 @@ Note
 </div>
 </div>
 <p>The <code>check</code> column names the category of problem, and <code>detail</code> explains it in words — for example how many values were outside the fences, or which categories differ only in casing.</p>
-</section><section id="outliers-and-distributions-in-a-report" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="outliers-and-distributions-in-a-report">
-<span class="header-section-number">23.4</span> Outliers and distributions in a report</h2>
+</section><section id="outliers-and-distributions-in-a-report" class="level2" data-number="24.4"><h2 data-number="24.4" class="anchored" data-anchor-id="outliers-and-distributions-in-a-report">
+<span class="header-section-number">24.4</span> Outliers and distributions in a report</h2>
 <p>When you generate the module’s report (or include it in a full <code>report()</code>), <code>data_validate</code> produces two things for the numeric columns:</p>
 <ul>
 <li>an <strong>Outliers table</strong>, one row per numeric column that has values outside the fences, listing the count, the <code>[low, high]</code> bounds, and a few example values; and</li>
@@ -614,8 +620,8 @@ Note
 <span><span class="co"># self-contained image so a moved report keeps its plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">report</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="personal-information-screening" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="personal-information-screening">
-<span class="header-section-number">23.5</span> Personal-information screening</h2>
+</section><section id="personal-information-screening" class="level2" data-number="24.5"><h2 data-number="24.5" class="anchored" data-anchor-id="personal-information-screening">
+<span class="header-section-number">24.5</span> Personal-information screening</h2>
 <p><code>data_validate</code> also screens each column for content that should not be shared openly. It reports these as <em>“review before sharing”</em> prompts and <strong>never echoes the matching value</strong>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"pii_demo"</span><span class="op">)</span></span>
@@ -662,8 +668,8 @@ Note
 </div>
 </div>
 <p>The screen looks at both the <strong>values</strong> (patterns that look like emails, IP addresses, national IDs, or credit-card numbers) and the <strong>column name</strong> (names such as <code>email</code>, <code>firstname</code>, <code>address</code>, <code>dob</code>), plus geographic coordinates and open typed free-text columns that may contain identifying prose.</p>
-</section><section id="demographic-variables" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="demographic-variables">
-<span class="header-section-number">23.6</span> Demographic variables</h2>
+</section><section id="demographic-variables" class="level2" data-number="24.6"><h2 data-number="24.6" class="anchored" data-anchor-id="demographic-variables">
+<span class="header-section-number">24.6</span> Demographic variables</h2>
 <p>Almost every human-subjects study reports the same three demographic variables about its sample — <strong>age, gender/sex, and race/ethnicity</strong> — so <code>data_validate</code> picks them out and lists them. Detection requires the column <strong>name and values to agree</strong>: an <code>age</code> column is only tagged when its name looks like age <em>and</em> its values fall in a plausible human range (a <code>condition</code> column coded <code>1</code>/<code>2</code> is therefore never mistaken for gender). It reuses the same <code>data_check_demographic()</code> rule the <a href="../chapters/mod-data-check.html">Data Check</a> facet model uses.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"demo_demo"</span><span class="op">)</span></span>
@@ -708,8 +714,8 @@ Note
 </div>
 </div>
 <p>This is an <strong>inventory, not a problem flag</strong> — it simply helps a reviewer see at a glance whether the shared data documents its sample’s demographics (and, with the <a href="#personal-information-screening">personal-information screen</a> above, whether doing so raises any disclosure concerns). The result is returned in <code>$demographics</code> and summarised in a <em>Demographic Variables</em> report section.</p>
-</section><section id="qualtrics-survey-metadata" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="qualtrics-survey-metadata">
-<span class="header-section-number">23.7</span> Qualtrics survey metadata</h2>
+</section><section id="qualtrics-survey-metadata" class="level2" data-number="24.7"><h2 data-number="24.7" class="anchored" data-anchor-id="qualtrics-survey-metadata">
+<span class="header-section-number">24.7</span> Qualtrics survey metadata</h2>
 <p>Qualtrics exports have a fixed, recognisable shape — a set of reserved response-metadata columns (<code>StartDate</code>, <code>Duration (in seconds)</code>, <code>Finished</code>, <code>ResponseId</code>, …) and, for the “use choice text” export, extra header rows. <code>data_check</code> detects these files (<code>data_check_is_qualtrics()</code>) and strips the extra header rows so the data types correctly; <code>data_validate</code> then summarises the metadata that is <strong>reliably extractable from any Qualtrics file</strong>:</p>
 <ul>
 <li>
@@ -719,8 +725,8 @@ Note
 <li>which <strong>Qualtrics personal-information fields</strong> are present (IP address, email, location, external reference).</li>
 </ul>
 <p>The substantive question columns are deliberately <em>not</em> interpreted here — that is the job of the scale-block detection in <a href="../chapters/mod-codebook-check.html">Codebook Check</a>. The summary is returned in <code>$qualtrics</code> and appears as a <em>Qualtrics Survey Metadata</em> report section; the summary text also notes how many rows look like previews or unfinished responses to review.</p>
-</section><section id="careless-responding" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="careless-responding">
-<span class="header-section-number">23.8</span> Careless responding</h2>
+</section><section id="careless-responding" class="level2" data-number="24.8"><h2 data-number="24.8" class="anchored" data-anchor-id="careless-responding">
+<span class="header-section-number">24.8</span> Careless responding</h2>
 <p>For <strong>survey data</strong>, <code>data_validate</code> additionally screens for <strong>careless responding</strong> — respondents who straightline (give the same answer to every item) or answer unusually flatly or erratically. This uses the <a href="https://cran.r-project.org/package=careless"><code>careless</code></a> package’s <em>longstring</em> and <em>intra-individual response variability</em> (IRV) indices.</p>
 <p>Because these indices only make sense on a block of items measured on a common scale, and a finding is only actionable if you can point to <em>which</em> respondent, the check runs only when <strong>both</strong> conditions hold:</p>
 <ol type="1">
@@ -816,8 +822,8 @@ Note
 <p>The careless check needs the optional <code>careless</code> package. If it is not installed, the check is skipped and the report notes how many survey files it would have screened.</p>
 </div>
 </div>
-<section id="two-real-examples" class="level3" data-number="23.8.1"><h3 data-number="23.8.1" class="anchored" data-anchor-id="two-real-examples">
-<span class="header-section-number">23.8.1</span> Two real examples</h3>
+<section id="two-real-examples" class="level3" data-number="24.8.1"><h3 data-number="24.8.1" class="anchored" data-anchor-id="two-real-examples">
+<span class="header-section-number">24.8.1</span> Two real examples</h3>
 <p>The synthetic example above shows the mechanics. To see the check on real research data, here are two openly shared datasets. The code is shown but not executed here (the data are not redistributed with this book); run it yourself against a local copy of each repository to reproduce the output.</p>
 <p><strong>A long scale with a clear straightliner.</strong> The replication data of <span class="citation" data-cites="gervais_divine">Gervais et al. (<a href="#ref-gervais_divine" role="doc-biblioref">2017</a>)</span> — two preregistered replications of the “anticipating divine protection” hypothesis — include a 40-item scale (variable prefix <code>dos</code>, responses 1–5) alongside a participant id.</p>
 <div class="cell">
@@ -838,8 +844,8 @@ Note
 </div>
 <pre><code>[1] "fail (1-6, 6 items)"     "failbad (1-6, 5 items)"  "failgood (2-6, 5 items)"</code></pre>
 <p>Even though the three scales sit next to each other on the same response metric, the variable-name prefix splits them into <strong>three distinct blocks</strong>, and careless indices are computed within each — so a respondent who straightlines one scale is flagged for that scale specifically, rather than the three being merged into one meaningless block.</p>
-</section></section><section id="the-traffic-light" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="the-traffic-light">
-<span class="header-section-number">23.9</span> The traffic light</h2>
+</section></section><section id="the-traffic-light" class="level2" data-number="24.9"><h2 data-number="24.9" class="anchored" data-anchor-id="the-traffic-light">
+<span class="header-section-number">24.9</span> The traffic light</h2>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Light</th>
@@ -863,16 +869,16 @@ Note
 <td>there were no readable tabular data files to validate</td>
 </tr>
 </tbody>
-</table></section><section id="options" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="options">
-<span class="header-section-number">23.10</span> Options</h2>
+</table></section><section id="options" class="level2" data-number="24.10"><h2 data-number="24.10" class="anchored" data-anchor-id="options">
+<span class="header-section-number">24.10</span> Options</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># make the outlier rule stricter or more lenient (default k = 1.5)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_validate"</span>,</span>
 <span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span>, outlier_k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A larger <code>outlier_k</code> widens the fences, so only more extreme values are flagged.</p>
-</section><section id="what-you-get-back" class="level2" data-number="23.11"><h2 data-number="23.11" class="anchored" data-anchor-id="what-you-get-back">
-<span class="header-section-number">23.11</span> What you get back</h2>
+</section><section id="what-you-get-back" class="level2" data-number="24.11"><h2 data-number="24.11" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">24.11</span> What you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -922,8 +928,8 @@ Note
 <td>formatted report with the issue breakdown, outlier table, combined distribution figure, demographic inventory, and Qualtrics summary</td>
 </tr>
 </tbody>
-</table></section><section id="related" class="level2" data-number="23.12"><h2 data-number="23.12" class="anchored" data-anchor-id="related">
-<span class="header-section-number">23.12</span> Related</h2>
+</table></section><section id="related" class="level2" data-number="24.12"><h2 data-number="24.12" class="anchored" data-anchor-id="related">
+<span class="header-section-number">24.12</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-data-check.html">Data Check</a> is run first and supplies the columns.</li>
@@ -1343,12 +1349,12 @@ Haimovitz, K., &amp; Dweck, C. S. (2016). What predicts children’s fixed and g
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/mod-data-check.html" class="pagination-link" aria-label="Data Check">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data Check</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/mod-excel-check.html" class="pagination-link" aria-label="Excel Check">
-        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Excel Check</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Excel Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

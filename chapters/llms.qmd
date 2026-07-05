@@ -307,3 +307,7 @@ llm_max_calls(100)   # raise it
 ```
 
 See `?llm` for the full set of arguments and details.
+
+### Caching responses
+
+Because `llm()` runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default and cached replays do not count against `llm_max_calls()`. The [Caching and Reuse](caching.qmd) chapter explains how it works, and how to inspect or clear it (`llm_cache()`, `llm_cache_clear()`).
