@@ -424,10 +424,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">22.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">22.2</span> Running the module</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">22.3</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">22.4</span> Options</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">22.5</span> Notes</a></li>
+  <li><a href="#languages-code_lang" id="toc-languages-code_lang" class="nav-link" data-scroll-target="#languages-code_lang"><span class="header-section-number">22.2</span> Languages: <code>code_lang()</code></a></li>
+  <li><a href="#reading-code-code_read-and-code_extract_r" id="toc-reading-code-code_read-and-code_extract_r" class="nav-link" data-scroll-target="#reading-code-code_read-and-code_extract_r"><span class="header-section-number">22.3</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code></a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">22.4</span> Running the module</a></li>
+  <li>
+<a href="#the-checks-function-by-function" id="toc-the-checks-function-by-function" class="nav-link" data-scroll-target="#the-checks-function-by-function"><span class="header-section-number">22.5</span> The checks, function by function</a>
+  <ul class="collapse">
+<li><a href="#parsing-code_parse_r" id="toc-parsing-code_parse_r" class="nav-link" data-scroll-target="#parsing-code_parse_r"><span class="header-section-number">22.5.1</span> Parsing: <code>code_parse_r()</code></a></li>
+  <li><a href="#comments-code_remove_comments-and-code_line_stats" id="toc-comments-code_remove_comments-and-code_line_stats" class="nav-link" data-scroll-target="#comments-code_remove_comments-and-code_line_stats"><span class="header-section-number">22.5.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code></a></li>
+  <li><a href="#absolute-paths-code_abs_path" id="toc-absolute-paths-code_abs_path" class="nav-link" data-scroll-target="#absolute-paths-code_abs_path"><span class="header-section-number">22.5.3</span> Absolute paths: <code>code_abs_path()</code></a></li>
+  <li><a href="#library-placement-code_library_lines" id="toc-library-placement-code_library_lines" class="nav-link" data-scroll-target="#library-placement-code_library_lines"><span class="header-section-number">22.5.4</span> Library placement: <code>code_library_lines()</code></a></li>
+  <li><a href="#missing-loaded-files-code_file_refs" id="toc-missing-loaded-files-code_file_refs" class="nav-link" data-scroll-target="#missing-loaded-files-code_file_refs"><span class="header-section-number">22.5.5</span> Missing loaded files: <code>code_file_refs()</code></a></li>
+  </ul>
+</li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">22.6</span> A clean example and one with problems</a></li>
+  <li><a href="#downloading-and-options" id="toc-downloading-and-options" class="nav-link" data-scroll-target="#downloading-and-options"><span class="header-section-number">22.7</span> Downloading and options</a></li>
+  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">22.8</span> The traffic light and what you get back</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">22.9</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-code-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -450,7 +463,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="what-it-checks" class="level2" data-number="22.1"><h2 data-number="22.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">22.1</span> What it checks</h2>
-<p>The <code>code_check</code> module analyses the <strong>code files</strong> shared with a paper. Building on the file list from <a href="../chapters/mod-repo-check.html">repo_check</a>, it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use <strong>absolute file paths</strong> (which break on other machines), whether files they try to load are actually present in the repository, and whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script (loading imports in one place makes a script’s dependencies easy to see).</p>
+<p>The <code>code_check</code> module analyses the <strong>code files</strong> shared with a paper. Building on the file list from <a href="../chapters/mod-repo-check.html">repo_check</a>, it identifies code files, then checks each for signs of reproducibility problems:</p>
+<ul>
+<li>whether R-type files <strong>parse</strong> without errors;</li>
+<li>whether files contain <strong>comments</strong>;</li>
+<li>whether they use <strong>absolute file paths</strong> (which break on other machines);</li>
+<li>whether the files they try to <strong>load</strong> are actually present in the repository; and</li>
+<li>whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script.</li>
+</ul>
+<p>The module reports on <em>potential</em> problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in <em>Psychological Science</em>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -464,16 +485,82 @@ Note
 <p>This module makes <strong>live network calls</strong> to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.</p>
 </div>
 </div>
-</section><section id="running-the-module" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">22.2</span> Running the module</h2>
+</section><section id="languages-code_lang" class="level2" data-number="22.2"><h2 data-number="22.2" class="anchored" data-anchor-id="languages-code_lang">
+<span class="header-section-number">22.2</span> Languages: <code>code_lang()</code>
+</h2>
+<p>The module first labels every file with its language using <code>code_lang()</code>, which is name-based (by extension):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Language</th>
+<th>Extensions</th>
+<th>Analysed?</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>R</td>
+<td>
+<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>
+</td>
+<td>yes (parsed, commented, paths, libraries, loaded files)</td>
+</tr>
+<tr class="even">
+<td>SAS</td>
+<td><code>.sas</code></td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="odd">
+<td>SPSS</td>
+<td><code>.sps</code></td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="even">
+<td>Stata</td>
+<td>
+<code>.do</code>, <code>.ado</code>
+</td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="odd">
+<td>JASP</td>
+<td><code>.jasp</code></td>
+<td><strong>listed only</strong></td>
+</tr>
+<tr class="even">
+<td>jamovi</td>
+<td><code>.omv</code></td>
+<td><strong>listed only</strong></td>
+</tr>
+</tbody>
+</table>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_lang</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis.R"</span>, <span class="st">"clean.do"</span>, <span class="st">"model.sas"</span>, <span class="st">"survey.sps"</span>, <span class="st">"study.jasp"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>analysis.R   clean.do  model.sas survey.sps study.jasp
+       "R"    "Stata"      "SAS"     "SPSS"     "JASP"</code></pre>
+<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>read_jasp()</code> / <code>read_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
+</section><section id="reading-code-code_read-and-code_extract_r" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="reading-code-code_read-and-code_extract_r">
+<span class="header-section-number">22.3</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code>
+</h2>
+<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module detects an Rmd/qmd file by its leading <code>---</code> YAML fence and routes it through <code>code_extract_r()</code> automatically.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu">demofile</span><span class="op">(</span><span class="st">"qmd"</span><span class="op">)</span></span>
+<span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu">code_extract_r</span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span>   <span class="co"># R code only, prose stripped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="running-the-module" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">22.4</span> Running the module</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 4 R, 0 SAS, 0 SPSS, and 0 Stata code files.
@@ -486,24 +573,24 @@ Note
 </div>
 <p>The <code>table</code> has one row per code file, with the reproducibility checks as columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"language"</span>, <span class="st">"parse_error"</span>, <span class="st">"absolute_paths"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"language"</span>, <span class="st">"parse_error"</span>, <span class="st">"code_abs_path"</span>,</span>
 <span>             <span class="st">"percentage_comment"</span>, <span class="st">"loaded_files_missing"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 8%">
-<col style="width: 11%">
-<col style="width: 28%">
-<col style="width: 17%">
-<col style="width: 19%">
+<col style="width: 16%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 23%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">file_name</th>
 <th style="text-align: left;">language</th>
 <th style="text-align: left;">parse_error</th>
-<th style="text-align: left;">absolute_paths</th>
+<th style="text-align: right;">code_abs_path</th>
 <th style="text-align: right;">percentage_comment</th>
 <th style="text-align: right;">loaded_files_missing</th>
 </tr></thead>
@@ -512,7 +599,7 @@ Note
 <td style="text-align: left;">test_script.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 </tr>
@@ -520,7 +607,7 @@ Note
 <td style="text-align: left;">bad.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 </tr>
@@ -528,7 +615,7 @@ Note
 <td style="text-align: left;">bad.Rmd</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 </tr>
@@ -536,96 +623,209 @@ Note
 <td style="text-align: left;">Code/Study 1.r</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">/lisa/file.csv</td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">C:/lisa/file.csv</td>
-<td style="text-align: left;">0.1666667</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;"></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">1</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">22.3</span> A clean example and one with problems</h2>
+</section><section id="the-checks-function-by-function" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="the-checks-function-by-function">
+<span class="header-section-number">22.5</span> The checks, function by function</h2>
+<p>Each check is a small exported helper, so you can run it on your own code independently of the module.</p>
+<section id="parsing-code_parse_r" class="level3" data-number="22.5.1"><h3 data-number="22.5.1" class="anchored" data-anchor-id="parsing-code_parse_r">
+<span class="header-section-number">22.5.1</span> Parsing: <code>code_parse_r()</code>
+</h3>
+<p>For R-type files, <code>code_parse_r()</code> attempts to <code><a href="https://rdrr.io/r/base/parse.html">parse()</a></code> the code and captures any syntax error (rewriting <code>&lt;text&gt;</code> in the message to <code>line</code> for readability). Only R is parsed; other languages report <code>NA</code> (not assessed). A parse error means the file is not valid R and would not run at all.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_parse_r</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x &lt;- 1"</span>, <span class="st">"y &lt;- "</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; tibble [1 × 3] (S3: tbl_df/tbl/data.frame)
+#&gt;  $ file_path: chr ""
+#&gt;  $ error    : logi TRUE
+#&gt;  $ msg      : chr "line:3:0: unexpected end of input\n1: x &lt;- 1\n2: y &lt;- \n  ^"</code></pre>
+</div>
+</div>
+</section><section id="comments-code_remove_comments-and-code_line_stats" class="level3" data-number="22.5.2"><h3 data-number="22.5.2" class="anchored" data-anchor-id="comments-code_remove_comments-and-code_line_stats">
+<span class="header-section-number">22.5.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code>
+</h3>
+<p><code>code_remove_comments()</code> strips comments per language — line comments and block comments in each of R, SAS, SPSS, and Stata (e.g.&nbsp;SAS <code>/* … */</code> blocks and <code>*…;</code> line comments; Stata <code>//</code> end-of-line and <code>/* */</code> blocks). <code>code_line_stats()</code> then reports the total lines, blank lines, code lines, comment lines, and the <strong>percentage of comment lines</strong>. A file with no comments (<code>percentage_comment == 0</code>) is flagged, because comments are what let a future reader (including the author) understand and reuse the code.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">""</span>, <span class="st">"# clean the data"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span></span>
+<span><span class="fu">code_line_stats</span><span class="op">(</span><span class="va">code_text</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; $total_lines
+#&gt; [1] 3
+#&gt; 
+#&gt; $comment_lines
+#&gt; [1] 1
+#&gt; 
+#&gt; $code_lines
+#&gt; [1] 2
+#&gt; 
+#&gt; $percent_comments
+#&gt; [1] 0.3333333</code></pre>
+</div>
+</div>
+</section><section id="absolute-paths-code_abs_path" class="level3" data-number="22.5.3"><h3 data-number="22.5.3" class="anchored" data-anchor-id="absolute-paths-code_abs_path">
+<span class="header-section-number">22.5.3</span> Absolute paths: <code>code_abs_path()</code>
+</h3>
+<p><code>code_abs_path()</code> searches the (comment-free) code for quoted strings that are absolute filesystem paths: a Windows drive path (<code>C:/…</code>, <code>D:\…</code>), a Unix root path (<code>/Users/…</code>), a home path (<code>~/…</code>), or a UNC network path (<code>\\host\share\…</code>). These break on anyone else’s computer. The UNC branch is deliberately strict — it requires the real <code>\\host\share</code> shape — because a bare backslash string is far more often a regex escape (<code>"\\d+"</code>) than a network path. The module notes these are potential false positives in code like <code>paste0(dir, "/file.csv")</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_abs_path</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file &lt;- 'C:/Users/lakens/data.csv'"</span>,</span>
+<span>                <span class="st">"tmp  &lt;- '/home/lakens/out.html'"</span>,</span>
+<span>                <span class="st">"rel  &lt;- './clean.csv'"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 2 × 2
+#&gt;   abs_path                  line
+#&gt;   &lt;chr&gt;                    &lt;int&gt;
+#&gt; 1 C:/Users/lakens/data.csv     1
+#&gt; 2 /home/lakens/out.html        2</code></pre>
+</div>
+</div>
+</section><section id="library-placement-code_library_lines" class="level3" data-number="22.5.4"><h3 data-number="22.5.4" class="anchored" data-anchor-id="library-placement-code_library_lines">
+<span class="header-section-number">22.5.4</span> Library placement: <code>code_library_lines()</code>
+</h3>
+<p><code>code_library_lines()</code> returns the line numbers on which imports/library loads occur, with language-specific patterns (R <code>library</code>/<code>require</code>/<code>renv::install</code>/<code>p_load</code>; SAS <code>%include</code>/<code>libname</code>/<code>filename</code>; SPSS <code>INSERT</code>/<code>BEGIN PROGRAM</code>; Stata <code>do</code>/<code>net install</code>/<code>ssc install</code>). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script’s requirements are easy to see.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_lines</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"x &lt;- 1"</span>, <span class="st">"library(tidyr)"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 2 × 2
+#&gt;   code            line
+#&gt;   &lt;chr&gt;          &lt;int&gt;
+#&gt; 1 library(dplyr)     1
+#&gt; 2 library(tidyr)     3</code></pre>
+</div>
+</div>
+</section><section id="missing-loaded-files-code_file_refs" class="level3" data-number="22.5.5"><h3 data-number="22.5.5" class="anchored" data-anchor-id="missing-loaded-files-code_file_refs">
+<span class="header-section-number">22.5.5</span> Missing loaded files: <code>code_file_refs()</code>
+</h3>
+<p><code>code_file_refs()</code> extracts the files a script reads or loads — from read/load calls (<code>read.csv</code>, <code>read_csv</code>, <code>fread</code>, <code>readRDS</code>, <code>load</code>, <code>fromJSON</code>, <code>source</code>, and their SAS/SPSS/Stata equivalents like <code>proc import</code>, <code>infile</code>, <code>GET DATA /FILE=</code>, <code>use</code>, <code>import delimited</code>) — by capturing the quoted filename argument. The module compares each referenced file (by basename) against the files actually present in the same repository; anything not found is reported as a <strong>missing loaded file</strong>, so a reader can check whether the input data were shared. There can be valid reasons a file is not shared (e.g.&nbsp;it holds personal data), which the module cannot evaluate, so it always reports rather than judges.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source('functions.R')"</span>, <span class="st">"d &lt;- read.csv('study.csv')"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "functions.R" "study.csv"</code></pre>
+</div>
+</div>
+</section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">22.6</span> A clean example and one with problems</h2>
 <p>Common problems the module surfaces:</p>
 <ul>
 <li>
-<strong>Absolute paths</strong> (<code>absolute_paths == TRUE</code>) — e.g.&nbsp;<code>read.csv("C:/Users/me/data.csv")</code> — which will not run on anyone else’s computer.</li>
+<strong>Absolute paths</strong> (<code>code_abs_path &gt; 0</code>) — e.g.&nbsp;<code>read.csv("C:/Users/me/data.csv")</code> — which will not run on anyone else’s computer.</li>
 <li>
 <strong>Missing loaded files</strong> (<code>loaded_files_missing &gt; 0</code>) — the script reads a file that was not shared.</li>
 <li>
-<strong>Parse errors</strong> (<code>parse_error == TRUE</code>) — the file is not valid code.</li>
+<strong>Parse errors</strong> (<code>parse_error == TRUE</code>) — the file is not valid R code.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"absolute_paths"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 39%">
-<col style="width: 26%">
-<col style="width: 15%">
-</colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">file_name</th>
-<th style="text-align: left;">absolute_paths</th>
+<th style="text-align: right;">code_abs_path</th>
 <th style="text-align: right;">loaded_files_missing</th>
 <th style="text-align: left;">parse_error</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">test_script.R</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">bad.R</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bad.Rmd</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Code/Study 1.r</td>
-<td style="text-align: left;">/lisa/file.csv</td>
-<td style="text-align: right;"></td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">C:/lisa/file.csv</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: right;">FALSE</td>
-<td style="text-align: left;"></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</section><section id="options" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="options">
-<span class="header-section-number">22.4</span> Options</h2>
-<p><code>code_check</code> shares <code>repo_check</code>’s local-file options:</p>
+</section><section id="downloading-and-options" class="level2" data-number="22.7"><h2 data-number="22.7" class="anchored" data-anchor-id="downloading-and-options">
+<span class="header-section-number">22.7</span> Downloading and options</h2>
+<p><code>code_check</code> downloads the code files it will check into the shared cache (<code>download = TRUE</code>, the default) so their contents are read locally and reused on later runs, rather than streamed from the repository URL each time. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, <code>max_download_size</code> — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># stream files from their URLs instead of downloading</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, download <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="../chapters/local-files.html">Local Files</a> chapter for a full walkthrough of checking local code, including cloud-synced folders.</p>
-</section><section id="notes" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">22.5</span> Notes</h2>
-<p>The module reports on <em>potential</em> problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible.</p>
+</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="22.8"><h2 data-number="22.8" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
+<span class="header-section-number">22.8</span> The traffic light and what you get back</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Light</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>green</strong></td>
+<td>at least one file was analysed and no issues were found across all code files</td>
+</tr>
+<tr class="even">
+<td><strong>yellow</strong></td>
+<td>at least one issue (missing files, no comments, absolute paths, spread-out libraries, or a parse error)</td>
+</tr>
+<tr class="odd">
+<td><strong>na</strong></td>
+<td>no code files could be analysed (e.g.&nbsp;only JASP/jamovi files were found)</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Element</th>
+<th>What it contains</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>$table</code></td>
+<td>one row per code file, with <code>language</code>, <code>parse_error</code>, <code>code_abs_path</code>, <code>absolute_paths</code>, <code>percentage_comment</code>, <code>library_max_between</code>, <code>loaded_files_missing</code>, and the missing-file names</td>
+</tr>
+<tr class="even">
+<td><code>$summary_table</code></td>
+<td>per-paper aggregates (<code>code_n</code>, <code>code_checked</code>, <code>code_abs_path</code>, <code>code_missing_files</code>, <code>code_min_comments</code>, <code>code_parse_errors</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>$report</code></td>
+<td>formatted report sections: comments, missing files, absolute paths, libraries, and parsable code</td>
+</tr>
+<tr class="even">
+<td><code>$summary_text</code></td>
+<td>plain-text bulleted summary of each check</td>
+</tr>
+</tbody>
+</table></section><section id="notes" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">22.9</span> Notes</h2>
+<p>The module reports on <em>potential</em> problems. If you want to extend the package to perform additional checks, or make the checks work on other code languages, reach out to the Metacheck development team.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

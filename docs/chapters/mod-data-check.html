@@ -425,21 +425,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">23.1</span> What it checks</a></li>
   <li><a href="#a-worked-example" id="toc-a-worked-example" class="nav-link" data-scroll-target="#a-worked-example"><span class="header-section-number">23.2</span> A worked example</a></li>
-  <li><a href="#file-classification" id="toc-file-classification" class="nav-link" data-scroll-target="#file-classification"><span class="header-section-number">23.3</span> File classification</a></li>
-  <li><a href="#the-data-tree" id="toc-the-data-tree" class="nav-link" data-scroll-target="#the-data-tree"><span class="header-section-number">23.4</span> The data tree</a></li>
-  <li><a href="#column-facets" id="toc-column-facets" class="nav-link" data-scroll-target="#column-facets"><span class="header-section-number">23.5</span> Column facets</a></li>
-  <li><a href="#unit-of-observation" id="toc-unit-of-observation" class="nav-link" data-scroll-target="#unit-of-observation"><span class="header-section-number">23.6</span> Unit of observation</a></li>
-  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.7</span> What you get back</a></li>
   <li>
-<a href="#downloading-files" id="toc-downloading-files" class="nav-link" data-scroll-target="#downloading-files"><span class="header-section-number">23.8</span> Downloading files</a>
+<a href="#file-classification" id="toc-file-classification" class="nav-link" data-scroll-target="#file-classification"><span class="header-section-number">23.3</span> File classification</a>
   <ul class="collapse">
-<li><a href="#size-caps" id="toc-size-caps" class="nav-link" data-scroll-target="#size-caps"><span class="header-section-number">23.8.1</span> Size caps</a></li>
-  <li><a href="#skipping-asset-types-and-peeking-inside-zips" id="toc-skipping-asset-types-and-peeking-inside-zips" class="nav-link" data-scroll-target="#skipping-asset-types-and-peeking-inside-zips"><span class="header-section-number">23.8.2</span> Skipping asset types, and peeking inside zips</a></li>
-  <li><a href="#a-file-manifest" id="toc-a-file-manifest" class="nav-link" data-scroll-target="#a-file-manifest"><span class="header-section-number">23.8.3</span> A file manifest</a></li>
+<li><a href="#how-the-classifier-works-data_classify_files" id="toc-how-the-classifier-works-data_classify_files" class="nav-link" data-scroll-target="#how-the-classifier-works-data_classify_files"><span class="header-section-number">23.3.1</span> How the classifier works: <code>data_classify_files()</code></a></li>
+  <li><a href="#tabular-vs-raw-data_format" id="toc-tabular-vs-raw-data_format" class="nav-link" data-scroll-target="#tabular-vs-raw-data_format"><span class="header-section-number">23.3.2</span> Tabular vs raw: <code>data_format()</code></a></li>
   </ul>
 </li>
-  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">23.9</span> Using an LLM</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.10</span> Related</a></li>
+  <li><a href="#the-data-tree" id="toc-the-data-tree" class="nav-link" data-scroll-target="#the-data-tree"><span class="header-section-number">23.4</span> The data tree</a></li>
+  <li>
+<a href="#column-facets" id="toc-column-facets" class="nav-link" data-scroll-target="#column-facets"><span class="header-section-number">23.5</span> Column facets</a>
+  <ul class="collapse">
+<li><a href="#how-facets-are-derived" id="toc-how-facets-are-derived" class="nav-link" data-scroll-target="#how-facets-are-derived"><span class="header-section-number">23.5.1</span> How facets are derived</a></li>
+  <li><a href="#demographic-detection-data_check_demographic" id="toc-demographic-detection-data_check_demographic" class="nav-link" data-scroll-target="#demographic-detection-data_check_demographic"><span class="header-section-number">23.5.2</span> Demographic detection: <code>data_check_demographic()</code></a></li>
+  </ul>
+</li>
+  <li><a href="#summary-statistics-data_col_stats" id="toc-summary-statistics-data_col_stats" class="nav-link" data-scroll-target="#summary-statistics-data_col_stats"><span class="header-section-number">23.6</span> Summary statistics: <code>data_col_stats()</code></a></li>
+  <li><a href="#unit-of-observation-data_analysis_unit" id="toc-unit-of-observation-data_analysis_unit" class="nav-link" data-scroll-target="#unit-of-observation-data_analysis_unit"><span class="header-section-number">23.7</span> Unit of observation: <code>data_analysis_unit()</code></a></li>
+  <li><a href="#study-groups" id="toc-study-groups" class="nav-link" data-scroll-target="#study-groups"><span class="header-section-number">23.8</span> Study groups</a></li>
+  <li><a href="#reading-files-format-tolerance" id="toc-reading-files-format-tolerance" class="nav-link" data-scroll-target="#reading-files-format-tolerance"><span class="header-section-number">23.9</span> Reading files: format tolerance</a></li>
+  <li><a href="#what-the-module-holds-back-or-reclassifies-after-reading" id="toc-what-the-module-holds-back-or-reclassifies-after-reading" class="nav-link" data-scroll-target="#what-the-module-holds-back-or-reclassifies-after-reading"><span class="header-section-number">23.10</span> What the module holds back or reclassifies after reading</a></li>
+  <li><a href="#qualtrics-survey-exports" id="toc-qualtrics-survey-exports" class="nav-link" data-scroll-target="#qualtrics-survey-exports"><span class="header-section-number">23.11</span> Qualtrics survey exports</a></li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">23.12</span> What you get back</a></li>
+  <li>
+<a href="#downloading-files" id="toc-downloading-files" class="nav-link" data-scroll-target="#downloading-files"><span class="header-section-number">23.13</span> Downloading files</a>
+  <ul class="collapse">
+<li><a href="#caching-downloads" id="toc-caching-downloads" class="nav-link" data-scroll-target="#caching-downloads"><span class="header-section-number">23.13.1</span> Caching downloads</a></li>
+  <li><a href="#size-caps" id="toc-size-caps" class="nav-link" data-scroll-target="#size-caps"><span class="header-section-number">23.13.2</span> Size caps</a></li>
+  <li><a href="#skipping-asset-types-and-peeking-inside-zips" id="toc-skipping-asset-types-and-peeking-inside-zips" class="nav-link" data-scroll-target="#skipping-asset-types-and-peeking-inside-zips"><span class="header-section-number">23.13.3</span> Skipping asset types, and peeking inside zips</a></li>
+  <li><a href="#a-file-manifest" id="toc-a-file-manifest" class="nav-link" data-scroll-target="#a-file-manifest"><span class="header-section-number">23.13.4</span> A file manifest</a></li>
+  </ul>
+</li>
+  <li><a href="#using-an-llm" id="toc-using-an-llm" class="nav-link" data-scroll-target="#using-an-llm"><span class="header-section-number">23.14</span> Using an LLM</a></li>
+  <li><a href="#building-a-psych-ds-archive-convert_psychds" id="toc-building-a-psych-ds-archive-convert_psychds" class="nav-link" data-scroll-target="#building-a-psych-ds-archive-convert_psychds"><span class="header-section-number">23.15</span> Building a Psych-DS archive: <code>convert_psychds()</code></a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">23.16</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-data-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -479,11 +498,11 @@ Warning
 <p>The <code>data_check</code> module is the foundation for all of Metacheck’s data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:</p>
 <ol type="1">
 <li>
-<strong>Classifies every file</strong> by what it is: tabular <em>data</em>, <em>code</em>, a <em>codebook</em>, a <em>README</em>, an <em>archive</em>, or a raw file (image, PDF, binary).</li>
+<strong>Classifies every file</strong> into a semantic type: tabular <em>data</em>, <em>code</em>, a <em>codebook</em>, a <em>README</em>, <em>software</em>, <em>output</em>, <em>supplemental</em>, an <em>asset</em> (image/audio/video/stimulus), or <em>other</em>.</li>
 <li>
-<strong>Reads each tabular data file</strong> and describes every column along several independent <strong>facets</strong> — how it is stored, its measurement level, what it measures, and how it functions — together with basic <strong>summary statistics</strong>.</li>
+<strong>Reads each readable tabular data file</strong> and describes every column along several independent <strong>facets</strong> — how it is stored, its measurement level, what it measures, how it functions, and its unit — together with basic <strong>summary statistics</strong> and an inferred <strong>unit of observation</strong>.</li>
 <li>
-<strong>Makes the extracted columns available</strong> to the other data modules — <code>data_validate</code>, <code>excel_check</code>, <code>codebook_check</code>, and <code>psychds_check</code> all build on <code>data_check</code>’s output rather than re-reading the files.</li>
+<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>data_validate</code>, <code>excel_check</code>, <code>codebook_check</code>, and <code>psychds_check</code> all build on <code>data_check</code>’s output rather than re-reading the files, and <code>convert_psychds()</code> uses its classification and study grouping to build a Psych-DS archive.</li>
 </ol>
 <p>On its own, <code>data_check</code> gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -496,7 +515,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This chapter runs entirely offline. We build a small example repository in a temporary folder and point <code>data_check</code> at it with <code>local_path</code>. The same calls work against a real downloaded repository — see the <a href="../chapters/local-files.html">Local Files</a> chapter.</p>
+<p>This chapter runs entirely offline. We build small example repositories in a temporary folder and point <code>data_check</code> at them with <code>local_path</code>. The same calls work against a real downloaded repository — see the <a href="../chapters/local-files.html">Local Files</a> chapter.</p>
 </div>
 </div>
 </section><section id="a-worked-example" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="a-worked-example">
@@ -536,58 +555,57 @@ Note
 </div>
 </section><section id="file-classification" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="file-classification">
 <span class="header-section-number">23.3</span> File classification</h2>
-<p>The first thing <code>data_check</code> produces is a classification of every file it found. This is available in the <code>structure</code> element:</p>
+<p>The first thing <code>data_check</code> produces is a classification of every file it found, available in the <code>structure</code> element:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">structure</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"file_type"</span>, <span class="st">"data_type"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">structure</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"data_type"</span>, <span class="st">"data_format"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
 <th style="text-align: left;">file_name</th>
-<th style="text-align: left;">file_type</th>
 <th style="text-align: left;">data_type</th>
+<th style="text-align: left;">data_format</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">analysis.R</td>
 <td style="text-align: left;">code</td>
-<td style="text-align: left;">code</td>
+<td style="text-align: left;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">study.csv</td>
 <td style="text-align: left;">data</td>
-<td style="text-align: left;">data</td>
+<td style="text-align: left;">tabular</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Each file is sorted into a category by its name and extension:</p>
+<p>Every file is sorted into one of nine semantic types. The vocabulary is <code>data</code>, <code>codebook</code>, <code>code</code>, <code>software</code>, <code>output</code>, <code>supplemental</code>, <code>readme</code>, <code>asset</code>, and <code>other</code>:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
 <thead><tr class="header">
-<th>Category</th>
+<th>Type</th>
 <th>Examples</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>data</code></td>
 <td>
-<code>.csv</code>, <code>.tsv</code>, <code>.xlsx</code>, <code>.sav</code>, <code>.dta</code>, <code>.rds</code>
-</td>
+<code>.csv</code>, <code>.tsv</code>, <code>.xlsx</code>, <code>.sav</code>, <code>.dta</code>, <code>.rds</code>, <code>.jasp</code>, <code>.omv</code>, and binary scientific formats (<code>.h5</code>, <code>.parquet</code>, <code>.npy</code>)</td>
 </tr>
 <tr class="even">
 <td><code>code</code></td>
 <td>
-<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>, <code>.py</code>, <code>.do</code>, <code>.sps</code>
+<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>, <code>.py</code>, <code>.do</code>, <code>.sps</code>, <code>.sas</code>, <code>.ipynb</code>
 </td>
 </tr>
 <tr class="odd">
 <td><code>codebook</code></td>
-<td>files whose name or contents look like a data dictionary</td>
+<td>files whose name looks like a data dictionary, plus a Qualtrics <code>.qsf</code> survey definition</td>
 </tr>
 <tr class="even">
 <td><code>readme</code></td>
@@ -596,22 +614,60 @@ Note
 </td>
 </tr>
 <tr class="odd">
-<td><code>archive</code></td>
-<td>
-<code>.zip</code>, <code>.tar</code>, <code>.7z</code>
+<td><code>software</code></td>
+<td>executables and installers (<code>.exe</code>, <code>.dll</code>, <code>.sh</code>), config files</td>
+</tr>
+<tr class="even">
+<td><code>output</code></td>
+<td>rendered results (<code>.spv</code>, figures)</td>
+</tr>
+<tr class="odd">
+<td><code>supplemental</code></td>
+<td>documents, slides, web pages, <strong>and preregistrations</strong>
 </td>
 </tr>
 <tr class="even">
-<td><code>raw</code></td>
-<td>images, PDFs, and other non-tabular binaries</td>
+<td><code>asset</code></td>
+<td>images, audio, video, fonts (stimuli/materials)</td>
+</tr>
+<tr class="odd">
+<td><code>other</code></td>
+<td>anything no rule places (an LLM may reclassify these)</td>
 </tr>
 </tbody>
-</table></section><section id="the-data-tree" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="the-data-tree">
-<span class="header-section-number">23.4</span> The data tree</h2>
-<p>To make the layout of a repository easy to see at a glance, <code>data_check</code>’s report includes a <strong>data tree</strong> — the folder structure of the repository drawn as an indented tree. Directories are listed before files and both are sorted alphabetically, so the same repository always produces the same tree. In the rendered report the tree appears inside a collapsible <em>“Data Tree”</em> callout (one per repository, when several are linked).</p>
-<p>The tree is part of the module’s <code>report</code>. We can pull the tree lines out of the report to show them here:</p>
+</table>
+<section id="how-the-classifier-works-data_classify_files" class="level3" data-number="23.3.1"><h3 data-number="23.3.1" class="anchored" data-anchor-id="how-the-classifier-works-data_classify_files">
+<span class="header-section-number">23.3.1</span> How the classifier works: <code>data_classify_files()</code>
+</h3>
+<p>Classification is done by the exported helper <code>data_classify_files()</code>, which layers three rule sets. Understanding the order matters because later layers override earlier ones:</p>
+<ol type="1">
+<li>
+<strong>Name-based rules</strong> (<code>file_category()</code>): filenames matching README or codebook patterns win first, before any extension is consulted. A file literally called <code>README.txt</code> is a readme even if it is delimiter-rich.</li>
+<li>
+<strong>An extension crosswalk</strong> built on metacheck’s coarse <code>file_types</code> table (<code>.file_type_crosswalk</code>): maps <code>code → code</code>, <code>stats → code</code> (SPSS/SAS/Stata syntax), <code>exec/config → software</code>, <code>audio/video/image/3D/font → asset</code>, <code>book/slide/text/web → supplemental</code>, <code>archive → other</code>.</li>
+<li>
+<strong>Format-locked extension overrides</strong> (<code>.fixed_ext_type</code>, highest priority): a fixed table that corrects any coarser guess. This is where <code>.qsf</code> becomes a <code>codebook</code> (a Qualtrics survey definition <em>is</em> its own codebook), scientific binaries like <code>.npy</code>/<code>.h5</code>/<code>.parquet</code>/<code>.feather</code> become <code>data</code>, and trial-level task exports (<code>.iqdat</code>, <code>.edat</code>, <code>.edat2</code>) become <code>data</code> so they are actually fetched.</li>
+</ol>
+<p>Two special cases run last. A file named <strong>README</strong> is forced to <code>readme</code> as belt-and-braces. A <strong>preregistration</strong> — a name matching <code>prereg</code> / <code>pre-reg</code> / <code>preregistration</code> (as a whole token, so <code>preregional</code> does not match) — is reclassified to <code>supplemental</code> so it lands in <code>documentation/</code> rather than being misfiled as a data CSV or as code. A genuine analysis <em>script</em> named after the prereg keeps its <code>code</code> type.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tree_lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"^[│├└ ]"</span>, <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">report</span>, <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_classify_files</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data.csv"</span>, <span class="st">"analysis.R"</span>, <span class="st">"README.md"</span>,</span>
+<span>                      <span class="st">"codebook.xlsx"</span>, <span class="st">"survey.qsf"</span>, <span class="st">"preregistration.pdf"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>[1] "data"         "code"         "readme"       "codebook"
+[5] "codebook"     "supplemental"</code></pre>
+</section><section id="tabular-vs-raw-data_format" class="level3" data-number="23.3.2"><h3 data-number="23.3.2" class="anchored" data-anchor-id="tabular-vs-raw-data_format">
+<span class="header-section-number">23.3.2</span> Tabular vs raw: <code>data_format()</code>
+</h3>
+<p>For files classified as <code>data</code>, <code>data_check</code> records a second field, <code>data_format</code>, which is <code>"tabular"</code> or <code>"raw"</code>. This is decided by the exported helper <code>data_format()</code> against a list of raw extensions (EEG/physiological, neuroimaging, motion capture, array formats, eye-tracking, audio/video, and generic binaries/documents). Only <code>tabular</code> files are read for column extraction; <code>raw</code> data files are classified and listed but never parsed as a table. Unknown extensions fall back to <code>tabular</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_format</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"csv"</span>, <span class="st">"edf"</span>, <span class="st">"mp4"</span>, <span class="st">"sav"</span>, <span class="st">"nii"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>[1] "tabular" "raw"     "raw"     "tabular" "raw"</code></pre>
+</section></section><section id="the-data-tree" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="the-data-tree">
+<span class="header-section-number">23.4</span> The data tree</h2>
+<p>To make the layout of a repository easy to see at a glance, <code>data_check</code>’s report includes a <strong>data tree</strong> — the folder structure of each repository drawn as an indented tree (<code>repo_tree_lines()</code> / <code>repo_tree_block()</code>, internal to the module). Directories are listed before files and both are sorted alphabetically, so the same repository always produces the same tree. In the rendered report the tree appears inside a collapsible <em>“Data Tree”</em> callout, one per repository when several are linked.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tree_lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"^[│├└ ]"</span>, <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">report</span>, <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">tree_lines</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; ├── data/
@@ -619,19 +675,18 @@ Note
 #&gt; └── analysis.R
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(16L, 2L, 20L, 2L, 20L, 20L), Mean = c(43.45, 
-#&gt;     NA, NA, NA, 585.5, 52.035), SD = c(11.971, NA, NA, NA, 186.885, 
-#&gt;     7.566), Min = c(22, NA, NA, NA, 309, 35.8), Max = c(64, NA, 
-#&gt;     NA, NA, 831, 66.9)), row.names = c("age", "condition", "participant_id",</code></pre>
+#&gt;     0), "N Unique" = c(18L, 2L, 20L, 2L, 20L, 19L), Mean = c(42.9, 
+#&gt;     NA, NA, NA, 556.95, 52.4), SD = c(13.014, NA, NA, NA, 190.02, 
+#&gt;     6.948), Min = c(20, NA, NA, NA, 328, 39.3), Max = c(64, NA, 
+#&gt;     NA, NA, 817, 65.9)), row.names = c("age", "condition", "participant_id",</code></pre>
 </div>
 </div>
-<p>For our example folder — a <code>data/</code> directory holding <code>study.csv</code>, plus a top-level <code>analysis.R</code> — the tree makes the organisation obvious. On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level.</p>
-<p>This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
+<p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
 </section><section id="column-facets" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="column-facets">
 <span class="header-section-number">23.5</span> Column facets</h2>
-<p>For every readable tabular file, <code>data_check</code> reads the data and describes each column. Earlier versions gave each column a single <code>col_type</code> value — but that conflated things that are not really alternatives: <em>how</em> a value is stored (a number), <em>what level</em> it is measured on (nominal, ordinal, …), and <em>what it actually measures</em> (a reaction time, an age). Following the <a href="https://ddialliance.org/">DDI</a> metadata standard, <code>data_check</code> now describes each column with several <strong>orthogonal facets</strong> instead, so these independent properties are recorded independently. The per-column results are in the <code>table</code> element:</p>
+<p>For every readable tabular file, <code>data_check</code> reads the data and describes each column. Earlier versions gave each column a single <code>col_type</code> value — but that conflated things that are not really alternatives: <em>how</em> a value is stored, <em>what level</em> it is measured on, and <em>what it actually measures</em>. Following the <a href="https://ddialliance.org/">DDI</a> metadata standard, <code>data_check</code> now describes each column with several <strong>orthogonal facets</strong>, computed by the exported helper <code>data_col_facets()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"representation"</span>, <span class="st">"measurement_level"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"representation"</span>, <span class="st">"measurement_level"</span>,</span>
 <span>             <span class="st">"concept"</span>, <span class="st">"role"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -766,11 +821,33 @@ Note
 </td>
 <td>a data-quality <em>state</em>, kept separate from type</td>
 </tr>
+<tr class="odd">
+<td><code>parse_note</code></td>
+<td>
+<code>NA</code>, <code>comma_decimal</code>, <code>mostly_numeric</code>
+</td>
+<td>a representation quirk (was a fake <code>col_type</code>)</td>
+</tr>
 </tbody>
 </table>
 <p>Because the facets are independent, an <code>age</code> column is <code>numeric</code> <strong>and</strong> <code>ratio</code> <strong>and</strong> the <code>age</code> concept <strong>and</strong> measured in <code>years</code> — each fact recorded in its own field rather than crammed into one label. A <code>participant_id</code> is <code>text</code> with the <code>identifier</code> role and the <code>id</code> concept; a Likert item is <code>numeric</code>, <code>ordinal</code>, with the <code>likert</code> concept.</p>
-<p>Concepts are detected by <strong>name-and-value agreement</strong>: a column is only tagged (say) <code>reaction_time</code> when its name looks like a reaction time <em>and</em> its values are plausible durations, which keeps false positives low. The demographic concepts (<code>age</code>, <code>gender</code>, <code>race</code>) use the exported helper <code>data_check_demographic()</code>; a reaction-time column additionally seeds its <code>unit</code> (<code>milliseconds</code> vs <code>seconds</code>) from the value magnitude.</p>
-<p><code>data_check</code> keeps this rule-based path fully offline and deterministic. When you enable an LLM (see below), it fills in the <code>concept</code> and <code>measurement_level</code> for columns the rules left blank — for example a reaction time hidden behind a cryptic name like <code>q3</code>.</p>
+<section id="how-facets-are-derived" class="level3" data-number="23.5.1"><h3 data-number="23.5.1" class="anchored" data-anchor-id="how-facets-are-derived">
+<span class="header-section-number">23.5.1</span> How facets are derived</h3>
+<p><code>data_col_facets()</code> builds on two lower-level pieces:</p>
+<ul>
+<li>
+<strong><code>data_col_type()</code></strong> — the rules-only “primitive”. It classifies a column in a fixed order: all-NA → <code>empty</code>; an ID name pattern → <code>id</code>; one unique value → <code>constant</code>; two unique → <code>binary</code>; ≥70% date-parseable → <code>date</code>; median string length &gt; 40 → <code>text</code>; numeric with non-integers or &gt;20 unique → <code>continuous</code>; an ambiguous integer (3–20 unique) is flagged <code>ambiguous = TRUE</code> for the LLM; comma-decimal text (<code>"3,14"</code>) → <code>continuous_comma_decimal</code> / <code>continuous_outliers_excluded</code>. It also returns <code>numeric_values</code> (a clean numeric vector for statistics) and <code>is_numeric</code>. This primitive is deliberately kept internal so its battle-tested edge cases survive.</li>
+<li>
+<strong><code>data_col_concept()</code></strong> — the <em>content</em> classifier for the concept facet, using <strong>name-and-value agreement</strong>: a column is only tagged (say) <code>reaction_time</code> when its name looks like a reaction time (<code>.concept_is_rt()</code>) <em>and</em> its values are plausible non-negative durations. It detects <code>reaction_time</code>, <code>accuracy</code> (<code>.concept_is_accuracy()</code> — a 0/1 or true/false column named <code>acc</code>/<code>correct</code>/<code>hit</code>/<code>error</code>), the three demographic concepts via <code>data_check_demographic()</code>, <code>timestamp</code> (<code>.concept_is_timestamp()</code> — a datetime name whose values carry an <code>HH:MM</code> component), and <code>condition</code> (<code>.concept_is_condition()</code> — a name-driven <code>condition</code>/<code>group</code>/<code>treatment</code>/<code>arm</code>).</li>
+</ul>
+<p><code>data_col_facets()</code> then untangles the primitive’s <code>col_type</code> into <code>representation</code> + <code>measurement_level</code> (via <code>.coltype_to_facets()</code>), assigns the <code>role</code> (an <code>id</code> column is an <code>identifier</code>, a datetime is a <code>timestamp</code>, a condition concept is a <code>condition</code>, everything else is a <code>measure</code>), fills structural concepts (<code>id</code>, <code>date</code>, <code>timestamp</code>) that follow from other facets, and detects a <code>likert</code> concept from an ordinal-looking ambiguous integer. It seeds a <code>unit</code> for the two concepts that imply one: <code>reaction_time</code> becomes <code>milliseconds</code> when the median value is ≥100 else <code>seconds</code>, and <code>age</code> becomes <code>years</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_col_facets</span><span class="op">(</span><span class="st">"RT"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">543</span>, <span class="fl">612</span>, <span class="fl">498</span>, <span class="fl">701</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"representation"</span>, <span class="st">"concept"</span>, <span class="st">"unit"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu">data_col_facets</span><span class="op">(</span><span class="st">"subject_id"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"s01"</span>, <span class="st">"s02"</span>, <span class="st">"s03"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"representation"</span>, <span class="st">"role"</span>, <span class="st">"concept"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code># RT:          representation "numeric", concept "reaction_time", unit "milliseconds"
+# subject_id:  representation "text",    role    "identifier",    concept "id"</code></pre>
+<p>Concepts detected by rules keep the whole rule-based path fully offline and deterministic. When you enable an LLM (see below), it fills in the <code>concept</code> and <code>measurement_level</code> for columns the rules left blank — for example a reaction time hidden behind a cryptic name like <code>q3</code>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -784,11 +861,36 @@ Note
 <p>The old single <code>col_type</code> field has been replaced by these facets. If you have code that read <code>mo$table$col_type</code>, read the relevant facet instead — most often <code>representation</code> (numeric vs text) or <code>concept</code>.</p>
 </div>
 </div>
-</section><section id="unit-of-observation" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="unit-of-observation">
-<span class="header-section-number">23.6</span> Unit of observation</h2>
-<p><code>data_check</code> also infers, for each data file, what <strong>one row represents</strong> — a <code>person</code>, a <code>trial</code>, a <code>session</code>, or a <code>dyad</code> (DDI’s <code>analysisUnit</code>). This matters because it tells a reviewer whether rows are independent (one per participant) or nested (many trials per participant), which changes how the data should be analysed. It is inferred from the identifier column(s) and whether they are unique per row: a unique-per-row id is person-level; a repeating id alongside a <code>trial</code>/<code>item</code> column is trial-level (long format); a repeating id with a <code>session</code>/<code>wave</code> column is a repeated-measures unit; two id columns suggest a dyad.</p>
+</section><section id="demographic-detection-data_check_demographic" class="level3" data-number="23.5.2"><h3 data-number="23.5.2" class="anchored" data-anchor-id="demographic-detection-data_check_demographic">
+<span class="header-section-number">23.5.2</span> Demographic detection: <code>data_check_demographic()</code>
+</h3>
+<p>The three demographic concepts — <strong>age, gender/sex, race/ethnicity</strong> — are detected by the exported helper <code>data_check_demographic()</code>, which is the single rule reused by <code>data_col_concept()</code> (here), by the facet model, and by <code>data_validate</code>’s demographic inventory. It requires the column <strong>name and values to agree</strong>: an <code>age</code> column is only tagged when its name looks like age <em>and</em> its values fall in a plausible human range, so a <code>condition</code> column coded <code>1</code>/<code>2</code> is never mistaken for gender.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source_file"</span>, <span class="st">"analysis_unit"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_check_demographic</span><span class="op">(</span><span class="st">"age"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">34</span>, <span class="fl">52</span>, <span class="fl">27</span><span class="op">)</span><span class="op">)</span>          <span class="co"># "age"</span></span>
+<span><span class="fu">data_check_demographic</span><span class="op">(</span><span class="st">"gender"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Non-binary"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># "gender"</span></span>
+<span><span class="fu">data_check_demographic</span><span class="op">(</span><span class="st">"condition"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>        <span class="co"># NA: values don't agree</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section></section><section id="summary-statistics-data_col_stats" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="summary-statistics-data_col_stats">
+<span class="header-section-number">23.6</span> Summary statistics: <code>data_col_stats()</code>
+</h2>
+<p>Alongside the facets, <code>data_col_stats()</code> computes a one-row block of statistics for each column: <code>n</code>, <code>n_missing</code>, <code>n_unique</code>, <code>mean</code>, <code>sd</code>, <code>se</code>, <code>median</code>, <code>min</code>, <code>max</code>, <code>range</code>, <code>p25</code>, <code>p75</code>, <code>iqr</code>, <code>skewness</code>, and <code>kurtosis</code>. Non-numeric or empty columns return <code>n</code>/<code>n_missing</code>/<code>n_unique</code> with the numeric statistics as <code>NA</code>. These feed the report’s <em>Descriptives Overview</em> (one table per source file) and are carried into <code>data_validate</code> and the Psych-DS <code>variableMeasured</code> block.</p>
+</section><section id="unit-of-observation-data_analysis_unit" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="unit-of-observation-data_analysis_unit">
+<span class="header-section-number">23.7</span> Unit of observation: <code>data_analysis_unit()</code>
+</h2>
+<p><code>data_check</code> also infers, for each data file, what <strong>one row represents</strong> — a <code>person</code>, a <code>trial</code>, a <code>session</code>, or a <code>dyad</code> (DDI’s <code>analysisUnit</code>) — with the exported helper <code>data_analysis_unit()</code>. This matters because it tells a reviewer whether rows are independent (one per participant) or nested (many trials per participant), which changes how the data should be analysed.</p>
+<p>The rule reads the identifier column(s) and their uniqueness:</p>
+<ul>
+<li>
+<strong>two or more identifier columns</strong> (or a dyad/partner column) → <code>dyad</code>;</li>
+<li>
+<strong>one identifier, unique per row</strong> (≥98%) → <code>person</code>;</li>
+<li>
+<strong>one identifier that repeats</strong>, alongside a <code>trial</code>/<code>item</code> column → <code>trial</code> (long format); alongside a <code>session</code>/<code>wave</code> column → <code>session</code> (repeated measures); otherwise → <code>trial</code>;</li>
+<li>
+<strong>no identifier</strong> but a trial or session column present → <code>trial</code> / <code>session</code>.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source_file"</span>, <span class="st">"analysis_unit"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -806,8 +908,55 @@ Note
 </div>
 </div>
 <p>Each row of our <code>study.csv</code> is one participant, so the file is <code>person</code>-level. When a repository <strong>mixes</strong> units — say a person-level file next to a trial-level file — the report flags it, because combining files at different levels without aggregating is a common and easily-missed error.</p>
-</section><section id="what-you-get-back" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="what-you-get-back">
-<span class="header-section-number">23.7</span> What you get back</h2>
+</section><section id="study-groups" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="study-groups">
+<span class="header-section-number">23.8</span> Study groups</h2>
+<p>A single repository often bundles several studies (Experiment 1, Study 2a, a pilot). <code>data_check</code> assigns every analysable file a <strong>study group</strong> (<code>ex1</code>, <code>ex2a</code>, <code>pilot1</code>, …, or <code>shared</code>) so a multi-study repository can be split into self-contained Psych-DS datasets by <code>convert_psychds()</code>. This is done by <code>data_group_llm()</code>, but — despite the name — it is <strong>deterministic wherever the evidence allows</strong>, and only falls back to the model for files nothing else can place. Four passes run in order, each more specific overriding the last:</p>
+<ol type="1">
+<li>
+<strong>By source repository</strong> (<code>.data_group_from_repo()</code>): a paper that links several repositories with <em>different</em> files is multi-study, one study per repository. Repositories whose file sets overlap ≥90% (Jaccard) are treated as mirrors of one study, not two.</li>
+<li>
+<strong>By path</strong> (<code>.data_group_from_path()</code>): a filename or folder that names its study outright — <code>Experiment 1/</code>, <code>study2a_data.csv</code>, even smashed-together names like <code>…experiment1creplication…</code> — is grouped by a regex that reads such names more reliably than a small LLM.</li>
+<li>
+<strong>By code reference</strong> (<code>.data_code_refs()</code>): a script names the data it reads and writes (<code>read_csv("raw/x.csv")</code>), which is <em>hard evidence</em> that the script and those files belong to the same study. This rescues data files whose own path only names a processing stage (<code>raw/</code>, <code>processed/</code>).</li>
+<li>
+<strong>By LLM</strong> (only when <code>llm_use(TRUE)</code>): the last resort, seeing only files the deterministic passes could not place. When those placed everything — the common multi-repo case — no call is made at all.</li>
+</ol>
+<p>Two guards make the result trustworthy. <code>data_study_roster()</code> reads the manuscript for the studies it <em>names</em> (“Experiment 1, 2a, 3”) — the authoritative list — and relabels slot-named groups to the authors’ labels when the counts match; <code>.data_group_check_roster()</code> reports any disagreement rather than guessing. And a <strong>data file is never <code>shared</code></strong>: data always belongs to a study, so any data file the passes left <code>shared</code> falls back to its repository’s study or to the sole study. Without an LLM, files that no deterministic pass can place stay <code>NA</code> (unknown), and <code>psychds_check</code> reports that subgrouping could not be detected.</p>
+</section><section id="reading-files-format-tolerance" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="reading-files-format-tolerance">
+<span class="header-section-number">23.9</span> Reading files: format tolerance</h2>
+<p><code>data_check</code> reads tabular files with <code>data_read_head()</code> (<code>n_rows = Inf</code> reads the whole file), which is deliberately tolerant of the messy encodings and formats research data actually ships in:</p>
+<ul>
+<li>
+<strong>Delimited text</strong> (<code>.csv</code>/<code>.tsv</code>/<code>.txt</code>/<code>.dat</code>): the delimiter is sniffed (<code>.sniff_delimiter()</code>) and header presence auto-detected (<code>.detect_header()</code> — a file whose first two rows are both all-numeric is treated as headerless). Reading uses <code><a href="https://rdrr.io/pkg/data.table/man/fread.html">data.table::fread</a></code> when available (orders of magnitude faster on awkward quoted fields) and falls back to <code>read.delim</code>.</li>
+<li>
+<strong>A “single big field” blob</strong> (a JSON/XML document dumped under one header) is detected from the first two lines (<code>.is_single_field_blob()</code>) and skipped — it is not a table, and parsing it is pathologically slow.</li>
+<li>
+<strong>Excel</strong> (<code>.xlsx</code>/<code>.xls</code>) via <code>readxl</code>; <strong>SPSS/Stata/SAS</strong> (<code>.sav</code>/<code>.dta</code>/<code>.sas7bdat</code>) via <code>haven</code> (preserving value labels and declared missing codes for <code>codebook_check</code>); <strong>JASP</strong> (<code>.jasp</code>) and <strong>jamovi</strong> (<code>.omv</code>) return a labelled data frame like a <code>.sav</code>.</li>
+<li>
+<strong>R objects</strong>: <code>.rds</code> yields its data frame; an <code>.RData</code>/<code>.rda</code> workspace is restored in an <strong>isolated subprocess</strong> (<code>.read_rdata_isolated()</code>) because loading a saved model that references an uninstalled package can print C-level diagnostics or crash. A workspace that holds no reusable data frame (only fitted models / session state) returns <code>NULL</code> and is reported as a data-sharing recommendation.</li>
+<li>
+<strong>Invalid UTF-8</strong> bytes (a Latin-1/Windows-1252 export) are re-interpreted as Latin-1 rather than failing (<code>.utf8_repair_df()</code>), and the per-column repair count is recorded in a <code>utf8_repaired</code> attribute so <code>data_validate</code> can warn about the file’s mixed encoding.</li>
+</ul>
+<p>Qualtrics exports get special handling on read (see below).</p>
+</section><section id="what-the-module-holds-back-or-reclassifies-after-reading" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="what-the-module-holds-back-or-reclassifies-after-reading">
+<span class="header-section-number">23.10</span> What the module holds back or reclassifies after reading</h2>
+<p>Several file types read as a data frame but are not straightforward datasets. <code>data_check</code> handles each so they are neither silently dropped nor wrongly treated as data:</p>
+<ul>
+<li>
+<strong>File manifests</strong> (<code>data_is_manifest()</code>): a “table of contents” CSV whose cells name <em>other files in the repository</em>. Detected by content (≥80% of a column’s values resolve to repo files, across ≥2 distinct extensions, so a genuine <code>stimulus</code> column of images does not trip it), then demoted to <code>supplemental</code>.</li>
+<li>
+<strong>R workspaces</strong> with no reusable data: reported with advice to share the underlying data as CSV + codebook.</li>
+<li>
+<strong>Coding worksheets</strong> (<code>.tabular_usable()</code>): a human-formatted worksheet (mostly free-text annotation columns, mostly empty cells) reads as a data frame but is not a rectangular <em>dataset</em>. Detected from the already-computed facets using a <strong>prose fraction</strong> and a <strong>missingness fraction</strong> with tiered rules (overwhelmingly free text, or moderately free-text <em>and</em> mostly empty). Columns are <em>not</em> extracted and nothing is sent to the LLM, but the file stays classified as <code>data</code> so <code>excel_check</code> still inspects its formatting. Crucially, high missingness <em>alone</em> never excludes — a branched/planned-missing survey is 90%+ missing but is real numeric data.</li>
+<li>
+<strong><code>.txt</code> reclassification</strong> (<code>txt_classify_content()</code>): a <code>.txt</code> is ambiguous by name (an E-Prime export, a task log, a codebook, or prose all ship as <code>.txt</code>), so all <code>.txt</code> files are fetched under <code>download = "data"</code> and reclassified from their <em>content</em> once on disk. Only ever an <em>upgrade</em> to <code>data</code> (an E-Prime header block, or a delimited table with a real header row); an unrecognised <code>.txt</code> keeps whatever its name implied, so prose is never mistaken for data. A name-based README/codebook verdict is authoritative and never overridden.</li>
+<li>
+<strong>Trial-level files</strong> (<code>.bh_is_trial_level_file()</code>): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file <em>per participant per block</em>. Treating each as its own dataset would produce hundreds of fragmented “datasets” for one instrument, so they are held out of the tabular extractor, recorded, and later <strong>merged per instrument</strong> into <code>paradata/&lt;instrument&gt;.json</code> by <code>convert_psychds()</code>, following the <a href="https://behaverse.github.io/data-model/">Behaverse Data Model</a> <code>trial</code> standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. The Behaverse schema is described in full in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</li>
+</ul></section><section id="qualtrics-survey-exports" class="level2" data-number="23.11"><h2 data-number="23.11" class="anchored" data-anchor-id="qualtrics-survey-exports">
+<span class="header-section-number">23.11</span> Qualtrics survey exports</h2>
+<p>Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved response-metadata columns (<code>StartDate</code>, <code>Duration (in seconds)</code>, <code>Finished</code>, <code>ResponseId</code>, …) and, for the “use choice text” export, extra header rows (question text and an <code>ImportId</code> JSON row) as the first <em>data</em> rows, which force every column to text. <code>data_check</code> detects these files with <code>data_check_is_qualtrics()</code> (matching ≥4 reserved metadata names and/or the <code>ImportId</code> row), strips the extra header rows with <code>data_strip_qualtrics_header()</code> so the columns type correctly, and tags each metadata column with its semantic role via <code>.qualtrics_tag_cols()</code>. The reserved-name → tag map is the schema <code>.qualtrics_meta_cols</code> (<code>startdate → qualtrics_start</code>, <code>durationinseconds → qualtrics_duration</code>, <code>finished → qualtrics_finished</code>, …), matched case-insensitively after stripping non-alphanumerics so <code>Duration (in seconds)</code> and the R-mangled <code>Duration..in.seconds.</code> both hit. The substantive question columns are deliberately <em>not</em> interpreted here — that is the job of <code>data_validate</code> (metadata) and the scale-block detection in <code>codebook_check</code>.</p>
+</section><section id="what-you-get-back" class="level2" data-number="23.12"><h2 data-number="23.12" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">23.12</span> What you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -821,106 +970,125 @@ Note
 <tr class="odd">
 <td><code>$traffic_light</code></td>
 <td>
-<code>"green"</code> when data files were read successfully, <code>"na"</code> when there is nothing to check</td>
+<code>"green"</code> when data files were read; <code>"yellow"</code> when tabular files exist but some had no local copy; <code>"na"</code> when there is nothing to check</td>
 </tr>
 <tr class="even">
 <td><code>$summary_text</code></td>
-<td>plain-text summary: how many files, how many columns</td>
+<td>plain-text bulleted summary: files classified, columns extracted, study groups, and any held-back files</td>
 </tr>
 <tr class="odd">
 <td><code>$summary_table</code></td>
-<td>per-paper counts</td>
+<td>per-paper counts (<code>data_file_n</code>, <code>column_n</code>, <code>empty_col_n</code>, plus wide per-representation counts)</td>
 </tr>
 <tr class="even">
 <td><code>$table</code></td>
-<td>one row per column, with the facets (<code>representation</code>, <code>measurement_level</code>, <code>concept</code>, <code>role</code>, <code>unit</code>, <code>quality</code>), the inferred <code>analysis_unit</code>, and summary statistics</td>
+<td>one row per column, with the facets, <code>analysis_unit</code>, <code>sample_values</code>, <code>utf8_repaired</code>, and summary statistics</td>
 </tr>
 <tr class="odd">
 <td><code>$structure</code></td>
-<td>one row per file, with <code>file_type</code> and <code>data_type</code>
+<td>one row per file, with <code>data_type</code>, <code>data_format</code>, <code>group</code>, and <code>tabular_usable</code> / <code>non_tabular_reason</code>
 </td>
 </tr>
 <tr class="even">
 <td><code>$previews</code></td>
-<td>the full data frames that were read (used by <code>data_validate</code>)</td>
+<td>the full data frames that were read (consumed by <code>data_validate</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>$gated_repos</code></td>
+<td>repositories found but not listable (size-gated GitHub, private OSF)</td>
+</tr>
+<tr class="even">
+<td><code>$manifest_path</code></td>
+<td>path to a written JSON manifest, when one was requested</td>
 </tr>
 </tbody>
 </table>
-<p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> by itself — running <code>data_validate</code> or <code>codebook_check</code> triggers it automatically and reuses the result.</p>
-</section><section id="downloading-files" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="downloading-files">
-<span class="header-section-number">23.8</span> Downloading files</h2>
+<p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> by itself — running <code>data_validate</code>, <code>codebook_check</code>, <code>psychds_check</code>, or <code>convert_psychds()</code> triggers it automatically and reuses the result.</p>
+</section><section id="downloading-files" class="level2" data-number="23.13"><h2 data-number="23.13" class="anchored" data-anchor-id="downloading-files">
+<span class="header-section-number">23.13</span> Downloading files</h2>
 <p>When a paper links to an online repository, <code>data_check</code> downloads the files it needs into a shared on-disk cache (reused across runs and across modules, so a file is never fetched twice — see <a href="../chapters/caching.html">Caching and Reuse</a>). The <code>download</code> argument controls <strong>what</strong> is fetched:</p>
 <ul>
 <li>
-<code>download = "data"</code> (the default) fetches only the machine-readable files the checks analyse — tabular data plus codebook/README files.</li>
+<code>download = "data"</code> (the default) fetches only the machine-readable files the checks analyse — tabular data plus codebook/README files, and every <code>.txt</code> (which is reclassified from content afterwards).</li>
 <li>
 <code>download = "all"</code> fetches <strong>every</strong> file in the repository (code, materials, PDFs, assets, …). This is the right choice when building a complete data archive with <code>convert_psychds()</code>.</li>
 <li>
-<code>download = "none"</code> (or <code>FALSE</code>) downloads nothing — files are only classified by name.</li>
+<code>download = "none"</code> (or <code>FALSE</code>) downloads nothing — files are only classified by name. <code>TRUE</code> is accepted as a synonym for <code>"data"</code>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># default: fetch only the readable data + codebook/README files</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># default: fetch only the readable data + codebook/README files</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># fetch everything, for building a full data archive</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="size-caps" class="level3" data-number="23.8.1"><h3 data-number="23.8.1" class="anchored" data-anchor-id="size-caps">
-<span class="header-section-number">23.8.1</span> Size caps</h3>
-<p>Two caps bound how much is downloaded per repository. They work differently:</p>
+<section id="caching-downloads" class="level3" data-number="23.13.1"><h3 data-number="23.13.1" class="anchored" data-anchor-id="caching-downloads">
+<span class="header-section-number">23.13.1</span> Caching downloads</h3>
+<p>By default (<code>cache = FALSE</code>) downloads go to a temporary directory discarded when the R session ends, so nothing accumulates on disk. Pass <code>cache = TRUE</code> to keep files in a persistent on-disk cache (<code>repo_cache_dir()</code>) reused on later runs — the right choice when repeatedly checking the same repositories or building an archive across sessions. Clear it with <code>repo_cache_clear()</code>.</p>
+</section><section id="size-caps" class="level3" data-number="23.13.2"><h3 data-number="23.13.2" class="anchored" data-anchor-id="size-caps">
+<span class="header-section-number">23.13.2</span> Size caps</h3>
+<p>Two caps bound how much is downloaded per repository, and they work as an <strong>upfront, all-or-nothing gate</strong>:</p>
 <ul>
 <li>
-<strong><code>max_file_size</code></strong> (default <strong>100 MB</strong>) is a <strong>per-file filter</strong>: a single file larger than this is skipped on its own, and the rest of the repository still downloads.</li>
+<strong><code>max_file_size</code></strong> (default <strong>100 MB</strong>): if any single file in a repository exceeds this, the whole repository is refused (nothing downloaded), with a message naming the size to lift it.</li>
 <li>
-<strong><code>max_download_size</code></strong> (default <strong>500 MB</strong>) is a <strong>per-repository gate</strong>: if the total of the files that would download exceeds it, the <em>whole</em> repository is skipped.</li>
+<strong><code>max_download_size</code></strong> (default <strong>500 MB</strong>): if a repository’s <em>total</em> exceeds this, the whole repository is refused.</li>
 </ul>
-<p>Set either to <code>Inf</code> for no cap. A file whose size cannot be determined at all (no size in the listing and no <code>Content-Length</code> header) also causes its repository to be skipped, so nothing huge is ever fetched blind. Every skip is reported inline and recorded, so you can raise the relevant cap and re-run.</p>
+<p>Set either to <code>Inf</code> for no cap. A file whose size cannot be determined at all also causes its repository to be skipped, so nothing huge is ever fetched blind. Every skip is reported inline (<code>$gated_repos</code>), so you can raise the relevant cap and re-run.</p>
+<p>For GitHub specifically, <code>github_gate</code> (default <code>TRUE</code>, or <code>NULL</code> = “gate unless <code>download = "all"</code>”) refuses to recursively list a repository above <code>github_max_files</code> (default 1000) files before it is walked.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>           max_file_size <span class="op">=</span> <span class="fl">200</span>, max_download_size <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="skipping-asset-types-and-peeking-inside-zips" class="level3" data-number="23.8.2"><h3 data-number="23.8.2" class="anchored" data-anchor-id="skipping-asset-types-and-peeking-inside-zips">
-<span class="header-section-number">23.8.2</span> Skipping asset types, and peeking inside zips</h3>
-<p>When building an archive you often want the <em>data</em> but not the stimuli or media (images, audio, video) — those are usually better linked to than mirrored. Two options handle this:</p>
+</section><section id="skipping-asset-types-and-peeking-inside-zips" class="level3" data-number="23.13.3"><h3 data-number="23.13.3" class="anchored" data-anchor-id="skipping-asset-types-and-peeking-inside-zips">
+<span class="header-section-number">23.13.3</span> Skipping asset types, and peeking inside zips</h3>
+<p>When building an archive you often want the <em>data</em> but not the stimuli or media — those are usually better linked to than mirrored. Two options handle this:</p>
 <ul>
 <li>
-<strong><code>skip_types</code></strong> — a vector of file types never to download, even under <code>download = "all"</code>. Most usefully <code>skip_types = "asset"</code> leaves out stimuli/media. Skipped files are still listed in the manifest with the reason, so the release can point to them.</li>
+<strong><code>skip_types</code></strong> — a vector of <code>data_type</code>s never to download, even under <code>download = "all"</code>. Most usefully <code>skip_types = "asset"</code> leaves out stimuli/media. Skipped files are still listed (with the reason) in the manifest.</li>
 <li>
-<strong><code>peek_zips = TRUE</code></strong> — before downloading a <code>.zip</code>, look inside it via an HTTP range request (fetching only the zip’s tail, not the whole file) and only download zips that actually contain data or a codebook. A zip of only stimuli is left to be linked. Downloaded data-zips are unpacked and their inner data files added to the archive (inner assets dropped). See <code>zip_peek()</code> and <code>zip_decision()</code>.</li>
+<strong><code>peek_zips = TRUE</code></strong> — before downloading a <code>.zip</code>, look inside it via an HTTP range request (fetching only the zip’s tail, not the whole file — <code>zip_peek()</code> / <code>zip_decision()</code>) and only download zips that actually contain data or a codebook. Downloaded data-zips are unpacked (<code>.expand_zip()</code>) and their inner data files added to the archive, with the zip itself demoted to a container; inner assets are dropped.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># archive-building recipe: everything except media, peeking inside zips</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># archive-building recipe: everything except media, peeking inside zips</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>           skip_types <span class="op">=</span> <span class="st">"asset"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="a-file-manifest" class="level3" data-number="23.8.3"><h3 data-number="23.8.3" class="anchored" data-anchor-id="a-file-manifest">
-<span class="header-section-number">23.8.3</span> A file manifest</h3>
-<p>Pass <code>manifest = "some/dir"</code> to write a per-paper JSON manifest listing every repository file with its URL, size, type, and whether it was downloaded (and if not, why). Unsized files are resolved with a lightweight <code>HEAD</code> request so the manifest carries real sizes — useful for auditing a corpus or choosing size caps before a large archive build.</p>
+</section><section id="a-file-manifest" class="level3" data-number="23.13.4"><h3 data-number="23.13.4" class="anchored" data-anchor-id="a-file-manifest">
+<span class="header-section-number">23.13.4</span> A file manifest</h3>
+<p>Pass <code>manifest = "some/dir"</code> to write a per-paper JSON manifest (<code>.data_check_write_manifest()</code>) listing every repository file with its URL, size, type, Psych-DS target path, and whether it was downloaded (and if not, why). It records this <strong>provenance</strong> in a self-describing block whose field names map onto DDI-Codebook 2.5 elements (<code>provenance$ddi_mapping</code>), the metacheck/R version and platform, and — when the LLM was used — the model. Files not downloaded are split into <strong>intentional</strong> (a policy decision — download mode, <code>skip_types</code>, the size caps — where re-running changes nothing) and <strong>unintentional</strong> (wanted but not fetched: a transient failure or a missing URL — the re-run signal, flagged <code>rerun_recommended</code>). Unsized files are resolved with a lightweight <code>HEAD</code> request so the manifest carries real sizes — useful for auditing a corpus or choosing size caps before a large archive build.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"none"</span>, manifest <span class="op">=</span> <span class="st">"manifests"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"none"</span>, manifest <span class="op">=</span> <span class="st">"manifests"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="using-an-llm" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="using-an-llm">
-<span class="header-section-number">23.9</span> Using an LLM</h2>
-<p>With <code>llm_use(TRUE)</code>, <code>data_check</code> adds things the rules cannot do reliably:</p>
+</section></section><section id="using-an-llm" class="level2" data-number="23.14"><h2 data-number="23.14" class="anchored" data-anchor-id="using-an-llm">
+<span class="header-section-number">23.14</span> Using an LLM</h2>
+<p>With <code>llm_use(TRUE)</code>, <code>data_check</code> adds things the rules cannot do reliably. The LLM path is layered <em>on top of</em> the rules — it only fills gaps, never overrides a confident rule:</p>
 <ul>
+<li>
+<strong>File types</strong> for files the rules left <code>other</code> (<code>.llm_classify_batched()</code> classifies into <code>codebook</code>/<code>software</code>/<code>output</code>/<code>supplemental</code>/<code>asset</code>/<code>other</code>).</li>
 <li>
 <strong>Concepts for cryptically-named columns</strong> — the rules only tag a concept when the name gives it away, so a reaction time called <code>q3</code> stays blank; the LLM fills it in.</li>
 <li>
 <strong>Refined measurement levels</strong> for ambiguous integer columns (nominal vs ordinal vs ratio).</li>
 <li>
-<strong>A study <code>group</code></strong> for each file, inferring which experiment or study a data file belongs to from its name and context — useful when a repository bundles several studies together.</li>
+<strong>Study groups</strong> for files no deterministic pass could place (see above).</li>
 </ul>
+<p>All LLM classification runs through <code>.llm_classify_batched()</code>, which sends numbered listings and expects index-mapped <code>{index, value}</code> results back, so a dropped or reordered answer never misaligns the others. A <strong>header-signature dedup</strong> means that in a repository of <code>pp1.csv … pp30.csv</code> (all sharing a schema), an ambiguous column is classified once and broadcast to the identical-header files, turning 30 repeated questions into one.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"data_check"</span>,</span>
 <span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">concept</span>   <span class="co"># filled in for cryptic names</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">group</span>     <span class="co"># study grouping, otherwise NA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">structure</span><span class="op">$</span><span class="va">group</span> <span class="co"># study grouping</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the <a href="../chapters/llms.html">LLMs</a> chapter for how to configure a model.</p>
-</section><section id="related" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="related">
-<span class="header-section-number">23.10</span> Related</h2>
+</section><section id="building-a-psych-ds-archive-convert_psychds" class="level2" data-number="23.15"><h2 data-number="23.15" class="anchored" data-anchor-id="building-a-psych-ds-archive-convert_psychds">
+<span class="header-section-number">23.15</span> Building a Psych-DS archive: <code>convert_psychds()</code>
+</h2>
+<p><code>data_check</code>’s classification, facets, study groups, and read data frames are what make it possible to <em>rebuild</em> a repository as a standard-compliant dataset. That is the job of <code>convert_psychds()</code>, which is documented in full — together with the <strong>Psych-DS</strong>, <strong>OpenScales OSD</strong>, and <strong>Behaverse</strong> schemas it writes — in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter. In short: run <code>data_check</code> with <code>download = "all"</code> (so every file is on disk), then <code>convert_psychds(paper)</code> copies each file to its standard Psych-DS location, generates a <code>dataset_description.json</code> (with <code>variableMeasured</code> built from these facets and the codebook labels), splits multi-study repositories into <code>study-&lt;group&gt;/</code> datasets under a <code>collection.json</code>, writes identified scales as <code>scales/&lt;code&gt;.osd</code> files, and normalises trial-level data into <code>paradata/&lt;instrument&gt;.json</code>.</p>
+</section><section id="related" class="level2" data-number="23.16"><h2 data-number="23.16" class="anchored" data-anchor-id="related">
+<span class="header-section-number">23.16</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-data-validate.html">Data Validate</a> runs automated data-quality checks on the columns <code>data_check</code> extracts.</li>
@@ -929,7 +1097,7 @@ Note
 <li>
 <a href="../chapters/mod-codebook-check.html">Codebook Check</a> checks whether the columns are documented.</li>
 <li>
-<a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> checks the repository against the Psych-DS standard.</li>
+<a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> checks the repository against the Psych-DS standard, and hosts <code>convert_psychds()</code> and the schema reference.</li>
 </ul>
 
 

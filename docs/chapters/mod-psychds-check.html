@@ -429,16 +429,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-target-tree" id="toc-the-target-tree" class="nav-link" data-scroll-target="#the-target-tree"><span class="header-section-number">27.4</span> The target tree</a></li>
   <li><a href="#the-summary-counts" id="toc-the-summary-counts" class="nav-link" data-scroll-target="#the-summary-counts"><span class="header-section-number">27.5</span> The summary counts</a></li>
   <li><a href="#the-traffic-light" id="toc-the-traffic-light" class="nav-link" data-scroll-target="#the-traffic-light"><span class="header-section-number">27.6</span> The traffic light</a></li>
-  <li><a href="#from-gap-report-to-a-compliant-dataset" id="toc-from-gap-report-to-a-compliant-dataset" class="nav-link" data-scroll-target="#from-gap-report-to-a-compliant-dataset"><span class="header-section-number">27.7</span> From gap report to a compliant dataset</a></li>
   <li>
-<a href="#building-a-whole-data-archive" id="toc-building-a-whole-data-archive" class="nav-link" data-scroll-target="#building-a-whole-data-archive"><span class="header-section-number">27.8</span> Building a whole data archive</a>
+<a href="#from-gap-report-to-a-compliant-dataset-convert_psychds" id="toc-from-gap-report-to-a-compliant-dataset-convert_psychds" class="nav-link" data-scroll-target="#from-gap-report-to-a-compliant-dataset-convert_psychds"><span class="header-section-number">27.7</span> From gap report to a compliant dataset: <code>convert_psychds()</code></a>
   <ul class="collapse">
-<li><a href="#zips-are-unpacked-into-the-archive" id="toc-zips-are-unpacked-into-the-archive" class="nav-link" data-scroll-target="#zips-are-unpacked-into-the-archive"><span class="header-section-number">27.8.1</span> Zips are unpacked into the archive</a></li>
-  <li><a href="#an-archive-level-catalogue" id="toc-an-archive-level-catalogue" class="nav-link" data-scroll-target="#an-archive-level-catalogue"><span class="header-section-number">27.8.2</span> An archive-level catalogue</a></li>
+<li><a href="#what-the-converter-does-step-by-step" id="toc-what-the-converter-does-step-by-step" class="nav-link" data-scroll-target="#what-the-converter-does-step-by-step"><span class="header-section-number">27.7.1</span> What the converter does, step by step</a></li>
   </ul>
 </li>
-  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">27.9</span> What you get back</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">27.10</span> Related</a></li>
+  <li>
+<a href="#the-schemas-metacheck-writes" id="toc-the-schemas-metacheck-writes" class="nav-link" data-scroll-target="#the-schemas-metacheck-writes"><span class="header-section-number">27.8</span> The schemas Metacheck writes</a>
+  <ul class="collapse">
+<li><a href="#psych-ds-dataset_description.json" id="toc-psych-ds-dataset_description.json" class="nav-link" data-scroll-target="#psych-ds-dataset_description.json"><span class="header-section-number">27.8.1</span> Psych-DS (<code>dataset_description.json</code>)</a></li>
+  <li><a href="#the-collection-collection.json" id="toc-the-collection-collection.json" class="nav-link" data-scroll-target="#the-collection-collection.json"><span class="header-section-number">27.8.2</span> The collection: <code>collection.json</code></a></li>
+  <li><a href="#openscales-osd-scalescode.osd" id="toc-openscales-osd-scalescode.osd" class="nav-link" data-scroll-target="#openscales-osd-scalescode.osd"><span class="header-section-number">27.8.3</span> OpenScales OSD (<code>scales/&lt;code&gt;.osd</code>)</a></li>
+  <li><a href="#behaverse-trial-data-paradatainstrument.json" id="toc-behaverse-trial-data-paradatainstrument.json" class="nav-link" data-scroll-target="#behaverse-trial-data-paradatainstrument.json"><span class="header-section-number">27.8.4</span> Behaverse trial data (<code>paradata/&lt;instrument&gt;.json</code>)</a></li>
+  <li><a href="#ddi-codebook-2.5-the-manifest" id="toc-ddi-codebook-2.5-the-manifest" class="nav-link" data-scroll-target="#ddi-codebook-2.5-the-manifest"><span class="header-section-number">27.8.5</span> DDI-Codebook 2.5 (the manifest)</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#building-a-whole-data-archive" id="toc-building-a-whole-data-archive" class="nav-link" data-scroll-target="#building-a-whole-data-archive"><span class="header-section-number">27.9</span> Building a whole data archive</a>
+  <ul class="collapse">
+<li><a href="#zips-are-unpacked-into-the-archive" id="toc-zips-are-unpacked-into-the-archive" class="nav-link" data-scroll-target="#zips-are-unpacked-into-the-archive"><span class="header-section-number">27.9.1</span> Zips are unpacked into the archive</a></li>
+  <li><a href="#an-archive-level-catalogue" id="toc-an-archive-level-catalogue" class="nav-link" data-scroll-target="#an-archive-level-catalogue"><span class="header-section-number">27.9.2</span> An archive-level catalogue</a></li>
+  </ul>
+</li>
+  <li><a href="#what-you-get-back" id="toc-what-you-get-back" class="nav-link" data-scroll-target="#what-you-get-back"><span class="header-section-number">27.10</span> What you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">27.11</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-psychds-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -621,7 +636,7 @@ Note
 <th style="text-align: right;">misplaced_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">4caf8704bf2df5</td>
+<td style="text-align: left;">bc17b4da2bffba</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -687,16 +702,139 @@ Note
 <td>there were no files to assess</td>
 </tr>
 </tbody>
-</table></section><section id="from-gap-report-to-a-compliant-dataset" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="from-gap-report-to-a-compliant-dataset">
-<span class="header-section-number">27.7</span> From gap report to a compliant dataset</h2>
+</table></section><section id="from-gap-report-to-a-compliant-dataset-convert_psychds" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="from-gap-report-to-a-compliant-dataset-convert_psychds">
+<span class="header-section-number">27.7</span> From gap report to a compliant dataset: <code>convert_psychds()</code>
+</h2>
 <p><code>psychds_check</code> tells you <em>what</em> is missing; the companion function <code>convert_psychds()</code> acts on it. Given the same repository, it writes out a Psych-DS-compliant copy — moving files into <code>data/</code>, <code>analysis/</code>, and so on, and generating the <code>dataset_description.json</code> metadata from the columns <code>data_check</code> extracted:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data_check"</span>, <span class="st">"psychds_check"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data_check"</span>, <span class="st">"codebook_check"</span>, <span class="st">"psychds_check"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">convert_psychds</span><span class="op">(</span><span class="va">res</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The generated dataset is validated with <code>psychds_validate()</code>, Metacheck’s built-in checker for the standard, so the converted output is guaranteed to pass.</p>
-</section><section id="building-a-whole-data-archive" class="level2" data-number="27.8"><h2 data-number="27.8" class="anchored" data-anchor-id="building-a-whole-data-archive">
-<span class="header-section-number">27.8</span> Building a whole data archive</h2>
+<p><code>convert_psychds()</code> can take either a paper object (it runs the checks as needed) or a <strong>captured result</strong> of <code>report(paper, ...)</code> — when the capture already contains <code>data_check</code> / <code>codebook_check</code> / <code>psychds_check</code>, those outputs are reused rather than re-run, and the OSF listing is not re-queried (<code>refresh_osf = FALSE</code> by default). This is why the recommended pattern is to run the checks once and hand the result to the converter. The output goes to <code>output_dir</code> (default <code>psychds/&lt;paper_id&gt;</code>); an existing directory is skipped unless <code>overwrite = TRUE</code>.</p>
+<section id="what-the-converter-does-step-by-step" class="level3" data-number="27.7.1"><h3 data-number="27.7.1" class="anchored" data-anchor-id="what-the-converter-does-step-by-step">
+<span class="header-section-number">27.7.1</span> What the converter does, step by step</h3>
+<ol type="1">
+<li>
+<strong>Resolves the plan.</strong> It reuses <code>data_check</code>’s <code>structure</code> (per-file classification) and <code>table</code> (column facets), <code>codebook_check</code>’s labels and identified scales, and <code>psychds_check</code>’s placement plan (<code>current_path</code> → <code>target_path</code>).</li>
+<li>
+<strong>Copies every file to its Psych-DS location.</strong> Files are resolved to their source <em>by row index</em>, not by name — a paper’s several OSF components can each ship their own <code>demographics.csv</code>, and a name-keyed lookup would silently give every study the first component’s bytes. A non-CSV data source (<code>.xlsx</code>/<code>.sav</code>/<code>.dta</code>/<code>.jasp</code>/…) is written out as a <strong>real CSV</strong> from the fully-read data frame (a byte copy would be an invalid CSV) <em>and</em> the untouched original is kept beside it, so the release carries both the reusable data and the authored artifact. Data CSVs are written <strong>BOM-free</strong>, because a UTF-8 BOM makes the first header read as <code>﻿id</code> and mismatches <code>variableMeasured</code>.</li>
+<li>
+<strong>Splits multi-study repositories.</strong> When <code>data_check</code> assigned study groups (see <a href="../chapters/mod-data-check.html">Data Check</a>), each becomes a self-contained <code>study-&lt;group&gt;/</code> dataset with its own <code>dataset_description.json</code>. Files belonging to no single study (a whole-repo README/codebook, shared materials) sit at the collection root beside the study folders — following BIDS, which places shared content at the root.</li>
+<li>
+<strong>Writes scale definitions</strong> as OpenScales OSD files (<code>scales/&lt;code&gt;.osd</code>), and <strong>normalises trial-level data</strong> into Behaverse <code>paradata/&lt;instrument&gt;.json</code>, cross-linking the two.</li>
+<li>
+<strong>Writes the paper’s full text</strong> into <code>documentation/</code>, and a <strong>provenance <code>logs/</code> folder</strong> (the file manifest, and the check results / module tables when those modules ran), each explained in the root README.</li>
+</ol>
+<p>The generated dataset is validated with <code>psychds_validate()</code>, Metacheck’s built-in checker for the standard, so a single-study converted output is guaranteed to pass. <code>convert_psychds()</code> returns (invisibly) a list with <code>output_dir</code>, <code>n_files_copied</code>, <code>n_studies</code>, <code>descriptions</code>, <code>collection</code>, <code>n_scales</code>, <code>n_paradata</code>, <code>fulltext</code>, <code>logs</code>, <code>skipped</code>, and <code>copy_failed</code>.</p>
+</section></section><section id="the-schemas-metacheck-writes" class="level2" data-number="27.8"><h2 data-number="27.8" class="anchored" data-anchor-id="the-schemas-metacheck-writes">
+<span class="header-section-number">27.8</span> The schemas Metacheck writes</h2>
+<p><code>convert_psychds()</code> is where several standards come together. Understanding them explains what is in the generated files.</p>
+<section id="psych-ds-dataset_description.json" class="level3" data-number="27.8.1"><h3 data-number="27.8.1" class="anchored" data-anchor-id="psych-ds-dataset_description.json">
+<span class="header-section-number">27.8.1</span> Psych-DS (<code>dataset_description.json</code>)</h3>
+<p>The heart of a Psych-DS dataset is a root <code>dataset_description.json</code>: schema.org JSON-LD with <code>@type</code> <code>Dataset</code>, <code>schemaVersion</code> <code>"Psych-DS 1.5.1"</code>, the paper’s <code>name</code>, <code>author</code>, <code>identifier</code> (DOI), and <code>keywords</code>, and — the substantive part — a <code>variableMeasured</code> array describing every column of every data CSV. Psych-DS requires <em>each</em> CSV column to appear here.</p>
+<p>Each entry is a schema.org <code>PropertyValue</code> built by the converter from <code>data_check</code>’s facets and <code>codebook_check</code>’s labels. Because schema.org has no native properties for most psychometric metadata, Metacheck records those under a namespaced <code>metacheck:</code> extension whose fields map onto <strong>DDI</strong> concepts:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Field</th>
+<th>Source</th>
+<th>DDI / schema.org concept</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td>column name</td>
+<td>variable name</td>
+</tr>
+<tr class="even">
+<td><code>description</code></td>
+<td>codebook label</td>
+<td>variable label</td>
+</tr>
+<tr class="odd">
+<td><code>measurementTechnique</code></td>
+<td>identified scale name</td>
+<td>the instrument a variable was measured with</td>
+</tr>
+<tr class="even">
+<td><code>metacheck:scale</code></td>
+<td>scale <code>{name, code, source, confidence}</code>
+</td>
+<td>DDI variable group; <code>code</code> cross-references <code>scales/&lt;code&gt;.osd</code>
+</td>
+</tr>
+<tr class="odd">
+<td><code>metacheck:measurementLevel</code></td>
+<td>measurement-level facet</td>
+<td>DDI <code>@classificationLevel</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>unitText</code></td>
+<td>unit facet</td>
+<td>schema.org <code>unitText</code> (DDI UnitType)</td>
+</tr>
+<tr class="odd">
+<td><code>metacheck:concept</code></td>
+<td>concept facet</td>
+<td>DDI Variable → Concept</td>
+</tr>
+<tr class="even">
+<td><code>metacheck:role</code></td>
+<td>role facet</td>
+<td>DDI VariableRole</td>
+</tr>
+<tr class="odd">
+<td><code>metacheck:codeList</code></td>
+<td>decoded value labels</td>
+<td>DDI CodeList (one <code>PropertyValue</code> per code → label)</td>
+</tr>
+<tr class="even">
+<td><code>metacheck:missingValues</code></td>
+<td>declared missing scheme</td>
+<td>DDI MissingValues</td>
+</tr>
+<tr class="odd">
+<td>
+<code>metacheck:question</code> / <code>metacheck:universe</code>
+</td>
+<td>codebook question/filter</td>
+<td>DDI QuestionText / Universe</td>
+</tr>
+<tr class="even">
+<td>
+<code>minValue</code>/<code>maxValue</code>/<code>metacheck:statistics</code>
+</td>
+<td><code>data_col_stats()</code></td>
+<td>schema.org numeric bounds + a stats block</td>
+</tr>
+<tr class="odd">
+<td><code>valuePattern</code></td>
+<td>sample values</td>
+<td>observed category pattern</td>
+</tr>
+</tbody>
+</table>
+<p>An <strong>empty</strong> (all-NA) column gets a minimal stub entry naming it and flagging it empty, so the CSV column is documented without inventing statistics.</p>
+</section><section id="the-collection-collection.json" class="level3" data-number="27.8.2"><h3 data-number="27.8.2" class="anchored" data-anchor-id="the-collection-collection.json">
+<span class="header-section-number">27.8.2</span> The collection: <code>collection.json</code>
+</h3>
+<p>A multi-study output root is a <strong>collection</strong> of datasets, not itself a Psych-DS dataset, so it carries <em>no</em> root <code>dataset_description.json</code>. Instead it gets a <code>collection.json</code> — schema.org JSON-LD with <code>@type</code> <code>Collection</code> — whose <code>hasPart</code> indexes every part: each <code>study-&lt;group&gt;/</code> dataset (with its variable count), the root-level shared files, the paper full text, and the logs. It is deliberately <strong>not</strong> named <code>dataset_description.json</code>, so the Psych-DS validator (which only ever opens a file of that exact name) never validates the root — you validate each <code>study-*/</code> folder instead. This is why a multi-study convert is not run through <code>psychds_validate()</code> at the root: the root is correctly <em>not</em> a dataset.</p>
+</section><section id="openscales-osd-scalescode.osd" class="level3" data-number="27.8.3"><h3 data-number="27.8.3" class="anchored" data-anchor-id="openscales-osd-scalescode.osd">
+<span class="header-section-number">27.8.3</span> OpenScales OSD (<code>scales/&lt;code&gt;.osd</code>)</h3>
+<p>Every scale that <code>codebook_check</code> identifies is written as one OpenScales <strong>OSD</strong> file, flat at <code>scales/&lt;code&gt;.osd</code>. The <code>code</code> is a readable slug derived from the scale name (PANAS → <code>positive_and_negative_affect_schedule</code>) or, for an unnamed block, its column prefix. Each OSD records the scale’s provenance at one of four trust levels (<code>.osd_code_and_provenance()</code>): <code>dictionary</code> (matched a known instrument in Metacheck’s OpenScales-derived scale dictionary), <code>manuscript</code> (a named instrument from the paper), <code>self_generated</code> (an LLM-inferred construct label — <em>not</em> a recognised instrument), or <code>unnamed_block</code> (a coherent same-prefix rating block that could not be named). The <code>variableMeasured</code> entry for each of the scale’s columns cross-references its OSD <code>code</code>, so a reader can jump from a variable to its instrument definition. When a scale matches a dictionary instrument, its reference items (including which are reverse-keyed) are available via the <code>scale_meta</code> / <code>scale_items</code> datasets.</p>
+</section><section id="behaverse-trial-data-paradatainstrument.json" class="level3" data-number="27.8.4"><h3 data-number="27.8.4" class="anchored" data-anchor-id="behaverse-trial-data-paradatainstrument.json">
+<span class="header-section-number">27.8.4</span> Behaverse trial data (<code>paradata/&lt;instrument&gt;.json</code>)</h3>
+<p>Trial-level task data (E-Prime, Inquisit, jsPsych, native Behaverse) is not a rectangular dataset — it is one file per participant per block. <code>convert_psychds()</code> normalises all of it into the <strong>Behaverse Data Model</strong> <code>trial</code> schema (pinned v26.0608, shipped in <code>inst/schema/</code>), writing one <code>paradata/&lt;instrument&gt;.json</code> per instrument with the full response data merged across participants — nothing is deleted. Each file is a <code>TrialData</code> document: an <code>Instrument</code> descriptor plus a <code>Response</code> array, where every response carries the 13 required Behaverse fields (<code>response_id</code>, <code>study_name</code>, <code>agent_id</code>, <code>instrument_id</code>, <code>trial_index</code>, <code>stimulus_id</code>, …) and any optional paradata the source recorded (<code>response_time</code>, <code>correct</code>, <code>stimulus_onset</code>, …). Each source format has its own reader that maps its columns onto this vocabulary — Inquisit’s <code>latency</code> → <code>response_time</code>, jsPsych’s <code>rt</code> → <code>response_time</code>, E-Prime’s <code>&lt;obj&gt;.RT</code>, and so on (<code>convert_behaverse()</code>). The OSD scale file and the paradata file cross-reference each other on the canonical instrument id, so a questionnaire’s scale definition and its raw timing data point at each other.</p>
+</section><section id="ddi-codebook-2.5-the-manifest" class="level3" data-number="27.8.5"><h3 data-number="27.8.5" class="anchored" data-anchor-id="ddi-codebook-2.5-the-manifest">
+<span class="header-section-number">27.8.5</span> DDI-Codebook 2.5 (the manifest)</h3>
+<p>The optional file manifest (<code>data_check</code>’s <code>manifest =</code> argument) is self-describing: its <code>provenance</code> block carries a <code>ddi_mapping</code> recording how each manifest field maps onto a <strong>DDI-Codebook 2.5</strong> element (<code>files[].file_name</code> → <code>fileDscr/fileTxt/fileName</code>, <code>files[].status</code> → <code>fileDscr/fileTxt/ProcStat</code>, and so on), alongside the metacheck/R version, platform, and production date needed to reproduce the archive.</p>
+</section></section><section id="building-a-whole-data-archive" class="level2" data-number="27.9"><h2 data-number="27.9" class="anchored" data-anchor-id="building-a-whole-data-archive">
+<span class="header-section-number">27.9</span> Building a whole data archive</h2>
 <p>The same machinery scales up from one repository to a <strong>data release</strong> — a browsable, archivable copy of the data behind an entire corpus of papers, each converted to Psych-DS. This is a good way to turn scattered OSF/GitHub/Zenodo repositories into a single, structured, machine-readable collection.</p>
 <p>The recipe is: run the data pipeline over each paper with <code>data_check</code> set to fetch <strong>all</strong> files, then convert each to Psych-DS. Two <code>data_check</code> options (covered in the <a href="../chapters/mod-data-check.html">Data Check</a> chapter) make this practical for real-world repositories:</p>
 <ul>
@@ -715,16 +853,16 @@ Note
 <span>  <span class="fu">convert_codebook</span><span class="op">(</span><span class="va">chain</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"archive"</span>, <span class="fu">paper_id</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span>, <span class="st">"codebook"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="zips-are-unpacked-into-the-archive" class="level3" data-number="27.8.1"><h3 data-number="27.8.1" class="anchored" data-anchor-id="zips-are-unpacked-into-the-archive">
-<span class="header-section-number">27.8.1</span> Zips are unpacked into the archive</h3>
+<section id="zips-are-unpacked-into-the-archive" class="level3" data-number="27.9.1"><h3 data-number="27.9.1" class="anchored" data-anchor-id="zips-are-unpacked-into-the-archive">
+<span class="header-section-number">27.9.1</span> Zips are unpacked into the archive</h3>
 <p>When <code>peek_zips = TRUE</code>, a downloaded zip that contains data is unpacked and its inner data files are placed into the archive individually — so a <code>data.zip</code> becomes real, browsable <code>data/</code> files rather than an opaque bundle. Two helper functions expose this directly:</p>
 <ul>
 <li>
 <strong><code>zip_peek(url)</code></strong> reads a remote zip’s file listing (names and sizes) via an HTTP range request, <em>without</em> downloading it.</li>
 <li>
 <strong><code>zip_decision(url)</code></strong> peeks and classifies the contents, returning whether the zip is worth downloading (contains data) or should just be linked (only stimuli).</li>
-</ul></section><section id="an-archive-level-catalogue" class="level3" data-number="27.8.2"><h3 data-number="27.8.2" class="anchored" data-anchor-id="an-archive-level-catalogue">
-<span class="header-section-number">27.8.2</span> An archive-level catalogue</h3>
+</ul></section><section id="an-archive-level-catalogue" class="level3" data-number="27.9.2"><h3 data-number="27.9.2" class="anchored" data-anchor-id="an-archive-level-catalogue">
+<span class="header-section-number">27.9.2</span> An archive-level catalogue</h3>
 <p>A release of many datasets needs a top-level description tying them together. <strong><code>data_catalog()</code></strong> scans a built archive directory and writes a <code>catalog.json</code> — a schema.org <a href="https://schema.org/DataCatalog"><code>DataCatalog</code></a> listing every dataset with its title, authors, DOI, and file count — plus a <code>catalog.csv</code> for quick inspection. This is the object that makes the release a single discoverable archive (and is harvested by Google Dataset Search), rather than a set of unconnected folders.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_catalog</span><span class="op">(</span><span class="st">"archive"</span>, papers <span class="op">=</span> <span class="va">papers</span>, name <span class="op">=</span> <span class="st">"My data release"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -742,8 +880,8 @@ Tip
 <p>For a large corpus, first run <code>data_check</code> with <code>download = "none"</code> and <code>manifest = "..."</code> to write a per-paper file manifest (file names, sizes, types) <em>without</em> downloading anything. Inspecting those manifests lets you choose the size caps knowing exactly which files each value would include or exclude, before committing to a large download.</p>
 </div>
 </div>
-</section></section><section id="what-you-get-back" class="level2" data-number="27.9"><h2 data-number="27.9" class="anchored" data-anchor-id="what-you-get-back">
-<span class="header-section-number">27.9</span> What you get back</h2>
+</section></section><section id="what-you-get-back" class="level2" data-number="27.10"><h2 data-number="27.10" class="anchored" data-anchor-id="what-you-get-back">
+<span class="header-section-number">27.10</span> What you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -778,8 +916,8 @@ Tip
 <td>formatted report, including the target directory tree with missing pieces marked</td>
 </tr>
 </tbody>
-</table></section><section id="related" class="level2" data-number="27.10"><h2 data-number="27.10" class="anchored" data-anchor-id="related">
-<span class="header-section-number">27.10</span> Related</h2>
+</table></section><section id="related" class="level2" data-number="27.11"><h2 data-number="27.11" class="anchored" data-anchor-id="related">
+<span class="header-section-number">27.11</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-data-check.html">Data Check</a> classifies the files that <code>psychds_check</code> re-organises.</li>

@@ -196,6 +196,23 @@ cc <- module_run(test_paper(), "codebook_check",
 unique(cc$table[!is.na(cc$table$scale), c("column_name", "scale", "scale_confidence")])
 ```
 
+### OpenScales OSD export and provenance
+
+Beyond the two `$table` columns, `codebook_check` also assembles a ready-to-write **OpenScales OSD** object for each named scale, returned in `$scales_osd`. `convert_psychds()` writes these out as `scales/<code>.osd` files in the converted dataset (see the [Psych-DS Check](mod-psychds-check.qmd) chapter). The `code` is a readable slug from the scale name (PANAS → `positive_and_negative_affect_schedule`) or, for an unnamed block, its column prefix.
+
+Each OSD records **where the scale identification came from**, at one of four honestly-labelled trust levels — this matters because a scale identified from a curated dictionary is far more reliable than one a language model inferred from item wording:
+
+| `scale_source` | Meaning |
+|---|---|
+| `dictionary` | matched a known instrument in Metacheck's scale dictionary (OpenScales-derived or curated) |
+| `manuscript` | a real instrument named in the paper, but not in the registry |
+| `self_generated` | an LLM-inferred construct label — **not** a recognised named instrument |
+| `unnamed_block` | a coherent same-prefix rating block, detected but not named |
+
+When a scale matches a `dictionary` instrument, Metacheck can also cross-reference the published original — how many items it should have and which are reverse-keyed — via the packaged `scale_meta` / `scale_items` / `scale_scoring` datasets, so a detected block can be compared against the reference instrument.
+
+Data files with embedded scale metadata are handled too: a **JASP** (`.jasp`) or **jamovi** (`.omv`) file carries haven-style value labels just like a `.sav`, so `codebook_check` harvests those labels directly, and their bundled analyses are recovered separately (see the JASP/jamovi handling in [Data Check](mod-data-check.qmd)).
+
 ## What you get back
 
 | Element | What it contains |

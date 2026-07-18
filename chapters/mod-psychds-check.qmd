@@ -110,17 +110,71 @@ mo$summary_table |>
 | **red** | required elements (like `data/` or the description file) are absent |
 | **na** | there were no files to assess |
 
-## From gap report to a compliant dataset
+## From gap report to a compliant dataset: `convert_psychds()`
 
 `psychds_check` tells you *what* is missing; the companion function `convert_psychds()` acts on it. Given the same repository, it writes out a Psych-DS-compliant copy — moving files into `data/`, `analysis/`, and so on, and generating the `dataset_description.json` metadata from the columns `data_check` extracted:
 
 ```{r}
 #| eval: false
-res <- report(paper, c("data_check", "psychds_check"))
+res <- report(paper, c("data_check", "codebook_check", "psychds_check"))
 convert_psychds(res, overwrite = TRUE)
 ```
 
-The generated dataset is validated with `psychds_validate()`, Metacheck's built-in checker for the standard, so the converted output is guaranteed to pass.
+`convert_psychds()` can take either a paper object (it runs the checks as needed) or a **captured result** of `report(paper, ...)` — when the capture already contains `data_check` / `codebook_check` / `psychds_check`, those outputs are reused rather than re-run, and the OSF listing is not re-queried (`refresh_osf = FALSE` by default). This is why the recommended pattern is to run the checks once and hand the result to the converter. The output goes to `output_dir` (default `psychds/<paper_id>`); an existing directory is skipped unless `overwrite = TRUE`.
+
+### What the converter does, step by step
+
+1. **Resolves the plan.** It reuses `data_check`'s `structure` (per-file classification) and `table` (column facets), `codebook_check`'s labels and identified scales, and `psychds_check`'s placement plan (`current_path` → `target_path`).
+2. **Copies every file to its Psych-DS location.** Files are resolved to their source *by row index*, not by name — a paper's several OSF components can each ship their own `demographics.csv`, and a name-keyed lookup would silently give every study the first component's bytes. A non-CSV data source (`.xlsx`/`.sav`/`.dta`/`.jasp`/…) is written out as a **real CSV** from the fully-read data frame (a byte copy would be an invalid CSV) *and* the untouched original is kept beside it, so the release carries both the reusable data and the authored artifact. Data CSVs are written **BOM-free**, because a UTF-8 BOM makes the first header read as `﻿id` and mismatches `variableMeasured`.
+3. **Splits multi-study repositories.** When `data_check` assigned study groups (see [Data Check](mod-data-check.qmd)), each becomes a self-contained `study-<group>/` dataset with its own `dataset_description.json`. Files belonging to no single study (a whole-repo README/codebook, shared materials) sit at the collection root beside the study folders — following BIDS, which places shared content at the root.
+4. **Writes scale definitions** as OpenScales OSD files (`scales/<code>.osd`), and **normalises trial-level data** into Behaverse `paradata/<instrument>.json`, cross-linking the two.
+5. **Writes the paper's full text** into `documentation/`, and a **provenance `logs/` folder** (the file manifest, and the check results / module tables when those modules ran), each explained in the root README.
+
+The generated dataset is validated with `psychds_validate()`, Metacheck's built-in checker for the standard, so a single-study converted output is guaranteed to pass. `convert_psychds()` returns (invisibly) a list with `output_dir`, `n_files_copied`, `n_studies`, `descriptions`, `collection`, `n_scales`, `n_paradata`, `fulltext`, `logs`, `skipped`, and `copy_failed`.
+
+## The schemas Metacheck writes
+
+`convert_psychds()` is where several standards come together. Understanding them explains what is in the generated files.
+
+### Psych-DS (`dataset_description.json`)
+
+The heart of a Psych-DS dataset is a root `dataset_description.json`: schema.org JSON-LD with `@type` `Dataset`, `schemaVersion` `"Psych-DS 1.5.1"`, the paper's `name`, `author`, `identifier` (DOI), and `keywords`, and — the substantive part — a `variableMeasured` array describing every column of every data CSV. Psych-DS requires *each* CSV column to appear here.
+
+Each entry is a schema.org `PropertyValue` built by the converter from `data_check`'s facets and `codebook_check`'s labels. Because schema.org has no native properties for most psychometric metadata, Metacheck records those under a namespaced `metacheck:` extension whose fields map onto **DDI** concepts:
+
+| Field | Source | DDI / schema.org concept |
+|---|---|---|
+| `name` | column name | variable name |
+| `description` | codebook label | variable label |
+| `measurementTechnique` | identified scale name | the instrument a variable was measured with |
+| `metacheck:scale` | scale `{name, code, source, confidence}` | DDI variable group; `code` cross-references `scales/<code>.osd` |
+| `metacheck:measurementLevel` | measurement-level facet | DDI `@classificationLevel` |
+| `unitText` | unit facet | schema.org `unitText` (DDI UnitType) |
+| `metacheck:concept` | concept facet | DDI Variable → Concept |
+| `metacheck:role` | role facet | DDI VariableRole |
+| `metacheck:codeList` | decoded value labels | DDI CodeList (one `PropertyValue` per code → label) |
+| `metacheck:missingValues` | declared missing scheme | DDI MissingValues |
+| `metacheck:question` / `metacheck:universe` | codebook question/filter | DDI QuestionText / Universe |
+| `minValue`/`maxValue`/`metacheck:statistics` | `data_col_stats()` | schema.org numeric bounds + a stats block |
+| `valuePattern` | sample values | observed category pattern |
+
+An **empty** (all-NA) column gets a minimal stub entry naming it and flagging it empty, so the CSV column is documented without inventing statistics.
+
+### The collection: `collection.json`
+
+A multi-study output root is a **collection** of datasets, not itself a Psych-DS dataset, so it carries *no* root `dataset_description.json`. Instead it gets a `collection.json` — schema.org JSON-LD with `@type` `Collection` — whose `hasPart` indexes every part: each `study-<group>/` dataset (with its variable count), the root-level shared files, the paper full text, and the logs. It is deliberately **not** named `dataset_description.json`, so the Psych-DS validator (which only ever opens a file of that exact name) never validates the root — you validate each `study-*/` folder instead. This is why a multi-study convert is not run through `psychds_validate()` at the root: the root is correctly *not* a dataset.
+
+### OpenScales OSD (`scales/<code>.osd`)
+
+Every scale that `codebook_check` identifies is written as one OpenScales **OSD** file, flat at `scales/<code>.osd`. The `code` is a readable slug derived from the scale name (PANAS → `positive_and_negative_affect_schedule`) or, for an unnamed block, its column prefix. Each OSD records the scale's provenance at one of four trust levels (`.osd_code_and_provenance()`): `dictionary` (matched a known instrument in Metacheck's OpenScales-derived scale dictionary), `manuscript` (a named instrument from the paper), `self_generated` (an LLM-inferred construct label — *not* a recognised instrument), or `unnamed_block` (a coherent same-prefix rating block that could not be named). The `variableMeasured` entry for each of the scale's columns cross-references its OSD `code`, so a reader can jump from a variable to its instrument definition. When a scale matches a dictionary instrument, its reference items (including which are reverse-keyed) are available via the `scale_meta` / `scale_items` datasets.
+
+### Behaverse trial data (`paradata/<instrument>.json`)
+
+Trial-level task data (E-Prime, Inquisit, jsPsych, native Behaverse) is not a rectangular dataset — it is one file per participant per block. `convert_psychds()` normalises all of it into the **Behaverse Data Model** `trial` schema (pinned v26.0608, shipped in `inst/schema/`), writing one `paradata/<instrument>.json` per instrument with the full response data merged across participants — nothing is deleted. Each file is a `TrialData` document: an `Instrument` descriptor plus a `Response` array, where every response carries the 13 required Behaverse fields (`response_id`, `study_name`, `agent_id`, `instrument_id`, `trial_index`, `stimulus_id`, …) and any optional paradata the source recorded (`response_time`, `correct`, `stimulus_onset`, …). Each source format has its own reader that maps its columns onto this vocabulary — Inquisit's `latency` → `response_time`, jsPsych's `rt` → `response_time`, E-Prime's `<obj>.RT`, and so on (`convert_behaverse()`). The OSD scale file and the paradata file cross-reference each other on the canonical instrument id, so a questionnaire's scale definition and its raw timing data point at each other.
+
+### DDI-Codebook 2.5 (the manifest)
+
+The optional file manifest (`data_check`'s `manifest =` argument) is self-describing: its `provenance` block carries a `ddi_mapping` recording how each manifest field maps onto a **DDI-Codebook 2.5** element (`files[].file_name` → `fileDscr/fileTxt/fileName`, `files[].status` → `fileDscr/fileTxt/ProcStat`, and so on), alongside the metacheck/R version, platform, and production date needed to reproduce the archive.
 
 ## Building a whole data archive
 

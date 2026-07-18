@@ -13,11 +13,54 @@ library(metacheck)
 
 ## What it checks
 
-The `code_check` module analyses the **code files** shared with a paper. Building on the file list from [repo_check](mod-repo-check.qmd), it identifies code files (R, SAS, SPSS, Stata), then checks each for signs of reproducibility problems: whether files parse without errors, whether they contain comments, whether they use **absolute file paths** (which break on other machines), whether files they try to load are actually present in the repository, and whether **libraries are loaded in multiple places** rather than in a single block near the top of the script (loading imports in one place makes a script's dependencies easy to see).
+The `code_check` module analyses the **code files** shared with a paper. Building on the file list from [repo_check](mod-repo-check.qmd), it identifies code files, then checks each for signs of reproducibility problems:
+
+- whether R-type files **parse** without errors;
+- whether files contain **comments**;
+- whether they use **absolute file paths** (which break on other machines);
+- whether the files they try to **load** are actually present in the repository; and
+- whether **libraries are loaded in multiple places** rather than in a single block near the top of the script.
+
+The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in *Psychological Science*.
 
 ::: callout-note
 This module makes **live network calls** to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.
 :::
+
+## Languages: `code_lang()`
+
+The module first labels every file with its language using `code_lang()`, which is name-based (by extension):
+
+| Language | Extensions | Analysed? |
+|---|---|---|
+| R | `.R`, `.Rmd`, `.qmd` | yes (parsed, commented, paths, libraries, loaded files) |
+| SAS | `.sas` | yes (except parsing) |
+| SPSS | `.sps` | yes (except parsing) |
+| Stata | `.do`, `.ado` | yes (except parsing) |
+| JASP | `.jasp` | **listed only** |
+| jamovi | `.omv` | **listed only** |
+
+```{r}
+#| eval: false
+code_lang(c("analysis.R", "clean.do", "model.sas", "survey.sps", "study.jasp"))
+```
+
+```
+analysis.R   clean.do  model.sas survey.sps study.jasp
+       "R"    "Stata"      "SAS"     "SPSS"     "JASP"
+```
+
+A `.jasp` or `.omv` file bundles a dataset *with* its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by `data_check`, and their analysis syntax recovered by `read_jasp()` / `read_omv()`). Only R-type files are *parsed* — the other text languages are checked for everything except parse errors.
+
+## Reading code: `code_read()` and `code_extract_r()`
+
+Code is read with `code_read()`, which guesses the file encoding (`readr::guess_encoding()`), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, `code_extract_r()` first purls the document (`knitr::purl`) down to just its R code, so prose and chunk options are not mistaken for code. The module detects an Rmd/qmd file by its leading `---` YAML fence and routes it through `code_extract_r()` automatically.
+
+```{r}
+#| eval: false
+file_path <- demofile("qmd")
+code_text <- code_extract_r(file_path)   # R code only, prose stripped
+```
 
 ## Running the module
 
@@ -31,36 +74,101 @@ cat(mo$summary_text)
 The `table` has one row per code file, with the reproducibility checks as columns:
 
 ```{r}
-mo$table[, c("file_name", "language", "parse_error", "absolute_paths",
+mo$table[, c("file_name", "language", "parse_error", "code_abs_path",
              "percentage_comment", "loaded_files_missing")] |>
   knitr::kable()
+```
+
+## The checks, function by function
+
+Each check is a small exported helper, so you can run it on your own code independently of the module.
+
+### Parsing: `code_parse_r()`
+
+For R-type files, `code_parse_r()` attempts to `parse()` the code and captures any syntax error (rewriting `<text>` in the message to `line` for readability). Only R is parsed; other languages report `NA` (not assessed). A parse error means the file is not valid R and would not run at all.
+
+```{r}
+code_parse_r(text = c("x <- 1", "y <- ")) |> str()
+```
+
+### Comments: `code_remove_comments()` and `code_line_stats()`
+
+`code_remove_comments()` strips comments per language — line comments and block comments in each of R, SAS, SPSS, and Stata (e.g. SAS `/* … */` blocks and `*…;` line comments; Stata `//` end-of-line and `/* */` blocks). `code_line_stats()` then reports the total lines, blank lines, code lines, comment lines, and the **percentage of comment lines**. A file with no comments (`percentage_comment == 0`) is flagged, because comments are what let a future reader (including the author) understand and reuse the code.
+
+```{r}
+code_text <- c("library(dplyr)", "", "# clean the data", "d <- read.csv('x.csv')")
+code_line_stats(code_text, "R")
+```
+
+### Absolute paths: `code_abs_path()`
+
+`code_abs_path()` searches the (comment-free) code for quoted strings that are absolute filesystem paths: a Windows drive path (`C:/…`, `D:\…`), a Unix root path (`/Users/…`), a home path (`~/…`), or a UNC network path (`\\host\share\…`). These break on anyone else's computer. The UNC branch is deliberately strict — it requires the real `\\host\share` shape — because a bare backslash string is far more often a regex escape (`"\\d+"`) than a network path. The module notes these are potential false positives in code like `paste0(dir, "/file.csv")`.
+
+```{r}
+code_abs_path(c("file <- 'C:/Users/lakens/data.csv'",
+                "tmp  <- '/home/lakens/out.html'",
+                "rel  <- './clean.csv'"))
+```
+
+### Library placement: `code_library_lines()`
+
+`code_library_lines()` returns the line numbers on which imports/library loads occur, with language-specific patterns (R `library`/`require`/`renv::install`/`p_load`; SAS `%include`/`libname`/`filename`; SPSS `INSERT`/`BEGIN PROGRAM`; Stata `do`/`net install`/`ssc install`). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script's requirements are easy to see.
+
+```{r}
+code_library_lines(c("library(dplyr)", "x <- 1", "library(tidyr)"), "R")
+```
+
+### Missing loaded files: `code_file_refs()`
+
+`code_file_refs()` extracts the files a script reads or loads — from read/load calls (`read.csv`, `read_csv`, `fread`, `readRDS`, `load`, `fromJSON`, `source`, and their SAS/SPSS/Stata equivalents like `proc import`, `infile`, `GET DATA /FILE=`, `use`, `import delimited`) — by capturing the quoted filename argument. The module compares each referenced file (by basename) against the files actually present in the same repository; anything not found is reported as a **missing loaded file**, so a reader can check whether the input data were shared. There can be valid reasons a file is not shared (e.g. it holds personal data), which the module cannot evaluate, so it always reports rather than judges.
+
+```{r}
+code_file_refs(c("source('functions.R')", "d <- read.csv('study.csv')"), "R")
 ```
 
 ## A clean example and one with problems
 
 Common problems the module surfaces:
 
-- **Absolute paths** (`absolute_paths == TRUE`) — e.g. `read.csv("C:/Users/me/data.csv")` — which will not run on anyone else's computer.
+- **Absolute paths** (`code_abs_path > 0`) — e.g. `read.csv("C:/Users/me/data.csv")` — which will not run on anyone else's computer.
 - **Missing loaded files** (`loaded_files_missing > 0`) — the script reads a file that was not shared.
-- **Parse errors** (`parse_error == TRUE`) — the file is not valid code.
+- **Parse errors** (`parse_error == TRUE`) — the file is not valid R code.
 
 ```{r}
-mo$table[, c("file_name", "absolute_paths", "loaded_files_missing", "parse_error")] |>
+mo$table[, c("file_name", "code_abs_path", "loaded_files_missing", "parse_error")] |>
   knitr::kable()
 ```
 
-## Options
+## Downloading and options
 
-`code_check` shares `repo_check`'s local-file options:
+`code_check` downloads the code files it will check into the shared cache (`download = TRUE`, the default) so their contents are read locally and reused on later runs, rather than streamed from the repository URL each time. It shares `data_check`'s size caps (`max_file_size`, `max_download_size` — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (`cache`, default `FALSE`). It also shares `repo_check`'s local-file options:
 
 ```{r}
 #| eval: false
 # check code in a local folder only, no online lookups
 module_run(paper, "code_check", local_path = "path/to/files", local_only = TRUE)
+
+# stream files from their URLs instead of downloading
+module_run(paper, "code_check", download = FALSE)
 ```
 
 See the [Local Files](local-files.qmd) chapter for a full walkthrough of checking local code, including cloud-synced folders.
 
+## The traffic light and what you get back
+
+| Light | Meaning |
+|---|---|
+| **green** | at least one file was analysed and no issues were found across all code files |
+| **yellow** | at least one issue (missing files, no comments, absolute paths, spread-out libraries, or a parse error) |
+| **na** | no code files could be analysed (e.g. only JASP/jamovi files were found) |
+
+| Element | What it contains |
+|---|---|
+| `$table` | one row per code file, with `language`, `parse_error`, `code_abs_path`, `absolute_paths`, `percentage_comment`, `library_max_between`, `loaded_files_missing`, and the missing-file names |
+| `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_missing_files`, `code_min_comments`, `code_parse_errors`) |
+| `$report` | formatted report sections: comments, missing files, absolute paths, libraries, and parsable code |
+| `$summary_text` | plain-text bulleted summary of each check |
+
 ## Notes
 
-The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible.
+The module reports on *potential* problems. If you want to extend the package to perform additional checks, or make the checks work on other code languages, reach out to the Metacheck development team.
