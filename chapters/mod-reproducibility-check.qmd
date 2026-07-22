@@ -1,0 +1,246 @@
+---
+title: "Reproducibility Check"
+vignette: >
+  %\VignetteIndexEntry{Reproducibility Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
+library(metacheck)
+```
+
+
+::: callout-warning
+This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+
+```r
+remotes::install_github("scienceverse/metacheck@data_check")
+```
+:::
+
+## What it checks
+
+Where [code_check](mod-code-check.qmd) asks *"is this code written well?"*, `reproducibility_check` asks a harder question: **could this code actually be run on this data — and do the numbers it produces match the ones the paper reports?** It is the module that stands closest to the goal of computational reproducibility.
+
+The module works in two phases, and you choose how far to go:
+
+1. A **static phase** (always run) that works out everything a reproduction attempt *would* involve — the dependencies, the file-path rewrites, the run order, the missing inputs — and reports where that attempt is likely to break, **without running any code**.
+2. An **execution phase** (opt-in, `execute = TRUE`) that actually **runs the code** in an isolated subprocess against a throwaway copy of the data, captures the statistical output it produces, and — together with any self-contained JASP/jamovi files in the deposit — lets you check whether the reported results are reproduced.
+
+::: callout-important
+Executing downloaded code runs it on your machine. It is off by default and is a deliberate, opt-in action (`execute = TRUE`, which needs the `callr` package). Each script runs in an isolated subprocess so a crash cannot take down your R session, but that isolation is for *crashes* — it does not sandbox the filesystem or network, and therefore code might be run that steals data or installs a virus. Only enable execution for code you are willing to run.
+:::
+
+::: callout-note
+This module builds on `code_check`, `psychds_check`, and `data_check`, and inherits their **live network calls** to retrieve the repository files. You need an internet connection to run the code below.
+:::
+
+## Running the module
+
+The default is the static phase — it does not run anything:
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "reproducibility_check")
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+The `table` has one row per R code file, carrying the static assessments as columns:
+
+```{r}
+mo$table[, c("file_name", "parses", "run_order", "order_basis",
+             "paths_rewritten", "runnable")] |>
+  knitr::kable()
+```
+
+A file is marked `runnable` only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a *static* check: `runnable = FALSE` does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place.
+
+## The static assessments, function by function
+
+Each static assessment is an exported helper, so you can run it on your own code independently of the module.
+
+### Dependencies: `repro_dependencies()`
+
+`repro_dependencies()` walks the code and returns the distinct packages it loads, tagged with **where each would be installed from** — a distinction `code_check`'s package list does not make. A `library()` call resolves to CRAN; a `remotes::install_github("user/repo")` call is read from the source the code names (with the pinned `@ref` kept when present); and packages that ship with R are tagged `base`, because a run never needs to install them.
+
+```{r}
+code_text <- c(
+  "library(dplyr)",
+  "remotes::install_github('tidyverse/ggplot2@v3.4.0')",
+  "x <- stats::sd(1:10)"
+)
+repro_dependencies(code_text)
+```
+
+The dependency list is deliberately **name-only, not version-pinned**: static analysis cannot recover which version of a package was used. This is not a limitation to apologise for — it is the point. A reproduction runs against the *current* versions of these packages, and if it breaks under current versions, that break is itself a finding: it argues that the authors should have pinned their versions (for example with `renv`), because their analysis is not robust to the package updates every user will have.
+
+### Paths: `repro_rewrite_paths()`
+
+A script reads and writes data by relative path — `read_csv("raw/x.csv")`, `saveRDS(m, "../out/model.rds")`. When the release is re-laid-out into the Psych-DS structure, with data under `data/` and per-study `study-<group>/data/` folders, those paths no longer resolve. `repro_rewrite_paths()` maps each referenced path to its new location, using the file plan that [psychds_check](mod-psychds-check.qmd) produces.
+
+Matching is by **basename**: a script's `../data/x.csv` and the repository's `raw/x.csv` are the same file seen from different working directories, so the prefix is ignored. When several files share a basename — a `demographics.csv` in more than one study — the ambiguity is resolved by **study group**: the candidate whose target path is in the same study as the script wins. Only when that still leaves more than one candidate is the reference left unrewritten and flagged as ambiguous, rather than guessed.
+
+```{r}
+plan <- data.frame(
+  file_name = c("demographics.csv", "scores.csv"),
+  target_path = c("study-ex1/data/source-demographics_data.csv",
+                  "study-ex1/data/source-scores_data.csv"),
+  current_path = c("ex1/demographics.csv", "ex1/scores.csv")
+)
+repro_rewrite_paths('d <- read.csv("data/demographics.csv")',
+                    "ex1/analysis.R", plan)
+```
+
+### Run order: `repro_file_io()` and `repro_run_order()`
+
+Scripts in a repository usually depend on each other, and running them in the wrong order fails for reasons that have nothing to do with reproducibility. `repro_file_io()` first extracts, for every file, the data it **reads**, the data it **writes**, and the scripts it **sources**. `repro_run_order()` then derives an order from three signals, in decreasing strength:
+
+1. **read-after-write** — if one script writes `clean.csv` and another reads it, the writer must run first (a hard data dependency);
+2. **`source()` edges** — if A `source()`s B, B must run first;
+3. **numeric filename prefixes** — `0_prep.R` before `1_analysis.R`, and also embedded numbering such as `Exp1_02_...` before `Exp2_1_...` (a weak tie-breaker, not a dependency).
+
+The scripts are then topologically sorted. A dependency **cycle** (A reads a file B writes, and vice versa) cannot be ordered and is reported; so is an **ambiguous** ordering, where nothing — no dependency and no numbering — distinguishes the order of two or more files.
+
+```{r}
+files <- data.frame(file_name = c("1_analysis.R", "0_prep.R"))
+files$reads   <- list("clean.csv", character(0))
+files$writes  <- list(character(0), "clean.csv")
+files$sources <- list(character(0), character(0))
+repro_run_order(files)
+```
+
+Here `0_prep.R` runs first even though it is listed second, because it writes the file `1_analysis.R` reads — a real data dependency, reflected in the `depends_on` column and the `dependency` basis.
+
+### Missing inputs: `repro_missing_inputs()`
+
+When a script reads a file that is not present, the reason matters. `repro_missing_inputs()` cross-references each unresolved read against the file plan and the download records, and classifies it as one of:
+
+- `withheld_size` — the file *is* in the repository, but was not downloaded because it exceeded a size cap. This is a size-cap issue, not a reproducibility failure: raising `max_file_size` / `max_download_size` would fetch it.
+- `in_repo_not_downloaded` — listed in the repository but not present locally for another reason.
+- `absent` — not in the repository at all. The script reads a file the authors did not share (or that an earlier, un-captured step was meant to produce).
+
+This distinction is the reason the static phase is worth running before a manual reproduction attempt: a run that fails because a 3 GB data file was skipped by the size gate is a completely different situation from a run that fails because the input data were never shared, and only the latter is a genuine openness problem.
+
+## Running the code: the execution phase
+
+Set `execute = TRUE` to actually run the paper's code. The module then:
+
+1. **materialises the Psych-DS layout** into a throwaway temporary directory (the source data files copied to their target paths), so the run never touches your real archive or the download cache;
+2. **writes the path-rewritten scripts** into that layout, so their reads and writes resolve;
+3. optionally **installs the declared dependencies** into a throwaway library (`install_missing = TRUE`), never your main R library;
+4. **runs each script in run order**, each in its own `callr` subprocess with a per-script `timeout`, capturing the outcome and the console output.
+
+```{r}
+#| eval: false
+mo <- module_run(paper, "reproducibility_check",
+                 execute = TRUE, install_missing = TRUE,
+                 timeout = 600, keep_sandbox = TRUE)
+```
+
+Each script gets one of five outcomes, added to the `$table` in an `outcome` column:
+
+| Outcome | Meaning |
+|---|---|
+| `ran_ok` | the script ran to completion without error |
+| `errored` | the script raised an error (captured, with the message and output) |
+| `timed_out` | still running at the `timeout` cutoff — **not** a failure, just slow; raise `timeout` for legitimately long analyses (e.g. Bayesian sampling) |
+| `skipped_missing_inputs` | not run, because an input it needs is unavailable |
+| `not_parsed` | not run, because the script does not parse |
+
+An error whose message is `object '...' not found` is called out specially: it usually means the script expects a variable another script defines, so it was meant to be `source()`d into a larger session rather than run alone. When that missing variable *is* defined by another script in the repository, the module infers the correct order, re-runs once, and reports the corrected outcome.
+
+::: callout-note
+Two habits in shared code are handled automatically. A `setwd()` call — which hardcodes where the code must run and would override the sandbox — is commented out before the script runs, and the report notes that the script is "reproducible after ignoring a `setwd()` that should not have been in the code." An SPSS data file (`.sav`) with **no** accompanying syntax (`.sps`) turns the light red, because that analysis cannot be reproduced from the deposit; the report recommends depositing analyses as jamovi or JASP files instead, since those bundle data and analyses together.
+:::
+
+## Extracting the statistical output
+
+Running the code is only half of reproducibility — the other half is *the numbers it produces*. Two kinds of deposit already contain, or can be made to produce, a paper's statistical results, and the module extracts both into a common, structured form:
+
+- **JASP (`.jasp`) and jamovi (`.omv`) files** are self-contained: they bundle the data *and* the analyses *and* the rendered results. These are reproducible from the file itself — no code needs to run. The module reads the result tables straight out of them.
+- **R scripts**, when executed, print their results to the console (`summary(lm(...))`, `t.test(...)`, an `anova` table). The module parses that captured output into the same structured form.
+
+Both paths feed one exporter. Each extracted statistic is typed with the **STATO** ontology (the *Statistical Methods Ontology*), so a `t`-value carries the accession for "t-statistic", a `p`-value the accession for "p-value", and so on; a statistic with no STATO class keeps its own column header as a plain label, so nothing is dropped. The full set of results is written to the run logs as a validated **ISA-JSON** document (`<paper>.statistical_output.json`), and flattened into a queryable table that also enters the [scienceverse](papers-databases.qmd) database.
+
+```{r}
+#| eval: false
+# read the result tables out of a jamovi or JASP file directly
+tables <- read_stat_tables("analysis.omv")
+long   <- stat_results_long(tables, paper_id = "example",
+                            source_file = "analysis.omv")
+head(long[, c("source_file", "analysis", "statistic", "stato_label", "value")])
+```
+
+## Matching the reported results against the output
+
+The final question — the one reproducibility is really about — is whether the results **the paper reports** appear in the results **the analysis produces**. `match_reported_output()` answers it.
+
+A reported statistical test is not a single number; it is a multi-component statement, for example *"M = 1.93, SD = 0.76, W = 183.5, p = .791, rb = -0.16"*. Metacheck's text extractor records each of those numbers in the paper's `$eq` table, grouped so that the numbers from one reported test stay together. `match_reported_output()` **recomposes** each reported test from its components, then checks whether those component values **co-occur in a single analysis of the extracted output**.
+
+Matching whole tests, rather than lone numbers, is what makes the check trustworthy: any single value will coincidentally appear somewhere in a large enough set of output numbers, but several components of one test agreeing *at once* is essentially never accidental.
+
+```{r}
+#| eval: false
+m <- match_reported_output(paper, mo$stat_output)
+attr(m, "summary")
+#> $n_tests   19
+#> $n_found   14
+#> $n_full    11   # every component of the test co-occurs in one analysis
+#> $n_partial  3   # most components matched
+#> $n_missing  5
+```
+
+Each row of the result is one recomposed reported test, with **where it was found**:
+
+```{r}
+#| eval: false
+m[m$found, c("reported", "n_matched", "confidence", "source_file", "analysis")]
+#>                      reported n_matched confidence          source_file                 analysis
+#>  M=1.93 SD=0.76 W=183.5 ...           5       full  experiment_1.omv   One Sample T-Test
+#>  p=0.001 d=0.46                       2       full  across_all.omv     Paired Samples ...
+```
+
+So a reported test is not merely flagged as "found" — the module tells you **which deposited file and which analysis** produced the matching numbers, which is exactly the provenance a reader needs to trust that the paper's results are reproducible. By default a "test" must have at least two recognised components (`min_components = 2`), so a lone `p = .05` extracted with no accompanying statistic is not treated as a matchable test.
+
+## The traffic light and what you get back
+
+| Light | Meaning |
+|---|---|
+| **green** | every script parses, its inputs resolve, the run order is unambiguous, and (when executed) nothing errored |
+| **yellow** | some obstacle — a parse error, an unresolved input, an ambiguous path or order |
+| **red** | a reproduction failure: code that errored or timed out when run, or a `.sav` deposited without its syntax, or inputs withheld only because of their size |
+| **na** | no R code files were found to assess (and no self-contained JASP/jamovi output) |
+
+| Element | What it contains |
+|---|---|
+| `$table` | one row per R file: `parses`, `run_order`, `order_basis`, `depends_on`, `paths_rewritten`, `paths_ambiguous`, `setwd_removed`, `runnable`, and (when executed) `outcome`, `error_type`, `undefined_var` |
+| `$summary_table` | per-paper aggregates (`repro_code_n`, `repro_runnable`, `repro_missing_inputs`, `repro_deps`, `repro_ran_ok`) |
+| `$run_results` | per-script execution record: outcome, captured `stdout` / `stderr`, elapsed time |
+| `$stat_output` | per-file extracted statistical output: the ISA-JSON document and the flattened result rows |
+| `$report` | formatted report sections, including per-script output and the self-reproducible JASP/jamovi results |
+| `$summary_text` | plain-text bulleted summary |
+
+## Options
+
+| Argument | Default | Effect |
+|---|---|---|
+| `execute` | `FALSE` | run the paper's code (needs `callr`); off by default |
+| `install_missing` | `FALSE` | install declared dependencies into a throwaway library before running |
+| `timeout` | `600` | per-script timeout in seconds |
+| `keep_sandbox` | `FALSE` | keep the throwaway run directory and return its path, to inspect exactly what ran |
+| `local_path`, `local_only` | | run against local files without online repository lookups |
+
+## Notes and limitations
+
+Honest limits worth keeping in mind:
+
+- The static phase cannot always tell that a file a script reads is an **intermediate produced by another script** under a different name, so it may report it as an "absent" input.
+- Helper scripts `source()`d through a **dynamically built path** do not get a source edge, so they order arbitrarily with basis `none`.
+- Only **R** is executed. Python, SPSS syntax, and other languages are reported but not run; SPSS/JASP/jamovi results are read from their files rather than recomputed.
+- The output parser handles the common R output shapes (one-line tests like `t.test`; fixed-width tables like `summary(lm)` and `aov`) and JASP/jamovi result tables. Unusual or bespoke output may parse incompletely; statistics with no STATO class are kept under their own header rather than semantically typed.
+- Extracted values inherit the **display precision** the software reported (`p = "< .001"` is a threshold, `t = 2.77` is rounded), so matching is precision-aware rather than exact — it compares what was *reported*, which is what you want for a reproducibility check.
+
+If you want to extend the checks, or help harden the execution and matching phases, reach out to the Metacheck development team.
