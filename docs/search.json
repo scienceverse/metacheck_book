@@ -2407,740 +2407,817 @@
     ]
   },
   {
-    "objectID": "chapters/mod-ref-consistency.html",
-    "href": "chapters/mod-ref-consistency.html",
-    "title": "\n29  Reference Consistency\n",
+    "objectID": "chapters/importing-exporting.html",
+    "href": "chapters/importing-exporting.html",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
     "section": "",
-    "text": "29.1 What it checks\nThe ref_consistency module checks the bibliography and the in-text citations against each other, in both directions:\nA paper where every reference is cited and every citation resolves to a reference is internally consistent; anything else is flagged.",
+    "text": "29.1 Overview\nMetacheck is an R based tool, but it would be useful to load data, code, and output files from common statistical software packages. This would allow the reproducibility_check module to take the output, and check it against the values reported in the manuscript. In psychology, SPSS, JASP, and Jamovi are commonly used. JASP and Jamovi have made the extremely sensible design choice that a .jasp or .omv file contain the data, code, and output. This means that sharing those files guarantees complete reproducibility of the analysis by design.\nThree statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types.\nEach format is a single archive that bundles the data, its variable metadata (measurement level, value labels), and the analyses that were run against it — which is exactly why reproducibility_check treats a self-contained .jasp/.omv/.spv file as reproducible “for free”: no code needs to be executed, because the results are already stored inside the file itself.\nThere is exactly one import function per format:\nand, going the other way, exactly one export function per format that turns the archive into a single, readable, portable HTML file:\nThis chapter demonstrates all six against small real example files (example.jasp, example.omv, example.spv, example-chart.spv), committed alongside this chapter so the examples below execute for real when the book is rendered.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/importing-exporting.html#overview",
+    "href": "chapters/importing-exporting.html#overview",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
+    "section": "",
+    "text": "import_jasp(path)\nimport_omv(path)\nimport_spv(path)\n\n\n\nexport_jasp_html(path, out = NULL)\nexport_omv_html(path, out = NULL)\nexport_spv_html(path, out = NULL)",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/importing-exporting.html#part-1-importing-data-import_jasp-and-import_omv",
+    "href": "chapters/importing-exporting.html#part-1-importing-data-import_jasp-and-import_omv",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
+    "section": "\n29.2 Part 1: Importing data — import_jasp() and import_omv()\n",
+    "text": "29.2 Part 1: Importing data — import_jasp() and import_omv()\n\n\n29.2.1 Why JASP and jamovi are read like SPSS files\nA .jasp or .omv archive is a ZIP file. Inside, alongside the raw data, each variable carries the same kind of metadata an SPSS .sav file carries: a measurement level (nominal, ordinal, continuous) and, for categorical variables, value labels mapping a numeric code (1, 2) to a meaningful label (\"Control\", \"Treatment\"). Metacheck reads that metadata using the same haven-style label / labels attributes that haven::read_sav() attaches — so a .jasp or .omv file can serve as its own codebook, exactly like a .sav file, with no special-casing anywhere downstream (see codebook_check).\n\n29.2.2 Reading a JASP file\n\njasp &lt;- import_jasp(\"example.jasp\")\n\n# the dataset itself\ndim(jasp$data)\n#&gt; [1] 32 40\nhead(jasp$data)\n#&gt;   Age Gender Information_page_time Exclude_for_timing Heard_of_procedure\n#&gt; 1  20      2                 9.133                  1                  1\n#&gt; 2  21      2                12.832                  0                  1\n#&gt; 3  20      2                32.733                  0                  1\n#&gt; 4  19      2                11.299                  0                  1\n#&gt; 5  20      2                10.265                  0                  1\n#&gt; 6  20      2                13.510                  0                  1\n#&gt;   Previously_participated_in_RHI S1_sync S1_async S2_sync S2_async S3_sync\n#&gt; 1                              1       2       -1       2        1       2\n#&gt; 2                              0       2        1       1       -1       2\n#&gt; 3                              1       2        1       3        1       2\n#&gt; 4                              1       2       -2      -1        1      -1\n#&gt; 5                              1       2       -1       3       -1       3\n#&gt; 6                              1       2        1       1        0      -1\n#&gt;   S3_async C1_sync C1_async C2_sync C2_async C3_sync C3_async C4_sync C4_async\n#&gt; 1        0       2       -1       2        1       2        1      -1       -1\n#&gt; 2        1       1        0       0        0       0       -2       0       -1\n#&gt; 3        0       1       -1      -2       -3       3        1      -3       -3\n#&gt; 4        2      -2        1      -2        0       0        0      -1        1\n#&gt; 5       -1       1        0       2       -1       0        0      -1       -1\n#&gt; 6       -1      -1       -1      -2       -2      -2       -2      -3       -3\n#&gt;   C5_sync C5_async C6_sync C6_async id S1_time S2_time S3_time C1_time C2_time\n#&gt; 1       2       -1       2       -1  1  12.210  14.855  19.207  10.785  11.737\n#&gt; 2      -1       -1      -2       -2  2  20.853   8.504   8.704   7.362  20.677\n#&gt; 3       1       -1       1       -1  3  13.191  10.085 184.026  17.548  11.260\n#&gt; 4      -2        1      -2        1  4   4.740   4.537   6.737   4.257   5.456\n#&gt; 5       0       -1       1       -2  5  17.294   7.044   8.924   8.271   6.195\n#&gt; 6      -2       -2      -2       -2  6   8.008   5.541   7.304   5.076   5.399\n#&gt;   C3_time C4_time C5_time C6_time Illusion_score_sync Illusion_score_async\n#&gt; 1   7.722  11.340   8.530   8.530           2.0000000            0.0000000\n#&gt; 2   8.478   7.235   7.789   7.788           1.6666667            0.3333333\n#&gt; 3 102.887  30.484  14.253  14.252           2.3333333            0.6666667\n#&gt; 4   7.335   3.863   3.265   3.265           0.0000000            0.3333333\n#&gt; 5   4.683   6.951   8.290   8.289           2.6666667           -1.0000000\n#&gt; 6   4.922   4.896   4.726   4.726           0.6666667            0.0000000\n#&gt;   control_score_sync control_score_async Expect_question_time_mean\n#&gt; 1          1.5000000          -0.3333333                 11.657333\n#&gt; 2         -0.3333333          -1.0000000                 10.821111\n#&gt; 3          0.1666667          -1.3333333                 44.220667\n#&gt; 4         -1.5000000           0.6666667                  4.828333\n#&gt; 5          0.5000000          -0.8333333                  8.437889\n#&gt; 6         -2.0000000          -2.0000000                  5.622000\n#&gt;   Free_response\n#&gt; 1            19\n#&gt; 2            13\n#&gt; 3            21\n#&gt; 4            29\n#&gt; 5             6\n#&gt; 6            27\n\nimport_jasp() returns a list with four elements:\n\n\n\n\n\n\nElement\nContents\n\n\n\n$data\nthe dataset as a data.frame; labelled columns carry label / labels attributes\n\n\n$columns\na data.frame of name and type (JASP’s own measurement-level classification)\n\n\n$analyses\nthe parsed analyses.json — JASP’s own record of every analysis run\n\n\n$format\n\n\"binary\" (JASP ≤ ~0.16) or \"sqlite\" (JASP ≥ ~0.17) — both are handled transparently\n\n\n$data_file_path\nthe original file JASP imported the data from, if recorded\n\n\n\nValue labels are attached exactly like haven::read_sav() attaches them:\n\nlabelled &lt;- vapply(jasp$data, function(col) !is.null(attr(col, \"labels\")), logical(1))\nnames(jasp$data)[labelled]\n#&gt;  [1] \"Age\"                            \"Gender\"                        \n#&gt;  [3] \"Exclude_for_timing\"             \"Heard_of_procedure\"            \n#&gt;  [5] \"Previously_participated_in_RHI\" \"S1_sync\"                       \n#&gt;  [7] \"S1_async\"                       \"S2_sync\"                       \n#&gt;  [9] \"S2_async\"                       \"S3_sync\"                       \n#&gt; [11] \"S3_async\"                       \"C1_sync\"                       \n#&gt; [13] \"C1_async\"                       \"C2_sync\"                       \n#&gt; [15] \"C2_async\"                       \"C3_sync\"                       \n#&gt; [17] \"C3_async\"                       \"C4_sync\"                       \n#&gt; [19] \"C4_async\"                       \"C5_sync\"                       \n#&gt; [21] \"C5_async\"                       \"C6_sync\"                       \n#&gt; [23] \"C6_async\"                       \"Free_response\"\n\n# one example\nattr(jasp$data[[names(jasp$data)[labelled][1]]], \"labels\")\n#&gt; 18 19 20 21 23 25 45 \n#&gt; 18 19 20 21 23 25 45\n\n\n29.2.3 Reading a jamovi file\nimport_omv() is the jamovi counterpart, returning the same shape:\n\nomv &lt;- import_omv(\"example.omv\")\n\ndim(omv$data)\n#&gt; [1] 218   9\nomv$columns\n#&gt;                         name       type\n#&gt; 1                 Experiment    Nominal\n#&gt; 2                Participant Continuous\n#&gt; 3         Manipulation check Continuous\n#&gt; 4                    H1 test Continuous\n#&gt; 5                    H2 test Continuous\n#&gt; 6 H3 confirmatory confidence Continuous\n#&gt; 7      H3 dissent confidence Continuous\n#&gt; 8                    H4 test Continuous\n#&gt; 9           Guess hypothesis         ID\n\nThe one difference is $analyses: jamovi does not store a structured analyses.json the way JASP does, so import_omv() recovers each analysis as a readable one-line summary, including the reproducible R syntax jamovi embeds internally when it is recoverable:\n\nomv$analyses\n#&gt; [1] \"1. 05 ttestOneS  |  jmv::ttestOneS( data = data, vars = H4 test, hypothesis = \\\"gt\\\", desc = TRUE)\"\n\n\n29.2.4 Using the data like any other data source\nBecause both readers attach the same haven-style attributes, .jasp and .omv files flow through the rest of metacheck exactly like a .sav file — for example, data_check and codebook_check both read them with no special code path:\n\nmo &lt;- module_run(paper, \"data_check\", local_path = \"path/to/study_folder\")\n\nIf that folder contains a .jasp or .omv file, its embedded labels are harvested as if they were a codebook, and its data is read as if it were a .sav.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/importing-exporting.html#part-2-importing-spss-viewer-output-import_spv",
+    "href": "chapters/importing-exporting.html#part-2-importing-spss-viewer-output-import_spv",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
+    "section": "\n29.3 Part 2: Importing SPSS Viewer output — import_spv()\n",
+    "text": "29.3 Part 2: Importing SPSS Viewer output — import_spv()\n\n\n29.3.1 What a .spv file is, and why it is different\nA .spv file is not a data file at all — it is IBM SPSS’s rendered output window, saved to disk. It contains the result tables SPSS produced (a T-Test table, a Reliability Statistics table, an ICC table, …) together with the exact syntax that produced them, and, when the output included one, any charts the analysis generated (a Q-Q plot, a scatterplot with a fitted curve, a box plot, …). Unlike .jasp/.omv, .spv has no rendered HTML view baked into the archive — everything has to be decoded from SPSS’s own internal representation.\n.spv has no public specification. Metacheck’s table reader is ported from GNU PSPP’s GPL-licensed decoder — the only known public implementation of this format — and handles both the older (“legacy”) and modern (SPSS 21+, “light-binary”) table encodings transparently. Charts have no PSPP implementation to port from at all (PSPP itself does not render .spv charts); metacheck’s chart decoder was built entirely by inspecting real .spv files, described in Part 3 below.\n\n29.3.2 Reading an SPSS Viewer file\n\ntables &lt;- import_spv(\"example.spv\")\n\nlength(tables)\n#&gt; [1] 8\n\n# what analyses were recovered\nunique(vapply(tables, function(tb) tb$analysis %||% NA_character_, character(1)))\n#&gt; [1] \"Reliability\"\n\nimport_spv() returns a list of result tables — the same shape read_stat_tables() already returns for .jasp and .omv, so all three formats can be processed identically downstream. Each table is a list with:\n\n\nElement\nContents\n\n\n\nanalysis\nthe SPSS command that produced it (e.g. \"RELIABILITY\")\n\n\ntitle\nthe table’s own caption\n\n\ndata\na tidy data.frame: one row per cell, one column per row/column dimension, plus value (or, for a chart entry, its plotted points — see Part 3)\n\n\nsyntax\nthe exact SPSS syntax recovered from the archive, when recoverable\n\n\ntable_index\nthe table’s 1-based position in the original output document\n\n\nis_chart\n\nTRUE for a chart entry, FALSE for a result table\n\n\n\n\ntb &lt;- tables[[1]]\ntb$analysis\n#&gt; [1] \"Reliability\"\ntb$title\n#&gt; [1] \"Notes\"\ntb$data\n#&gt;                                          Contents\n#&gt; 1                                  Output Created\n#&gt; 2                                        Comments\n#&gt; 3                                    Input / Data\n#&gt; 4                          Input / Active Dataset\n#&gt; 5                                  Input / Filter\n#&gt; 6                                  Input / Weight\n#&gt; 7                              Input / Split File\n#&gt; 8          Input / N of Rows in Working Data File\n#&gt; 9  Missing Value Handling / Definition of Missing\n#&gt; 10            Missing Value Handling / Cases Used\n#&gt; 11                                         Syntax\n#&gt; 12                     Resources / Processor Time\n#&gt; 13                       Resources / Elapsed Time\n#&gt; 14                           Input / Matrix Input\n#&gt;                                                                                                                                    value\n#&gt; 1                                                                                                                        13689606611.578\n#&gt; 2                                                                                                                                       \n#&gt; 3  D:\\\\stack\\\\Content\\\\PhD\\\\Projects\\\\OpenData_ReportingErrors\\\\Study2_PLOSvsFrontiers\\\\Data\\\\CodedData\\\\160518DoubleCodedDataCoders.csv\n#&gt; 4                                                                                                                               DataSet2\n#&gt; 5                                                                                                                                 &lt;none&gt;\n#&gt; 6                                                                                                                                 &lt;none&gt;\n#&gt; 7                                                                                                                                 &lt;none&gt;\n#&gt; 8                                                                                                                                    399\n#&gt; 9                                                                                                                     MISSING=EXCLUDE...\n#&gt; 10                                                                                                                  Statistics are based\n#&gt; 11                                                                                                                            [:^1\\\\n:]1\n#&gt; 12                                                                                                                                     0\n#&gt; 13                                                                                                                                 0.043\n#&gt; 14\n\nThe recovered syntax is worth looking at directly — this is the exact command SPSS ran, extracted from the output file alone (useful when a researcher shared .spv output but not their .sps syntax file):\n\ntb$syntax\n#&gt; [1] \"NEW FILE.\\nDATASET NAME DataSet1 WINDOW=FRONT.\\n\\nGET DATA  /TYPE=TXT\\n  /FILE=\\\"D:\\\\stack\\\\Content\\\\PhD\\\\Projects\\\\OpenData_ReportingErrors\\\\Study2_PLOSvsFrontiers\\\\Data\\\\CodedData\\\\160518DoubleCodedDataCoders.csv\\\"\\n  /ENCODING='UTF8'\\n  /DELCASE=LINE\\n  /DELIMITERS=\\\" ;\\\"\\n  /QUALIFIER='\\\"'\\n  /ARRANGEMENT=DELIMITED\\n  /FIRSTCASE=2\\n  /IMPORTCASE=ALL\\n  /VARIABLES=\\n  article A18\\n  coder1 F1.0\\n  coder1IN A5\\n  coder2 F1.0\\n  coder2IN A5\\n  DataPromised1 F1.0\\n  DataPromised2 A2\\n  DataAvailable1 F1.0\\n  DataAvailable2 A2\\n  Remarks1 A234\\n  Remarks2 A221.\\nCACHE.\\nEXECUTE.\\nDATASET NAME DataSet2 WINDOW=FRONT.\\nDATASET ACTIVATE DataSet2.\\nRELIABILITY\\n  /VARIABLES=DataAvailable1 DataAvailable2\\n  /SCALE('ALL VARIABLES') ALL\\n  /MODEL=ALPHA\\n  /ICC=MODEL(RANDOM) TYPE(ABSOLUTE) CIN=95 TESTVAL=0.\"\n\n\n29.3.3 Result tables feed the same pipeline as JASP and jamovi\nBecause import_spv()’s tables share JASP/jamovi’s shape, the same downstream functions apply without modification:\n\nlong &lt;- stat_results_long(tables, paper_id = \"example\", source_file = \"example.spv\")\nhead(long[, c(\"analysis\", \"row_label\", \"statistic\", \"stato_label\", \"value\")])",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/importing-exporting.html#spv-charts",
+    "href": "chapters/importing-exporting.html#spv-charts",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
+    "section": "\n29.4 Part 3: Charts inside .spv files",
+    "text": "29.4 Part 3: Charts inside .spv files\nSome .spv files also contain charts — a Q-Q plot from an Explore normality check, a scatterplot with a fitted trend line from Curve Fit, a box plot from a Nonparametric Tests comparison. import_spv() recovers these too, as extra entries in the same list of tables, distinguished by is_chart = TRUE:\n\nchart_tables &lt;- import_spv(\"example-chart.spv\")\nlength(chart_tables)\n#&gt; [1] 2\n\nis_chart &lt;- vapply(chart_tables, function(tb) isTRUE(tb$is_chart), logical(1))\nwhich(is_chart)\n#&gt; [1] 2\n\nA chart entry’s $data holds the actual plotted points rather than a result table:\n\nchart &lt;- chart_tables[[which(is_chart)]]\nchart$analysis\n#&gt; [1] \"Graph\"\nchart$title\n#&gt; [1] \"The Stochastic Relationship Between the Total Population of the County and the Number of Health Development Offices in Hungary as of 2022\"\nhead(chart$data)\n#&gt;         x y\n#&gt; 1 1671004 7\n#&gt; 2 1328790 6\n#&gt; 3  419565 5\n#&gt; 4  301492 0\n#&gt; 5  338432 6\n#&gt; 6  471309 4\n\n\n\n\n\n\n\n\nspv_chart_type\n\n$data columns\nWhat it represents\n\n\n\n\"point\"\n\nx, y\n\nA scatterplot’s plotted points (e.g. Curve Fit, a Q-Q plot)\n\n\n\"boxplot\"\n\ncategory, value\n\nA box plot’s raw per-case values, grouped by category\n\n\n\nA \"point\" chart also carries any fitted trend line SPSS itself already computed — the exact formula, not something metacheck estimates:\n\nattr(chart$data, \"spv_chart_fits\")\n#&gt; [[1]]\n#&gt; [[1]]$name\n#&gt; [1] NA\n#&gt; \n#&gt; [[1]]$expr\n#&gt; [1] \"4.03+2.86E-6*x\"\n#&gt; \n#&gt; [[1]]$fn\n#&gt; function (x) \n#&gt; 4.03 + 2.86e-06 * x\n#&gt; &lt;environment: 0x0000027fc9520e78&gt;\n\nstat_results_long() and stat_output_json() skip chart entries automatically (a chart’s x/y or category/value columns are plotted points, not statistics to extract), so passing import_spv()’s output straight through the usual pipeline is always safe, chart-bearing file or not.\n\n\n\n\n\n\nNote\n\n\n\n.spv’s chart format has no public specification and no PSPP implementation to port from — it was reverse-engineered from real files found on Zenodo and Figshare. Two chart mark types are currently supported (&lt;point&gt; and &lt;schema&gt;/box plot, above); others (bar charts, line charts) are recognised but not yet decoded, and are silently skipped rather than causing an error. Across a sample of real .spv files with charts, roughly 60% of individual charts decode successfully with the two supported types.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/importing-exporting.html#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html",
+    "href": "chapters/importing-exporting.html#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
+    "section": "\n29.5 Part 4: Exporting readable HTML — export_jasp_html(), export_omv_html(), export_spv_html()\n",
+    "text": "29.5 Part 4: Exporting readable HTML — export_jasp_html(), export_omv_html(), export_spv_html()\n\nSometimes you don’t want the data out of a .jasp/.omv/.spv file — you want to look at the output, the way the original software would show it, without having JASP, jamovi, or SPSS installed. Each format has its own export function for exactly this.\n\n29.5.1 JASP and jamovi: re-exporting the software’s own rendered output\nA .jasp or .omv archive already contains a fully rendered index.html — the same output view JASP or jamovi itself displays, including any plots, saved as part of the archive. export_jasp_html() and export_omv_html() extract that index.html as-is and inline every plot it references as a base64 image, so the result is a single, portable .html file with nothing else to keep alongside it — you can email it, or open it years later, with no dependency on the original archive.\n\nexport_jasp_html(\"example.jasp\")\n\nBy default, the HTML file is written next to the source archive with the same name (example.jasp → example.html). Pass out = to choose a different destination:\n\nexport_jasp_html(\"example.jasp\", out = \"example-jasp-output.html\")\nexport_omv_html(\"example.omv\", out = \"example-omv-output.html\")\n\nThe result looks exactly like JASP’s or jamovi’s own output window — because it is that output window, just re-packaged as one file.\n\n\n29.5.2 SPSS Viewer: building a readable view from the extracted tables and charts\nUnlike .jasp/.omv, a .spv archive has no rendered view of its own to re-export. export_spv_html() instead builds a page from what import_spv() already decodes: one heading per analysis, its recovered syntax shown underneath, one HTML table per result table, and — for a chart entry — an actual plot, rendered from the chart’s own decoded points and embedded as a base64 image, the same way export_jasp_html() inlines JASP’s plots.\n\nexport_spv_html(\"example.spv\", out = \"example-spv-output.html\")\n\n\nexample.spv has no charts, so this particular export is tables-only. example-chart.spv — the file from Part 3 — does have one, and its export includes the rendered scatterplot:\n\nexport_spv_html(\"example-chart.spv\", out = \"example-chart-output.html\")\n\n\nNot every chart in a .spv file can be rendered this way yet — see the note in Part 3 on which mark types are currently supported. A chart that cannot be decoded is skipped, with the rest of the file’s tables (and any other decodable charts) still exported normally.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/importing-exporting.html#summary",
+    "href": "chapters/importing-exporting.html#summary",
+    "title": "\n29  Importing and Exporting JASP, jamovi, and SPSS Viewer Files\n",
+    "section": "\n29.6 Summary",
+    "text": "29.6 Summary\n\n\nTask\nJASP\njamovi\nSPSS Viewer\n\n\n\nImport data + analyses\nimport_jasp(path)\nimport_omv(path)\nimport_spv(path)\n\n\nExport readable HTML\nexport_jasp_html(path, out)\nexport_omv_html(path, out)\nexport_spv_html(path, out)\n\n\nRendered view in the archive?\nYes (re-exported, plots inlined)\nYes (re-exported, plots inlined)\nNo (tables and charts both built fresh from decoded data — see Part 3)\n\n\n\nAll three importers return data in the shape the rest of metacheck already expects — a labelled data.frame for import_jasp()/import_omv(), and read_stat_tables()’s table-list shape for import_spv() — so data_check, codebook_check, and reproducibility_check all consume these formats automatically, with no extra steps.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-consistency.html",
+    "href": "chapters/mod-ref-consistency.html",
+    "title": "\n30  Reference Consistency\n",
+    "section": "",
+    "text": "30.1 What it checks\nThe ref_consistency module checks the bibliography and the in-text citations against each other, in both directions:\nA paper where every reference is cited and every citation resolves to a reference is internally consistent; anything else is flagged.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-consistency.html#what-it-checks",
     "href": "chapters/mod-ref-consistency.html#what-it-checks",
-    "title": "\n29  Reference Consistency\n",
+    "title": "\n30  Reference Consistency\n",
     "section": "",
     "text": "Extra references — entries in the reference list that are never cited anywhere in the text.\n\nMissing references — in-text citations that do not point to any entry in the reference list.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-consistency.html#running-the-module",
     "href": "chapters/mod-ref-consistency.html#running-the-module",
-    "title": "\n29  Reference Consistency\n",
-    "section": "\n29.2 Running the module",
-    "text": "29.2 Running the module\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_consistency\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"There are cross-references that are not in the bibliography and/or bibliography entries not cross-referenced in the text\"\n\n\nThe summary_table gives per-paper counts: the number of bibliography entries (n_bib), the number of in-text cross-references (n_xrefs), and how many were flagged as n_extra (uncited references) or n_missing (citations with no matching reference):\n\nmo$summary_table |&gt;\n  knitr::kable()\n\n\n\npaper_id\nn_bib\nn_xrefs\nn_extra\n\n\nto_err_is_human\n5\n0\n5\n\n\n\n\nThe table has one row per flagged discrepancy. A row with contents = NA is an extra reference (a bibliography entry with no matching citation); a row with a citation in contents but no reference is a missing reference:\n\nmo$table[, c(\"bib_id\", \"reference\", \"contents\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\nbib_id\nreference\ncontents\n\n\n\n0\nDeBruine, Lisa. 2025. Faux: Simulation for Factorial Designs. Zenodo. https: //doi.org/10.5281/10.5281/zenodo.2669586.\nNA\n\n\n1\nEagly, Alice H., and Wendy Wood. 1999. “The Origins of Sex Differences in Human Behavior: Evolved Dispositions Versus Social Roles.” American Psychologist 54 (6): 408-23. https://doi.org/10.1037/0003-066x.54.6.408.\nNA\n\n\n2\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.\nNA\n\n\n3\nLakens, Daniël. 2018. “Equivalence Testing for Psychological Research.” Ad- vances in Methods and Practices in Psychological Science 1: 259-70.\nNA\n\n\n4\nSmith, F. 2021. “Human Error Is a Symptom of a Poor Design.” Journal of Journals. https://doi.org/10.0000/0123456789.\nNA",
+    "title": "\n30  Reference Consistency\n",
+    "section": "\n30.2 Running the module",
+    "text": "30.2 Running the module\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_consistency\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"There are cross-references that are not in the bibliography and/or bibliography entries not cross-referenced in the text\"\n\n\nThe summary_table gives per-paper counts: the number of bibliography entries (n_bib), the number of in-text cross-references (n_xrefs), and how many were flagged as n_extra (uncited references) or n_missing (citations with no matching reference):\n\nmo$summary_table |&gt;\n  knitr::kable()\n\n\n\npaper_id\nn_bib\nn_xrefs\nn_extra\n\n\nto_err_is_human\n5\n0\n5\n\n\n\n\nThe table has one row per flagged discrepancy. A row with contents = NA is an extra reference (a bibliography entry with no matching citation); a row with a citation in contents but no reference is a missing reference:\n\nmo$table[, c(\"bib_id\", \"reference\", \"contents\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\nbib_id\nreference\ncontents\n\n\n\n0\nDeBruine, Lisa. 2025. Faux: Simulation for Factorial Designs. Zenodo. https: //doi.org/10.5281/10.5281/zenodo.2669586.\nNA\n\n\n1\nEagly, Alice H., and Wendy Wood. 1999. “The Origins of Sex Differences in Human Behavior: Evolved Dispositions Versus Social Roles.” American Psychologist 54 (6): 408-23. https://doi.org/10.1037/0003-066x.54.6.408.\nNA\n\n\n2\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.\nNA\n\n\n3\nLakens, Daniël. 2018. “Equivalence Testing for Psychological Research.” Ad- vances in Methods and Practices in Psychological Science 1: 259-70.\nNA\n\n\n4\nSmith, F. 2021. “Human Error Is a Symptom of a Poor Design.” Journal of Journals. https://doi.org/10.0000/0123456789.\nNA",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-consistency.html#running-on-many-papers",
     "href": "chapters/mod-ref-consistency.html#running-on-many-papers",
-    "title": "\n29  Reference Consistency\n",
-    "section": "\n29.3 Running on many papers",
-    "text": "29.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_consistency\")\nmo$summary_table",
+    "title": "\n30  Reference Consistency\n",
+    "section": "\n30.3 Running on many papers",
+    "text": "30.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_consistency\")\nmo$summary_table",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-consistency.html#interpreting-the-result",
     "href": "chapters/mod-ref-consistency.html#interpreting-the-result",
-    "title": "\n29  Reference Consistency\n",
-    "section": "\n29.4 Interpreting the result",
-    "text": "29.4 Interpreting the result\nAs the callout above warns, a flag here is much more likely to reflect imperfect PDF extraction than a real problem with the paper. The two most common failure modes are:\n\n\nUnlinked citations. GROBID detects an in-text citation but cannot attach it to a reference, so the citation is reported as missing even though the work is in the reference list. These dominate the “missing” flags.\n\nMis-parsed references. GROBID splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography “entry”. These appear as extra references that were never really in the paper.\n\nA genuinely uncited reference, or a citation to a work that is truly absent from the reference list, does occur — but it is the exception, and you can only confirm it by looking at the original PDF. Once the more accurate extraction tool is in place, this section will be revisited.",
+    "title": "\n30  Reference Consistency\n",
+    "section": "\n30.4 Interpreting the result",
+    "text": "30.4 Interpreting the result\nAs the callout above warns, a flag here is much more likely to reflect imperfect PDF extraction than a real problem with the paper. The two most common failure modes are:\n\n\nUnlinked citations. GROBID detects an in-text citation but cannot attach it to a reference, so the citation is reported as missing even though the work is in the reference list. These dominate the “missing” flags.\n\nMis-parsed references. GROBID splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography “entry”. These appear as extra references that were never really in the paper.\n\nA genuinely uncited reference, or a citation to a work that is truly absent from the reference list, does occur — but it is the exception, and you can only confirm it by looking at the original PDF. Once the more accurate extraction tool is in place, this section will be revisited.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-consistency.html#options",
     "href": "chapters/mod-ref-consistency.html#options",
-    "title": "\n29  Reference Consistency\n",
-    "section": "\n29.5 Options",
-    "text": "29.5 Options\nref_consistency takes only the paper argument.",
+    "title": "\n30  Reference Consistency\n",
+    "section": "\n30.5 Options",
+    "text": "30.5 Options\nref_consistency takes only the paper argument.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-consistency.html#notes",
     "href": "chapters/mod-ref-consistency.html#notes",
-    "title": "\n29  Reference Consistency\n",
-    "section": "\n29.6 Notes",
-    "text": "29.6 Notes\nThis module sits alongside the other reference-section checks: accuracy, PubPeer, retraction, and replication, with the reference summary collecting several of them into a single table.",
+    "title": "\n30  Reference Consistency\n",
+    "section": "\n30.6 Notes",
+    "text": "30.6 Notes\nThis module sits alongside the other reference-section checks: accuracy, PubPeer, retraction, and replication, with the reference summary collecting several of them into a single table.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>29</span>  <span class='chapter-title'>Reference Consistency</span>"
+      "<span class='chapter-number'>30</span>  <span class='chapter-title'>Reference Consistency</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html",
     "href": "chapters/mod-ref-pubpeer.html",
-    "title": "\n30  PubPeer Comments\n",
+    "title": "\n31  PubPeer Comments\n",
     "section": "",
-    "text": "30.1 What it checks\nThe ref_pubpeer module cross-references the paper’s cited references against PubPeer, a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.\nThe module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.\nStatcheck comments on PubPeer are ignored. Statcheck automatically posted comments on tens of thousands of psychology articles, so including them would flag almost every cited paper and drown out substantive human comments.",
+    "text": "31.1 What it checks\nThe ref_pubpeer module cross-references the paper’s cited references against PubPeer, a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.\nThe module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.\nStatcheck comments on PubPeer are ignored. Statcheck automatically posted comments on tens of thousands of psychology articles, so including them would flag almost every cited paper and drown out substantive human comments.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html#what-it-checks",
     "href": "chapters/mod-ref-pubpeer.html#what-it-checks",
-    "title": "\n30  PubPeer Comments\n",
+    "title": "\n31  PubPeer Comments\n",
     "section": "",
     "text": "Note\n\n\n\nThis module makes live network calls to PubPeer (matching references by DOI). You need an internet connection to run the code below.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html#running-the-module",
     "href": "chapters/mod-ref-pubpeer.html#running-the-module",
-    "title": "\n30  PubPeer Comments\n",
-    "section": "\n30.2 Running the module",
-    "text": "30.2 Running the module\ndemopaper() cites a reference that has PubPeer comments.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_pubpeer\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 reference with comments in PubPeer.\"\n\n\nThe table lists each matched reference, the number of comments, and a link:\n\nmo$table[, c(\"doi\", \"total_comments\", \"url\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\ndoi\ntotal_comments\nurl\n\n\n10.1177/0956797614520714\n3\nhttps://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56",
+    "title": "\n31  PubPeer Comments\n",
+    "section": "\n31.2 Running the module",
+    "text": "31.2 Running the module\ndemopaper() cites a reference that has PubPeer comments.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_pubpeer\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 reference with comments in PubPeer.\"\n\n\nThe table lists each matched reference, the number of comments, and a link:\n\nmo$table[, c(\"doi\", \"total_comments\", \"url\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\ndoi\ntotal_comments\nurl\n\n\n10.1177/0956797614520714\n3\nhttps://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html#running-on-many-papers",
     "href": "chapters/mod-ref-pubpeer.html#running-on-many-papers",
-    "title": "\n30  PubPeer Comments\n",
-    "section": "\n30.3 Running on many papers",
-    "text": "30.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_pubpeer\")\nmo$summary_table",
+    "title": "\n31  PubPeer Comments\n",
+    "section": "\n31.3 Running on many papers",
+    "text": "31.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_pubpeer\")\nmo$summary_table",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html#interpreting-the-result",
     "href": "chapters/mod-ref-pubpeer.html#interpreting-the-result",
-    "title": "\n30  PubPeer Comments\n",
-    "section": "\n30.4 Interpreting the result",
-    "text": "30.4 Interpreting the result\nA green/empty result means none of the cited references had PubPeer comments. A flagged result does not mean a citation is bad — it means there is a discussion you may want to read. Follow the url to the PubPeer thread and judge the comments in context.",
+    "title": "\n31  PubPeer Comments\n",
+    "section": "\n31.4 Interpreting the result",
+    "text": "31.4 Interpreting the result\nA green/empty result means none of the cited references had PubPeer comments. A flagged result does not mean a citation is bad — it means there is a discussion you may want to read. Follow the url to the PubPeer thread and judge the comments in context.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html#options",
     "href": "chapters/mod-ref-pubpeer.html#options",
-    "title": "\n30  PubPeer Comments\n",
-    "section": "\n30.5 Options",
-    "text": "30.5 Options\nref_pubpeer takes only the paper argument.",
+    "title": "\n31  PubPeer Comments\n",
+    "section": "\n31.5 Options",
+    "text": "31.5 Options\nref_pubpeer takes only the paper argument.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-pubpeer.html#notes",
     "href": "chapters/mod-ref-pubpeer.html#notes",
-    "title": "\n30  PubPeer Comments\n",
-    "section": "\n30.6 Notes",
-    "text": "30.6 Notes\nIn the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.",
+    "title": "\n31  PubPeer Comments\n",
+    "section": "\n31.6 Notes",
+    "text": "31.6 Notes\nIn the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>30</span>  <span class='chapter-title'>PubPeer Comments</span>"
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html",
     "href": "chapters/mod-ref-retraction.html",
-    "title": "\n31  Retraction Watch\n",
+    "title": "\n32  Retraction Watch\n",
     "section": "",
-    "text": "31.1 What it checks\nThe ref_retraction module cross-references the paper’s cited references against the Retraction Watch database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.",
+    "text": "32.1 What it checks\nThe ref_retraction module cross-references the paper’s cited references against the Retraction Watch database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#what-it-checks",
     "href": "chapters/mod-ref-retraction.html#what-it-checks",
-    "title": "\n31  Retraction Watch\n",
+    "title": "\n32  Retraction Watch\n",
     "section": "",
     "text": "Note\n\n\n\nThis module makes live network calls (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#running-the-module",
     "href": "chapters/mod-ref-retraction.html#running-the-module",
-    "title": "\n31  Retraction Watch\n",
-    "section": "\n31.2 Running the module",
-    "text": "31.2 Running the module\ndemopaper() cites a reference that is in the Retraction Watch database.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_retraction\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 article in the RetractionWatch database.\"\n\n\nThe table lists each cited reference found in the database:\n\nmo$table[, c(\"doi\", \"text\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\ndoi\ntext\n\n\n10.1177/0956797614520714\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.",
+    "title": "\n32  Retraction Watch\n",
+    "section": "\n32.2 Running the module",
+    "text": "32.2 Running the module\ndemopaper() cites a reference that is in the Retraction Watch database.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_retraction\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 article in the RetractionWatch database.\"\n\n\nThe table lists each cited reference found in the database:\n\nmo$table[, c(\"doi\", \"text\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\ndoi\ntext\n\n\n10.1177/0956797614520714\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#running-on-many-papers",
     "href": "chapters/mod-ref-retraction.html#running-on-many-papers",
-    "title": "\n31  Retraction Watch\n",
-    "section": "\n31.3 Running on many papers",
-    "text": "31.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_retraction\")\nmo$summary_table",
+    "title": "\n32  Retraction Watch\n",
+    "section": "\n32.3 Running on many papers",
+    "text": "32.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_retraction\")\nmo$summary_table",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#interpreting-the-result",
     "href": "chapters/mod-ref-retraction.html#interpreting-the-result",
-    "title": "\n31  Retraction Watch\n",
-    "section": "\n31.4 Interpreting the result",
-    "text": "31.4 Interpreting the result\nA flagged reference is not automatically a mistake — retractions happen for many reasons, and a retracted paper is sometimes cited deliberately (for example, to discuss the retraction itself). The module’s job is to make sure you are aware, so you can decide. Follow up each flagged DOI before acting.",
+    "title": "\n32  Retraction Watch\n",
+    "section": "\n32.4 Interpreting the result",
+    "text": "32.4 Interpreting the result\nA flagged reference is not automatically a mistake — retractions happen for many reasons, and a retracted paper is sometimes cited deliberately (for example, to discuss the retraction itself). The module’s job is to make sure you are aware, so you can decide. Follow up each flagged DOI before acting.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#options",
     "href": "chapters/mod-ref-retraction.html#options",
-    "title": "\n31  Retraction Watch\n",
-    "section": "\n31.5 Options",
-    "text": "31.5 Options\nref_retraction takes only the paper argument.",
+    "title": "\n32  Retraction Watch\n",
+    "section": "\n32.5 Options",
+    "text": "32.5 Options\nref_retraction takes only the paper argument.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#updating-the-database",
     "href": "chapters/mod-ref-retraction.html#updating-the-database",
-    "title": "\n31  Retraction Watch\n",
-    "section": "\n31.6 Updating the database",
-    "text": "31.6 Updating the database\nThe module matches references against a data frame called retractionwatch that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:\n\nrw_date()     # the date the bundled database was last updated\nrw_update()   # download the newest version from Retraction Watch\n\nrw_update() downloads the latest Retraction Watch data (&gt;50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.",
+    "title": "\n32  Retraction Watch\n",
+    "section": "\n32.6 Updating the database",
+    "text": "32.6 Updating the database\nThe module matches references against a data frame called retractionwatch that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:\n\nrw_date()     # the date the bundled database was last updated\nrw_update()   # download the newest version from Retraction Watch\n\nrw_update() downloads the latest Retraction Watch data (&gt;50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-retraction.html#notes",
     "href": "chapters/mod-ref-retraction.html#notes",
-    "title": "\n31  Retraction Watch\n",
-    "section": "\n31.7 Notes",
-    "text": "31.7 Notes\nThis is the same kind of check that reference managers such as Zotero perform, brought into the Metacheck workflow so it can run alongside the other reference checks.",
+    "title": "\n32  Retraction Watch\n",
+    "section": "\n32.7 Notes",
+    "text": "32.7 Notes\nThis is the same kind of check that reference managers such as Zotero perform, brought into the Metacheck workflow so it can run alongside the other reference checks.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>31</span>  <span class='chapter-title'>Retraction Watch</span>"
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html",
     "href": "chapters/mod-ref-replication.html",
-    "title": "\n32  Replication Check\n",
+    "title": "\n33  Replication Check\n",
     "section": "",
-    "text": "32.1 What it checks\nThe ref_replication module cross-references the paper’s cited references against the FLoRA replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication’s outcome.",
+    "text": "33.1 What it checks\nThe ref_replication module cross-references the paper’s cited references against the FLoRA replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication’s outcome.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#what-it-checks",
     "href": "chapters/mod-ref-replication.html#what-it-checks",
-    "title": "\n32  Replication Check\n",
+    "title": "\n33  Replication Check\n",
     "section": "",
     "text": "Note\n\n\n\nThis module makes live network calls to the FLoRA replication database. You need an internet connection to run the code below.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#running-the-module",
     "href": "chapters/mod-ref-replication.html#running-the-module",
-    "title": "\n32  Replication Check\n",
-    "section": "\n32.2 Running the module",
-    "text": "32.2 Running the module\ndemopaper() cites an original study that has a recorded replication.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_replication\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"We found 1 replication for 1 original you cited.\"\n\n\nThe table matches each cited original to its replication(s):\n\nmo$table[, c(\"doi\", \"replication_doi\", \"replication_url\")] |&gt;\n  knitr::kable()\n\n\n\ndoi\nreplication_doi\nreplication_url\n\n\n10.1037/0003-066x.54.6.408\n10.1177/1474704919852921\nNA",
+    "title": "\n33  Replication Check\n",
+    "section": "\n33.2 Running the module",
+    "text": "33.2 Running the module\ndemopaper() cites an original study that has a recorded replication.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_replication\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"We found 1 replication for 1 original you cited.\"\n\n\nThe table matches each cited original to its replication(s):\n\nmo$table[, c(\"doi\", \"replication_doi\", \"replication_url\")] |&gt;\n  knitr::kable()\n\n\n\ndoi\nreplication_doi\nreplication_url\n\n\n10.1037/0003-066x.54.6.408\n10.1177/1474704919852921\nNA",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#option-show-replication-outcomes",
     "href": "chapters/mod-ref-replication.html#option-show-replication-outcomes",
-    "title": "\n32  Replication Check\n",
-    "section": "\n32.3 Option: show replication outcomes",
-    "text": "32.3 Option: show replication outcomes\nBy default the module reports that a replication exists. Set show_outcomes = TRUE to also include the outcome of each replication (for example, whether it was successful), which adds the replication_outcome and replication_type information to the report:\n\nmo &lt;- module_run(paper, \"ref_replication\", show_outcomes = TRUE)\nmo$table[, c(\"doi\", \"replication_doi\", \"replication_outcome\", \"replication_type\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\ndoi\nreplication_doi\nreplication_outcome\nreplication_type\n\n\n10.1037/0003-066x.54.6.408\n10.1177/1474704919852921\nfailed\nreplication",
+    "title": "\n33  Replication Check\n",
+    "section": "\n33.3 Option: show replication outcomes",
+    "text": "33.3 Option: show replication outcomes\nBy default the module reports that a replication exists. Set show_outcomes = TRUE to also include the outcome of each replication (for example, whether it was successful), which adds the replication_outcome and replication_type information to the report:\n\nmo &lt;- module_run(paper, \"ref_replication\", show_outcomes = TRUE)\nmo$table[, c(\"doi\", \"replication_doi\", \"replication_outcome\", \"replication_type\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\ndoi\nreplication_doi\nreplication_outcome\nreplication_type\n\n\n10.1037/0003-066x.54.6.408\n10.1177/1474704919852921\nfailed\nreplication",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#running-on-many-papers",
     "href": "chapters/mod-ref-replication.html#running-on-many-papers",
-    "title": "\n32  Replication Check\n",
-    "section": "\n32.4 Running on many papers",
-    "text": "32.4 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_replication\", show_outcomes = TRUE)\nmo$summary_table",
+    "title": "\n33  Replication Check\n",
+    "section": "\n33.4 Running on many papers",
+    "text": "33.4 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_replication\", show_outcomes = TRUE)\nmo$summary_table",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#interpreting-the-result",
     "href": "chapters/mod-ref-replication.html#interpreting-the-result",
-    "title": "\n32  Replication Check\n",
-    "section": "\n32.5 Interpreting the result",
-    "text": "32.5 Interpreting the result\nA match means a replication of a cited study exists in the database — it is an invitation to check whether the replication’s result changes how you should cite the original. As always, the module surfaces information for human judgement.",
+    "title": "\n33  Replication Check\n",
+    "section": "\n33.5 Interpreting the result",
+    "text": "33.5 Interpreting the result\nA match means a replication of a cited study exists in the database — it is an invitation to check whether the replication’s result changes how you should cite the original. As always, the module surfaces information for human judgement.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#options",
     "href": "chapters/mod-ref-replication.html#options",
-    "title": "\n32  Replication Check\n",
-    "section": "\n32.6 Options",
-    "text": "32.6 Options\n\n\n\n\n\n\n\nArgument\nDefault\nEffect\n\n\n\npaper\n—\nthe paper or paperlist to check\n\n\nshow_outcomes\nFALSE\ninclude the outcome and type of each replication",
+    "title": "\n33  Replication Check\n",
+    "section": "\n33.6 Options",
+    "text": "33.6 Options\n\n\n\n\n\n\n\nArgument\nDefault\nEffect\n\n\n\npaper\n—\nthe paper or paperlist to check\n\n\nshow_outcomes\nFALSE\ninclude the outcome and type of each replication",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-replication.html#updating-the-database",
     "href": "chapters/mod-ref-replication.html#updating-the-database",
-    "title": "\n32  Replication Check\n",
-    "section": "\n32.7 Updating the database",
-    "text": "32.7 Updating the database\nThe module matches references against a data frame called FLoRA that ships with Metacheck. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:\n\nFLoRA_date()     # the date the bundled database was last updated\nFLoRA_update()   # download the newest version of the FLoRA database\n\nFLoRA_update() downloads the latest FLoRA data (&gt;5 MB), summarises it into a compact form, deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally to pick up replications added since your installed version of Metacheck.",
+    "title": "\n33  Replication Check\n",
+    "section": "\n33.7 Updating the database",
+    "text": "33.7 Updating the database\nThe module matches references against a data frame called FLoRA that ships with Metacheck. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:\n\nFLoRA_date()     # the date the bundled database was last updated\nFLoRA_update()   # download the newest version of the FLoRA database\n\nFLoRA_update() downloads the latest FLoRA data (&gt;5 MB), summarises it into a compact form, deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally to pick up replications added since your installed version of Metacheck.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Replication Check</span>"
+      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Replication Check</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html",
     "href": "chapters/mod-ref-accuracy.html",
-    "title": "\n33  Reference Accuracy\n",
+    "title": "\n34  Reference Accuracy\n",
     "section": "",
-    "text": "33.1 What it checks\nThe ref_accuracy module looks for incoherent references. A reference is incoherent when the details the paper cites for it — the title, authors, journal, or year — do not match the record that the reference’s own DOI points to. If you cite a paper as appearing in one journal but its DOI resolves to a different journal, something is wrong: a wrong DOI, a mis-named journal, or (increasingly) an AI-fabricated citation.\nThe module does not claim a flagged reference is fabricated. It surfaces the discrepancy so you can check the original source and decide what happened.",
+    "text": "34.1 What it checks\nThe ref_accuracy module looks for incoherent references. A reference is incoherent when the details the paper cites for it — the title, authors, journal, or year — do not match the record that the reference’s own DOI points to. If you cite a paper as appearing in one journal but its DOI resolves to a different journal, something is wrong: a wrong DOI, a mis-named journal, or (increasingly) an AI-fabricated citation.\nThe module does not claim a flagged reference is fabricated. It surfaces the discrepancy so you can check the original source and decide what happened.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#what-it-checks",
     "href": "chapters/mod-ref-accuracy.html#what-it-checks",
-    "title": "\n33  Reference Accuracy\n",
+    "title": "\n34  Reference Accuracy\n",
     "section": "",
     "text": "Important\n\n\n\nOnly references that supply their own DOI are checked. A reference with no DOI is not checked, because the only record we could find for it comes from a CrossRef title search, which frequently returns the wrong paper — so a “mismatch” would be CrossRef’s error, not the citation’s. References without a DOI are listed separately, with a suggested DOI offered only when CrossRef found a confident match.\n\n\n\n\n\n\n\n\nNote\n\n\n\nThis module relies on the paper’s bib_match table, which holds reference metadata retrieved from CrossRef. It is populated when you convert a paper with crossref_lookup = TRUE, or you can add or refresh it at any time with add_bib_match(). Building it makes live network calls, so you need an internet connection.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#running-the-module",
     "href": "chapters/mod-ref-accuracy.html#running-the-module",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.2 Running the module",
-    "text": "33.2 Running the module\n\npaper &lt;- add_bib_match(demopaper())\nmo &lt;- module_run(paper, \"ref_accuracy\")\nmo$traffic_light\n\n#&gt; [1] \"green\"\n\nmo$summary_text\n\n#&gt; [1] \"We checked 2 references that supplied a DOI and found 0 incoherent references. A further 1 reference were matched to a DOI via CrossRef (0 incoherent, tentative). 2 references had no DOI and could not be checked.\"\n\n\nThe summary_table reports, per paper, how many references were checked (had their own DOI), how many were flagged as incoherent, and how many had no DOI and so could not be checked:\n\nmo$summary_table |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\npaper_id\nrefs_provided_doi\nrefs_crossref_doi\nnot_checked\nincoherent_doi\nincoherent_match\n\n\nto_err_is_human\n2\n1\n2\n0\n0\n\n\n\n\nThe full table has one row per reference, with a tier column (\"provided\" for references that supplied their own DOI, \"none\" for references without one) and an incoherent flag, alongside the individual *_mismatch columns:\n\nmo$table |&gt;\n  dplyr::select(bib_id, tier, incoherent,\n                title_mismatch, author_mismatch,\n                container_mismatch, year_mismatch) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\n\nbib_id\ntier\nincoherent\ntitle_mismatch\nauthor_mismatch\ncontainer_mismatch\nyear_mismatch\n\n\n\n1\nprovided\nFALSE\nFALSE\nFALSE\nFALSE\nFALSE\n\n\n2\nprovided\nFALSE\nFALSE\nFALSE\nFALSE\nFALSE\n\n\n3\ncrossref\nFALSE\nFALSE\nTRUE\nFALSE\nFALSE\n\n\n0\nnone\nFALSE\nNA\nNA\nNA\nNA\n\n\n4\nnone\nFALSE\nNA\nNA\nNA\nNA",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.2 Running the module",
+    "text": "34.2 Running the module\n\npaper &lt;- add_bib_match(demopaper())\nmo &lt;- module_run(paper, \"ref_accuracy\")\nmo$traffic_light\n\n#&gt; [1] \"green\"\n\nmo$summary_text\n\n#&gt; [1] \"We checked 2 references that supplied a DOI and found 0 incoherent references. A further 1 reference were matched to a DOI via CrossRef (0 incoherent, tentative). 2 references had no DOI and could not be checked.\"\n\n\nThe summary_table reports, per paper, how many references were checked (had their own DOI), how many were flagged as incoherent, and how many had no DOI and so could not be checked:\n\nmo$summary_table |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\npaper_id\nrefs_provided_doi\nrefs_crossref_doi\nnot_checked\nincoherent_doi\nincoherent_match\n\n\nto_err_is_human\n2\n1\n2\n0\n0\n\n\n\n\nThe full table has one row per reference, with a tier column (\"provided\" for references that supplied their own DOI, \"none\" for references without one) and an incoherent flag, alongside the individual *_mismatch columns:\n\nmo$table |&gt;\n  dplyr::select(bib_id, tier, incoherent,\n                title_mismatch, author_mismatch,\n                container_mismatch, year_mismatch) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\n\nbib_id\ntier\nincoherent\ntitle_mismatch\nauthor_mismatch\ncontainer_mismatch\nyear_mismatch\n\n\n\n1\nprovided\nFALSE\nFALSE\nFALSE\nFALSE\nFALSE\n\n\n2\nprovided\nFALSE\nFALSE\nFALSE\nFALSE\nFALSE\n\n\n3\ncrossref\nFALSE\nFALSE\nTRUE\nFALSE\nFALSE\n\n\n0\nnone\nFALSE\nNA\nNA\nNA\nNA\n\n\n4\nnone\nFALSE\nNA\nNA\nNA\nNA",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#running-on-many-papers",
     "href": "chapters/mod-ref-accuracy.html#running-on-many-papers",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.3 Running on many papers",
-    "text": "33.3 Running on many papers\n\npapers &lt;- add_bib_match(psychsci[1:10])\nmo &lt;- module_run(papers, \"ref_accuracy\")\nmo$summary_table",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.3 Running on many papers",
+    "text": "34.3 Running on many papers\n\npapers &lt;- add_bib_match(psychsci[1:10])\nmo &lt;- module_run(papers, \"ref_accuracy\")\nmo$summary_table",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#how-a-reference-is-flagged",
     "href": "chapters/mod-ref-accuracy.html#how-a-reference-is-flagged",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.4 How a reference is flagged",
-    "text": "33.4 How a reference is flagged\nFor each checked reference the module compares five fields against the DOI’s record. Two of them are treated as reliable signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as weaker signals.\n\n\n\n\n\n\n\nField\nSignal\nNotes\n\n\n\nDOI\nreliable\nonly when the reference printed a DOI that differs from the record\n\n\nJournal\nreliable\nabbreviation-tolerant (ISO-4, &/and, the)\n\n\nYear\nreliable\nallows a year_tolerance difference (online-first vs print)\n\n\nTitle\nweaker\ncharacter similarity, ignoring case/punctuation/footnotes\n\n\nAuthor\nweaker\nleading surnames only; diacritics ignored\n\n\n\nA reference is flagged when any reliable field mismatches, or when at least min_mismatches of the weaker fields (title, author) mismatch. By default min_mismatches = 2, so a lone title or author difference — which is usually a parsing artefact — is not enough on its own.",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.4 How a reference is flagged",
+    "text": "34.4 How a reference is flagged\nFor each checked reference the module compares five fields against the DOI’s record. Two of them are treated as reliable signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as weaker signals.\n\n\n\n\n\n\n\nField\nSignal\nNotes\n\n\n\nDOI\nreliable\nonly when the reference printed a DOI that differs from the record\n\n\nJournal\nreliable\nabbreviation-tolerant (ISO-4, &/and, the)\n\n\nYear\nreliable\nallows a year_tolerance difference (online-first vs print)\n\n\nTitle\nweaker\ncharacter similarity, ignoring case/punctuation/footnotes\n\n\nAuthor\nweaker\nleading surnames only; diacritics ignored\n\n\n\nA reference is flagged when any reliable field mismatches, or when at least min_mismatches of the weaker fields (title, author) mismatch. By default min_mismatches = 2, so a lone title or author difference — which is usually a parsing artefact — is not enough on its own.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#parameters",
     "href": "chapters/mod-ref-accuracy.html#parameters",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.5 Parameters",
-    "text": "33.5 Parameters\nref_accuracy exposes the thresholds behind each check so you can tune the trade-off between catching more errors and raising fewer false alarms.\n\n33.5.1 min_mismatches (default 1)\nHow many of the parsing-sensitive fields (title and author) must disagree before a reference is flagged. The default of 1 flags a single title or author mismatch, which catches roughly twice as many genuine errors. The extra false positives this adds are minor compared with the false positives that already come from imperfect reference parsing, so the more sensitive setting is the better trade-off. Set it to 2 to be more conservative and require two of these fields to disagree before flagging.\n\n# default: a single title or author mismatch is flagged\nmodule_run(paper, \"ref_accuracy\", min_mismatches = 1)\n\n# conservative: require two parsing-sensitive fields to disagree\nmodule_run(paper, \"ref_accuracy\", min_mismatches = 2)\n\n\n33.5.2 year_tolerance (default 1)\nHow many years the cited year may differ from the record before the year is flagged. The default allows a one-year difference, because the online-first and print publication years of an article routinely differ by a year. Set it to 0 to require an exact match, or higher to be more lenient.\n\n# require the cited year to match exactly\nmodule_run(paper, \"ref_accuracy\", year_tolerance = 0)\n\n\n33.5.3 title_similarity (default 0.7)\nThe minimum character-level similarity (0–1, after stripping case, punctuation, footnote markers and diacritics) for a cited title to count as matching the record’s title. Lower values tolerate more formatting noise; a title below the threshold is flagged. Raise it to be stricter about title differences.\n\n# stricter: smaller title differences are flagged\nmodule_run(paper, \"ref_accuracy\", title_similarity = 0.85)\n\n\n33.5.4 max_authors (default 6)\nHow many of the leading author surnames to require in the cited author list. Author lists are routinely shortened with “et al.” (APA abbreviates after seven authors), and PDF parsing often drops the tail of long lists, so only the first max_authors surnames are checked.\n\n# only require the first three surnames to match\nmodule_run(paper, \"ref_accuracy\", max_authors = 3)\n\n\n33.5.5 suggest_score (default 70)\nFor references without a DOI, the minimum CrossRef relevance score for a DOI found by title search to be offered as a suggestion in the “references without a DOI” list. Low-scoring matches are usually the wrong paper, so they are withheld. Raise it to suggest fewer (more conservative) DOIs, lower it to suggest more.\n\n# only suggest a DOI when CrossRef is very confident\nmodule_run(paper, \"ref_accuracy\", suggest_score = 90)",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.5 Parameters",
+    "text": "34.5 Parameters\nref_accuracy exposes the thresholds behind each check so you can tune the trade-off between catching more errors and raising fewer false alarms.\n\n34.5.1 min_mismatches (default 1)\nHow many of the parsing-sensitive fields (title and author) must disagree before a reference is flagged. The default of 1 flags a single title or author mismatch, which catches roughly twice as many genuine errors. The extra false positives this adds are minor compared with the false positives that already come from imperfect reference parsing, so the more sensitive setting is the better trade-off. Set it to 2 to be more conservative and require two of these fields to disagree before flagging.\n\n# default: a single title or author mismatch is flagged\nmodule_run(paper, \"ref_accuracy\", min_mismatches = 1)\n\n# conservative: require two parsing-sensitive fields to disagree\nmodule_run(paper, \"ref_accuracy\", min_mismatches = 2)\n\n\n34.5.2 year_tolerance (default 1)\nHow many years the cited year may differ from the record before the year is flagged. The default allows a one-year difference, because the online-first and print publication years of an article routinely differ by a year. Set it to 0 to require an exact match, or higher to be more lenient.\n\n# require the cited year to match exactly\nmodule_run(paper, \"ref_accuracy\", year_tolerance = 0)\n\n\n34.5.3 title_similarity (default 0.7)\nThe minimum character-level similarity (0–1, after stripping case, punctuation, footnote markers and diacritics) for a cited title to count as matching the record’s title. Lower values tolerate more formatting noise; a title below the threshold is flagged. Raise it to be stricter about title differences.\n\n# stricter: smaller title differences are flagged\nmodule_run(paper, \"ref_accuracy\", title_similarity = 0.85)\n\n\n34.5.4 max_authors (default 6)\nHow many of the leading author surnames to require in the cited author list. Author lists are routinely shortened with “et al.” (APA abbreviates after seven authors), and PDF parsing often drops the tail of long lists, so only the first max_authors surnames are checked.\n\n# only require the first three surnames to match\nmodule_run(paper, \"ref_accuracy\", max_authors = 3)\n\n\n34.5.5 suggest_score (default 70)\nFor references without a DOI, the minimum CrossRef relevance score for a DOI found by title search to be offered as a suggestion in the “references without a DOI” list. Low-scoring matches are usually the wrong paper, so they are withheld. Raise it to suggest fewer (more conservative) DOIs, lower it to suggest more.\n\n# only suggest a DOI when CrossRef is very confident\nmodule_run(paper, \"ref_accuracy\", suggest_score = 90)",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#worked-examples-real-errors-in-the-wild",
     "href": "chapters/mod-ref-accuracy.html#worked-examples-real-errors-in-the-wild",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.6 Worked examples: real errors in the wild",
-    "text": "33.6 Worked examples: real errors in the wild\nThe two examples below are genuine citation errors found in the psychsci corpus. Both papers also produce false positives (see the next section), which is the normal situation: a real error usually sits among a few parsing artefacts, and the value of the module is making the small set of candidates visible so you can check them.\n\n33.6.1 A wrong DOI\nIn one paper, Webster, Georgeson, and Webster (2002), “Neural adjustments of image blur”, is cited as appearing in Nature Neuroscience — which is correct. But the DOI attached to the reference, 10.1167/1.3.441, resolves to a Journal of Vision article. The cited journal is right; the DOI is wrong (the correct DOI is 10.1038/nn906). The module catches the inconsistency through the journal mismatch:\n\npaper &lt;- add_bib_match(psychsci[[\"0956797617705391\"]])\nmo &lt;- module_run(paper, \"ref_accuracy\")\nmo$table |&gt;\n  dplyr::filter(incoherent, grepl(\"Webster\", text)) |&gt;\n  dplyr::select(container.orig, container.match, doi.match) |&gt;\n  knitr::kable()\n\n\n\ncontainer.orig\ncontainer.match\ndoi.match\n\n\nNature Neuroscience\nJournal of Vision\n10.1167/1.3.441\n\n\n\n\nA reader who followed that DOI would land on the wrong paper — exactly the kind of error the check is for.\n\n33.6.2 A wrong journal name\nIn another paper, Võ, Boettcher, and Draschkow (2019) is cited as appearing in a journal called “Attention & Perception”. The DOI resolves to the correct paper, with the correct title and year, but the real journal is Current Opinion in Psychology — “Attention & Perception” is not a real journal. Here the cited details are wrong and the DOI is right:\n\npaper &lt;- add_bib_match(psychsci[[\"09567976231190546\"]])\nmo &lt;- module_run(paper, \"ref_accuracy\")\nmo$table |&gt;\n  dplyr::filter(incoherent, container_mismatch) |&gt;\n  dplyr::select(container.orig, container.match, year.orig, year.match) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\ncontainer.orig\ncontainer.match\nyear.orig\nyear.match\n\n\nAttention & Perception\nCurrent Opinion in Psychology\n2019\n2019",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.6 Worked examples: real errors in the wild",
+    "text": "34.6 Worked examples: real errors in the wild\nThe two examples below are genuine citation errors found in the psychsci corpus. Both papers also produce false positives (see the next section), which is the normal situation: a real error usually sits among a few parsing artefacts, and the value of the module is making the small set of candidates visible so you can check them.\n\n34.6.1 A wrong DOI\nIn one paper, Webster, Georgeson, and Webster (2002), “Neural adjustments of image blur”, is cited as appearing in Nature Neuroscience — which is correct. But the DOI attached to the reference, 10.1167/1.3.441, resolves to a Journal of Vision article. The cited journal is right; the DOI is wrong (the correct DOI is 10.1038/nn906). The module catches the inconsistency through the journal mismatch:\n\npaper &lt;- add_bib_match(psychsci[[\"0956797617705391\"]])\nmo &lt;- module_run(paper, \"ref_accuracy\")\nmo$table |&gt;\n  dplyr::filter(incoherent, grepl(\"Webster\", text)) |&gt;\n  dplyr::select(container.orig, container.match, doi.match) |&gt;\n  knitr::kable()\n\n\n\ncontainer.orig\ncontainer.match\ndoi.match\n\n\nNature Neuroscience\nJournal of Vision\n10.1167/1.3.441\n\n\n\n\nA reader who followed that DOI would land on the wrong paper — exactly the kind of error the check is for.\n\n34.6.2 A wrong journal name\nIn another paper, Võ, Boettcher, and Draschkow (2019) is cited as appearing in a journal called “Attention & Perception”. The DOI resolves to the correct paper, with the correct title and year, but the real journal is Current Opinion in Psychology — “Attention & Perception” is not a real journal. Here the cited details are wrong and the DOI is right:\n\npaper &lt;- add_bib_match(psychsci[[\"09567976231190546\"]])\nmo &lt;- module_run(paper, \"ref_accuracy\")\nmo$table |&gt;\n  dplyr::filter(incoherent, container_mismatch) |&gt;\n  dplyr::select(container.orig, container.match, year.orig, year.match) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\ncontainer.orig\ncontainer.match\nyear.orig\nyear.match\n\n\nAttention & Perception\nCurrent Opinion in Psychology\n2019\n2019",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#interpreting-the-result",
     "href": "chapters/mod-ref-accuracy.html#interpreting-the-result",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.7 Interpreting the result",
-    "text": "33.7 Interpreting the result\nA flagged reference is a candidate to check, not a confirmed error. From reviewing many flags across fields, the discrepancies fall into a handful of recurring causes:\n\n\nMerged references. The PDF parser sometimes joins two references into one entry, keeping the first reference’s authors and year but the second’s DOI. Every field then “mismatches”. This is the single most common cause of false positives. A tell-tale sign is a reference that contains two author–date blocks.\n\nRenamed journals. A journal can change its name over time (for example, American Journal of Optometry and Physiological Optics became Optometry and Vision Science in 1991). The citation correctly uses the name at the time of publication, while CrossRef stores the current name, so the journal appears to mismatch.\n\nReprint and edition DOIs. A book or chapter cited in its original year may carry a DOI registered for a later digital edition, so the year mismatches even though the work is the same.\n\nAliased DOIs. A single work occasionally has more than one valid DOI (an older and a newer format). The citation uses one; CrossRef’s canonical record lists the other.\n\nReal citation errors. A genuinely wrong DOI, journal, year, title, or author list — the cases the module exists to surface.\n\nBecause most flags are data or parsing issues rather than authorial mistakes, treat each one as “look at the original source”, not as a confirmed error. A journal mismatch on an older reference is often a renaming; a journal and year mismatch together more often points to a wrong DOI.\n\n\n\n\n\n\nNote\n\n\n\nMany of the false positives above — merged references, journal names pulled from the wrong place, DOIs attached to the wrong entry — come from how references are currently extracted from the PDF, not from the citations themselves. We are working on a more accurate reference-import tool, which should remove most of these artefacts and make the flags that remain far more likely to be genuine errors.",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.7 Interpreting the result",
+    "text": "34.7 Interpreting the result\nA flagged reference is a candidate to check, not a confirmed error. From reviewing many flags across fields, the discrepancies fall into a handful of recurring causes:\n\n\nMerged references. The PDF parser sometimes joins two references into one entry, keeping the first reference’s authors and year but the second’s DOI. Every field then “mismatches”. This is the single most common cause of false positives. A tell-tale sign is a reference that contains two author–date blocks.\n\nRenamed journals. A journal can change its name over time (for example, American Journal of Optometry and Physiological Optics became Optometry and Vision Science in 1991). The citation correctly uses the name at the time of publication, while CrossRef stores the current name, so the journal appears to mismatch.\n\nReprint and edition DOIs. A book or chapter cited in its original year may carry a DOI registered for a later digital edition, so the year mismatches even though the work is the same.\n\nAliased DOIs. A single work occasionally has more than one valid DOI (an older and a newer format). The citation uses one; CrossRef’s canonical record lists the other.\n\nReal citation errors. A genuinely wrong DOI, journal, year, title, or author list — the cases the module exists to surface.\n\nBecause most flags are data or parsing issues rather than authorial mistakes, treat each one as “look at the original source”, not as a confirmed error. A journal mismatch on an older reference is often a renaming; a journal and year mismatch together more often points to a wrong DOI.\n\n\n\n\n\n\nNote\n\n\n\nMany of the false positives above — merged references, journal names pulled from the wrong place, DOIs attached to the wrong entry — come from how references are currently extracted from the PDF, not from the citations themselves. We are working on a more accurate reference-import tool, which should remove most of these artefacts and make the flags that remain far more likely to be genuine errors.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#options",
     "href": "chapters/mod-ref-accuracy.html#options",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.8 Options",
-    "text": "33.8 Options\nref_accuracy takes the paper argument plus the five tuning parameters described above: min_mismatches, year_tolerance, title_similarity, max_authors, and suggest_score.",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.8 Options",
+    "text": "34.8 Options\nref_accuracy takes the paper argument plus the five tuning parameters described above: min_mismatches, year_tolerance, title_similarity, max_authors, and suggest_score.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-accuracy.html#notes",
     "href": "chapters/mod-ref-accuracy.html#notes",
-    "title": "\n33  Reference Accuracy\n",
-    "section": "\n33.9 Notes",
-    "text": "33.9 Notes\nThis is one of the reference-section checks. The reference summary module collects the results of several of them — accuracy, PubPeer, retraction, and replication — into a single per-reference table.",
+    "title": "\n34  Reference Accuracy\n",
+    "section": "\n34.9 Notes",
+    "text": "34.9 Notes\nThis is one of the reference-section checks. The reference summary module collects the results of several of them — accuracy, PubPeer, retraction, and replication — into a single per-reference table.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>33</span>  <span class='chapter-title'>Reference Accuracy</span>"
+      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Accuracy</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-summary.html",
     "href": "chapters/mod-ref-summary.html",
-    "title": "\n34  Reference Summary\n",
+    "title": "\n35  Reference Summary\n",
     "section": "",
-    "text": "34.1 What it checks\nThe ref_summary module does not run a check of its own. Instead it collects the results of the other reference-section modules — accuracy, PubPeer, replication, and retraction — into a single table with one row per reference, so you can see everything known about each cited work in one place.\nBecause it summarises the output of those modules, ref_summary must run after them, in the same report. On its own it has nothing to summarise.",
+    "text": "35.1 What it checks\nThe ref_summary module does not run a check of its own. Instead it collects the results of the other reference-section modules — accuracy, PubPeer, replication, and retraction — into a single table with one row per reference, so you can see everything known about each cited work in one place.\nBecause it summarises the output of those modules, ref_summary must run after them, in the same report. On its own it has nothing to summarise.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Summary</span>"
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Reference Summary</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-summary.html#what-it-checks",
     "href": "chapters/mod-ref-summary.html#what-it-checks",
-    "title": "\n34  Reference Summary\n",
+    "title": "\n35  Reference Summary\n",
     "section": "",
     "text": "Note\n\n\n\nThe modules it summarises make live network calls, so an internet connection is needed.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Summary</span>"
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Reference Summary</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-summary.html#running-the-module",
     "href": "chapters/mod-ref-summary.html#running-the-module",
-    "title": "\n34  Reference Summary\n",
-    "section": "\n34.2 Running the module",
-    "text": "34.2 Running the module\nThe summary needs the other reference modules to have run first. The natural way to arrange that is to run them together with report_module_run(), which keeps each module’s output and passes the chain along (see Creating a Metacheck Report). List ref_summary last:\n\npaper &lt;- demopaper()\nmodule_output &lt;- report_module_run(\n  paper,\n  modules = c(\"ref_accuracy\", \"ref_pubpeer\",\n              \"ref_replication\", \"ref_retraction\",\n              \"ref_summary\")\n)\n\nmo &lt;- module_output[[\"ref_summary\"]]\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"Summary information provided for 5 references\"\n\n\nThe combined table has one row per reference and one column per upstream check:\n\nmo$table[, c(\"bib_id\", \"accuracy_mismatch\", \"pubpeer\",\n             \"replication_type\", \"retractionwatch\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\nbib_id\naccuracy_mismatch\npubpeer\nreplication_type\nretractionwatch\n\n\n\n0\nno match\nNA\nNA\nNA\n\n\n1\nNA\nNA\nreplication\nNA\n\n\n2\ntitle\nLink\nNA\nRetraction\n\n\n3\ndoi, author\nNA\nNA\nNA\n\n\n4\nno match\nNA\nNA\nNA\n\n\n\n\n\nA reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.",
+    "title": "\n35  Reference Summary\n",
+    "section": "\n35.2 Running the module",
+    "text": "35.2 Running the module\nThe summary needs the other reference modules to have run first. The natural way to arrange that is to run them together with report_module_run(), which keeps each module’s output and passes the chain along (see Creating a Metacheck Report). List ref_summary last:\n\npaper &lt;- demopaper()\nmodule_output &lt;- report_module_run(\n  paper,\n  modules = c(\"ref_accuracy\", \"ref_pubpeer\",\n              \"ref_replication\", \"ref_retraction\",\n              \"ref_summary\")\n)\n\nmo &lt;- module_output[[\"ref_summary\"]]\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"Summary information provided for 5 references\"\n\n\nThe combined table has one row per reference and one column per upstream check:\n\nmo$table[, c(\"bib_id\", \"accuracy_mismatch\", \"pubpeer\",\n             \"replication_type\", \"retractionwatch\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\nbib_id\naccuracy_mismatch\npubpeer\nreplication_type\nretractionwatch\n\n\n\n0\nno match\nNA\nNA\nNA\n\n\n1\nNA\nNA\nreplication\nNA\n\n\n2\ntitle\nLink\nNA\nRetraction\n\n\n3\ndoi, author\nNA\nNA\nNA\n\n\n4\nno match\nNA\nNA\nNA\n\n\n\n\n\nA reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Summary</span>"
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Reference Summary</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-summary.html#interpreting-the-result",
     "href": "chapters/mod-ref-summary.html#interpreting-the-result",
-    "title": "\n34  Reference Summary\n",
-    "section": "\n34.3 Interpreting the result",
-    "text": "34.3 Interpreting the result\nref_summary inherits everything from the modules it summarises, so the same cautions apply: a filled-in cell is a prompt to look, not a verdict. Its value is convenience — instead of reading four separate tables, you scan one. The summary itself is informational (info); the underlying modules carry the traffic lights.",
+    "title": "\n35  Reference Summary\n",
+    "section": "\n35.3 Interpreting the result",
+    "text": "35.3 Interpreting the result\nref_summary inherits everything from the modules it summarises, so the same cautions apply: a filled-in cell is a prompt to look, not a verdict. Its value is convenience — instead of reading four separate tables, you scan one. The summary itself is informational (info); the underlying modules carry the traffic lights.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Summary</span>"
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Reference Summary</span>"
     ]
   },
   {
     "objectID": "chapters/mod-ref-summary.html#options",
     "href": "chapters/mod-ref-summary.html#options",
-    "title": "\n34  Reference Summary\n",
-    "section": "\n34.4 Options",
-    "text": "34.4 Options\nref_summary takes only the paper argument, but it only produces useful output when the other ref_* modules have run before it in the same report.",
+    "title": "\n35  Reference Summary\n",
+    "section": "\n35.4 Options",
+    "text": "35.4 Options\nref_summary takes only the paper argument, but it only produces useful output when the other ref_* modules have run before it in the same report.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>34</span>  <span class='chapter-title'>Reference Summary</span>"
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Reference Summary</span>"
     ]
   },
   {
     "objectID": "chapters/creating-a-report.html",
     "href": "chapters/creating-a-report.html",
-    "title": "\n35  Creating a Metacheck Report\n",
+    "title": "\n36  Creating a Metacheck Report\n",
     "section": "",
-    "text": "35.1 Loading a paper\nSo far we have looked at individual modules in isolation. In practice you usually want to run several checks on a paper at once and collect the results into a single document you can read, save, or hand to a co-author. This chapter shows how to go from a single paper object to a full Metacheck report.\nWe start with the all-in-one report() function, then unpack what it does — running one module with module_run(), running several with report_module_run(), and turning the result into a document with report_qmd(). Finally we cover the slightly tricky part: passing settings through to the modules.\nEvery report starts from a paper object, created with read() (see Reading in a Paper). Throughout this chapter we use the bundled demo paper, which demopaper() returns directly so the examples run without a network connection:\npaper &lt;- demopaper()\npaper$paper_id\n\n#&gt; [1] \"to_err_is_human\"\nIn your own work you would instead read a converted file:\npaper &lt;- read(\"converted/my_manuscript.json\")\nEverything below works on this single paper object. The same functions also accept a paperlist (a list of papers), so the same code scales to a whole corpus — see Batch processing and Using the Paper Database Corpora.",
+    "text": "36.1 Loading a paper\nSo far we have looked at individual modules in isolation. In practice you usually want to run several checks on a paper at once and collect the results into a single document you can read, save, or hand to a co-author. This chapter shows how to go from a single paper object to a full Metacheck report.\nWe start with the all-in-one report() function, then unpack what it does — running one module with module_run(), running several with report_module_run(), and turning the result into a document with report_qmd(). Finally we cover the slightly tricky part: passing settings through to the modules.\nEvery report starts from a paper object, created with read() (see Reading in a Paper). Throughout this chapter we use the bundled demo paper, which demopaper() returns directly so the examples run without a network connection:\npaper &lt;- demopaper()\npaper$paper_id\n\n#&gt; [1] \"to_err_is_human\"\nIn your own work you would instead read a converted file:\npaper &lt;- read(\"converted/my_manuscript.json\")\nEverything below works on this single paper object. The same functions also accept a paperlist (a list of papers), so the same code scales to a whole corpus — see Batch processing and Using the Paper Database Corpora.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
     ]
   },
   {
     "objectID": "chapters/creating-a-report.html#the-quick-way-report",
     "href": "chapters/creating-a-report.html#the-quick-way-report",
-    "title": "\n35  Creating a Metacheck Report\n",
-    "section": "\n35.2 The quick way: report()\n",
-    "text": "35.2 The quick way: report()\n\nreport() runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the default battery of sixteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration (prereg_check), funding and conflict-of-interest statements (funding_check, coi_check), statistical power (power), data and code availability (repo_check, code_check), the reporting of statistics (stat_check, stat_p_exact, stat_p_nonsig, stat_effect_size, marginal), and the reference list (ref_accuracy, ref_replication, ref_retraction, ref_pubpeer, ref_summary).\n\nreport(paper)\n#&gt; \"[paper_id]_report.html\"\n\nThe function returns the path to the file it wrote. By default that is \"&lt;paper_id&gt;_report.html\" in the working directory; set output_file to choose your own name and location.\n\n35.2.1 Choosing modules\nYou rarely need all the default checks. Pass a modules vector to run exactly the ones you want, in the order you want them reported:\n\nreport(paper,\n       modules = c(\"stat_p_exact\", \"stat_p_nonsig\", \"marginal\"))\n\nUse module_list() to see every built-in module, or module_help(\"module_name\") for the details of one. Custom modules are given by file path instead of name (see Creating Modules).\n\n35.2.2 Choosing the output format\nreport() can write either a rendered HTML file or the intermediate Quarto source (qmd). The qmd option is useful when you want to edit the report before rendering, or render it yourself with different options:\n\nreport(paper,\n       modules = c(\"stat_p_exact\", \"marginal\"),\n       output_file = \"demo_report.html\",\n       output_format = \"html\")   # the default\n\nreport(paper,\n       output_file = \"demo_report.qmd\",\n       output_format = \"qmd\")    # write the Quarto source instead\n\nRendering to HTML requires Quarto to be installed. If rendering fails for any reason, report() falls back to saving the qmd source (and warns you), so you never lose the result of running the modules.",
+    "title": "\n36  Creating a Metacheck Report\n",
+    "section": "\n36.2 The quick way: report()\n",
+    "text": "36.2 The quick way: report()\n\nreport() runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the default battery of sixteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration (prereg_check), funding and conflict-of-interest statements (funding_check, coi_check), statistical power (power), data and code availability (repo_check, code_check), the reporting of statistics (stat_check, stat_p_exact, stat_p_nonsig, stat_effect_size, marginal), and the reference list (ref_accuracy, ref_replication, ref_retraction, ref_pubpeer, ref_summary).\n\nreport(paper)\n#&gt; \"[paper_id]_report.html\"\n\nThe function returns the path to the file it wrote. By default that is \"&lt;paper_id&gt;_report.html\" in the working directory; set output_file to choose your own name and location.\n\n36.2.1 Choosing modules\nYou rarely need all the default checks. Pass a modules vector to run exactly the ones you want, in the order you want them reported:\n\nreport(paper,\n       modules = c(\"stat_p_exact\", \"stat_p_nonsig\", \"marginal\"))\n\nUse module_list() to see every built-in module, or module_help(\"module_name\") for the details of one. Custom modules are given by file path instead of name (see Creating Modules).\n\n36.2.2 Choosing the output format\nreport() can write either a rendered HTML file or the intermediate Quarto source (qmd). The qmd option is useful when you want to edit the report before rendering, or render it yourself with different options:\n\nreport(paper,\n       modules = c(\"stat_p_exact\", \"marginal\"),\n       output_file = \"demo_report.html\",\n       output_format = \"html\")   # the default\n\nreport(paper,\n       output_file = \"demo_report.qmd\",\n       output_format = \"qmd\")    # write the Quarto source instead\n\nRendering to HTML requires Quarto to be installed. If rendering fails for any reason, report() falls back to saving the qmd source (and warns you), so you never lose the result of running the modules.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
     ]
   },
   {
     "objectID": "chapters/creating-a-report.html#running-a-single-module",
     "href": "chapters/creating-a-report.html#running-a-single-module",
-    "title": "\n35  Creating a Metacheck Report\n",
-    "section": "\n35.3 Running a single module",
-    "text": "35.3 Running a single module\nreport() is convenient, but it always writes a file. While you are exploring a paper interactively it is often handier to run one module and look at the result in the console. That is what module_run() does:\n\nmo &lt;- module_run(paper, \"stat_p_exact\")\n\nThe object it returns holds everything the module found. The pieces you will use most are the traffic light, the one-line summary, and the full results table:\n\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"We found 1 imprecise *p* value out of 3 detected *p* values.\"\n\nhead(mo$table) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntext\ntext_id\nparagraph_id\nsection_id\npage_number\nformatted\npaper_id\nheader\nsection_type\np_comp\np_value\nexpanded\nimprecise\nzero\n\n\n\np = 0.005\n15\n4\n3\nNA\nNA\nto_err_is_human\nProcedure\nmethod\n=\n0.005\nOn average researchers in the experimental (app) condition made fewer mistakes (M = 9.12) than researchers in the control (checklist) condition (M = 10.9), t(97.7) = 2.9, p = 0.005, d =0.59.\nFALSE\nFALSE\n\n\np =0.152\n16\n5\n3\nNA\nNA\nto_err_is_human\nProcedure\nmethod\n=\n0.152\nOn average researchers in the experimental condition found the app marginally significantly more useful (M = 5.06) than researchers in the control condition found the checklist (M = 4.5), t(97.2) = -1.96, p =0.152.\nFALSE\nFALSE\n\n\np &gt; .05\n17\n6\n3\nNA\nThere was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).\nto_err_is_human\nProcedure\nmethod\n&gt;\n0.050\nThere was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).\nTRUE\nFALSE\n\n\n\n\n\nPrinting the object gives a compact summary, and module_report() formats the same output as the Markdown section that would appear in a report:\nmodule_report(mo) |&gt; cat()\n\n35.3.1 ⚠️ Exact P-Values\nWe found 1 imprecise p value out of 3 detected p values.\n\nView detailed feedback\n\nReporting p values imprecisely (e.g., p &lt; .05) reduces transparency, reproducibility, and re-use (e.g., in p value meta-analyses). Best practice is to report exact p-values with three decimal places (e.g., p = .032) unless p values are smaller than 0.001, in which case you can use p &lt; .001.\n#| echo: false\n\n\n# table data --------------------------------------\ntable &lt;- structure(list(\"P-Value\" = \"p &gt; .05\", Text = \"There was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).\"), row.names = c(NA, \n-1L), class = c(\"tbl_df\", \"tbl\", \"data.frame\"))\n\n# display table -----------------------------------\nmetacheck::report_table(table, c(0.1, 0.9), 2, FALSE)\n\n\n\n\n\n\nTipLearn More\n\n\n\n\n\nThe APA manual states: Report exact p values (e.g., p = .031) to two or three decimal places. However, report p values less than .001 as p &lt; .001. However, 2 decimals is too imprecise for many use-cases (e.g., a p value meta-analysis), so report p values with three digits.\nAmerican Psychological Association (2020). Publication manual of the American Psychological Association, 7 edition. American Psychological Association.\n\n\n\n\n\n\n\n\n\n\nNoteHow It Works\n\n\n\n\n\nList any p-values reported with insufficient precision (e.g., p &lt; .05 or p = n.s.) or reported as exactly zero (e.g., p = .000).\nThis module uses regular expressions to identify p-values. It will flag any values reported as p &gt; ? or p &lt; numbers greater than .001. It will also flag p-values reported as exactly zero (e.g., p = .000, p = 0.00), which are mathematically impossible — p-values are never exactly zero and should instead be reported as p &lt; .001.\nWe try to exclude figure and table notes like “* p &lt; .05”, but may not succeed at excluding all false positives.\nThis module was developed by Lisa DeBruine\n\n\n\n\nValidation: In a sample of 225 papers containing 405 instances of non-exact p-values, the module correctly detected 269 cases (true positives) and incorrectly identified 78 (false positives). It missed 136 instances of imprecisely reported p-values (false negatives) and correctly identified 4557 cases of precisely reported p-values (true negative). Additionally, 78% of positive detections were correct (positive predictive value).",
+    "title": "\n36  Creating a Metacheck Report\n",
+    "section": "\n36.3 Running a single module",
+    "text": "36.3 Running a single module\nreport() is convenient, but it always writes a file. While you are exploring a paper interactively it is often handier to run one module and look at the result in the console. That is what module_run() does:\n\nmo &lt;- module_run(paper, \"stat_p_exact\")\n\nThe object it returns holds everything the module found. The pieces you will use most are the traffic light, the one-line summary, and the full results table:\n\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"We found 1 imprecise *p* value out of 3 detected *p* values.\"\n\nhead(mo$table) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntext\ntext_id\nparagraph_id\nsection_id\npage_number\nformatted\npaper_id\nheader\nsection_type\np_comp\np_value\nexpanded\nimprecise\nzero\n\n\n\np = 0.005\n15\n4\n3\nNA\nNA\nto_err_is_human\nProcedure\nmethod\n=\n0.005\nOn average researchers in the experimental (app) condition made fewer mistakes (M = 9.12) than researchers in the control (checklist) condition (M = 10.9), t(97.7) = 2.9, p = 0.005, d =0.59.\nFALSE\nFALSE\n\n\np =0.152\n16\n5\n3\nNA\nNA\nto_err_is_human\nProcedure\nmethod\n=\n0.152\nOn average researchers in the experimental condition found the app marginally significantly more useful (M = 5.06) than researchers in the control condition found the checklist (M = 4.5), t(97.2) = -1.96, p =0.152.\nFALSE\nFALSE\n\n\np &gt; .05\n17\n6\n3\nNA\nThere was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).\nto_err_is_human\nProcedure\nmethod\n&gt;\n0.050\nThere was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).\nTRUE\nFALSE\n\n\n\n\n\nPrinting the object gives a compact summary, and module_report() formats the same output as the Markdown section that would appear in a report:\nmodule_report(mo) |&gt; cat()\n\n36.3.1 ⚠️ Exact P-Values\nWe found 1 imprecise p value out of 3 detected p values.\n\nView detailed feedback\n\nReporting p values imprecisely (e.g., p &lt; .05) reduces transparency, reproducibility, and re-use (e.g., in p value meta-analyses). Best practice is to report exact p-values with three decimal places (e.g., p = .032) unless p values are smaller than 0.001, in which case you can use p &lt; .001.\n#| echo: false\n\n\n# table data --------------------------------------\ntable &lt;- structure(list(\"P-Value\" = \"p &gt; .05\", Text = \"There was no effect of experience on the reduction in errors when using the tool (p &gt; .05), as the correlation was non-significant (Figure 2).\"), row.names = c(NA, \n-1L), class = c(\"tbl_df\", \"tbl\", \"data.frame\"))\n\n# display table -----------------------------------\nmetacheck::report_table(table, c(0.1, 0.9), 2, FALSE)\n\n\n\n\n\n\nTipLearn More\n\n\n\n\n\nThe APA manual states: Report exact p values (e.g., p = .031) to two or three decimal places. However, report p values less than .001 as p &lt; .001. However, 2 decimals is too imprecise for many use-cases (e.g., a p value meta-analysis), so report p values with three digits.\nAmerican Psychological Association (2020). Publication manual of the American Psychological Association, 7 edition. American Psychological Association.\n\n\n\n\n\n\n\n\n\n\nNoteHow It Works\n\n\n\n\n\nList any p-values reported with insufficient precision (e.g., p &lt; .05 or p = n.s.) or reported as exactly zero (e.g., p = .000).\nThis module uses regular expressions to identify p-values. It will flag any values reported as p &gt; ? or p &lt; numbers greater than .001. It will also flag p-values reported as exactly zero (e.g., p = .000, p = 0.00), which are mathematically impossible — p-values are never exactly zero and should instead be reported as p &lt; .001.\nWe try to exclude figure and table notes like “* p &lt; .05”, but may not succeed at excluding all false positives.\nThis module was developed by Lisa DeBruine\n\n\n\n\nValidation: In a sample of 225 papers containing 405 instances of non-exact p-values, the module correctly detected 269 cases (true positives) and incorrectly identified 78 (false positives). It missed 136 instances of imprecisely reported p-values (false negatives) and correctly identified 4557 cases of precisely reported p-values (true negative). Additionally, 78% of positive detections were correct (positive predictive value).",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
     ]
   },
   {
     "objectID": "chapters/creating-a-report.html#running-multiple-modules",
     "href": "chapters/creating-a-report.html#running-multiple-modules",
-    "title": "\n35  Creating a Metacheck Report\n",
-    "section": "\n35.4 Running multiple modules",
-    "text": "35.4 Running multiple modules\nTo run several modules and keep their combined output without writing a file, use report_module_run(). It takes the same modules vector as report() and returns a list of module outputs:\n\nmodule_output &lt;- report_module_run(\n  paper,\n  modules = c(\"stat_p_exact\", \"stat_p_nonsig\", \"marginal\")\n)\n\nThe result is a named list — one entry per module — that you can inspect individually:\n\nnames(module_output)\n\n#&gt; [1] \"stat_p_exact\"  \"stat_p_nonsig\" \"marginal\"\n\nmodule_output[[\"marginal\"]]$traffic_light\n\n#&gt; [1] \"red\"\n\nmodule_output[[\"marginal\"]]$summary_text\n\n#&gt; [1] \"You described 2 effects with terms related to 'marginally significant'.\"\n\n\nThis is the same intermediate object report() builds internally. To turn it into a finished document yourself, pass it to report_qmd(), which produces the Quarto report text (header, summary section, and one section per module):\n\nreport_text &lt;- report_qmd(module_output, paper)\nwriteLines(report_text, \"demo_report.qmd\")\n\nSplitting the work this way — run the modules once with report_module_run(), then format with report_qmd() — is useful when the modules are slow (for example reference checks that query external services) and you want to render the report more than once without re-running them.",
+    "title": "\n36  Creating a Metacheck Report\n",
+    "section": "\n36.4 Running multiple modules",
+    "text": "36.4 Running multiple modules\nTo run several modules and keep their combined output without writing a file, use report_module_run(). It takes the same modules vector as report() and returns a list of module outputs:\n\nmodule_output &lt;- report_module_run(\n  paper,\n  modules = c(\"stat_p_exact\", \"stat_p_nonsig\", \"marginal\")\n)\n\nThe result is a named list — one entry per module — that you can inspect individually:\n\nnames(module_output)\n\n#&gt; [1] \"stat_p_exact\"  \"stat_p_nonsig\" \"marginal\"\n\nmodule_output[[\"marginal\"]]$traffic_light\n\n#&gt; [1] \"red\"\n\nmodule_output[[\"marginal\"]]$summary_text\n\n#&gt; [1] \"You described 2 effects with terms related to 'marginally significant'.\"\n\n\nThis is the same intermediate object report() builds internally. To turn it into a finished document yourself, pass it to report_qmd(), which produces the Quarto report text (header, summary section, and one section per module):\n\nreport_text &lt;- report_qmd(module_output, paper)\nwriteLines(report_text, \"demo_report.qmd\")\n\nSplitting the work this way — run the modules once with report_module_run(), then format with report_qmd() — is useful when the modules are slow (for example reference checks that query external services) and you want to render the report more than once without re-running them.",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
     ]
   },
   {
     "objectID": "chapters/creating-a-report.html#passing-settings-to-modules",
     "href": "chapters/creating-a-report.html#passing-settings-to-modules",
-    "title": "\n35  Creating a Metacheck Report\n",
-    "section": "\n35.5 Passing settings to modules",
-    "text": "35.5 Passing settings to modules\nThis is the part that trips people up. Some modules take extra arguments beyond paper. For example:\n\n\npower(paper, seed = 8675309) — the random seed used when sampling text for the LLM.\n\nref_replication(paper, show_outcomes = FALSE) — whether to include replication outcomes.\n\nrepo_check(paper, local_path = NULL, local_only = FALSE) — where to find the repository, and whether to skip online lookups.\n\nmodule_help(\"module_name\") shows the arguments a given module accepts:\n\nmodule_help(\"power\")\n\n#&gt; Power Analysis Check\n#&gt; \n#&gt; This module uses uses regular expressions to identify sentences that contain a statistical power analysis. If specified by the user, it also uses a large language module (LLM) to extract information reported in power analyses, including the statistical test, sample size, alpha level, desired level of power, and magnitude and type of effect size.\n#&gt; \n#&gt; module_run(paper, \"power\", seed = 8675309)\n#&gt; \n#&gt; - paper: a paper object or paperlist object  \n#&gt; - seed: a seed for the LLM  \n#&gt; \n#&gt; The Power Analysis Check module uses regular expressions to identify sentences that contain a statistical power analysis. Without the use of an LMM, the module uses regular expressions to classify the power analysis as a-priori, sensitivity or post-hoc. With the use of an LMM, it checks if the power analysis is reported with all required information.\n#&gt; \n#&gt; The regular expressions can miss power analyses, or fail to classify them correctly. The type of power analysis is often difficult to classify, which can easily be solved by explicitly specifying the type of power analysis as 'a-priori', 'sensitivity', or 'post-hoc'. Note that 'post-hoc' or 'observed' power is rarely useful. The LMM can fail to identify information in the paper, and will not have access to information in paragraphs in the paper other than those that contain the word 'power'. This package was validated by the Metacheck team on articles in Psychological Science.\n#&gt; \n#&gt; &lt;validation&gt;In a sample of 128 papers with 246 instances of power statements, 203 were correctly detected (true positives), 22 were missed (false negatives) and 21 were incorrectly detected (false positives). Overall, among all instances flagged as power statements, 90.6% were correct (positive predictive value).&lt;/validation&gt;\n\n\nHow you supply these arguments depends on which function you are using.\n\n35.5.1 One module: pass arguments directly\nWith module_run(), extra arguments go straight through the ..., exactly as if you were calling the module function itself:\n\nmodule_run(paper, \"power\", seed = 123)\nmodule_run(paper, \"ref_replication\", show_outcomes = TRUE)\n\n\n35.5.2 Several modules: the args list\nWhen you run several modules at once with report() or report_module_run(), you cannot use ..., because an argument like seed would be ambiguous — which module is it for? Instead you pass a single args argument: a named list of lists, where each name matches a module name and each value is the list of arguments for that module.\n\nargs &lt;- list(\n  power           = list(seed = 123),\n  ref_replication = list(show_outcomes = TRUE),\n  repo_check      = list(local_only = TRUE)\n)\n\nreport_module_run(\n  paper,\n  modules = c(\"power\", \"ref_replication\", \"repo_check\"),\n  args = args\n)\n\nThe same args list works with report():\n\nreport(\n  paper,\n  modules = c(\"power\", \"ref_replication\", \"repo_check\"),\n  args    = args\n)\n\nA few rules make this easier to get right:\n\n\nYou only list the modules that need arguments. Modules you do not mention in args run with their defaults, even if they are in modules. So a module taking no special settings (like stat_p_exact) never needs an entry.\n\nThe names must match the module names in your modules vector. A mismatched name (a typo, or a module not actually being run) is silently ignored — its settings simply have no effect.\n\nEach value is itself a list, even when there is a single argument: power = list(seed = 123), not power = 123.\n\nPutting it together, here is a complete report that runs four modules, two of them with custom settings and two with their defaults:\n\nreport(\n  paper,\n  modules = c(\"stat_p_exact\", \"marginal\", \"power\", \"ref_replication\"),\n  args = list(\n    power           = list(seed = 123),\n    ref_replication = list(show_outcomes = TRUE)\n  ),\n  output_file = \"demo_report.html\"\n)",
+    "title": "\n36  Creating a Metacheck Report\n",
+    "section": "\n36.5 Passing settings to modules",
+    "text": "36.5 Passing settings to modules\nThis is the part that trips people up. Some modules take extra arguments beyond paper. For example:\n\n\npower(paper, seed = 8675309) — the random seed used when sampling text for the LLM.\n\nref_replication(paper, show_outcomes = FALSE) — whether to include replication outcomes.\n\nrepo_check(paper, local_path = NULL, local_only = FALSE) — where to find the repository, and whether to skip online lookups.\n\nmodule_help(\"module_name\") shows the arguments a given module accepts:\n\nmodule_help(\"power\")\n\n#&gt; Power Analysis Check\n#&gt; \n#&gt; This module uses uses regular expressions to identify sentences that contain a statistical power analysis. If specified by the user, it also uses a large language module (LLM) to extract information reported in power analyses, including the statistical test, sample size, alpha level, desired level of power, and magnitude and type of effect size.\n#&gt; \n#&gt; module_run(paper, \"power\", seed = 8675309)\n#&gt; \n#&gt; - paper: a paper object or paperlist object  \n#&gt; - seed: a seed for the LLM  \n#&gt; \n#&gt; The Power Analysis Check module uses regular expressions to identify sentences that contain a statistical power analysis. Without the use of an LMM, the module uses regular expressions to classify the power analysis as a-priori, sensitivity or post-hoc. With the use of an LMM, it checks if the power analysis is reported with all required information.\n#&gt; \n#&gt; The regular expressions can miss power analyses, or fail to classify them correctly. The type of power analysis is often difficult to classify, which can easily be solved by explicitly specifying the type of power analysis as 'a-priori', 'sensitivity', or 'post-hoc'. Note that 'post-hoc' or 'observed' power is rarely useful. The LMM can fail to identify information in the paper, and will not have access to information in paragraphs in the paper other than those that contain the word 'power'. This package was validated by the Metacheck team on articles in Psychological Science.\n#&gt; \n#&gt; &lt;validation&gt;In a sample of 128 papers with 246 instances of power statements, 203 were correctly detected (true positives), 22 were missed (false negatives) and 21 were incorrectly detected (false positives). Overall, among all instances flagged as power statements, 90.6% were correct (positive predictive value).&lt;/validation&gt;\n\n\nHow you supply these arguments depends on which function you are using.\n\n36.5.1 One module: pass arguments directly\nWith module_run(), extra arguments go straight through the ..., exactly as if you were calling the module function itself:\n\nmodule_run(paper, \"power\", seed = 123)\nmodule_run(paper, \"ref_replication\", show_outcomes = TRUE)\n\n\n36.5.2 Several modules: the args list\nWhen you run several modules at once with report() or report_module_run(), you cannot use ..., because an argument like seed would be ambiguous — which module is it for? Instead you pass a single args argument: a named list of lists, where each name matches a module name and each value is the list of arguments for that module.\n\nargs &lt;- list(\n  power           = list(seed = 123),\n  ref_replication = list(show_outcomes = TRUE),\n  repo_check      = list(local_only = TRUE)\n)\n\nreport_module_run(\n  paper,\n  modules = c(\"power\", \"ref_replication\", \"repo_check\"),\n  args = args\n)\n\nThe same args list works with report():\n\nreport(\n  paper,\n  modules = c(\"power\", \"ref_replication\", \"repo_check\"),\n  args    = args\n)\n\nA few rules make this easier to get right:\n\n\nYou only list the modules that need arguments. Modules you do not mention in args run with their defaults, even if they are in modules. So a module taking no special settings (like stat_p_exact) never needs an entry.\n\nThe names must match the module names in your modules vector. A mismatched name (a typo, or a module not actually being run) is silently ignored — its settings simply have no effect.\n\nEach value is itself a list, even when there is a single argument: power = list(seed = 123), not power = 123.\n\nPutting it together, here is a complete report that runs four modules, two of them with custom settings and two with their defaults:\n\nreport(\n  paper,\n  modules = c(\"stat_p_exact\", \"marginal\", \"power\", \"ref_replication\"),\n  args = list(\n    power           = list(seed = 123),\n    ref_replication = list(show_outcomes = TRUE)\n  ),\n  output_file = \"demo_report.html\"\n)",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
     ]
   },
   {
     "objectID": "chapters/creating-a-report.html#summary",
     "href": "chapters/creating-a-report.html#summary",
-    "title": "\n35  Creating a Metacheck Report\n",
-    "section": "\n35.6 Summary",
-    "text": "35.6 Summary\n\n\n\n\n\n\nYou want to…\nUse\n\n\n\nRun modules and write a finished report file\nreport(paper, modules, output_file, output_format, args)\n\n\nRun one module and inspect the result\nmodule_run(paper, module, ...)\n\n\nRun several modules, keep the result, write no file\nreport_module_run(paper, modules, args)\n\n\nFormat module output as report text\n\nreport_qmd(module_output, paper) or module_report(mo)\n\n\n\nPass settings to one module\nextra arguments to module_run()\n\n\n\nPass settings to several modules\nthe args named-list-of-lists",
+    "title": "\n36  Creating a Metacheck Report\n",
+    "section": "\n36.6 Summary",
+    "text": "36.6 Summary\n\n\n\n\n\n\nYou want to…\nUse\n\n\n\nRun modules and write a finished report file\nreport(paper, modules, output_file, output_format, args)\n\n\nRun one module and inspect the result\nmodule_run(paper, module, ...)\n\n\nRun several modules, keep the result, write no file\nreport_module_run(paper, modules, args)\n\n\nFormat module output as report text\n\nreport_qmd(module_output, paper) or module_report(mo)\n\n\n\nPass settings to one module\nextra arguments to module_run()\n\n\n\nPass settings to several modules\nthe args named-list-of-lists",
     "crumbs": [
       "Modules",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Creating a Metacheck Report</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html",
     "href": "chapters/local-files.html",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
     "section": "",
-    "text": "36.1 Overview\nMetacheck has two modules that work together to check research code:\nNormally both modules fetch files automatically from online repositories (OSF, GitHub, ResearchBox, Zenodo) by following links found in a paper. This vignette shows how to point them at a local folder instead — useful when:",
+    "text": "37.1 Overview\nMetacheck has two modules that work together to check research code:\nNormally both modules fetch files automatically from online repositories (OSF, GitHub, ResearchBox, Zenodo) by following links found in a paper. This vignette shows how to point them at a local folder instead — useful when:",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#overview",
     "href": "chapters/local-files.html#overview",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
     "section": "",
     "text": "repo_check lists all files in a repository and checks for basic organisational quality: is there a README? Are there unextracted zip files? How many code, data, and other files are there?\ncode_check reads the actual code files and checks them for four best-practice issues: comments, absolute file paths, grouped library loading, and missing data files.\n\n\n\nyou want to check your own code before sharing it\nyou are reviewing a paper whose files were sent as a zip attachment\nthe authors used a repository service that Metacheck does not yet support automatically (GitLab, Figshare, Dataverse, and others)",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#before-you-start",
     "href": "chapters/local-files.html#before-you-start",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.2 Before you start",
-    "text": "36.2 Before you start\nLoad the package and note the path format for your operating system:\n\nlibrary(metacheck)\n\n\n\nOperating system\nExample path\n\n\n\nWindows\n\"C:/Users/researcher/Documents/my_study\"\n\n\nmacOS / Linux\n\"/Users/researcher/Documents/my_study\"\n\n\n\nBoth forward slashes / and backslashes \\\\ work on Windows inside R.\nWhen you provide a local path, the folder is treated as a repository in exactly the same way as an OSF project or GitHub repo. Each folder gets its own row in the summary tables and its own traffic light.",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.2 Before you start",
+    "text": "37.2 Before you start\nLoad the package and note the path format for your operating system:\n\nlibrary(metacheck)\n\n\n\nOperating system\nExample path\n\n\n\nWindows\n\"C:/Users/researcher/Documents/my_study\"\n\n\nmacOS / Linux\n\"/Users/researcher/Documents/my_study\"\n\n\n\nBoth forward slashes / and backslashes \\\\ work on Windows inside R.\nWhen you provide a local path, the folder is treated as a repository in exactly the same way as an OSF project or GitHub repo. Each folder gets its own row in the summary tables and its own traffic light.",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#part-1-repo_check-on-local-files",
     "href": "chapters/local-files.html#part-1-repo_check-on-local-files",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.3 Part 1: repo_check on local files",
-    "text": "36.3 Part 1: repo_check on local files\n\n36.3.1 What repo_check checks\nFor each folder you provide, repo_check will:\n\n\nList all files and classify them by type (code, data, archive, readme, …)\n\nCheck for a README — a README file is good practice and helps others understand the contents of a folder\n\nFlag zip archives — if the folder contains .zip or other archive files, repo_check will flag them because their contents cannot be inspected\n\nReport counts — how many code files, data files, and so on\n\nThe traffic light is \"green\" when a README is present and there are no unextracted archives, and \"yellow\" otherwise.\n\n36.3.2 Checking a single folder\n\nrepo &lt;- module_run(test_paper(), \"repo_check\",\n                   local_path = \"C:/projects/reaction_time_study_2024\")\n\n# Plain-text summary\nrepo$summary_text\n\n# Summary counts (one row per folder)\nrepo$summary_table\n\n# \"green\" or \"yellow\"\nrepo$traffic_light\n\n# Full file list — one row per file, with file_type and file_size columns\nrepo$table\n\ntest_paper() creates a minimal paper object with no repository links. The module pipeline always requires a paper argument, but when you are only checking a local folder there is no manuscript — test_paper() gives you a valid object that causes the online repository search to find nothing, so only the local files are checked.\n\nNote on cloud-sync folders (OneDrive, iCloud, Dropbox): If the folder is stored online and files have not been downloaded locally, the check will be slow because each code file triggers a download when it is read. Before running, right-click the folder in your file browser and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) to make all files available locally first.\n\nA typical $summary_text when the folder is missing a README might look like:\nWe found 8 files in 1 repository.\nWe found 0 README files and 1 repository without READMEs.\nAnd $summary_table will have columns: repo_n, files_n, files_code, files_data, files_readme, files_zip.\n\n36.3.3 Checking multiple folders\nPass a vector of paths to check several folders at once. Each is treated as a separate repository, so you get one summary row per folder:\n\npaths &lt;- c(\n  \"C:/projects/study_1_power_analysis\",\n  \"C:/projects/study_2_replication\",\n  \"C:/projects/study_3_meta_analysis\"\n)\n\nrepo &lt;- module_run(test_paper(), \"repo_check\", local_path = paths)\n\n# Three rows — one per folder\nrepo$summary_table\n\n# All files from all three folders, with repo_url identifying the source\nrepo$table\n\nThis is a quick way to compare whether several projects all have READMEs and no stray zip files before you submit or share them.",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.3 Part 1: repo_check on local files",
+    "text": "37.3 Part 1: repo_check on local files\n\n37.3.1 What repo_check checks\nFor each folder you provide, repo_check will:\n\n\nList all files and classify them by type (code, data, archive, readme, …)\n\nCheck for a README — a README file is good practice and helps others understand the contents of a folder\n\nFlag zip archives — if the folder contains .zip or other archive files, repo_check will flag them because their contents cannot be inspected\n\nReport counts — how many code files, data files, and so on\n\nThe traffic light is \"green\" when a README is present and there are no unextracted archives, and \"yellow\" otherwise.\n\n37.3.2 Checking a single folder\n\nrepo &lt;- module_run(test_paper(), \"repo_check\",\n                   local_path = \"C:/projects/reaction_time_study_2024\")\n\n# Plain-text summary\nrepo$summary_text\n\n# Summary counts (one row per folder)\nrepo$summary_table\n\n# \"green\" or \"yellow\"\nrepo$traffic_light\n\n# Full file list — one row per file, with file_type and file_size columns\nrepo$table\n\ntest_paper() creates a minimal paper object with no repository links. The module pipeline always requires a paper argument, but when you are only checking a local folder there is no manuscript — test_paper() gives you a valid object that causes the online repository search to find nothing, so only the local files are checked.\n\nNote on cloud-sync folders (OneDrive, iCloud, Dropbox): If the folder is stored online and files have not been downloaded locally, the check will be slow because each code file triggers a download when it is read. Before running, right-click the folder in your file browser and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) to make all files available locally first.\n\nA typical $summary_text when the folder is missing a README might look like:\nWe found 8 files in 1 repository.\nWe found 0 README files and 1 repository without READMEs.\nAnd $summary_table will have columns: repo_n, files_n, files_code, files_data, files_readme, files_zip.\n\n37.3.3 Checking multiple folders\nPass a vector of paths to check several folders at once. Each is treated as a separate repository, so you get one summary row per folder:\n\npaths &lt;- c(\n  \"C:/projects/study_1_power_analysis\",\n  \"C:/projects/study_2_replication\",\n  \"C:/projects/study_3_meta_analysis\"\n)\n\nrepo &lt;- module_run(test_paper(), \"repo_check\", local_path = paths)\n\n# Three rows — one per folder\nrepo$summary_table\n\n# All files from all three folders, with repo_url identifying the source\nrepo$table\n\nThis is a quick way to compare whether several projects all have READMEs and no stray zip files before you submit or share them.",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#part-2-code_check-on-local-files",
     "href": "chapters/local-files.html#part-2-code_check-on-local-files",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.4 Part 2: code_check on local files",
-    "text": "36.4 Part 2: code_check on local files\n\n36.4.1 What code_check checks\ncode_check builds on repo_check: it first runs the file inventory, then reads every code file (R, Rmd, Qmd, SAS, SPSS, Stata) and checks for:\n\n\nComments — is the code explained? A file with no comment lines at all is flagged.\n\nAbsolute paths — paths like C:/myname/files/data.csv only work on one specific computer and will break for anyone else trying to reproduce the analysis.\n\nLibrary loading — are all library() / require() calls grouped together near the top of the script, or are they scattered throughout?\n\nMissing data files — if the script loads read.csv(\"data.csv\") but data.csv is not in the folder, that is flagged.\n\n36.4.2 Checking your own code\nYou have finished a project and want to review the quality of your scripts before sharing:\n\nresult &lt;- module_run(test_paper(), \"code_check\",\n                     local_path = \"C:/projects/reaction_time_study_2024\")\n\n# Short summary of all findings\nresult$summary_text\n\n# One row per code file with detailed metrics\nresult$table\n\n# \"green\" (no issues), \"yellow\" (some issues), or \"na\" (no code files found)\nresult$traffic_light\n\n# Full formatted report\nresult$report\n\n\nNote on cloud-sync folders: If your files are on OneDrive, iCloud, or another cloud-sync service and are not fully downloaded, you will see the message “If folders are stored online, the check might be slow as all files need to be downloaded.” In that case, right-click the folder and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) before running the check.\n\n\n36.4.3 Checking multiple projects\n\npaths &lt;- c(\n  \"C:/projects/study_1_power_analysis\",\n  \"C:/projects/study_2_replication\",\n  \"C:/projects/study_3_meta_analysis\"\n)\n\nresult &lt;- module_run(test_paper(), \"code_check\", local_path = paths)\n\nresult$summary_text\n\n# Filter to one folder using dplyr\nlibrary(dplyr)\n\nresult$table |&gt;\n  filter(grepl(\"study_2\", repo_url)) |&gt;\n  select(file_name, percentage_comment, code_abs_path, loaded_files_missing)\n\nThe repo_url column contains the folder path, so you can always identify which folder a code file came from. Every code file in a folder is checked.\n\n36.4.4 Peer review — files sent as a zip archive\nWhen reviewing a paper, authors sometimes supply code and data as a zip file attached to the submission. Once you unzip it, you have a local folder:\n\n# After unzipping the submission to a folder:\nresult &lt;- module_run(test_paper(), \"code_check\",\n                     local_path = \"C:/peer_review/garcia_2024_submission\")\n\nresult$report   # copy this into your review\n\n\n36.4.5 Code hosted on an unsupported repository\nMetacheck currently retrieves files automatically from OSF, GitHub, ResearchBox, and Zenodo. Many other services exist that are not yet supported. If the paper links to one of these, download the files manually and point code_check at the downloaded folder.\nThe workflow is the same for all of them:\n\nGo to the link in the paper\nDownload the files (usually a “Download all” button, or clone with git)\nUnzip if needed\nRun code_check\n\n\n\n# Author shared code on GitLab — you downloaded or cloned it locally\nresult &lt;- module_run(test_paper(), \"code_check\",\n                     local_path = \"C:/downloads/lee_2023_gitlab_code\")\n\nresult$summary_text\nresult$traffic_light",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.4 Part 2: code_check on local files",
+    "text": "37.4 Part 2: code_check on local files\n\n37.4.1 What code_check checks\ncode_check builds on repo_check: it first runs the file inventory, then reads every code file (R, Rmd, Qmd, SAS, SPSS, Stata) and checks for:\n\n\nComments — is the code explained? A file with no comment lines at all is flagged.\n\nAbsolute paths — paths like C:/myname/files/data.csv only work on one specific computer and will break for anyone else trying to reproduce the analysis.\n\nLibrary loading — are all library() / require() calls grouped together near the top of the script, or are they scattered throughout?\n\nMissing data files — if the script loads read.csv(\"data.csv\") but data.csv is not in the folder, that is flagged.\n\n37.4.2 Checking your own code\nYou have finished a project and want to review the quality of your scripts before sharing:\n\nresult &lt;- module_run(test_paper(), \"code_check\",\n                     local_path = \"C:/projects/reaction_time_study_2024\")\n\n# Short summary of all findings\nresult$summary_text\n\n# One row per code file with detailed metrics\nresult$table\n\n# \"green\" (no issues), \"yellow\" (some issues), or \"na\" (no code files found)\nresult$traffic_light\n\n# Full formatted report\nresult$report\n\n\nNote on cloud-sync folders: If your files are on OneDrive, iCloud, or another cloud-sync service and are not fully downloaded, you will see the message “If folders are stored online, the check might be slow as all files need to be downloaded.” In that case, right-click the folder and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) before running the check.\n\n\n37.4.3 Checking multiple projects\n\npaths &lt;- c(\n  \"C:/projects/study_1_power_analysis\",\n  \"C:/projects/study_2_replication\",\n  \"C:/projects/study_3_meta_analysis\"\n)\n\nresult &lt;- module_run(test_paper(), \"code_check\", local_path = paths)\n\nresult$summary_text\n\n# Filter to one folder using dplyr\nlibrary(dplyr)\n\nresult$table |&gt;\n  filter(grepl(\"study_2\", repo_url)) |&gt;\n  select(file_name, percentage_comment, code_abs_path, loaded_files_missing)\n\nThe repo_url column contains the folder path, so you can always identify which folder a code file came from. Every code file in a folder is checked.\n\n37.4.4 Peer review — files sent as a zip archive\nWhen reviewing a paper, authors sometimes supply code and data as a zip file attached to the submission. Once you unzip it, you have a local folder:\n\n# After unzipping the submission to a folder:\nresult &lt;- module_run(test_paper(), \"code_check\",\n                     local_path = \"C:/peer_review/garcia_2024_submission\")\n\nresult$report   # copy this into your review\n\n\n37.4.5 Code hosted on an unsupported repository\nMetacheck currently retrieves files automatically from OSF, GitHub, ResearchBox, and Zenodo. Many other services exist that are not yet supported. If the paper links to one of these, download the files manually and point code_check at the downloaded folder.\nThe workflow is the same for all of them:\n\nGo to the link in the paper\nDownload the files (usually a “Download all” button, or clone with git)\nUnzip if needed\nRun code_check\n\n\n\n# Author shared code on GitLab — you downloaded or cloned it locally\nresult &lt;- module_run(test_paper(), \"code_check\",\n                     local_path = \"C:/downloads/lee_2023_gitlab_code\")\n\nresult$summary_text\nresult$traffic_light",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#part-3-combining-a-paper-with-local-files",
     "href": "chapters/local-files.html#part-3-combining-a-paper-with-local-files",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.5 Part 3: Combining a paper with local files",
-    "text": "36.5 Part 3: Combining a paper with local files\nSometimes a paper links to an online repository that Metacheck supports, but there are also supplementary files that were shared separately — for example, the main data is on OSF but additional analysis scripts were sent as a zip by the editor. You can check both at once:\n\npaper &lt;- read(\"garcia_2024.pdf\")\n\n# repo_check fetches the OSF files AND lists the local folder\nresult &lt;- module_run(paper, \"code_check\",\n                 local_path = \"C:/peer_review/garcia_2024_extra_scripts\")\n\n# Online files have a URL in repo_url; local files have the folder path\nunique(result$table$repo_url)\n\nrepo_check reports on each repository separately, so you can see at a glance whether the README and zip issues are in the online repo or the local folder:\n\nrepo &lt;- module_run(paper, \"repo_check\",\n                   local_path = \"C:/peer_review/garcia_2024_extra_scripts\")\n\n# One row per repository — the OSF project and the local folder\nrepo$summary_table\nrepo$traffic_light",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.5 Part 3: Combining a paper with local files",
+    "text": "37.5 Part 3: Combining a paper with local files\nSometimes a paper links to an online repository that Metacheck supports, but there are also supplementary files that were shared separately — for example, the main data is on OSF but additional analysis scripts were sent as a zip by the editor. You can check both at once:\n\npaper &lt;- read(\"garcia_2024.pdf\")\n\n# repo_check fetches the OSF files AND lists the local folder\nresult &lt;- module_run(paper, \"code_check\",\n                 local_path = \"C:/peer_review/garcia_2024_extra_scripts\")\n\n# Online files have a URL in repo_url; local files have the folder path\nunique(result$table$repo_url)\n\nrepo_check reports on each repository separately, so you can see at a glance whether the README and zip issues are in the online repo or the local folder:\n\nrepo &lt;- module_run(paper, \"repo_check\",\n                   local_path = \"C:/peer_review/garcia_2024_extra_scripts\")\n\n# One row per repository — the OSF project and the local folder\nrepo$summary_table\nrepo$traffic_light",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#part-4-running-repo_check-and-code_check-as-a-two-step-pipeline",
     "href": "chapters/local-files.html#part-4-running-repo_check-and-code_check-as-a-two-step-pipeline",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.6 Part 4: Running repo_check and code_check as a two-step pipeline",
-    "text": "36.6 Part 4: Running repo_check and code_check as a two-step pipeline\nBy default, code_check runs repo_check internally and you do not see its output. If you want to inspect the file inventory before the code analysis, or save the repo_check results separately, run them as two steps. When you pass a repo_check result as the first argument to code_check, the file list is reused — the folder is not re-read:\n\npath &lt;- \"C:/projects/reaction_time_study_2024\"\n\n# Step 1: inventory and organisational checks\nrepo &lt;- module_run(test_paper(), \"repo_check\", local_path = path)\n\nrepo$summary_text    # how many files, README present?\nrepo$traffic_light   # green / yellow\nrepo$table           # full file list with types and sizes\n\n# Step 2: code quality analysis (reuses the file list from step 1)\ncode &lt;- module_run(repo, \"code_check\")\n\ncode$summary_text    # code-specific summary\ncode$table           # one row per code file\ncode$traffic_light\n\nThis is especially useful when the folder is on a cloud-sync drive: any slow file downloads happen once (during code_check), not twice.",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.6 Part 4: Running repo_check and code_check as a two-step pipeline",
+    "text": "37.6 Part 4: Running repo_check and code_check as a two-step pipeline\nBy default, code_check runs repo_check internally and you do not see its output. If you want to inspect the file inventory before the code analysis, or save the repo_check results separately, run them as two steps. When you pass a repo_check result as the first argument to code_check, the file list is reused — the folder is not re-read:\n\npath &lt;- \"C:/projects/reaction_time_study_2024\"\n\n# Step 1: inventory and organisational checks\nrepo &lt;- module_run(test_paper(), \"repo_check\", local_path = path)\n\nrepo$summary_text    # how many files, README present?\nrepo$traffic_light   # green / yellow\nrepo$table           # full file list with types and sizes\n\n# Step 2: code quality analysis (reuses the file list from step 1)\ncode &lt;- module_run(repo, \"code_check\")\n\ncode$summary_text    # code-specific summary\ncode$table           # one row per code file\ncode$traffic_light\n\nThis is especially useful when the folder is on a cloud-sync drive: any slow file downloads happen once (during code_check), not twice.",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#understanding-the-output",
     "href": "chapters/local-files.html#understanding-the-output",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.7 Understanding the output",
-    "text": "36.7 Understanding the output\n\n36.7.1 repo_check output\n\n\n\n\n\n\nElement\nWhat it contains\n\n\n\n$traffic_light\n\n\"green\" (README present, no zips), \"yellow\" (issues), or \"na\" (no repos)\n\n\n$summary_text\nPlain-text summary: file counts, README status, zip files\n\n\n$summary_table\nOne row per folder: repo_n, files_n, files_code, files_data, files_readme, files_zip\n\n\n\n$table\nOne row per file: repo_url, file_name, file_url, file_location, file_size, file_type\n\n\n\n$report\nFormatted report explaining any README or zip issues\n\n\n\n36.7.2 code_check output\n\n\n\n\n\n\nElement\nWhat it contains\n\n\n\n$traffic_light\n\n\"green\" (no issues), \"yellow\" (issues found), or \"na\" (no code files)\n\n\n$summary_text\nPlain-text summary of all four checks across all files\n\n\n$summary_table\nCounts: code_n, code_checked, code_abs_path, code_missing_files, code_min_comments, code_parse_errors\n\n\n\n$table\nOne row per code file with detailed metrics (see below)\n\n\n$report\nFull formatted report suitable for pasting into a review\n\n\n\nKey columns in code_check’s $table:\n\n\n\n\n\n\nColumn\nWhat it means\n\n\n\nfile_name\nScript filename\n\n\nrepo_url\nWhich folder (or online repo) the file came from\n\n\nlanguage\nDetected language: R, SAS, SPSS, or Stata\n\n\npercentage_comment\nShare of non-blank lines that are comments (0 = no comments at all)\n\n\nloaded_files_missing\nNumber of data files the script tries to load that are not in the folder\n\n\nloaded_files_missing_names\nThe names of those missing files\n\n\ncode_abs_path\nNumber of absolute file paths detected\n\n\nlibrary_max_between\nLargest gap in lines between consecutive library() calls",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.7 Understanding the output",
+    "text": "37.7 Understanding the output\n\n37.7.1 repo_check output\n\n\n\n\n\n\nElement\nWhat it contains\n\n\n\n$traffic_light\n\n\"green\" (README present, no zips), \"yellow\" (issues), or \"na\" (no repos)\n\n\n$summary_text\nPlain-text summary: file counts, README status, zip files\n\n\n$summary_table\nOne row per folder: repo_n, files_n, files_code, files_data, files_readme, files_zip\n\n\n\n$table\nOne row per file: repo_url, file_name, file_url, file_location, file_size, file_type\n\n\n\n$report\nFormatted report explaining any README or zip issues\n\n\n\n37.7.2 code_check output\n\n\n\n\n\n\nElement\nWhat it contains\n\n\n\n$traffic_light\n\n\"green\" (no issues), \"yellow\" (issues found), or \"na\" (no code files)\n\n\n$summary_text\nPlain-text summary of all four checks across all files\n\n\n$summary_table\nCounts: code_n, code_checked, code_abs_path, code_missing_files, code_min_comments, code_parse_errors\n\n\n\n$table\nOne row per code file with detailed metrics (see below)\n\n\n$report\nFull formatted report suitable for pasting into a review\n\n\n\nKey columns in code_check’s $table:\n\n\n\n\n\n\nColumn\nWhat it means\n\n\n\nfile_name\nScript filename\n\n\nrepo_url\nWhich folder (or online repo) the file came from\n\n\nlanguage\nDetected language: R, SAS, SPSS, or Stata\n\n\npercentage_comment\nShare of non-blank lines that are comments (0 = no comments at all)\n\n\nloaded_files_missing\nNumber of data files the script tries to load that are not in the folder\n\n\nloaded_files_missing_names\nThe names of those missing files\n\n\ncode_abs_path\nNumber of absolute file paths detected\n\n\nlibrary_max_between\nLargest gap in lines between consecutive library() calls",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/local-files.html#downloading-osf-files-to-check-locally",
     "href": "chapters/local-files.html#downloading-osf-files-to-check-locally",
-    "title": "\n36  Checking Local Files with repo_check and code_check\n",
-    "section": "\n36.8 Downloading OSF files to check locally",
-    "text": "36.8 Downloading OSF files to check locally\nOften the files you want to check live in an OSF project rather than on your own disk. You can download them first, then point repo_check / code_check at the downloaded folder using the local-file options above.\nOSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.\nThe function osf_file_download() does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than max_file_size (defaults to 10 MB) up to a total size of max_download_size (defaults to 100 MB).\n\nosf_file_download(osf_id = \"pngda\",\n                  download_to = \".\",\n                  max_file_size = 1,\n                  max_download_size = 10)\n\nStarting retrieval for pngda\n- omitting metacheck.png (1.5MB)\nDownloading files [=====================] 24/24 00:00:35\nThe files are written into a folder named after the OSF id, preserving the project’s nested structure:\n\nlist.files(\"pngda\", recursive = TRUE)\n\n\n#&gt;  [1] \"Data/Individual/data-01.csv\"                         \n#&gt;  [2] \"Data/Individual/data-02.csv\"                         \n#&gt;  [3] \"Data/Individual/data-03.csv\"                         \n#&gt;  [4] \"Data/Individual/data-04.csv\"                         \n#&gt;  [5] \"Data/Individual/data-05.csv\"                         \n#&gt;  [6] \"Data/Individual/data-06.csv\"                         \n#&gt;  [7] \"Data/Individual/data-07.csv\"                         \n#&gt;  [8] \"Data/Individual/data-08.csv\"                         \n#&gt;  [9] \"Data/Individual/data-09.csv\"                         \n#&gt; [10] \"Data/Individual/data-10.csv\"                         \n#&gt; [11] \"Data/Individual/data-11.csv\"                         \n#&gt; [12] \"Data/Individual/data-12.csv\"                         \n#&gt; [13] \"Data/Individual/data-13.csv\"                         \n#&gt; [14] \"Data/Individual/data-14.csv\"                         \n#&gt; [15] \"Data/Processed Data/processed-data.csv\"              \n#&gt; [16] \"Data/Raw Data/data.xlsx\"                             \n#&gt; [17] \"Data/Raw Data/nest-1/nest-2/nest-3/nest-4/test-4.txt\"\n#&gt; [18] \"Data/Raw Data/nest-1/nest-2/nest-3/test-3.txt\"       \n#&gt; [19] \"Data/Raw Data/nest-1/nest-2/test-2.txt\"              \n#&gt; [20] \"Data/Raw Data/nest-1/README\"                         \n#&gt; [21] \"Data/Raw Data/nest-1/test-1.txt\"                     \n#&gt; [22] \"Data/Raw Data/README\"                                \n#&gt; [23] \"README\"\n\nOnce downloaded, you can run the checks on that folder exactly as shown earlier:\n\nmodule_run(test_paper(), \"code_check\", local_path = \"pngda\", local_only = TRUE)",
+    "title": "\n37  Checking Local Files with repo_check and code_check\n",
+    "section": "\n37.8 Downloading OSF files to check locally",
+    "text": "37.8 Downloading OSF files to check locally\nOften the files you want to check live in an OSF project rather than on your own disk. You can download them first, then point repo_check / code_check at the downloaded folder using the local-file options above.\nOSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.\nThe function osf_file_download() does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than max_file_size (defaults to 10 MB) up to a total size of max_download_size (defaults to 100 MB).\n\nosf_file_download(osf_id = \"pngda\",\n                  download_to = \".\",\n                  max_file_size = 1,\n                  max_download_size = 10)\n\nStarting retrieval for pngda\n- omitting metacheck.png (1.5MB)\nDownloading files [=====================] 24/24 00:00:35\nThe files are written into a folder named after the OSF id, preserving the project’s nested structure:\n\nlist.files(\"pngda\", recursive = TRUE)\n\n\n#&gt;  [1] \"Data/Individual/data-01.csv\"                         \n#&gt;  [2] \"Data/Individual/data-02.csv\"                         \n#&gt;  [3] \"Data/Individual/data-03.csv\"                         \n#&gt;  [4] \"Data/Individual/data-04.csv\"                         \n#&gt;  [5] \"Data/Individual/data-05.csv\"                         \n#&gt;  [6] \"Data/Individual/data-06.csv\"                         \n#&gt;  [7] \"Data/Individual/data-07.csv\"                         \n#&gt;  [8] \"Data/Individual/data-08.csv\"                         \n#&gt;  [9] \"Data/Individual/data-09.csv\"                         \n#&gt; [10] \"Data/Individual/data-10.csv\"                         \n#&gt; [11] \"Data/Individual/data-11.csv\"                         \n#&gt; [12] \"Data/Individual/data-12.csv\"                         \n#&gt; [13] \"Data/Individual/data-13.csv\"                         \n#&gt; [14] \"Data/Individual/data-14.csv\"                         \n#&gt; [15] \"Data/Processed Data/processed-data.csv\"              \n#&gt; [16] \"Data/Raw Data/data.xlsx\"                             \n#&gt; [17] \"Data/Raw Data/nest-1/nest-2/nest-3/nest-4/test-4.txt\"\n#&gt; [18] \"Data/Raw Data/nest-1/nest-2/nest-3/test-3.txt\"       \n#&gt; [19] \"Data/Raw Data/nest-1/nest-2/test-2.txt\"              \n#&gt; [20] \"Data/Raw Data/nest-1/README\"                         \n#&gt; [21] \"Data/Raw Data/nest-1/test-1.txt\"                     \n#&gt; [22] \"Data/Raw Data/README\"                                \n#&gt; [23] \"README\"\n\nOnce downloaded, you can run the checks on that folder exactly as shown earlier:\n\nmodule_run(test_paper(), \"code_check\", local_path = \"pngda\", local_only = TRUE)",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Checking Local Files with repo_check and code_check</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html",
     "href": "chapters/ollama.html",
-    "title": "\n37  Local AI with Ollama\n",
+    "title": "\n38  Local AI with Ollama\n",
     "section": "",
-    "text": "37.1 Setup\nThe metacheck power module can use an AI language model to read sections of a research paper and extract information about power analyses — things like which statistical test was used, what sample size was planned, and what effect size was assumed. How well this works depends on the AI model you use, and the general ability of the model to understand scientific text.\nBy default, Metacheck expects a cloud API to do this. But there can be cases where you want to make sure that data does not leave your computer. This guide explains how to run AI models locally on your own computer, using a free, open-source tool called Ollama. Running locally means:\nThe trade-off is that your computer does the work, so it will be slower — especially the first time, while the model loads into memory.\nYou need to repeat these step every time you want to use Ollama with Metacheck on a new machine.",
+    "text": "38.1 Setup\nThe metacheck power module can use an AI language model to read sections of a research paper and extract information about power analyses — things like which statistical test was used, what sample size was planned, and what effect size was assumed. How well this works depends on the AI model you use, and the general ability of the model to understand scientific text.\nBy default, Metacheck expects a cloud API to do this. But there can be cases where you want to make sure that data does not leave your computer. This guide explains how to run AI models locally on your own computer, using a free, open-source tool called Ollama. Running locally means:\nThe trade-off is that your computer does the work, so it will be slower — especially the first time, while the model loads into memory.\nYou need to repeat these step every time you want to use Ollama with Metacheck on a new machine.",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html#setup",
     "href": "chapters/ollama.html#setup",
-    "title": "\n37  Local AI with Ollama\n",
+    "title": "\n38  Local AI with Ollama\n",
     "section": "",
-    "text": "37.1.1 What you need\n\nA computer with at least 8 GB of RAM (16 GB recommended)\nR with the metacheck package installed\nAt least 2–5 GB of free disk space for the AI model (and more if you want to try larger models)\n\nYou do not need a graphics card (GPU). Ollama works on ordinary laptop hardware.\n\n37.1.2 Step 1: Install Ollama\nOllama is a free program that lets you download and run AI models on your computer. It runs in the background like a web server, and R talks to it automatically.\nWindows:\n\nGo to https://ollama.com/download\n\nClick Download for Windows\n\nRun the installer and follow the prompts\nOnce installed, Ollama starts automatically in the background. You will see its icon in the system tray (bottom-right corner of your screen)\n\nMac:\n\nGo to https://ollama.com/download\n\nClick Download for Mac\n\nOpen the downloaded .dmg file and move Ollama.app to your Applications folder\nYou can eject the disk image and delete it now.\nOpen Ollama from Applications — it will appear in your menu bar\nWhen you first open Ollama, it will add background items that you can manage in Login Items & Extensions\nIgnore the “Launch” interface and open a Terminal window (or use the terminal in RStudio – not the console) and use the terminal instructions below.\n\n37.1.3 Step 2: Download an AI model\nOllama needs to download the actual AI model before it can be used. Think of this like downloading an app: you do it once, and then it is stored on your computer.\nThe simplest way to do this is in the app itself: click the “Add Model” button, search for “qwen2.5”, and click “Download” next to the qwen2.5:3b model (or select the model, and ask a question).\nIf you feel comfortable using the command line, you can also do this with a terminal command. Open a Terminal (Mac) or Command Prompt / PowerShell (Windows) and run:\nollama pull qwen2.5:3b\nThis downloads the Qwen 2.5 (3 billion parameter) model — a compact, capable model that works well for the power module and is about 2 GB in size. The download may take a while depending on your internet connection.\n\nTip: If you have more RAM (16 GB+) and want better accuracy, you can use a larger model (but it will be slower and take more disk space). For example: - ollama pull qwen2.5:7b – 4.7 GB, noticeably more capable - ollama pull llama3.1 – 4.7 GB, good general-purpose alternative - ollama pull smollm:135m – 91 MB, tiny model for quickly testing workflows\n\nTo check which models you have downloaded, run:\nollama list\n\n37.1.4 Step 3: Verify Ollama is running\nOllama should start automatically when you install it. Anytime you want to use ollama from Metacheck, make sure it is running in the background. You can check this by looking for the Ollama icon (in the system tray on Windows, or menu bar on Mac).\nTo check, open your web browser and visit:\nhttp://localhost:11434\nIf you see a message like Ollama is running, you are ready to go.\nIf nothing appears, open the Ollama application manually (from Applications on Mac, or search for “Ollama” in the Windows Start menu).\n\n37.1.5 Step 4: Configure Metacheck to use Ollama\nIn R, run the following three lines before using the power module. These tell Metacheck to use the AI, which model to use, and how many calls it is allowed to make (which in the case of a free local model can be set as high as you want):\n\nllm_use(TRUE)                          # turn on LLM support\nllm_model(\"ollama/qwen2.5:3b\")         # use the local Ollama model\nllm_max_calls(5000)                     # maximum number of AI queries per run\n\nThe model name must start with ollama/ — this tells Metacheck to send queries to your local Ollama installation rather than a cloud service.\n\nNote: If you downloaded a different model in Step 2, replace qwen2.5:3b with the name you used (for example, \"ollama/qwen2.5:7b\" or \"ollama/llama3.1\").",
+    "text": "38.1.1 What you need\n\nA computer with at least 8 GB of RAM (16 GB recommended)\nR with the metacheck package installed\nAt least 2–5 GB of free disk space for the AI model (and more if you want to try larger models)\n\nYou do not need a graphics card (GPU). Ollama works on ordinary laptop hardware.\n\n38.1.2 Step 1: Install Ollama\nOllama is a free program that lets you download and run AI models on your computer. It runs in the background like a web server, and R talks to it automatically.\nWindows:\n\nGo to https://ollama.com/download\n\nClick Download for Windows\n\nRun the installer and follow the prompts\nOnce installed, Ollama starts automatically in the background. You will see its icon in the system tray (bottom-right corner of your screen)\n\nMac:\n\nGo to https://ollama.com/download\n\nClick Download for Mac\n\nOpen the downloaded .dmg file and move Ollama.app to your Applications folder\nYou can eject the disk image and delete it now.\nOpen Ollama from Applications — it will appear in your menu bar\nWhen you first open Ollama, it will add background items that you can manage in Login Items & Extensions\nIgnore the “Launch” interface and open a Terminal window (or use the terminal in RStudio – not the console) and use the terminal instructions below.\n\n38.1.3 Step 2: Download an AI model\nOllama needs to download the actual AI model before it can be used. Think of this like downloading an app: you do it once, and then it is stored on your computer.\nThe simplest way to do this is in the app itself: click the “Add Model” button, search for “qwen2.5”, and click “Download” next to the qwen2.5:3b model (or select the model, and ask a question).\nIf you feel comfortable using the command line, you can also do this with a terminal command. Open a Terminal (Mac) or Command Prompt / PowerShell (Windows) and run:\nollama pull qwen2.5:3b\nThis downloads the Qwen 2.5 (3 billion parameter) model — a compact, capable model that works well for the power module and is about 2 GB in size. The download may take a while depending on your internet connection.\n\nTip: If you have more RAM (16 GB+) and want better accuracy, you can use a larger model (but it will be slower and take more disk space). For example: - ollama pull qwen2.5:7b – 4.7 GB, noticeably more capable - ollama pull llama3.1 – 4.7 GB, good general-purpose alternative - ollama pull smollm:135m – 91 MB, tiny model for quickly testing workflows\n\nTo check which models you have downloaded, run:\nollama list\n\n38.1.4 Step 3: Verify Ollama is running\nOllama should start automatically when you install it. Anytime you want to use ollama from Metacheck, make sure it is running in the background. You can check this by looking for the Ollama icon (in the system tray on Windows, or menu bar on Mac).\nTo check, open your web browser and visit:\nhttp://localhost:11434\nIf you see a message like Ollama is running, you are ready to go.\nIf nothing appears, open the Ollama application manually (from Applications on Mac, or search for “Ollama” in the Windows Start menu).\n\n38.1.5 Step 4: Configure Metacheck to use Ollama\nIn R, run the following three lines before using the power module. These tell Metacheck to use the AI, which model to use, and how many calls it is allowed to make (which in the case of a free local model can be set as high as you want):\n\nllm_use(TRUE)                          # turn on LLM support\nllm_model(\"ollama/qwen2.5:3b\")         # use the local Ollama model\nllm_max_calls(5000)                     # maximum number of AI queries per run\n\nThe model name must start with ollama/ — this tells Metacheck to send queries to your local Ollama installation rather than a cloud service.\n\nNote: If you downloaded a different model in Step 2, replace qwen2.5:3b with the name you used (for example, \"ollama/qwen2.5:7b\" or \"ollama/llama3.1\").",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html#a-simple-first-example",
     "href": "chapters/ollama.html#a-simple-first-example",
-    "title": "\n37  Local AI with Ollama\n",
-    "section": "\n37.2 A simple first example",
-    "text": "37.2 A simple first example\nHere is a quick example to confirm that everything is working. We will search a paper for any paragraph that mentions participants, then ask the local AI model to describe who those participants were.\n\nlibrary(metacheck)\n\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\n\n# Load a single paper from the built-in psychsci dataset\npaper &lt;- psychsci[[84]]\n\n# Find all paragraphs in the paper that mention participants\nparticipant_paragraphs &lt;- search_text(paper, \"particip\", return = \"paragraph\")\n\n# Combine them into one block of text to send to the AI\ncombined_text &lt;- paste(participant_paragraphs$text, collapse = \"\\n\\n\")\n\n# Ask the AI to describe the participants\nresult &lt;- llm(\n  text = combined_text,\n  system_prompt = \"Based on these excerpts from a scientific paper, briefly describe the study participants: how many there were, who they were (e.g. students, patients, age group), and any other relevant characteristics reported.\"\n)\n\ncat(result$answer)\n\nThe first query will feel slow — this is normal. Ollama needs a moment to load the model into memory the first time. Subsequent queries in the same R session will be much faster.\nIf you see a short paragraph describing the participants, your setup is working correctly and you are ready to move on to the power module.",
+    "title": "\n38  Local AI with Ollama\n",
+    "section": "\n38.2 A simple first example",
+    "text": "38.2 A simple first example\nHere is a quick example to confirm that everything is working. We will search a paper for any paragraph that mentions participants, then ask the local AI model to describe who those participants were.\n\nlibrary(metacheck)\n\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\n\n# Load a single paper from the built-in psychsci dataset\npaper &lt;- psychsci[[84]]\n\n# Find all paragraphs in the paper that mention participants\nparticipant_paragraphs &lt;- search_text(paper, \"particip\", return = \"paragraph\")\n\n# Combine them into one block of text to send to the AI\ncombined_text &lt;- paste(participant_paragraphs$text, collapse = \"\\n\\n\")\n\n# Ask the AI to describe the participants\nresult &lt;- llm(\n  text = combined_text,\n  system_prompt = \"Based on these excerpts from a scientific paper, briefly describe the study participants: how many there were, who they were (e.g. students, patients, age group), and any other relevant characteristics reported.\"\n)\n\ncat(result$answer)\n\nThe first query will feel slow — this is normal. Ollama needs a moment to load the model into memory the first time. Subsequent queries in the same R session will be much faster.\nIf you see a short paragraph describing the participants, your setup is working correctly and you are ready to move on to the power module.",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html#run-the-power-module",
     "href": "chapters/ollama.html#run-the-power-module",
-    "title": "\n37  Local AI with Ollama\n",
-    "section": "\n37.3 Run the power module",
-    "text": "37.3 Run the power module\n\n37.3.1 On a single paper\n\nlibrary(metacheck)\n\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\n\n# Load a single paper (this uses paper number 84 from the built-in psychsci dataset)\npaper &lt;- psychsci[[84]]\n\n# Run the power module\nresult &lt;- module_run(paper, \"power\")\n\n# See the result\nresult$traffic_light   # \"green\", \"red\", or \"na\"\nresult$summary_text    # a plain-English summary\nresult$table           # the full extracted data\n\nThe first query will feel slow — this is normal. Ollama needs a moment to load the model into memory. Subsequent queries on the same session will be much faster.\n\n37.3.2 On the full psychsci dataset\n\nlibrary(metacheck)\n\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\n\npaper &lt;- psychsci\nresult &lt;- module_run(paper, \"power\")\n\nProcessing the full dataset takes considerably longer (and could take hours, depending on your hardware, the number of power related sentences detected, and model size).",
+    "title": "\n38  Local AI with Ollama\n",
+    "section": "\n38.3 Run the power module",
+    "text": "38.3 Run the power module\n\n38.3.1 On a single paper\n\nlibrary(metacheck)\n\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\n\n# Load a single paper (this uses paper number 84 from the built-in psychsci dataset)\npaper &lt;- psychsci[[84]]\n\n# Run the power module\nresult &lt;- module_run(paper, \"power\")\n\n# See the result\nresult$traffic_light   # \"green\", \"red\", or \"na\"\nresult$summary_text    # a plain-English summary\nresult$table           # the full extracted data\n\nThe first query will feel slow — this is normal. Ollama needs a moment to load the model into memory. Subsequent queries on the same session will be much faster.\n\n38.3.2 On the full psychsci dataset\n\nlibrary(metacheck)\n\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\n\npaper &lt;- psychsci\nresult &lt;- module_run(paper, \"power\")\n\nProcessing the full dataset takes considerably longer (and could take hours, depending on your hardware, the number of power related sentences detected, and model size).",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html#running-regcheck-locally",
     "href": "chapters/ollama.html#running-regcheck-locally",
-    "title": "\n37  Local AI with Ollama\n",
-    "section": "\n37.4 Running RegCheck locally",
-    "text": "37.4 Running RegCheck locally\nThe RegCheck module compares a paper against its preregistration. By default it sends text to a hosted RegCheck app, but you can run the whole comparison on your own machine with Ollama, so no paper or preregistration text leaves your computer. This needs a one-time setup of a small RegCheck server (in addition to Ollama).\n1. Pull the required Ollama models. RegCheck uses a fixed embedding model plus a language model of your choice. In a terminal:\nollama pull nomic-embed-text-v2-moe\nollama pull llama3.2          # or llama3.1, mistral, qwen3.5:9b, etc.\nUse the largest language model that fits your hardware — bigger models generally give better judgements.\n2. Start the local RegCheck server. There are two ways. The Docker path is recommended and needs no Python:\n\n# Docker (recommended) — first run builds the image (~5 minutes), then it is instant\nregcheck_start_local(method = \"docker\")\n\nThe Python path needs Python 3.12+ and a one-time environment setup:\n\nregcheck_setup_local()                    # once: build the Python environment\nregcheck_start_local(method = \"python\")   # start the server\n\nEither way the server runs at http://localhost:8000, Ollama must be running with the models pulled, and the API token is set automatically to \"metacheck-local\" — no token configuration needed. By default regcheck_start_local() auto-selects the largest language model you have pulled; pass model = \"...\" to choose a specific one.\n3. Run reg_check — it uses the local server automatically. With the local server running, the default client = \"ollama\" routes the comparison through it:\n\nmodule_run(demopaper(), \"reg_check\")   # client = \"ollama\" by default → local server\n\n4. Stop the server when finished:\n\nregcheck_stop_local()\n\nSee the RegCheck module chapter for what the comparison returns and how to read the results.",
+    "title": "\n38  Local AI with Ollama\n",
+    "section": "\n38.4 Running RegCheck locally",
+    "text": "38.4 Running RegCheck locally\nThe RegCheck module compares a paper against its preregistration. By default it sends text to a hosted RegCheck app, but you can run the whole comparison on your own machine with Ollama, so no paper or preregistration text leaves your computer. This needs a one-time setup of a small RegCheck server (in addition to Ollama).\n1. Pull the required Ollama models. RegCheck uses a fixed embedding model plus a language model of your choice. In a terminal:\nollama pull nomic-embed-text-v2-moe\nollama pull llama3.2          # or llama3.1, mistral, qwen3.5:9b, etc.\nUse the largest language model that fits your hardware — bigger models generally give better judgements.\n2. Start the local RegCheck server. There are two ways. The Docker path is recommended and needs no Python:\n\n# Docker (recommended) — first run builds the image (~5 minutes), then it is instant\nregcheck_start_local(method = \"docker\")\n\nThe Python path needs Python 3.12+ and a one-time environment setup:\n\nregcheck_setup_local()                    # once: build the Python environment\nregcheck_start_local(method = \"python\")   # start the server\n\nEither way the server runs at http://localhost:8000, Ollama must be running with the models pulled, and the API token is set automatically to \"metacheck-local\" — no token configuration needed. By default regcheck_start_local() auto-selects the largest language model you have pulled; pass model = \"...\" to choose a specific one.\n3. Run reg_check — it uses the local server automatically. With the local server running, the default client = \"ollama\" routes the comparison through it:\n\nmodule_run(demopaper(), \"reg_check\")   # client = \"ollama\" by default → local server\n\n4. Stop the server when finished:\n\nregcheck_stop_local()\n\nSee the RegCheck module chapter for what the comparison returns and how to read the results.",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html#troubleshooting",
     "href": "chapters/ollama.html#troubleshooting",
-    "title": "\n37  Local AI with Ollama\n",
-    "section": "\n37.5 Troubleshooting",
-    "text": "37.5 Troubleshooting\n\n37.5.1 “Ollama is not running” or connection errors\n\nOpen the Ollama application and wait a few seconds for it to start\nOn Windows, look for the Ollama icon in the system tray; right-click and choose “Start”\nOn Mac, launch Ollama.app and click the Ollama icon in the menu bar\n\n37.5.2 The model seems to freeze or takes very long\n\nThis is normal on the first query while the model loads. Wait at least 60 seconds before concluding something has gone wrong\nLarger models take longer; try qwen2.5:3b if you just want to check if your setup is working, as it is faster than the larger models.\n\n37.5.3 “Model not found” error\n\nMake sure the model name in llm_model() exactly matches the name shown in ollama list\n\nThe name must start with ollama/, for example \"ollama/qwen2.5:3b\"\n\n\n37.5.4 Out of memory errors\n\nTry a smaller model: ollama pull qwen2.5:3b and use llm_model(\"ollama/qwen2.5:3b\")\n\nClose other applications to free up RAM\n\n37.5.5 Switching back to a cloud model\n\nllm_model(\"groq\")   # or another model name",
+    "title": "\n38  Local AI with Ollama\n",
+    "section": "\n38.5 Troubleshooting",
+    "text": "38.5 Troubleshooting\n\n38.5.1 “Ollama is not running” or connection errors\n\nOpen the Ollama application and wait a few seconds for it to start\nOn Windows, look for the Ollama icon in the system tray; right-click and choose “Start”\nOn Mac, launch Ollama.app and click the Ollama icon in the menu bar\n\n38.5.2 The model seems to freeze or takes very long\n\nThis is normal on the first query while the model loads. Wait at least 60 seconds before concluding something has gone wrong\nLarger models take longer; try qwen2.5:3b if you just want to check if your setup is working, as it is faster than the larger models.\n\n38.5.3 “Model not found” error\n\nMake sure the model name in llm_model() exactly matches the name shown in ollama list\n\nThe name must start with ollama/, for example \"ollama/qwen2.5:3b\"\n\n\n38.5.4 Out of memory errors\n\nTry a smaller model: ollama pull qwen2.5:3b and use llm_model(\"ollama/qwen2.5:3b\")\n\nClose other applications to free up RAM\n\n38.5.5 Switching back to a cloud model\n\nllm_model(\"groq\")   # or another model name",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {
     "objectID": "chapters/ollama.html#quick-reference",
     "href": "chapters/ollama.html#quick-reference",
-    "title": "\n37  Local AI with Ollama\n",
-    "section": "\n37.6 Quick reference",
-    "text": "37.6 Quick reference\n\n# Minimal setup to run the power module locally\nlibrary(metacheck)\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\npaper &lt;- demopaper()\nresult &lt;- module_run(paper, \"power\")",
+    "title": "\n38  Local AI with Ollama\n",
+    "section": "\n38.6 Quick reference",
+    "text": "38.6 Quick reference\n\n# Minimal setup to run the power module locally\nlibrary(metacheck)\nllm_use(TRUE)\nllm_model(\"ollama/qwen2.5:3b\")\nllm_max_calls(5000)\npaper &lt;- demopaper()\nresult &lt;- module_run(paper, \"power\")",
     "crumbs": [
       "Using Metacheck Locally",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>Local AI with Ollama</span>"
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>Local AI with Ollama</span>"
     ]
   },
   {

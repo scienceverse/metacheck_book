@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<title>29&nbsp; Importing and Exporting JASP, jamovi, and SPSS Viewer Files – The Metacheck Manual</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/mod-ref-consistency.html" rel="next">
+<link href="../chapters/mod-reproducibility-check.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2ba038287b8416a85275a829d41e9991.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-e86f8a212565eb69fb543cc01c7f280b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head>
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/importing-exporting.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Metacheck Manual</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/scienceverse/metacheck_book" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/get-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting up Metacheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/text-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Modules</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-data-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-excel-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Excel Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-reproducibility-check.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Using Metacheck Locally</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">29.1</span> Overview</a></li>
+  <li>
+<a href="#part-1-importing-data-import_jasp-and-import_omv" id="toc-part-1-importing-data-import_jasp-and-import_omv" class="nav-link" data-scroll-target="#part-1-importing-data-import_jasp-and-import_omv"><span class="header-section-number">29.2</span> Part 1: Importing data — <code>import_jasp()</code> and <code>import_omv()</code></a>
+  <ul class="collapse">
+<li><a href="#why-jasp-and-jamovi-are-read-like-spss-files" id="toc-why-jasp-and-jamovi-are-read-like-spss-files" class="nav-link" data-scroll-target="#why-jasp-and-jamovi-are-read-like-spss-files"><span class="header-section-number">29.2.1</span> Why JASP and jamovi are read like SPSS files</a></li>
+  <li><a href="#reading-a-jasp-file" id="toc-reading-a-jasp-file" class="nav-link" data-scroll-target="#reading-a-jasp-file"><span class="header-section-number">29.2.2</span> Reading a JASP file</a></li>
+  <li><a href="#reading-a-jamovi-file" id="toc-reading-a-jamovi-file" class="nav-link" data-scroll-target="#reading-a-jamovi-file"><span class="header-section-number">29.2.3</span> Reading a jamovi file</a></li>
+  <li><a href="#using-the-data-like-any-other-data-source" id="toc-using-the-data-like-any-other-data-source" class="nav-link" data-scroll-target="#using-the-data-like-any-other-data-source"><span class="header-section-number">29.2.4</span> Using the data like any other data source</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#part-2-importing-spss-viewer-output-import_spv" id="toc-part-2-importing-spss-viewer-output-import_spv" class="nav-link" data-scroll-target="#part-2-importing-spss-viewer-output-import_spv"><span class="header-section-number">29.3</span> Part 2: Importing SPSS Viewer output — <code>import_spv()</code></a>
+  <ul class="collapse">
+<li><a href="#what-a-.spv-file-is-and-why-it-is-different" id="toc-what-a-.spv-file-is-and-why-it-is-different" class="nav-link" data-scroll-target="#what-a-.spv-file-is-and-why-it-is-different"><span class="header-section-number">29.3.1</span> What a <code>.spv</code> file is, and why it is different</a></li>
+  <li><a href="#reading-an-spss-viewer-file" id="toc-reading-an-spss-viewer-file" class="nav-link" data-scroll-target="#reading-an-spss-viewer-file"><span class="header-section-number">29.3.2</span> Reading an SPSS Viewer file</a></li>
+  <li><a href="#result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" id="toc-result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" class="nav-link" data-scroll-target="#result-tables-feed-the-same-pipeline-as-jasp-and-jamovi"><span class="header-section-number">29.3.3</span> Result tables feed the same pipeline as JASP and jamovi</a></li>
+  </ul>
+</li>
+  <li><a href="#spv-charts" id="toc-spv-charts" class="nav-link" data-scroll-target="#spv-charts"><span class="header-section-number">29.4</span> Part 3: Charts inside <code>.spv</code> files</a></li>
+  <li>
+<a href="#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" id="toc-part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" class="nav-link" data-scroll-target="#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html"><span class="header-section-number">29.5</span> Part 4: Exporting readable HTML — <code>export_jasp_html()</code>, <code>export_omv_html()</code>, <code>export_spv_html()</code></a>
+  <ul class="collapse">
+<li><a href="#jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" id="toc-jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" class="nav-link" data-scroll-target="#jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output"><span class="header-section-number">29.5.1</span> JASP and jamovi: re-exporting the software’s own rendered output</a></li>
+  <li><a href="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" id="toc-spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="nav-link" data-scroll-target="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts"><span class="header-section-number">29.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</a></li>
+  </ul>
+</li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">29.6</span> Summary</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/importing-exporting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/importing-exporting.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title">
+<span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>
+</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This chapter needs the <strong>data_check branch</strong> of metacheck, since <code>import_jasp()</code>, <code>import_omv()</code>, <code>import_spv()</code>, and the three <code>export_*_html()</code> functions are recent, not-yet-released additions. These functions will eventually make it to main.</p>
+</div>
+</div>
+<section id="overview" class="level2" data-number="29.1"><h2 data-number="29.1" class="anchored" data-anchor-id="overview">
+<span class="header-section-number">29.1</span> Overview</h2>
+<p>Metacheck is an R based tool, but it would be useful to load data, code, and output files from common statistical software packages. This would allow the reproducibility_check module to take the output, and check it against the values reported in the manuscript. In psychology, SPSS, JASP, and Jamovi are commonly used. JASP and Jamovi have made the extremely sensible design choice that a .jasp or .omv file contain the data, code, and output. This means that sharing those files guarantees complete reproducibility of the analysis by design.</p>
+<p>Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types.</p>
+<p>Each format is a single archive that bundles the <strong>data</strong>, its <strong>variable metadata</strong> (measurement level, value labels), and the <strong>analyses</strong> that were run against it — which is exactly why <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> treats a self-contained <code>.jasp</code>/<code>.omv</code>/<code>.spv</code> file as reproducible “for free”: no code needs to be executed, because the results are already stored inside the file itself.</p>
+<p>There is exactly <strong>one import function per format</strong>:</p>
+<ul>
+<li><code>import_jasp(path)</code></li>
+<li><code>import_omv(path)</code></li>
+<li><code>import_spv(path)</code></li>
+</ul>
+<p>and, going the other way, exactly <strong>one export function per format</strong> that turns the archive into a single, readable, portable HTML file:</p>
+<ul>
+<li><code>export_jasp_html(path, out = NULL)</code></li>
+<li><code>export_omv_html(path, out = NULL)</code></li>
+<li><code>export_spv_html(path, out = NULL)</code></li>
+</ul>
+<p>This chapter demonstrates all six against small real example files (<code>example.jasp</code>, <code>example.omv</code>, <code>example.spv</code>, <code>example-chart.spv</code>), committed alongside this chapter so the examples below execute for real when the book is rendered.</p>
+<hr></section><section id="part-1-importing-data-import_jasp-and-import_omv" class="level2" data-number="29.2"><h2 data-number="29.2" class="anchored" data-anchor-id="part-1-importing-data-import_jasp-and-import_omv">
+<span class="header-section-number">29.2</span> Part 1: Importing data — <code>import_jasp()</code> and <code>import_omv()</code>
+</h2>
+<section id="why-jasp-and-jamovi-are-read-like-spss-files" class="level3" data-number="29.2.1"><h3 data-number="29.2.1" class="anchored" data-anchor-id="why-jasp-and-jamovi-are-read-like-spss-files">
+<span class="header-section-number">29.2.1</span> Why JASP and jamovi are read like SPSS files</h3>
+<p>A <code>.jasp</code> or <code>.omv</code> archive is a ZIP file. Inside, alongside the raw data, each variable carries the same kind of metadata an SPSS <code>.sav</code> file carries: a <strong>measurement level</strong> (nominal, ordinal, continuous) and, for categorical variables, <strong>value labels</strong> mapping a numeric code (<code>1</code>, <code>2</code>) to a meaningful label (<code>"Control"</code>, <code>"Treatment"</code>). Metacheck reads that metadata using the same <a href="https://haven.tidyverse.org/">haven</a>-style <code>label</code> / <code>labels</code> attributes that <code><a href="https://haven.tidyverse.org/reference/read_spss.html">haven::read_sav()</a></code> attaches — so a <code>.jasp</code> or <code>.omv</code> file can serve as its own codebook, exactly like a <code>.sav</code> file, with no special-casing anywhere downstream (see <a href="../chapters/mod-codebook-check.html">codebook_check</a>).</p>
+</section><section id="reading-a-jasp-file" class="level3" data-number="29.2.2"><h3 data-number="29.2.2" class="anchored" data-anchor-id="reading-a-jasp-file">
+<span class="header-section-number">29.2.2</span> Reading a JASP file</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jasp</span> <span class="op">&lt;-</span> <span class="fu">import_jasp</span><span class="op">(</span><span class="st">"example.jasp"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># the dataset itself</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">jasp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 32 40</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">jasp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Age Gender Information_page_time Exclude_for_timing Heard_of_procedure</span></span>
+<span><span class="co">#&gt; 1  20      2                 9.133                  1                  1</span></span>
+<span><span class="co">#&gt; 2  21      2                12.832                  0                  1</span></span>
+<span><span class="co">#&gt; 3  20      2                32.733                  0                  1</span></span>
+<span><span class="co">#&gt; 4  19      2                11.299                  0                  1</span></span>
+<span><span class="co">#&gt; 5  20      2                10.265                  0                  1</span></span>
+<span><span class="co">#&gt; 6  20      2                13.510                  0                  1</span></span>
+<span><span class="co">#&gt;   Previously_participated_in_RHI S1_sync S1_async S2_sync S2_async S3_sync</span></span>
+<span><span class="co">#&gt; 1                              1       2       -1       2        1       2</span></span>
+<span><span class="co">#&gt; 2                              0       2        1       1       -1       2</span></span>
+<span><span class="co">#&gt; 3                              1       2        1       3        1       2</span></span>
+<span><span class="co">#&gt; 4                              1       2       -2      -1        1      -1</span></span>
+<span><span class="co">#&gt; 5                              1       2       -1       3       -1       3</span></span>
+<span><span class="co">#&gt; 6                              1       2        1       1        0      -1</span></span>
+<span><span class="co">#&gt;   S3_async C1_sync C1_async C2_sync C2_async C3_sync C3_async C4_sync C4_async</span></span>
+<span><span class="co">#&gt; 1        0       2       -1       2        1       2        1      -1       -1</span></span>
+<span><span class="co">#&gt; 2        1       1        0       0        0       0       -2       0       -1</span></span>
+<span><span class="co">#&gt; 3        0       1       -1      -2       -3       3        1      -3       -3</span></span>
+<span><span class="co">#&gt; 4        2      -2        1      -2        0       0        0      -1        1</span></span>
+<span><span class="co">#&gt; 5       -1       1        0       2       -1       0        0      -1       -1</span></span>
+<span><span class="co">#&gt; 6       -1      -1       -1      -2       -2      -2       -2      -3       -3</span></span>
+<span><span class="co">#&gt;   C5_sync C5_async C6_sync C6_async id S1_time S2_time S3_time C1_time C2_time</span></span>
+<span><span class="co">#&gt; 1       2       -1       2       -1  1  12.210  14.855  19.207  10.785  11.737</span></span>
+<span><span class="co">#&gt; 2      -1       -1      -2       -2  2  20.853   8.504   8.704   7.362  20.677</span></span>
+<span><span class="co">#&gt; 3       1       -1       1       -1  3  13.191  10.085 184.026  17.548  11.260</span></span>
+<span><span class="co">#&gt; 4      -2        1      -2        1  4   4.740   4.537   6.737   4.257   5.456</span></span>
+<span><span class="co">#&gt; 5       0       -1       1       -2  5  17.294   7.044   8.924   8.271   6.195</span></span>
+<span><span class="co">#&gt; 6      -2       -2      -2       -2  6   8.008   5.541   7.304   5.076   5.399</span></span>
+<span><span class="co">#&gt;   C3_time C4_time C5_time C6_time Illusion_score_sync Illusion_score_async</span></span>
+<span><span class="co">#&gt; 1   7.722  11.340   8.530   8.530           2.0000000            0.0000000</span></span>
+<span><span class="co">#&gt; 2   8.478   7.235   7.789   7.788           1.6666667            0.3333333</span></span>
+<span><span class="co">#&gt; 3 102.887  30.484  14.253  14.252           2.3333333            0.6666667</span></span>
+<span><span class="co">#&gt; 4   7.335   3.863   3.265   3.265           0.0000000            0.3333333</span></span>
+<span><span class="co">#&gt; 5   4.683   6.951   8.290   8.289           2.6666667           -1.0000000</span></span>
+<span><span class="co">#&gt; 6   4.922   4.896   4.726   4.726           0.6666667            0.0000000</span></span>
+<span><span class="co">#&gt;   control_score_sync control_score_async Expect_question_time_mean</span></span>
+<span><span class="co">#&gt; 1          1.5000000          -0.3333333                 11.657333</span></span>
+<span><span class="co">#&gt; 2         -0.3333333          -1.0000000                 10.821111</span></span>
+<span><span class="co">#&gt; 3          0.1666667          -1.3333333                 44.220667</span></span>
+<span><span class="co">#&gt; 4         -1.5000000           0.6666667                  4.828333</span></span>
+<span><span class="co">#&gt; 5          0.5000000          -0.8333333                  8.437889</span></span>
+<span><span class="co">#&gt; 6         -2.0000000          -2.0000000                  5.622000</span></span>
+<span><span class="co">#&gt;   Free_response</span></span>
+<span><span class="co">#&gt; 1            19</span></span>
+<span><span class="co">#&gt; 2            13</span></span>
+<span><span class="co">#&gt; 3            21</span></span>
+<span><span class="co">#&gt; 4            29</span></span>
+<span><span class="co">#&gt; 5             6</span></span>
+<span><span class="co">#&gt; 6            27</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>import_jasp()</code> returns a list with four elements:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Element</th>
+<th>Contents</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>$data</code></td>
+<td>the dataset as a data.frame; labelled columns carry <code>label</code> / <code>labels</code> attributes</td>
+</tr>
+<tr class="even">
+<td><code>$columns</code></td>
+<td>a data.frame of <code>name</code> and <code>type</code> (JASP’s own measurement-level classification)</td>
+</tr>
+<tr class="odd">
+<td><code>$analyses</code></td>
+<td>the parsed <code>analyses.json</code> — JASP’s own record of every analysis run</td>
+</tr>
+<tr class="even">
+<td><code>$format</code></td>
+<td>
+<code>"binary"</code> (JASP ≤ ~0.16) or <code>"sqlite"</code> (JASP ≥ ~0.17) — both are handled transparently</td>
+</tr>
+<tr class="odd">
+<td><code>$data_file_path</code></td>
+<td>the original file JASP imported the data from, if recorded</td>
+</tr>
+</tbody>
+</table>
+<p>Value labels are attached exactly like <code><a href="https://haven.tidyverse.org/reference/read_spss.html">haven::read_sav()</a></code> attaches them:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labelled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">jasp</span><span class="op">$</span><span class="va">data</span>, <span class="kw">function</span><span class="op">(</span><span class="va">col</span><span class="op">)</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">col</span>, <span class="st">"labels"</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">jasp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">labelled</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] "Age"                            "Gender"                        </span></span>
+<span><span class="co">#&gt;  [3] "Exclude_for_timing"             "Heard_of_procedure"            </span></span>
+<span><span class="co">#&gt;  [5] "Previously_participated_in_RHI" "S1_sync"                       </span></span>
+<span><span class="co">#&gt;  [7] "S1_async"                       "S2_sync"                       </span></span>
+<span><span class="co">#&gt;  [9] "S2_async"                       "S3_sync"                       </span></span>
+<span><span class="co">#&gt; [11] "S3_async"                       "C1_sync"                       </span></span>
+<span><span class="co">#&gt; [13] "C1_async"                       "C2_sync"                       </span></span>
+<span><span class="co">#&gt; [15] "C2_async"                       "C3_sync"                       </span></span>
+<span><span class="co">#&gt; [17] "C3_async"                       "C4_sync"                       </span></span>
+<span><span class="co">#&gt; [19] "C4_async"                       "C5_sync"                       </span></span>
+<span><span class="co">#&gt; [21] "C5_async"                       "C6_sync"                       </span></span>
+<span><span class="co">#&gt; [23] "C6_async"                       "Free_response"</span></span>
+<span></span>
+<span><span class="co"># one example</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">jasp</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">jasp</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="va">labelled</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">]</span>, <span class="st">"labels"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 18 19 20 21 23 25 45 </span></span>
+<span><span class="co">#&gt; 18 19 20 21 23 25 45</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="reading-a-jamovi-file" class="level3" data-number="29.2.3"><h3 data-number="29.2.3" class="anchored" data-anchor-id="reading-a-jamovi-file">
+<span class="header-section-number">29.2.3</span> Reading a jamovi file</h3>
+<p><code>import_omv()</code> is the jamovi counterpart, returning the same shape:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">omv</span> <span class="op">&lt;-</span> <span class="fu">import_omv</span><span class="op">(</span><span class="st">"example.omv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">omv</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 218   9</span></span>
+<span><span class="va">omv</span><span class="op">$</span><span class="va">columns</span></span>
+<span><span class="co">#&gt;                         name       type</span></span>
+<span><span class="co">#&gt; 1                 Experiment    Nominal</span></span>
+<span><span class="co">#&gt; 2                Participant Continuous</span></span>
+<span><span class="co">#&gt; 3         Manipulation check Continuous</span></span>
+<span><span class="co">#&gt; 4                    H1 test Continuous</span></span>
+<span><span class="co">#&gt; 5                    H2 test Continuous</span></span>
+<span><span class="co">#&gt; 6 H3 confirmatory confidence Continuous</span></span>
+<span><span class="co">#&gt; 7      H3 dissent confidence Continuous</span></span>
+<span><span class="co">#&gt; 8                    H4 test Continuous</span></span>
+<span><span class="co">#&gt; 9           Guess hypothesis         ID</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The one difference is <code>$analyses</code>: jamovi does not store a structured <code>analyses.json</code> the way JASP does, so <code>import_omv()</code> recovers each analysis as a <strong>readable one-line summary</strong>, including the reproducible R syntax jamovi embeds internally when it is recoverable:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">omv</span><span class="op">$</span><span class="va">analyses</span></span>
+<span><span class="co">#&gt; [1] "1. 05 ttestOneS  |  jmv::ttestOneS( data = data, vars = H4 test, hypothesis = \"gt\", desc = TRUE)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="using-the-data-like-any-other-data-source" class="level3" data-number="29.2.4"><h3 data-number="29.2.4" class="anchored" data-anchor-id="using-the-data-like-any-other-data-source">
+<span class="header-section-number">29.2.4</span> Using the data like any other data source</h3>
+<p>Because both readers attach the same haven-style attributes, <code>.jasp</code> and <code>.omv</code> files flow through the rest of metacheck exactly like a <code>.sav</code> file — for example, <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-codebook-check.html">codebook_check</a> both read them with no special code path:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/study_folder"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If that folder contains a <code>.jasp</code> or <code>.omv</code> file, its embedded labels are harvested as if they were a codebook, and its data is read as if it were a <code>.sav</code>.</p>
+<hr></section></section><section id="part-2-importing-spss-viewer-output-import_spv" class="level2" data-number="29.3"><h2 data-number="29.3" class="anchored" data-anchor-id="part-2-importing-spss-viewer-output-import_spv">
+<span class="header-section-number">29.3</span> Part 2: Importing SPSS Viewer output — <code>import_spv()</code>
+</h2>
+<section id="what-a-.spv-file-is-and-why-it-is-different" class="level3" data-number="29.3.1"><h3 data-number="29.3.1" class="anchored" data-anchor-id="what-a-.spv-file-is-and-why-it-is-different">
+<span class="header-section-number">29.3.1</span> What a <code>.spv</code> file is, and why it is different</h3>
+<p>A <code>.spv</code> file is not a data file at all — it is IBM SPSS’s <strong>rendered output window</strong>, saved to disk. It contains the result <strong>tables</strong> SPSS produced (a <code>T-Test</code> table, a <code>Reliability Statistics</code> table, an <code>ICC</code> table, …) together with the exact <strong>syntax</strong> that produced them, and, when the output included one, any <strong>charts</strong> the analysis generated (a Q-Q plot, a scatterplot with a fitted curve, a box plot, …). Unlike <code>.jasp</code>/<code>.omv</code>, <code>.spv</code> has no rendered HTML view baked into the archive — everything has to be decoded from SPSS’s own internal representation.</p>
+<p><code>.spv</code> has no public specification. Metacheck’s table reader is ported from <a href="https://www.gnu.org/software/pspp/">GNU PSPP</a>’s GPL-licensed decoder — the only known public implementation of this format — and handles both the older (“legacy”) and modern (SPSS 21+, “light-binary”) table encodings transparently. Charts have no PSPP implementation to port from at all (PSPP itself does not render <code>.spv</code> charts); metacheck’s chart decoder was built entirely by inspecting real <code>.spv</code> files, described in <a href="#spv-charts">Part 3</a> below.</p>
+</section><section id="reading-an-spss-viewer-file" class="level3" data-number="29.3.2"><h3 data-number="29.3.2" class="anchored" data-anchor-id="reading-an-spss-viewer-file">
+<span class="header-section-number">29.3.2</span> Reading an SPSS Viewer file</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu">import_spv</span><span class="op">(</span><span class="st">"example.spv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">tables</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 8</span></span>
+<span></span>
+<span><span class="co"># what analyses were recovered</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">tables</span>, <span class="kw">function</span><span class="op">(</span><span class="va">tb</span><span class="op">)</span> <span class="va">tb</span><span class="op">$</span><span class="va">analysis</span> <span class="op"><a href="https://rdrr.io/r/base/Control.html">%||%</a></span> <span class="cn">NA_character_</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Reliability"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>import_spv()</code> returns a <strong>list of result tables</strong> — the same shape <a href="../chapters/mod-reproducibility-check.html">read_stat_tables()</a> already returns for <code>.jasp</code> and <code>.omv</code>, so all three formats can be processed identically downstream. Each table is a list with:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Element</th>
+<th>Contents</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>analysis</code></td>
+<td>the SPSS command that produced it (e.g.&nbsp;<code>"RELIABILITY"</code>)</td>
+</tr>
+<tr class="even">
+<td><code>title</code></td>
+<td>the table’s own caption</td>
+</tr>
+<tr class="odd">
+<td><code>data</code></td>
+<td>a tidy data.frame: one row per cell, one column per row/column dimension, plus <code>value</code> (or, for a chart entry, its plotted points — see <a href="#spv-charts">Part 3</a>)</td>
+</tr>
+<tr class="even">
+<td><code>syntax</code></td>
+<td>the exact SPSS syntax recovered from the archive, when recoverable</td>
+</tr>
+<tr class="odd">
+<td><code>table_index</code></td>
+<td>the table’s 1-based position in the original output document</td>
+</tr>
+<tr class="even">
+<td><code>is_chart</code></td>
+<td>
+<code>TRUE</code> for a chart entry, <code>FALSE</code> for a result table</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tb</span> <span class="op">&lt;-</span> <span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">tb</span><span class="op">$</span><span class="va">analysis</span></span>
+<span><span class="co">#&gt; [1] "Reliability"</span></span>
+<span><span class="va">tb</span><span class="op">$</span><span class="va">title</span></span>
+<span><span class="co">#&gt; [1] "Notes"</span></span>
+<span><span class="va">tb</span><span class="op">$</span><span class="va">data</span></span>
+<span><span class="co">#&gt;                                          Contents</span></span>
+<span><span class="co">#&gt; 1                                  Output Created</span></span>
+<span><span class="co">#&gt; 2                                        Comments</span></span>
+<span><span class="co">#&gt; 3                                    Input / Data</span></span>
+<span><span class="co">#&gt; 4                          Input / Active Dataset</span></span>
+<span><span class="co">#&gt; 5                                  Input / Filter</span></span>
+<span><span class="co">#&gt; 6                                  Input / Weight</span></span>
+<span><span class="co">#&gt; 7                              Input / Split File</span></span>
+<span><span class="co">#&gt; 8          Input / N of Rows in Working Data File</span></span>
+<span><span class="co">#&gt; 9  Missing Value Handling / Definition of Missing</span></span>
+<span><span class="co">#&gt; 10            Missing Value Handling / Cases Used</span></span>
+<span><span class="co">#&gt; 11                                         Syntax</span></span>
+<span><span class="co">#&gt; 12                     Resources / Processor Time</span></span>
+<span><span class="co">#&gt; 13                       Resources / Elapsed Time</span></span>
+<span><span class="co">#&gt; 14                           Input / Matrix Input</span></span>
+<span><span class="co">#&gt;                                                                                                                                    value</span></span>
+<span><span class="co">#&gt; 1                                                                                                                        13689606611.578</span></span>
+<span><span class="co">#&gt; 2                                                                                                                                       </span></span>
+<span><span class="co">#&gt; 3  D:\\stack\\Content\\PhD\\Projects\\OpenData_ReportingErrors\\Study2_PLOSvsFrontiers\\Data\\CodedData\\160518DoubleCodedDataCoders.csv</span></span>
+<span><span class="co">#&gt; 4                                                                                                                               DataSet2</span></span>
+<span><span class="co">#&gt; 5                                                                                                                                 &lt;none&gt;</span></span>
+<span><span class="co">#&gt; 6                                                                                                                                 &lt;none&gt;</span></span>
+<span><span class="co">#&gt; 7                                                                                                                                 &lt;none&gt;</span></span>
+<span><span class="co">#&gt; 8                                                                                                                                    399</span></span>
+<span><span class="co">#&gt; 9                                                                                                                     MISSING=EXCLUDE...</span></span>
+<span><span class="co">#&gt; 10                                                                                                                  Statistics are based</span></span>
+<span><span class="co">#&gt; 11                                                                                                                            [:^1\\n:]1</span></span>
+<span><span class="co">#&gt; 12                                                                                                                                     0</span></span>
+<span><span class="co">#&gt; 13                                                                                                                                 0.043</span></span>
+<span><span class="co">#&gt; 14</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The recovered syntax is worth looking at directly — this is the exact command SPSS ran, extracted from the output file alone (useful when a researcher shared <code>.spv</code> output but not their <code>.sps</code> syntax file):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tb</span><span class="op">$</span><span class="va">syntax</span></span>
+<span><span class="co">#&gt; [1] "NEW&nbsp;FILE.\nDATASET&nbsp;NAME&nbsp;DataSet1&nbsp;WINDOW=FRONT.\n\nGET&nbsp;DATA&nbsp;&nbsp;/TYPE=TXT\n&nbsp;&nbsp;/FILE=\"D:\\stack\\Content\\PhD\\Projects\\OpenData_ReportingErrors\\Study2_PLOSvsFrontiers\\Data\\CodedData\\160518DoubleCodedDataCoders.csv\"\n&nbsp;&nbsp;/ENCODING='UTF8'\n&nbsp;&nbsp;/DELCASE=LINE\n&nbsp;&nbsp;/DELIMITERS=\"&nbsp;;\"\n&nbsp;&nbsp;/QUALIFIER='\"'\n&nbsp;&nbsp;/ARRANGEMENT=DELIMITED\n&nbsp;&nbsp;/FIRSTCASE=2\n&nbsp;&nbsp;/IMPORTCASE=ALL\n&nbsp;&nbsp;/VARIABLES=\n&nbsp;&nbsp;article&nbsp;A18\n&nbsp;&nbsp;coder1&nbsp;F1.0\n&nbsp;&nbsp;coder1IN&nbsp;A5\n&nbsp;&nbsp;coder2&nbsp;F1.0\n&nbsp;&nbsp;coder2IN&nbsp;A5\n&nbsp;&nbsp;DataPromised1&nbsp;F1.0\n&nbsp;&nbsp;DataPromised2&nbsp;A2\n&nbsp;&nbsp;DataAvailable1&nbsp;F1.0\n&nbsp;&nbsp;DataAvailable2&nbsp;A2\n&nbsp;&nbsp;Remarks1&nbsp;A234\n&nbsp;&nbsp;Remarks2&nbsp;A221.\nCACHE.\nEXECUTE.\nDATASET&nbsp;NAME&nbsp;DataSet2&nbsp;WINDOW=FRONT.\nDATASET&nbsp;ACTIVATE&nbsp;DataSet2.\nRELIABILITY\n&nbsp;&nbsp;/VARIABLES=DataAvailable1&nbsp;DataAvailable2\n&nbsp;&nbsp;/SCALE('ALL&nbsp;VARIABLES')&nbsp;ALL\n&nbsp;&nbsp;/MODEL=ALPHA\n&nbsp;&nbsp;/ICC=MODEL(RANDOM)&nbsp;TYPE(ABSOLUTE)&nbsp;CIN=95&nbsp;TESTVAL=0."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" class="level3" data-number="29.3.3"><h3 data-number="29.3.3" class="anchored" data-anchor-id="result-tables-feed-the-same-pipeline-as-jasp-and-jamovi">
+<span class="header-section-number">29.3.3</span> Result tables feed the same pipeline as JASP and jamovi</h3>
+<p>Because <code>import_spv()</code>’s tables share JASP/jamovi’s shape, the same downstream functions apply without modification:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu">stat_results_long</span><span class="op">(</span><span class="va">tables</span>, paper_id <span class="op">=</span> <span class="st">"example"</span>, source_file <span class="op">=</span> <span class="st">"example.spv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">long</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis"</span>, <span class="st">"row_label"</span>, <span class="st">"statistic"</span>, <span class="st">"stato_label"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr></section></section><section id="spv-charts" class="level2" data-number="29.4"><h2 data-number="29.4" class="anchored" data-anchor-id="spv-charts">
+<span class="header-section-number">29.4</span> Part 3: Charts inside <code>.spv</code> files</h2>
+<p>Some <code>.spv</code> files also contain <strong>charts</strong> — a Q-Q plot from an <code>Explore</code> normality check, a scatterplot with a fitted trend line from <code>Curve Fit</code>, a box plot from a <code>Nonparametric Tests</code> comparison. <code>import_spv()</code> recovers these too, as extra entries in the same list of tables, distinguished by <code>is_chart = TRUE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chart_tables</span> <span class="op">&lt;-</span> <span class="fu">import_spv</span><span class="op">(</span><span class="st">"example-chart.spv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">chart_tables</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span></span>
+<span><span class="va">is_chart</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">chart_tables</span>, <span class="kw">function</span><span class="op">(</span><span class="va">tb</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">tb</span><span class="op">$</span><span class="va">is_chart</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/logical.html">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">is_chart</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A chart entry’s <code>$data</code> holds the actual plotted points rather than a result table:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chart</span> <span class="op">&lt;-</span> <span class="va">chart_tables</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">is_chart</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">chart</span><span class="op">$</span><span class="va">analysis</span></span>
+<span><span class="co">#&gt; [1] "Graph"</span></span>
+<span><span class="va">chart</span><span class="op">$</span><span class="va">title</span></span>
+<span><span class="co">#&gt; [1] "The Stochastic Relationship Between the Total Population of the County and the Number of Health Development Offices in Hungary as of 2022"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">chart</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         x y</span></span>
+<span><span class="co">#&gt; 1 1671004 7</span></span>
+<span><span class="co">#&gt; 2 1328790 6</span></span>
+<span><span class="co">#&gt; 3  419565 5</span></span>
+<span><span class="co">#&gt; 4  301492 0</span></span>
+<span><span class="co">#&gt; 5  338432 6</span></span>
+<span><span class="co">#&gt; 6  471309 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th><code>spv_chart_type</code></th>
+<th>
+<code>$data</code> columns</th>
+<th>What it represents</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>"point"</code></td>
+<td>
+<code>x</code>, <code>y</code>
+</td>
+<td>A scatterplot’s plotted points (e.g.&nbsp;<code>Curve Fit</code>, a Q-Q plot)</td>
+</tr>
+<tr class="even">
+<td><code>"boxplot"</code></td>
+<td>
+<code>category</code>, <code>value</code>
+</td>
+<td>A box plot’s raw per-case values, grouped by category</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>"point"</code> chart also carries any <strong>fitted trend line SPSS itself already computed</strong> — the exact formula, not something metacheck estimates:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">chart</span><span class="op">$</span><span class="va">data</span>, <span class="st">"spv_chart_fits"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [[1]]$name</span></span>
+<span><span class="co">#&gt; [1] NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$expr</span></span>
+<span><span class="co">#&gt; [1] "4.03+2.86E-6*x"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$fn</span></span>
+<span><span class="co">#&gt; function (x) </span></span>
+<span><span class="co">#&gt; 4.03 + 2.86e-06 * x</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x0000027fc9520e78&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>stat_results_long()</code> and <code>stat_output_json()</code> skip chart entries automatically (a chart’s <code>x</code>/<code>y</code> or <code>category</code>/<code>value</code> columns are plotted points, not statistics to extract), so passing <code>import_spv()</code>’s output straight through the usual pipeline is always safe, chart-bearing file or not.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>.spv</code>’s chart format has no public specification and no PSPP implementation to port from — it was reverse-engineered from real files found on <a href="https://zenodo.org/">Zenodo</a> and <a href="https://figshare.com/">Figshare</a>. Two chart mark types are currently supported (<code>&lt;point&gt;</code> and <code>&lt;schema&gt;</code>/box plot, above); others (bar charts, line charts) are recognised but not yet decoded, and are silently skipped rather than causing an error. Across a sample of real <code>.spv</code> files with charts, roughly 60% of individual charts decode successfully with the two supported types.</p>
+</div>
+</div>
+<hr></section><section id="part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html">
+<span class="header-section-number">29.5</span> Part 4: Exporting readable HTML — <code>export_jasp_html()</code>, <code>export_omv_html()</code>, <code>export_spv_html()</code>
+</h2>
+<p>Sometimes you don’t want the <em>data</em> out of a <code>.jasp</code>/<code>.omv</code>/<code>.spv</code> file — you want to <strong>look at the output</strong>, the way the original software would show it, without having JASP, jamovi, or SPSS installed. Each format has its own export function for exactly this.</p>
+<section id="jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" class="level3" data-number="29.5.1"><h3 data-number="29.5.1" class="anchored" data-anchor-id="jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output">
+<span class="header-section-number">29.5.1</span> JASP and jamovi: re-exporting the software’s own rendered output</h3>
+<p>A <code>.jasp</code> or <code>.omv</code> archive already contains a fully rendered <code>index.html</code> — the same output view JASP or jamovi itself displays, including any plots, saved as part of the archive. <code>export_jasp_html()</code> and <code>export_omv_html()</code> extract that <code>index.html</code> as-is and <strong>inline every plot it references as a base64 image</strong>, so the result is a single, portable <code>.html</code> file with nothing else to keep alongside it — you can email it, or open it years later, with no dependency on the original archive.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_jasp_html</span><span class="op">(</span><span class="st">"example.jasp"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>By default, the HTML file is written next to the source archive with the same name (<code>example.jasp</code> → <code>example.html</code>). Pass <code>out =</code> to choose a different destination:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_jasp_html</span><span class="op">(</span><span class="st">"example.jasp"</span>, out <span class="op">=</span> <span class="st">"example-jasp-output.html"</span><span class="op">)</span></span>
+<span><span class="fu">export_omv_html</span><span class="op">(</span><span class="st">"example.omv"</span>, out <span class="op">=</span> <span class="st">"example-omv-output.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The result looks exactly like JASP’s or jamovi’s own output window — because it <em>is</em> that output window, just re-packaged as one file.</p>
+<iframe src="example-jasp-output.html" style="width: 100%; height: 500px; border: 1px solid #ccc;"></iframe>
+</section><section id="spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="level3" data-number="29.5.2"><h3 data-number="29.5.2" class="anchored" data-anchor-id="spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts">
+<span class="header-section-number">29.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</h3>
+<p>Unlike <code>.jasp</code>/<code>.omv</code>, a <code>.spv</code> archive has <strong>no rendered view of its own</strong> to re-export. <code>export_spv_html()</code> instead builds a page from what <code>import_spv()</code> already decodes: one heading per analysis, its recovered syntax shown underneath, one HTML table per result table, and — for a chart entry — an actual plot, rendered from the chart’s own decoded points and embedded as a base64 image, the same way <code>export_jasp_html()</code> inlines JASP’s plots.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_spv_html</span><span class="op">(</span><span class="st">"example.spv"</span>, out <span class="op">=</span> <span class="st">"example-spv-output.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<iframe src="example-spv-output.html" style="width: 100%; height: 500px; border: 1px solid #ccc;"></iframe>
+<p><code>example.spv</code> has no charts, so this particular export is tables-only. <code>example-chart.spv</code> — the file from <a href="#spv-charts">Part 3</a> — does have one, and its export includes the rendered scatterplot:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_spv_html</span><span class="op">(</span><span class="st">"example-chart.spv"</span>, out <span class="op">=</span> <span class="st">"example-chart-output.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<iframe src="example-chart-output.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
+<p>Not every chart in a <code>.spv</code> file can be rendered this way yet — see the note in <a href="#spv-charts">Part 3</a> on which mark types are currently supported. A chart that cannot be decoded is skipped, with the rest of the file’s tables (and any other decodable charts) still exported normally.</p>
+<hr></section></section><section id="summary" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">29.6</span> Summary</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Task</th>
+<th>JASP</th>
+<th>jamovi</th>
+<th>SPSS Viewer</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Import data + analyses</td>
+<td><code>import_jasp(path)</code></td>
+<td><code>import_omv(path)</code></td>
+<td><code>import_spv(path)</code></td>
+</tr>
+<tr class="even">
+<td>Export readable HTML</td>
+<td><code>export_jasp_html(path, out)</code></td>
+<td><code>export_omv_html(path, out)</code></td>
+<td><code>export_spv_html(path, out)</code></td>
+</tr>
+<tr class="odd">
+<td>Rendered view in the archive?</td>
+<td>Yes (re-exported, plots inlined)</td>
+<td>Yes (re-exported, plots inlined)</td>
+<td>No (tables and charts both built fresh from decoded data — see <a href="#spv-charts">Part 3</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>All three importers return data in the shape the rest of metacheck already expects — a labelled data.frame for <code>import_jasp()</code>/<code>import_omv()</code>, and <a href="../chapters/mod-reproducibility-check.html">read_stat_tables()</a>’s table-list shape for <code>import_spv()</code> — so <a href="../chapters/mod-data-check.html">data_check</a>, <a href="../chapters/mod-codebook-check.html">codebook_check</a>, and <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> all consume these formats automatically, with no extra steps.</p>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/scienceverse\.github\.io\/metacheck_book\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="../chapters/mod-reproducibility-check.html" class="pagination-link" aria-label="Reproducibility Check">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/mod-ref-consistency.html" class="pagination-link" aria-label="Reference Consistency">
+        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Built with <a href="https://quarto.org">Quarto</a>.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/importing-exporting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

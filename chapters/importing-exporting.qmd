@@ -1,0 +1,271 @@
+---
+title: "Importing and Exporting JASP, jamovi, and SPSS Viewer Files"
+vignette: >
+  %\VignetteIndexEntry{Importing and Exporting JASP, jamovi, and SPSS Viewer Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+devtools::load_all("C:/Users/dlakens/OneDrive - TU Eindhoven/git_repos/metacheck")
+```
+
+::: callout-important
+This chapter needs the **data_check branch** of metacheck, since `import_jasp()`, `import_omv()`, `import_spv()`, and the three `export_*_html()` functions are recent, not-yet-released additions. These functions will eventually make it to main.
+:::
+
+## Overview
+
+Metacheck is an R based tool, but it would be useful to load data, code, and output files from common statistical software packages. This would allow the reproducibility_check module to take the output, and check it against the values reported in the manuscript. In psychology, SPSS, JASP, and Jamovi are commonly used. JASP and Jamovi have made the extremely sensible design choice that a .jasp or .omv file contain the data, code, and output. This means that sharing those files guarantees complete reproducibility of the analysis by design. 
+
+Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types. 
+
+Each format is a single archive that bundles the **data**, its **variable metadata** (measurement level, value labels), and the **analyses** that were run against it — which is exactly why [reproducibility_check](mod-reproducibility-check.qmd) treats a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself.
+
+There is exactly **one import function per format**:
+
+- `import_jasp(path)`
+- `import_omv(path)`
+- `import_spv(path)`
+
+and, going the other way, exactly **one export function per format** that turns the archive into a single, readable, portable HTML file:
+
+- `export_jasp_html(path, out = NULL)`
+- `export_omv_html(path, out = NULL)`
+- `export_spv_html(path, out = NULL)`
+
+This chapter demonstrates all six against small real example files (`example.jasp`, `example.omv`, `example.spv`, `example-chart.spv`), committed alongside this chapter so the examples below execute for real when the book is rendered.
+
+---
+
+## Part 1: Importing data — `import_jasp()` and `import_omv()`
+
+### Why JASP and jamovi are read like SPSS files
+
+A `.jasp` or `.omv` archive is a ZIP file. Inside, alongside the raw data, each variable carries the same kind of metadata an SPSS `.sav` file carries: a **measurement level** (nominal, ordinal, continuous) and, for categorical variables, **value labels** mapping a numeric code (`1`, `2`) to a meaningful label (`"Control"`, `"Treatment"`). Metacheck reads that metadata using the same [haven](https://haven.tidyverse.org/)-style `label` / `labels` attributes that `haven::read_sav()` attaches — so a `.jasp` or `.omv` file can serve as its own codebook, exactly like a `.sav` file, with no special-casing anywhere downstream (see [codebook_check](mod-codebook-check.qmd)).
+
+### Reading a JASP file
+
+```{r}
+jasp <- import_jasp("example.jasp")
+
+# the dataset itself
+dim(jasp$data)
+head(jasp$data)
+```
+
+`import_jasp()` returns a list with four elements:
+
+| Element | Contents |
+|---|---|
+| `$data` | the dataset as a data.frame; labelled columns carry `label` / `labels` attributes |
+| `$columns` | a data.frame of `name` and `type` (JASP's own measurement-level classification) |
+| `$analyses` | the parsed `analyses.json` — JASP's own record of every analysis run |
+| `$format` | `"binary"` (JASP ≤ ~0.16) or `"sqlite"` (JASP ≥ ~0.17) — both are handled transparently |
+| `$data_file_path` | the original file JASP imported the data from, if recorded |
+
+Value labels are attached exactly like `haven::read_sav()` attaches them:
+
+```{r}
+labelled <- vapply(jasp$data, function(col) !is.null(attr(col, "labels")), logical(1))
+names(jasp$data)[labelled]
+
+# one example
+attr(jasp$data[[names(jasp$data)[labelled][1]]], "labels")
+```
+
+### Reading a jamovi file
+
+`import_omv()` is the jamovi counterpart, returning the same shape:
+
+```{r}
+omv <- import_omv("example.omv")
+
+dim(omv$data)
+omv$columns
+```
+
+The one difference is `$analyses`: jamovi does not store a structured `analyses.json` the way JASP does, so `import_omv()` recovers each analysis as a **readable one-line summary**, including the reproducible R syntax jamovi embeds internally when it is recoverable:
+
+```{r}
+omv$analyses
+```
+
+### Using the data like any other data source
+
+Because both readers attach the same haven-style attributes, `.jasp` and `.omv` files flow through the rest of metacheck exactly like a `.sav` file — for example, [data_check](mod-data-check.qmd) and [codebook_check](mod-codebook-check.qmd) both read them with no special code path:
+
+```{r}
+#| eval: false
+mo <- module_run(paper, "data_check", local_path = "path/to/study_folder")
+```
+
+If that folder contains a `.jasp` or `.omv` file, its embedded labels are harvested as if they were a codebook, and its data is read as if it were a `.sav`.
+
+---
+
+## Part 2: Importing SPSS Viewer output — `import_spv()`
+
+### What a `.spv` file is, and why it is different
+
+A `.spv` file is not a data file at all — it is IBM SPSS's **rendered output window**, saved to disk. It contains the result **tables** SPSS produced (a `T-Test` table, a `Reliability Statistics` table, an `ICC` table, ...) together with the exact **syntax** that produced them, and, when the output included one, any **charts** the analysis generated (a Q-Q plot, a scatterplot with a fitted curve, a box plot, ...). Unlike `.jasp`/`.omv`, `.spv` has no rendered HTML view baked into the archive — everything has to be decoded from SPSS's own internal representation.
+
+`.spv` has no public specification. Metacheck's table reader is ported from [GNU PSPP](https://www.gnu.org/software/pspp/)'s GPL-licensed decoder — the only known public implementation of this format — and handles both the older ("legacy") and modern (SPSS 21+, "light-binary") table encodings transparently. Charts have no PSPP implementation to port from at all (PSPP itself does not render `.spv` charts); metacheck's chart decoder was built entirely by inspecting real `.spv` files, described in [Part 3](#spv-charts) below.
+
+### Reading an SPSS Viewer file
+
+```{r}
+tables <- import_spv("example.spv")
+
+length(tables)
+
+# what analyses were recovered
+unique(vapply(tables, function(tb) tb$analysis %||% NA_character_, character(1)))
+```
+
+`import_spv()` returns a **list of result tables** — the same shape [read_stat_tables()](mod-reproducibility-check.qmd) already returns for `.jasp` and `.omv`, so all three formats can be processed identically downstream. Each table is a list with:
+
+| Element | Contents |
+|---|---|
+| `analysis` | the SPSS command that produced it (e.g. `"RELIABILITY"`) |
+| `title` | the table's own caption |
+| `data` | a tidy data.frame: one row per cell, one column per row/column dimension, plus `value` (or, for a chart entry, its plotted points — see [Part 3](#spv-charts)) |
+| `syntax` | the exact SPSS syntax recovered from the archive, when recoverable |
+| `table_index` | the table's 1-based position in the original output document |
+| `is_chart` | `TRUE` for a chart entry, `FALSE` for a result table |
+
+```{r}
+tb <- tables[[1]]
+tb$analysis
+tb$title
+tb$data
+```
+
+The recovered syntax is worth looking at directly — this is the exact command SPSS ran, extracted from the output file alone (useful when a researcher shared `.spv` output but not their `.sps` syntax file):
+
+```{r}
+tb$syntax
+```
+
+### Result tables feed the same pipeline as JASP and jamovi
+
+Because `import_spv()`'s tables share JASP/jamovi's shape, the same downstream functions apply without modification:
+
+```{r}
+#| eval: false
+long <- stat_results_long(tables, paper_id = "example", source_file = "example.spv")
+head(long[, c("analysis", "row_label", "statistic", "stato_label", "value")])
+```
+
+---
+
+## Part 3: Charts inside `.spv` files {#spv-charts}
+
+Some `.spv` files also contain **charts** — a Q-Q plot from an `Explore` normality check, a scatterplot with a fitted trend line from `Curve Fit`, a box plot from a `Nonparametric Tests` comparison. `import_spv()` recovers these too, as extra entries in the same list of tables, distinguished by `is_chart = TRUE`:
+
+```{r}
+chart_tables <- import_spv("example-chart.spv")
+length(chart_tables)
+
+is_chart <- vapply(chart_tables, function(tb) isTRUE(tb$is_chart), logical(1))
+which(is_chart)
+```
+
+A chart entry's `$data` holds the actual plotted points rather than a result table:
+
+```{r}
+chart <- chart_tables[[which(is_chart)]]
+chart$analysis
+chart$title
+head(chart$data)
+```
+
+| `spv_chart_type` | `$data` columns | What it represents |
+|---|---|---|
+| `"point"` | `x`, `y` | A scatterplot's plotted points (e.g. `Curve Fit`, a Q-Q plot) |
+| `"boxplot"` | `category`, `value` | A box plot's raw per-case values, grouped by category |
+
+A `"point"` chart also carries any **fitted trend line SPSS itself already computed** — the exact formula, not something metacheck estimates:
+
+```{r}
+attr(chart$data, "spv_chart_fits")
+```
+
+`stat_results_long()` and `stat_output_json()` skip chart entries automatically (a chart's `x`/`y` or `category`/`value` columns are plotted points, not statistics to extract), so passing `import_spv()`'s output straight through the usual pipeline is always safe, chart-bearing file or not.
+
+::: callout-note
+`.spv`'s chart format has no public specification and no PSPP implementation to port from — it was reverse-engineered from real files found on [Zenodo](https://zenodo.org/) and [Figshare](https://figshare.com/). Two chart mark types are currently supported (`<point>` and `<schema>`/box plot, above); others (bar charts, line charts) are recognised but not yet decoded, and are silently skipped rather than causing an error. Across a sample of real `.spv` files with charts, roughly 60% of individual charts decode successfully with the two supported types.
+:::
+
+---
+
+## Part 4: Exporting readable HTML — `export_jasp_html()`, `export_omv_html()`, `export_spv_html()`
+
+Sometimes you don't want the *data* out of a `.jasp`/`.omv`/`.spv` file — you want to **look at the output**, the way the original software would show it, without having JASP, jamovi, or SPSS installed. Each format has its own export function for exactly this.
+
+### JASP and jamovi: re-exporting the software's own rendered output
+
+A `.jasp` or `.omv` archive already contains a fully rendered `index.html` — the same output view JASP or jamovi itself displays, including any plots, saved as part of the archive. `export_jasp_html()` and `export_omv_html()` extract that `index.html` as-is and **inline every plot it references as a base64 image**, so the result is a single, portable `.html` file with nothing else to keep alongside it — you can email it, or open it years later, with no dependency on the original archive.
+
+```{r}
+export_jasp_html("example.jasp")
+```
+
+By default, the HTML file is written next to the source archive with the same name (`example.jasp` → `example.html`). Pass `out = ` to choose a different destination:
+
+```{r}
+export_jasp_html("example.jasp", out = "example-jasp-output.html")
+export_omv_html("example.omv", out = "example-omv-output.html")
+```
+
+The result looks exactly like JASP's or jamovi's own output window — because it *is* that output window, just re-packaged as one file.
+
+```{=html}
+<iframe src="example-jasp-output.html" style="width: 100%; height: 500px; border: 1px solid #ccc;"></iframe>
+```
+
+### SPSS Viewer: building a readable view from the extracted tables and charts
+
+Unlike `.jasp`/`.omv`, a `.spv` archive has **no rendered view of its own** to re-export. `export_spv_html()` instead builds a page from what `import_spv()` already decodes: one heading per analysis, its recovered syntax shown underneath, one HTML table per result table, and — for a chart entry — an actual plot, rendered from the chart's own decoded points and embedded as a base64 image, the same way `export_jasp_html()` inlines JASP's plots.
+
+```{r}
+export_spv_html("example.spv", out = "example-spv-output.html")
+```
+
+```{=html}
+<iframe src="example-spv-output.html" style="width: 100%; height: 500px; border: 1px solid #ccc;"></iframe>
+```
+
+`example.spv` has no charts, so this particular export is tables-only. `example-chart.spv` — the file from [Part 3](#spv-charts) — does have one, and its export includes the rendered scatterplot:
+
+```{r}
+export_spv_html("example-chart.spv", out = "example-chart-output.html")
+```
+
+```{=html}
+<iframe src="example-chart-output.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
+```
+
+Not every chart in a `.spv` file can be rendered this way yet — see the note in [Part 3](#spv-charts) on which mark types are currently supported. A chart that cannot be decoded is skipped, with the rest of the file's tables (and any other decodable charts) still exported normally.
+
+```{r, include = FALSE}
+# tidy up the HTML files generated by this chapter's examples
+unlink(c("example-jasp-output.html", "example-omv-output.html",
+        "example-spv-output.html", "example-chart-output.html"))
+```
+
+---
+
+## Summary
+
+| Task | JASP | jamovi | SPSS Viewer |
+|---|---|---|---|
+| Import data + analyses | `import_jasp(path)` | `import_omv(path)` | `import_spv(path)` |
+| Export readable HTML | `export_jasp_html(path, out)` | `export_omv_html(path, out)` | `export_spv_html(path, out)` |
+| Rendered view in the archive? | Yes (re-exported, plots inlined) | Yes (re-exported, plots inlined) | No (tables and charts both built fresh from decoded data — see [Part 3](#spv-charts)) |
+
+All three importers return data in the shape the rest of metacheck already expects — a labelled data.frame for `import_jasp()`/`import_omv()`, and [read_stat_tables()](mod-reproducibility-check.qmd)'s table-list shape for `import_spv()` — so [data_check](mod-data-check.qmd), [codebook_check](mod-codebook-check.qmd), and [reproducibility_check](mod-reproducibility-check.qmd) all consume these formats automatically, with no extra steps.
