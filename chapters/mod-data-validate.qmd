@@ -36,6 +36,8 @@ The `data_validate` module runs automated **data-quality checks** on every colum
 - **Mixed / legacy encoding** — text whose bytes are not valid UTF-8.
 - **Personal information** — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, credit-card numbers, geographic coordinates, free text).
 
+For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_validate` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet. These were formerly checked by a separate `excel_check` module; that module no longer exists, and its checks now run automatically as part of `data_validate`, on the same file `data_check` already located.
+
 It also produces an inventory of **demographic columns**, a **Qualtrics survey metadata** summary, a **careless-responding** screen for survey data, and a **combined distribution figure** of the numeric columns.
 
 ::: callout-note
@@ -150,6 +152,60 @@ Column *names* are checked too, because a bad name breaks downstream reuse — a
 data_check_colname("this/is:an*illegal|name")$problem
 #> TRUE
 ```
+
+## Spreadsheet formatting
+
+Every check so far reads the data **after** `data_check` has parsed it into a data frame — but a spreadsheet file can be badly formatted in ways that are invisible once it is read that way. `data_validate` also inspects the **raw workbook** directly for four kinds of non-machine-readable formatting:
+
+- **Colour coding** — cells whose *fill colour* is used to encode information (for example, marking excluded participants in red). Colour is invisible to any analysis script and is lost on CSV export.
+- **Merged cells** — merged ranges break the rectangular grid that data frames require, and typically indicate multi-level headers that a program cannot parse.
+- **Empty rows / empty or unnamed columns** — fully blank rows inside the data range, or columns with a blank header or no data beneath one.
+- **Header not on the first row** — a banner, blank, or units row sitting above the real column header, so the file does not read as a clean table (the reader takes the junk row as the header and invents names like `...1`, `...4`, or spreads one merged label across many columns).
+
+This runs on **every spreadsheet format** `data_check` recognises — `.xlsx`, OpenDocument `.ods`/`.fods`, and legacy `.xls` — reading the workbook's own XML directly for colour and merge information that a data-reading package like `readxl` discards entirely. It runs on the file `data_check` already located (via its `structure` table), independently of whether that file could actually be extracted into a clean tabular preview: a merged banner cell or an offset header is very often *why* extraction failed in the first place, so this check must not depend on a successful preview to run.
+
+::: callout-note
+This was formerly a separate module, `excel_check`. It no longer exists on its own — every check it performed is now part of `data_validate`, run automatically alongside the column-level checks, on the same files.
+:::
+
+```{r}
+#| eval: !expr requireNamespace("openxlsx", quietly = TRUE)
+repo_xl <- file.path(tempdir(), "spreadsheet_demo")
+dir.create(file.path(repo_xl, "data"), recursive = TRUE, showWarnings = FALSE)
+
+# a messy workbook: colour, a merge, and an empty column
+wb <- openxlsx::createWorkbook()
+openxlsx::addWorksheet(wb, "Data")
+df <- data.frame(id = 1:4, group = c("a", "b", "a", "b"),
+                 notes = rep(NA, 4), score = c(10, 20, 30, 40))
+openxlsx::writeData(wb, "Data", df)
+openxlsx::addStyle(wb, "Data", openxlsx::createStyle(fgFill = "#FFCC00"),
+                   rows = 2, cols = 4)                 # a colour-coded cell
+openxlsx::mergeCells(wb, "Data", cols = 1:2, rows = 7)  # a merged range
+openxlsx::saveWorkbook(wb, file.path(repo_xl, "data", "messy.xlsx"),
+                       overwrite = TRUE)
+
+# a clean workbook, for comparison
+openxlsx::write.xlsx(data.frame(id = 1:3, score = c(1.1, 2.2, 3.3)),
+                     file.path(repo_xl, "data", "clean.xlsx"))
+```
+
+```{r}
+#| eval: !expr requireNamespace("openxlsx", quietly = TRUE)
+mo_xl <- module_run(test_paper(), "data_validate",
+                    local_path = repo_xl, local_only = TRUE)
+mo_xl$table[!is.na(mo_xl$table$label) | mo_xl$table$check %in%
+             c("Colour coding", "Merged cells", "Empty or unnamed columns"),
+           c("source_file", "label", "check", "detail")] |>
+  knitr::kable()
+```
+
+Only `messy.xlsx` is flagged; the clean workbook produces no rows. These findings carry `column = NA` in the `$table` (the issue is not about one column, it is about the sheet), and the sheet name is shown under `label` instead. They join the same "Issues Identified" report table as every other check, so a reviewer sees every problem with a file in one place rather than in a separate report.
+
+Two further, related checks fire on any spreadsheet regardless of formatting:
+
+- **"Not a rectangular dataset"** — `data_check` itself already decided this file does not read as a usable dataset (mostly free text, or almost entirely empty); `data_validate` adds the structural note here so the finding shows up in the same table rather than only in `data_check`'s own output.
+- **"Un-inspectable (.xls)"** — legacy binary `.xls` has no XML to inspect for colour or merges; it is still checked for an offset header (which does not need the XML structure), but colour/merge/empty-row-or-column checks are skipped with a note recommending conversion to `.xlsx` or `.ods`.
 
 ## Mixed / legacy encoding
 
@@ -307,9 +363,11 @@ module_run(test_paper(), "data_validate", local_path = repo,
 | Light | Meaning |
 |---|---|
 | **green** | columns were checked and no issues were found |
-| **yellow** | fewer than a quarter of columns were flagged (or only careless-responding respondents were flagged) |
+| **yellow** | fewer than a quarter of columns were flagged, or only careless-responding respondents or spreadsheet-formatting issues were found |
 | **red** | a quarter or more of columns were flagged |
-| **na** | there were no readable tabular data files to validate |
+| **na** | there were no readable tabular data files to validate, and no spreadsheet-formatting issues either |
+
+Spreadsheet-formatting findings are file-level, not column-level, so they are never counted in the quarter-of-columns red threshold — a workbook with a colour-coded cell does not turn the whole result red the way a quarter of columns having out-of-range values would. If **no** columns could be validated at all (no readable tabular data) but a spreadsheet file *was* found with formatting problems, the result is `yellow`, not `na` — there is a real, actionable finding to report even though nothing could be checked at the column level.
 
 ## Options
 
@@ -328,15 +386,16 @@ A larger `outlier_k` widens the fences used for the distribution figure and the 
 |---|---|
 | `$traffic_light` | `green` / `yellow` / `red` / `na` |
 | `$summary_text` | plain-text summary with a per-check breakdown |
-| `$summary_table` | `paper_id`, `column_n`, `flagged_n` |
-| `$table` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` |
+| `$summary_table` | `paper_id`, `column_n`, `flagged_n`, `spreadsheet_file_n`, `spreadsheet_flagged_file_n` |
+| `$table` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` — spreadsheet-formatting findings join the same table with `column = NA` and the sheet name in `label` |
 | `$demographics` | one row per detected demographic column: `source_file`, `column`, `demographic` |
 | `$qualtrics` | one row per detected Qualtrics export: response count, preview/unfinished rows, median time, collection window, PII fields present |
 | `$careless` | one row per flagged respondent (survey data), aggregated across scale blocks |
-| `$report` | formatted report with the issue breakdown, out-of-range table, combined distribution figure, demographic inventory, Qualtrics summary, and careless-responding table |
+| `$report` | formatted report with the issue breakdown, out-of-range table, spreadsheet-formatting table, combined distribution figure, Qualtrics summary, and careless-responding table |
+
+`spreadsheet_file_n` counts every spreadsheet file examined (`.xlsx`/`.xls`/`.ods`/`.fods`), whether or not it had any issues; `spreadsheet_flagged_file_n` counts how many of those had at least one formatting finding.
 
 ## Related
 
-- [Data Check](mod-data-check.qmd) is run first and supplies the columns, facets, and read data frames.
+- [Data Check](mod-data-check.qmd) is run first and supplies the columns, facets, and read data frames, including which files are spreadsheets and where they are stored locally.
 - [Codebook Check](mod-codebook-check.qmd) checks whether those columns are documented — the `label` column here, and the codebook ground truth for the numeric checks, come from its output when available.
-- [Excel Check](mod-excel-check.qmd) catches spreadsheet-formatting problems that `data_validate` cannot see once a file is read into a data frame.

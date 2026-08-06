@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>29&nbsp; Importing and Exporting JASP, jamovi, and SPSS Viewer Files – The Metacheck Manual</title>
+<title>27&nbsp; Importing and Exporting JASP, jamovi, and SPSS Viewer Files – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/mod-ref-consistency.html" rel="next">
-<link href="../chapters/mod-reproducibility-check.html" rel="prev">
+<link href="../chapters/mod-reproducibility-check.html" rel="next">
+<link href="../chapters/mod-psychds-check.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/importing-exporting.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/importing-exporting.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -309,20 +309,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-excel-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Excel Check</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -333,50 +333,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -393,13 +387,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -435,39 +429,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">29.1</span> Overview</a></li>
+<li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">27.1</span> Overview</a></li>
   <li>
-<a href="#part-1-importing-data-import_jasp-and-import_omv" id="toc-part-1-importing-data-import_jasp-and-import_omv" class="nav-link" data-scroll-target="#part-1-importing-data-import_jasp-and-import_omv"><span class="header-section-number">29.2</span> Part 1: Importing data — <code>import_jasp()</code> and <code>import_omv()</code></a>
+<a href="#part-1-importing-data-import_jasp-and-import_omv" id="toc-part-1-importing-data-import_jasp-and-import_omv" class="nav-link" data-scroll-target="#part-1-importing-data-import_jasp-and-import_omv"><span class="header-section-number">27.2</span> Part 1: Importing data — <code>import_jasp()</code> and <code>import_omv()</code></a>
   <ul class="collapse">
-<li><a href="#why-jasp-and-jamovi-are-read-like-spss-files" id="toc-why-jasp-and-jamovi-are-read-like-spss-files" class="nav-link" data-scroll-target="#why-jasp-and-jamovi-are-read-like-spss-files"><span class="header-section-number">29.2.1</span> Why JASP and jamovi are read like SPSS files</a></li>
-  <li><a href="#reading-a-jasp-file" id="toc-reading-a-jasp-file" class="nav-link" data-scroll-target="#reading-a-jasp-file"><span class="header-section-number">29.2.2</span> Reading a JASP file</a></li>
-  <li><a href="#reading-a-jamovi-file" id="toc-reading-a-jamovi-file" class="nav-link" data-scroll-target="#reading-a-jamovi-file"><span class="header-section-number">29.2.3</span> Reading a jamovi file</a></li>
-  <li><a href="#using-the-data-like-any-other-data-source" id="toc-using-the-data-like-any-other-data-source" class="nav-link" data-scroll-target="#using-the-data-like-any-other-data-source"><span class="header-section-number">29.2.4</span> Using the data like any other data source</a></li>
+<li><a href="#why-jasp-and-jamovi-are-read-like-spss-files" id="toc-why-jasp-and-jamovi-are-read-like-spss-files" class="nav-link" data-scroll-target="#why-jasp-and-jamovi-are-read-like-spss-files"><span class="header-section-number">27.2.1</span> Why JASP and jamovi are read like SPSS files</a></li>
+  <li><a href="#reading-a-jasp-file" id="toc-reading-a-jasp-file" class="nav-link" data-scroll-target="#reading-a-jasp-file"><span class="header-section-number">27.2.2</span> Reading a JASP file</a></li>
+  <li><a href="#reading-a-jamovi-file" id="toc-reading-a-jamovi-file" class="nav-link" data-scroll-target="#reading-a-jamovi-file"><span class="header-section-number">27.2.3</span> Reading a jamovi file</a></li>
+  <li><a href="#using-the-data-like-any-other-data-source" id="toc-using-the-data-like-any-other-data-source" class="nav-link" data-scroll-target="#using-the-data-like-any-other-data-source"><span class="header-section-number">27.2.4</span> Using the data like any other data source</a></li>
   </ul>
 </li>
   <li>
-<a href="#part-2-importing-spss-viewer-output-import_spv" id="toc-part-2-importing-spss-viewer-output-import_spv" class="nav-link" data-scroll-target="#part-2-importing-spss-viewer-output-import_spv"><span class="header-section-number">29.3</span> Part 2: Importing SPSS Viewer output — <code>import_spv()</code></a>
+<a href="#part-2-importing-spss-viewer-output-import_spv" id="toc-part-2-importing-spss-viewer-output-import_spv" class="nav-link" data-scroll-target="#part-2-importing-spss-viewer-output-import_spv"><span class="header-section-number">27.3</span> Part 2: Importing SPSS Viewer output — <code>import_spv()</code></a>
   <ul class="collapse">
-<li><a href="#what-a-.spv-file-is-and-why-it-is-different" id="toc-what-a-.spv-file-is-and-why-it-is-different" class="nav-link" data-scroll-target="#what-a-.spv-file-is-and-why-it-is-different"><span class="header-section-number">29.3.1</span> What a <code>.spv</code> file is, and why it is different</a></li>
-  <li><a href="#reading-an-spss-viewer-file" id="toc-reading-an-spss-viewer-file" class="nav-link" data-scroll-target="#reading-an-spss-viewer-file"><span class="header-section-number">29.3.2</span> Reading an SPSS Viewer file</a></li>
-  <li><a href="#result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" id="toc-result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" class="nav-link" data-scroll-target="#result-tables-feed-the-same-pipeline-as-jasp-and-jamovi"><span class="header-section-number">29.3.3</span> Result tables feed the same pipeline as JASP and jamovi</a></li>
+<li><a href="#what-a-.spv-file-is-and-why-it-is-different" id="toc-what-a-.spv-file-is-and-why-it-is-different" class="nav-link" data-scroll-target="#what-a-.spv-file-is-and-why-it-is-different"><span class="header-section-number">27.3.1</span> What a <code>.spv</code> file is, and why it is different</a></li>
+  <li><a href="#reading-an-spss-viewer-file" id="toc-reading-an-spss-viewer-file" class="nav-link" data-scroll-target="#reading-an-spss-viewer-file"><span class="header-section-number">27.3.2</span> Reading an SPSS Viewer file</a></li>
+  <li><a href="#result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" id="toc-result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" class="nav-link" data-scroll-target="#result-tables-feed-the-same-pipeline-as-jasp-and-jamovi"><span class="header-section-number">27.3.3</span> Result tables feed the same pipeline as JASP and jamovi</a></li>
   </ul>
 </li>
-  <li><a href="#spv-charts" id="toc-spv-charts" class="nav-link" data-scroll-target="#spv-charts"><span class="header-section-number">29.4</span> Part 3: Charts inside <code>.spv</code> files</a></li>
+  <li><a href="#spv-charts" id="toc-spv-charts" class="nav-link" data-scroll-target="#spv-charts"><span class="header-section-number">27.4</span> Part 3: Charts inside <code>.spv</code> files</a></li>
   <li>
-<a href="#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" id="toc-part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" class="nav-link" data-scroll-target="#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html"><span class="header-section-number">29.5</span> Part 4: Exporting readable HTML — <code>export_jasp_html()</code>, <code>export_omv_html()</code>, <code>export_spv_html()</code></a>
+<a href="#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" id="toc-part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" class="nav-link" data-scroll-target="#part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html"><span class="header-section-number">27.5</span> Part 4: Exporting readable HTML — <code>export_jasp_html()</code>, <code>export_omv_html()</code>, <code>export_spv_html()</code></a>
   <ul class="collapse">
-<li><a href="#jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" id="toc-jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" class="nav-link" data-scroll-target="#jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output"><span class="header-section-number">29.5.1</span> JASP and jamovi: re-exporting the software’s own rendered output</a></li>
-  <li><a href="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" id="toc-spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="nav-link" data-scroll-target="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts"><span class="header-section-number">29.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</a></li>
+<li><a href="#jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" id="toc-jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" class="nav-link" data-scroll-target="#jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output"><span class="header-section-number">27.5.1</span> JASP and jamovi: re-exporting the software’s own rendered output</a></li>
+  <li><a href="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" id="toc-spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="nav-link" data-scroll-target="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts"><span class="header-section-number">27.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</a></li>
   </ul>
 </li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">29.6</span> Summary</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">27.6</span> Summary</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/importing-exporting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/importing-exporting.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/importing-exporting.html"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>
+<span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span>
 </h1>
 </div>
 
@@ -495,8 +489,8 @@ Important
 <p>This chapter needs the <strong>data_check branch</strong> of metacheck, since <code>import_jasp()</code>, <code>import_omv()</code>, <code>import_spv()</code>, and the three <code>export_*_html()</code> functions are recent, not-yet-released additions. These functions will eventually make it to main.</p>
 </div>
 </div>
-<section id="overview" class="level2" data-number="29.1"><h2 data-number="29.1" class="anchored" data-anchor-id="overview">
-<span class="header-section-number">29.1</span> Overview</h2>
+<section id="overview" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="overview">
+<span class="header-section-number">27.1</span> Overview</h2>
 <p>Metacheck is an R based tool, but it would be useful to load data, code, and output files from common statistical software packages. This would allow the reproducibility_check module to take the output, and check it against the values reported in the manuscript. In psychology, SPSS, JASP, and Jamovi are commonly used. JASP and Jamovi have made the extremely sensible design choice that a .jasp or .omv file contain the data, code, and output. This means that sharing those files guarantees complete reproducibility of the analysis by design.</p>
 <p>Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types.</p>
 <p>Each format is a single archive that bundles the <strong>data</strong>, its <strong>variable metadata</strong> (measurement level, value labels), and the <strong>analyses</strong> that were run against it — which is exactly why <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> treats a self-contained <code>.jasp</code>/<code>.omv</code>/<code>.spv</code> file as reproducible “for free”: no code needs to be executed, because the results are already stored inside the file itself.</p>
@@ -513,14 +507,14 @@ Important
 <li><code>export_spv_html(path, out = NULL)</code></li>
 </ul>
 <p>This chapter demonstrates all six against small real example files (<code>example.jasp</code>, <code>example.omv</code>, <code>example.spv</code>, <code>example-chart.spv</code>), committed alongside this chapter so the examples below execute for real when the book is rendered.</p>
-<hr></section><section id="part-1-importing-data-import_jasp-and-import_omv" class="level2" data-number="29.2"><h2 data-number="29.2" class="anchored" data-anchor-id="part-1-importing-data-import_jasp-and-import_omv">
-<span class="header-section-number">29.2</span> Part 1: Importing data — <code>import_jasp()</code> and <code>import_omv()</code>
+<hr></section><section id="part-1-importing-data-import_jasp-and-import_omv" class="level2" data-number="27.2"><h2 data-number="27.2" class="anchored" data-anchor-id="part-1-importing-data-import_jasp-and-import_omv">
+<span class="header-section-number">27.2</span> Part 1: Importing data — <code>import_jasp()</code> and <code>import_omv()</code>
 </h2>
-<section id="why-jasp-and-jamovi-are-read-like-spss-files" class="level3" data-number="29.2.1"><h3 data-number="29.2.1" class="anchored" data-anchor-id="why-jasp-and-jamovi-are-read-like-spss-files">
-<span class="header-section-number">29.2.1</span> Why JASP and jamovi are read like SPSS files</h3>
+<section id="why-jasp-and-jamovi-are-read-like-spss-files" class="level3" data-number="27.2.1"><h3 data-number="27.2.1" class="anchored" data-anchor-id="why-jasp-and-jamovi-are-read-like-spss-files">
+<span class="header-section-number">27.2.1</span> Why JASP and jamovi are read like SPSS files</h3>
 <p>A <code>.jasp</code> or <code>.omv</code> archive is a ZIP file. Inside, alongside the raw data, each variable carries the same kind of metadata an SPSS <code>.sav</code> file carries: a <strong>measurement level</strong> (nominal, ordinal, continuous) and, for categorical variables, <strong>value labels</strong> mapping a numeric code (<code>1</code>, <code>2</code>) to a meaningful label (<code>"Control"</code>, <code>"Treatment"</code>). Metacheck reads that metadata using the same <a href="https://haven.tidyverse.org/">haven</a>-style <code>label</code> / <code>labels</code> attributes that <code><a href="https://haven.tidyverse.org/reference/read_spss.html">haven::read_sav()</a></code> attaches — so a <code>.jasp</code> or <code>.omv</code> file can serve as its own codebook, exactly like a <code>.sav</code> file, with no special-casing anywhere downstream (see <a href="../chapters/mod-codebook-check.html">codebook_check</a>).</p>
-</section><section id="reading-a-jasp-file" class="level3" data-number="29.2.2"><h3 data-number="29.2.2" class="anchored" data-anchor-id="reading-a-jasp-file">
-<span class="header-section-number">29.2.2</span> Reading a JASP file</h3>
+</section><section id="reading-a-jasp-file" class="level3" data-number="27.2.2"><h3 data-number="27.2.2" class="anchored" data-anchor-id="reading-a-jasp-file">
+<span class="header-section-number">27.2.2</span> Reading a JASP file</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jasp</span> <span class="op">&lt;-</span> <span class="fu">import_jasp</span><span class="op">(</span><span class="st">"example.jasp"</span><span class="op">)</span></span>
 <span></span>
@@ -634,8 +628,8 @@ Important
 <span><span class="co">#&gt; 18 19 20 21 23 25 45 </span></span>
 <span><span class="co">#&gt; 18 19 20 21 23 25 45</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="reading-a-jamovi-file" class="level3" data-number="29.2.3"><h3 data-number="29.2.3" class="anchored" data-anchor-id="reading-a-jamovi-file">
-<span class="header-section-number">29.2.3</span> Reading a jamovi file</h3>
+</section><section id="reading-a-jamovi-file" class="level3" data-number="27.2.3"><h3 data-number="27.2.3" class="anchored" data-anchor-id="reading-a-jamovi-file">
+<span class="header-section-number">27.2.3</span> Reading a jamovi file</h3>
 <p><code>import_omv()</code> is the jamovi counterpart, returning the same shape:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">omv</span> <span class="op">&lt;-</span> <span class="fu">import_omv</span><span class="op">(</span><span class="st">"example.omv"</span><span class="op">)</span></span>
@@ -659,22 +653,22 @@ Important
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">omv</span><span class="op">$</span><span class="va">analyses</span></span>
 <span><span class="co">#&gt; [1] "1. 05 ttestOneS  |  jmv::ttestOneS( data = data, vars = H4 test, hypothesis = \"gt\", desc = TRUE)"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="using-the-data-like-any-other-data-source" class="level3" data-number="29.2.4"><h3 data-number="29.2.4" class="anchored" data-anchor-id="using-the-data-like-any-other-data-source">
-<span class="header-section-number">29.2.4</span> Using the data like any other data source</h3>
+</section><section id="using-the-data-like-any-other-data-source" class="level3" data-number="27.2.4"><h3 data-number="27.2.4" class="anchored" data-anchor-id="using-the-data-like-any-other-data-source">
+<span class="header-section-number">27.2.4</span> Using the data like any other data source</h3>
 <p>Because both readers attach the same haven-style attributes, <code>.jasp</code> and <code>.omv</code> files flow through the rest of metacheck exactly like a <code>.sav</code> file — for example, <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-codebook-check.html">codebook_check</a> both read them with no special code path:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/study_folder"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If that folder contains a <code>.jasp</code> or <code>.omv</code> file, its embedded labels are harvested as if they were a codebook, and its data is read as if it were a <code>.sav</code>.</p>
-<hr></section></section><section id="part-2-importing-spss-viewer-output-import_spv" class="level2" data-number="29.3"><h2 data-number="29.3" class="anchored" data-anchor-id="part-2-importing-spss-viewer-output-import_spv">
-<span class="header-section-number">29.3</span> Part 2: Importing SPSS Viewer output — <code>import_spv()</code>
+<hr></section></section><section id="part-2-importing-spss-viewer-output-import_spv" class="level2" data-number="27.3"><h2 data-number="27.3" class="anchored" data-anchor-id="part-2-importing-spss-viewer-output-import_spv">
+<span class="header-section-number">27.3</span> Part 2: Importing SPSS Viewer output — <code>import_spv()</code>
 </h2>
-<section id="what-a-.spv-file-is-and-why-it-is-different" class="level3" data-number="29.3.1"><h3 data-number="29.3.1" class="anchored" data-anchor-id="what-a-.spv-file-is-and-why-it-is-different">
-<span class="header-section-number">29.3.1</span> What a <code>.spv</code> file is, and why it is different</h3>
+<section id="what-a-.spv-file-is-and-why-it-is-different" class="level3" data-number="27.3.1"><h3 data-number="27.3.1" class="anchored" data-anchor-id="what-a-.spv-file-is-and-why-it-is-different">
+<span class="header-section-number">27.3.1</span> What a <code>.spv</code> file is, and why it is different</h3>
 <p>A <code>.spv</code> file is not a data file at all — it is IBM SPSS’s <strong>rendered output window</strong>, saved to disk. It contains the result <strong>tables</strong> SPSS produced (a <code>T-Test</code> table, a <code>Reliability Statistics</code> table, an <code>ICC</code> table, …) together with the exact <strong>syntax</strong> that produced them, and, when the output included one, any <strong>charts</strong> the analysis generated (a Q-Q plot, a scatterplot with a fitted curve, a box plot, …). Unlike <code>.jasp</code>/<code>.omv</code>, <code>.spv</code> has no rendered HTML view baked into the archive — everything has to be decoded from SPSS’s own internal representation.</p>
 <p><code>.spv</code> has no public specification. Metacheck’s table reader is ported from <a href="https://www.gnu.org/software/pspp/">GNU PSPP</a>’s GPL-licensed decoder — the only known public implementation of this format — and handles both the older (“legacy”) and modern (SPSS 21+, “light-binary”) table encodings transparently. Charts have no PSPP implementation to port from at all (PSPP itself does not render <code>.spv</code> charts); metacheck’s chart decoder was built entirely by inspecting real <code>.spv</code> files, described in <a href="#spv-charts">Part 3</a> below.</p>
-</section><section id="reading-an-spss-viewer-file" class="level3" data-number="29.3.2"><h3 data-number="29.3.2" class="anchored" data-anchor-id="reading-an-spss-viewer-file">
-<span class="header-section-number">29.3.2</span> Reading an SPSS Viewer file</h3>
+</section><section id="reading-an-spss-viewer-file" class="level3" data-number="27.3.2"><h3 data-number="27.3.2" class="anchored" data-anchor-id="reading-an-spss-viewer-file">
+<span class="header-section-number">27.3.2</span> Reading an SPSS Viewer file</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu">import_spv</span><span class="op">(</span><span class="st">"example.spv"</span><span class="op">)</span></span>
 <span></span>
@@ -762,15 +756,15 @@ Important
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tb</span><span class="op">$</span><span class="va">syntax</span></span>
 <span><span class="co">#&gt; [1] "NEW&nbsp;FILE.\nDATASET&nbsp;NAME&nbsp;DataSet1&nbsp;WINDOW=FRONT.\n\nGET&nbsp;DATA&nbsp;&nbsp;/TYPE=TXT\n&nbsp;&nbsp;/FILE=\"D:\\stack\\Content\\PhD\\Projects\\OpenData_ReportingErrors\\Study2_PLOSvsFrontiers\\Data\\CodedData\\160518DoubleCodedDataCoders.csv\"\n&nbsp;&nbsp;/ENCODING='UTF8'\n&nbsp;&nbsp;/DELCASE=LINE\n&nbsp;&nbsp;/DELIMITERS=\"&nbsp;;\"\n&nbsp;&nbsp;/QUALIFIER='\"'\n&nbsp;&nbsp;/ARRANGEMENT=DELIMITED\n&nbsp;&nbsp;/FIRSTCASE=2\n&nbsp;&nbsp;/IMPORTCASE=ALL\n&nbsp;&nbsp;/VARIABLES=\n&nbsp;&nbsp;article&nbsp;A18\n&nbsp;&nbsp;coder1&nbsp;F1.0\n&nbsp;&nbsp;coder1IN&nbsp;A5\n&nbsp;&nbsp;coder2&nbsp;F1.0\n&nbsp;&nbsp;coder2IN&nbsp;A5\n&nbsp;&nbsp;DataPromised1&nbsp;F1.0\n&nbsp;&nbsp;DataPromised2&nbsp;A2\n&nbsp;&nbsp;DataAvailable1&nbsp;F1.0\n&nbsp;&nbsp;DataAvailable2&nbsp;A2\n&nbsp;&nbsp;Remarks1&nbsp;A234\n&nbsp;&nbsp;Remarks2&nbsp;A221.\nCACHE.\nEXECUTE.\nDATASET&nbsp;NAME&nbsp;DataSet2&nbsp;WINDOW=FRONT.\nDATASET&nbsp;ACTIVATE&nbsp;DataSet2.\nRELIABILITY\n&nbsp;&nbsp;/VARIABLES=DataAvailable1&nbsp;DataAvailable2\n&nbsp;&nbsp;/SCALE('ALL&nbsp;VARIABLES')&nbsp;ALL\n&nbsp;&nbsp;/MODEL=ALPHA\n&nbsp;&nbsp;/ICC=MODEL(RANDOM)&nbsp;TYPE(ABSOLUTE)&nbsp;CIN=95&nbsp;TESTVAL=0."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" class="level3" data-number="29.3.3"><h3 data-number="29.3.3" class="anchored" data-anchor-id="result-tables-feed-the-same-pipeline-as-jasp-and-jamovi">
-<span class="header-section-number">29.3.3</span> Result tables feed the same pipeline as JASP and jamovi</h3>
+</section><section id="result-tables-feed-the-same-pipeline-as-jasp-and-jamovi" class="level3" data-number="27.3.3"><h3 data-number="27.3.3" class="anchored" data-anchor-id="result-tables-feed-the-same-pipeline-as-jasp-and-jamovi">
+<span class="header-section-number">27.3.3</span> Result tables feed the same pipeline as JASP and jamovi</h3>
 <p>Because <code>import_spv()</code>’s tables share JASP/jamovi’s shape, the same downstream functions apply without modification:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">long</span> <span class="op">&lt;-</span> <span class="fu">stat_results_long</span><span class="op">(</span><span class="va">tables</span>, paper_id <span class="op">=</span> <span class="st">"example"</span>, source_file <span class="op">=</span> <span class="st">"example.spv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">long</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis"</span>, <span class="st">"row_label"</span>, <span class="st">"statistic"</span>, <span class="st">"stato_label"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section></section><section id="spv-charts" class="level2" data-number="29.4"><h2 data-number="29.4" class="anchored" data-anchor-id="spv-charts">
-<span class="header-section-number">29.4</span> Part 3: Charts inside <code>.spv</code> files</h2>
+<hr></section></section><section id="spv-charts" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="spv-charts">
+<span class="header-section-number">27.4</span> Part 3: Charts inside <code>.spv</code> files</h2>
 <p>Some <code>.spv</code> files also contain <strong>charts</strong> — a Q-Q plot from an <code>Explore</code> normality check, a scatterplot with a fitted trend line from <code>Curve Fit</code>, a box plot from a <code>Nonparametric Tests</code> comparison. <code>import_spv()</code> recovers these too, as extra entries in the same list of tables, distinguished by <code>is_chart = TRUE</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chart_tables</span> <span class="op">&lt;-</span> <span class="fu">import_spv</span><span class="op">(</span><span class="st">"example-chart.spv"</span><span class="op">)</span></span>
@@ -839,7 +833,7 @@ Important
 <span><span class="co">#&gt; [[1]]$fn</span></span>
 <span><span class="co">#&gt; function (x) </span></span>
 <span><span class="co">#&gt; 4.03 + 2.86e-06 * x</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x0000027fc9520e78&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; &lt;environment: 0x000001dd6ae292a0&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>stat_results_long()</code> and <code>stat_output_json()</code> skip chart entries automatically (a chart’s <code>x</code>/<code>y</code> or <code>category</code>/<code>value</code> columns are plotted points, not statistics to extract), so passing <code>import_spv()</code>’s output straight through the usual pipeline is always safe, chart-bearing file or not.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -855,12 +849,12 @@ Note
 <p><code>.spv</code>’s chart format has no public specification and no PSPP implementation to port from — it was reverse-engineered from real files found on <a href="https://zenodo.org/">Zenodo</a> and <a href="https://figshare.com/">Figshare</a>. Two chart mark types are currently supported (<code>&lt;point&gt;</code> and <code>&lt;schema&gt;</code>/box plot, above); others (bar charts, line charts) are recognised but not yet decoded, and are silently skipped rather than causing an error. Across a sample of real <code>.spv</code> files with charts, roughly 60% of individual charts decode successfully with the two supported types.</p>
 </div>
 </div>
-<hr></section><section id="part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html">
-<span class="header-section-number">29.5</span> Part 4: Exporting readable HTML — <code>export_jasp_html()</code>, <code>export_omv_html()</code>, <code>export_spv_html()</code>
+<hr></section><section id="part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="part-4-exporting-readable-html-export_jasp_html-export_omv_html-export_spv_html">
+<span class="header-section-number">27.5</span> Part 4: Exporting readable HTML — <code>export_jasp_html()</code>, <code>export_omv_html()</code>, <code>export_spv_html()</code>
 </h2>
 <p>Sometimes you don’t want the <em>data</em> out of a <code>.jasp</code>/<code>.omv</code>/<code>.spv</code> file — you want to <strong>look at the output</strong>, the way the original software would show it, without having JASP, jamovi, or SPSS installed. Each format has its own export function for exactly this.</p>
-<section id="jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" class="level3" data-number="29.5.1"><h3 data-number="29.5.1" class="anchored" data-anchor-id="jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output">
-<span class="header-section-number">29.5.1</span> JASP and jamovi: re-exporting the software’s own rendered output</h3>
+<section id="jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output" class="level3" data-number="27.5.1"><h3 data-number="27.5.1" class="anchored" data-anchor-id="jasp-and-jamovi-re-exporting-the-softwares-own-rendered-output">
+<span class="header-section-number">27.5.1</span> JASP and jamovi: re-exporting the software’s own rendered output</h3>
 <p>A <code>.jasp</code> or <code>.omv</code> archive already contains a fully rendered <code>index.html</code> — the same output view JASP or jamovi itself displays, including any plots, saved as part of the archive. <code>export_jasp_html()</code> and <code>export_omv_html()</code> extract that <code>index.html</code> as-is and <strong>inline every plot it references as a base64 image</strong>, so the result is a single, portable <code>.html</code> file with nothing else to keep alongside it — you can email it, or open it years later, with no dependency on the original archive.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_jasp_html</span><span class="op">(</span><span class="st">"example.jasp"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -872,8 +866,8 @@ Note
 </div>
 <p>The result looks exactly like JASP’s or jamovi’s own output window — because it <em>is</em> that output window, just re-packaged as one file.</p>
 <iframe src="example-jasp-output.html" style="width: 100%; height: 500px; border: 1px solid #ccc;"></iframe>
-</section><section id="spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="level3" data-number="29.5.2"><h3 data-number="29.5.2" class="anchored" data-anchor-id="spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts">
-<span class="header-section-number">29.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</h3>
+</section><section id="spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="level3" data-number="27.5.2"><h3 data-number="27.5.2" class="anchored" data-anchor-id="spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts">
+<span class="header-section-number">27.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</h3>
 <p>Unlike <code>.jasp</code>/<code>.omv</code>, a <code>.spv</code> archive has <strong>no rendered view of its own</strong> to re-export. <code>export_spv_html()</code> instead builds a page from what <code>import_spv()</code> already decodes: one heading per analysis, its recovered syntax shown underneath, one HTML table per result table, and — for a chart entry — an actual plot, rendered from the chart’s own decoded points and embedded as a base64 image, the same way <code>export_jasp_html()</code> inlines JASP’s plots.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_spv_html</span><span class="op">(</span><span class="st">"example.spv"</span>, out <span class="op">=</span> <span class="st">"example-spv-output.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -885,8 +879,8 @@ Note
 </div>
 <iframe src="example-chart-output.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
 <p>Not every chart in a <code>.spv</code> file can be rendered this way yet — see the note in <a href="#spv-charts">Part 3</a> on which mark types are currently supported. A chart that cannot be decoded is skipped, with the rest of the file’s tables (and any other decodable charts) still exported normally.</p>
-<hr></section></section><section id="summary" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="summary">
-<span class="header-section-number">29.6</span> Summary</h2>
+<hr></section></section><section id="summary" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">27.6</span> Summary</h2>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Task</th>
@@ -1318,13 +1312,13 @@ Note
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-reproducibility-check.html" class="pagination-link" aria-label="Reproducibility Check">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span>
+      <a href="../chapters/mod-psychds-check.html" class="pagination-link" aria-label="Psych-DS Check">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/mod-ref-consistency.html" class="pagination-link" aria-label="Reference Consistency">
-        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/mod-reproducibility-check.html" class="pagination-link" aria-label="Reproducibility Check">
+        <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

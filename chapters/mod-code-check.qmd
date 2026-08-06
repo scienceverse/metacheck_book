@@ -18,8 +18,10 @@ The `code_check` module analyses the **code files** shared with a paper. Buildin
 - whether R-type files **parse** without errors;
 - whether files contain **comments**;
 - whether they use **absolute file paths** (which break on other machines);
-- whether the files they try to **load** are actually present in the repository; and
-- whether **libraries are loaded in multiple places** rather than in a single block near the top of the script.
+- whether they call **`setwd()`** (which hardcodes an assumption about the working directory);
+- whether the files they try to **load** are actually present in the repository;
+- whether **libraries are loaded in multiple places** rather than in a single block near the top of the script; and
+- whether the repository **pins its R/package environment** (`renv.lock`, a `sessionInfo()` dump, or a `groundhog`/`checkpoint` date-pin call), so package versions do not silently drift between the original analysis and any later reproduction attempt.
 
 The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in *Psychological Science*.
 
@@ -33,12 +35,19 @@ The module first labels every file with its language using `code_lang()`, which 
 
 | Language | Extensions | Analysed? |
 |---|---|---|
-| R | `.R`, `.Rmd`, `.qmd` | yes (parsed, commented, paths, libraries, loaded files) |
+| R | `.R`, `.Rmd`, `.qmd` | yes (parsed, commented, paths, `setwd()`, libraries, loaded files) |
+| Python | `.py`, `.ipynb` | yes (except parsing) |
 | SAS | `.sas` | yes (except parsing) |
 | SPSS | `.sps` | yes (except parsing) |
 | Stata | `.do`, `.ado` | yes (except parsing) |
+| Mplus | `.inp` | yes (except parsing) |
+| MATLAB | `.m` | yes (except parsing) |
 | JASP | `.jasp` | **listed only** |
 | jamovi | `.omv` | **listed only** |
+
+A `.ipynb` notebook is JSON, not a plain script: its code cells are extracted from the `source` array of each cell (the same way `.Rmd`/`.qmd` are purled to R code below) before any text-based check runs. `.py` and `.m` are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but *running* the code stays out of scope (that is [reproducibility_check](mod-reproducibility-check.qmd)'s job, and it is R-only).
+
+Some file types are never code themselves but *contain* the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS `.spv` (rendered output) has its syntax recovered as a `.sps` file, a Stata `.smcl` log has its echoed commands recovered as a `.do` file, an Mplus `.out` file has its "INPUT INSTRUCTIONS" section recovered as an `.inp` file, and an `.html` file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page.
 
 ```{r}
 #| eval: false
@@ -110,6 +119,14 @@ code_abs_path(c("file <- 'C:/Users/lakens/data.csv'",
                 "rel  <- './clean.csv'"))
 ```
 
+### Working directory: `code_setwd()`
+
+`code_setwd()` finds R `setwd()` calls (on comment-free code). `setwd()` hardcodes an assumption about the working directory — often an absolute path on the author's own machine — so the script breaks when run anywhere else. This check is R-only, since `setwd()` is an R construct.
+
+```{r}
+code_setwd(c("setwd('C:/Users/lakens/project')", "d <- read.csv('x.csv')"))
+```
+
 ### Library placement: `code_library_lines()`
 
 `code_library_lines()` returns the line numbers on which imports/library loads occur, with language-specific patterns (R `library`/`require`/`renv::install`/`p_load`; SAS `%include`/`libname`/`filename`; SPSS `INSERT`/`BEGIN PROGRAM`; Stata `do`/`net install`/`ssc install`). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script's requirements are easy to see.
@@ -125,6 +142,31 @@ code_library_lines(c("library(dplyr)", "x <- 1", "library(tidyr)"), "R")
 ```{r}
 code_file_refs(c("source('functions.R')", "d <- read.csv('study.csv')"), "R")
 ```
+
+### Packages loaded: `code_library_names()`
+
+`code_library_names()` extracts the names of the packages/libraries a file loads (R `library()`/`require()`/`::`; Python `import`/`from … import`). The module unions and de-duplicates these across all of a paper's code files (`code_packages()`), giving the full list of dependencies the analysis relies on — with no version information, since that is static analysis of source text, not an installed environment.
+
+```{r}
+code_library_names(c("library(dplyr)", "import numpy as np"), "R")
+```
+
+### Reproducible environment: `.code_version_pin_check()`
+
+Knowing *which* packages were loaded (above) is not the same as knowing *which versions*. The module separately checks whether the repository **pins** the exact R/package environment the analysis depended on, via any of:
+
+- an **`renv.lock`** file — parsed for the declared R version and every locked package's name, version, and source;
+- a **`sessionInfo()`** / `sessioninfo::session_info()` text dump — matched by filename (`sessionInfo.txt`, `session_info.txt`, and similar) or found embedded in a README, and read for its declared R version; or
+- a **`groundhog::groundhog.library()`** or **`checkpoint::checkpoint()`** date-pin call in the code — a bare `library(groundhog)`/`library(checkpoint)` does not count; the actual pinning call (with its date argument) must be present.
+
+Without one of these, package versions can silently drift between when the analysis was run and any later reproduction attempt — a script that works today may fail or produce different results a year from now if `install.packages()` pulls whatever the CRAN snapshot happens to be at that time.
+
+```{r}
+#| eval: false
+.code_version_pin_check(all_files, code_text_list = list(r_script_lines))
+```
+
+This is also exposed to [reproducibility_check](mod-reproducibility-check.qmd)'s Docker backend, which uses the declared R version (when found) to pick a matching base image — see `docker_use_declared_version` in that chapter.
 
 ## A clean example and one with problems
 
@@ -154,20 +196,30 @@ module_run(paper, "code_check", download = FALSE)
 
 See the [Local Files](local-files.qmd) chapter for a full walkthrough of checking local code, including cloud-synced folders.
 
+`manifest` merges the distinct packages loaded across a paper's code into a metacheck manifest's `code` section, alongside whatever `data_check` already wrote there:
+
+```{r}
+#| eval: false
+module_run(paper, "code_check", manifest = "path/to/manifest/dir")
+```
+
 ## The traffic light and what you get back
 
 | Light | Meaning |
 |---|---|
-| **green** | at least one file was analysed and no issues were found across all code files |
-| **yellow** | at least one issue (missing files, no comments, absolute paths, spread-out libraries, or a parse error) |
+| **green** | at least one file was analysed, no issues were found (missing files, no comments, absolute paths, `setwd()` calls, spread-out libraries, or a parse error), **and** the repository pins its R/package environment |
+| **yellow** | at least one of the above issues, or no pinned environment was found |
 | **na** | no code files could be analysed (e.g. only JASP/jamovi files were found) |
 
 | Element | What it contains |
 |---|---|
-| `$table` | one row per code file, with `language`, `parse_error`, `code_abs_path`, `absolute_paths`, `percentage_comment`, `library_max_between`, `loaded_files_missing`, and the missing-file names |
-| `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_missing_files`, `code_min_comments`, `code_parse_errors`) |
-| `$report` | formatted report sections: comments, missing files, absolute paths, libraries, and parsable code |
+| `$table` | one row per code file, with `language`, `parse_error`, `code_abs_path`, `absolute_paths`, `code_setwd`, `setwd_calls`, `percentage_comment`, `library_max_between`, `packages`, `packages_n`, `loaded_files_missing`, and the missing-file names |
+| `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_setwd`, `code_missing_files`, `code_min_comments`, `code_parse_errors`, `code_packages_n`, `code_version_pinned`) |
+| `$report` | formatted report sections: comments, missing files, absolute paths, working directory, libraries, packages/dependencies, reproducible environment, and parsable code |
 | `$summary_text` | plain-text bulleted summary of each check |
+| `$version_pin` | the raw output of `.code_version_pin_check()` (mechanisms found, declared R version(s), and any `renv.lock` package table) — also used internally by `reproducibility_check()`'s Docker backend to pick a matching base image |
+
+Downloaded code files (and any recovered `.spv`/`.smcl`/`.out`/`.html`-derived syntax files) are cached and reused via the same `cache`/`max_file_size`/`max_download_size` mechanism `data_check` uses — see the [Caching](caching.qmd) chapter.
 
 ## Notes
 

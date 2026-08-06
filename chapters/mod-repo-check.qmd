@@ -13,7 +13,18 @@ library(metacheck)
 
 ## What it checks
 
-The `repo_check` module finds links to **research repositories** in a paper (OSF, GitHub, ResearchBox, Zenodo), retrieves the list of files in each, and reports what is shared — for example whether there are data and code files, and whether the repository includes a README.
+The `repo_check` module finds links to **research repositories** in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: [code_check](mod-code-check.qmd), [data_check](mod-data-check.qmd), and [data_validate](mod-data-validate.qmd) all build on the file list `repo_check` produces.
+
+Beyond listing files, `repo_check` runs a set of checks on what it finds:
+
+- whether each repository has a **README**;
+- whether files are bundled into **archives** rather than shared individually;
+- whether any files are **unclassifiable** by name or extension;
+- whether **file names** follow machine-parseable conventions;
+- whether the studies the manuscript names match how the repository's files are **grouped**;
+- whether proprietary **E-Prime** binary files (`.edat`/`.emrg`) have a matching plain-text export;
+- whether any files sit behind **restricted or embargoed access**; and
+- whether an OSF **registration** points at a closed or inaccessible source project.
 
 ::: callout-note
 This module makes **live network calls** to the linked repositories. You need an internet connection to run the code below.
@@ -46,19 +57,77 @@ mo <- module_run(psychsci[1:10], "repo_check")
 mo$summary_table
 ```
 
-## What it checks for
+## Repositories it searches
 
-For every repository it finds, `repo_check` builds a unified file list and then assesses three things:
+`repo_check` looks for links to five repository platforms, each via its own link-finding helper (`osf_links()`, `github_links()`, `rbox_links()`, `psycharchives_links()`, `zenodo_links()`) and its own file-listing call:
 
-- **A README.** Each repository should document its contents. The module looks for a file whose name contains "readme" (or "read me"). A repository without one is flagged, because readers have no map of what the shared files are.
-- **Archive (zip) files.** Files bundled into a `.zip` (or similar archive) are flagged, because their contents cannot be inspected, indexed, or reused without downloading and unpacking them. The module reports the archive names and suggests uploading the files individually.
-- **What is shared.** It counts the data files, code files, README files, and archives in each repository (the `files_data`, `files_code`, `files_readme`, and `files_zip` columns of the summary table), so you can see at a glance whether data and code were actually shared.
+| Platform | Link finder | How files are listed |
+|---|---|---|
+| OSF | `osf_links()` | recursive `osf_info()`, including registrations (see below) |
+| GitHub | `github_links()` | `github_tree_files()` — one repo-metadata + one full-tree API call, gated for size |
+| ResearchBox | `rbox_links()` | `rbox_file_download()` (downloads and unzips the box) |
+| PsychArchives | `psycharchives_links()` | `psycharchives_file_download()` (DSpace REST API; lists without downloading) |
+| Zenodo | `zenodo_links()` | `zenodo_info()` |
 
-The traffic light follows from these checks:
+### OSF registrations follow their source project
 
-- **green** — repositories were found, every one has a README, and there are no archive files.
-- **yellow** — at least one repository is missing a README, or one or more archive files were found.
-- **na** — no repository links were found in the paper at all.
+An OSF **registration** is a locked snapshot. Many "Open-Ended Registration" entries (common in older schemas) only *describe* what was shared, with the real files living in the project the registration was made from (`registered_from`). Since the manuscript usually links only the registration, `repo_check` follows `registered_from` automatically:
+
+- if the source project is **public**, its files are listed under the source project's own URL (not the registration's);
+- if the source project is **closed or inaccessible**, the report flags this explicitly, distinguishing two cases: the registration itself still holds a mirrored copy of the files (nothing is lost, but the permanent home is unreachable), or no copy exists anywhere (the files are genuinely unreachable).
+
+### GitHub size gating
+
+A GitHub repository can be arbitrarily large, so `repo_check` gates recursive listing by default:
+
+```{r}
+#| eval: false
+module_run(paper, "repo_check",
+           github_gate = TRUE,               # default
+           github_max_repo_size_mb = 500,     # default
+           github_max_files = 1000)           # default
+```
+
+A repository over either threshold is skipped (not listed), with a warning naming the repository and the reason. Set `github_gate = FALSE` to force a full recursive listing regardless of size. Repositories skipped this way are recorded in `$gated_repos` (see below), so downstream modules and reports can explain *why* a paper produced no GitHub files, instead of just reporting none found.
+
+## Study grouping
+
+`repo_check` runs a **preliminary** classification and grouping pass over every file it finds:
+
+- `data_classify_files()` labels each file's `data_type` (data, code, readme, archive, documentation, output, …) from its name/path/extension;
+- `.data_doc_role()` further labels documentation-type files (`readme`, `license`, `codebook`, …);
+- `data_group_llm()` assigns each file to a study `group`, using deterministic path/repo-split rules first and falling back to an LLM (`llm_use(TRUE)`) only when those are ambiguous — see the [LLMs](llms.qmd) chapter. Root-level files that are collection-wide by nature (a top-level README, `ro-crate-metadata.json`, or LICENSE) are excluded from grouping, since they don't belong to any one study.
+
+This pass is **preliminary**: `repo_check` never downloads file contents (except where a platform's own listing call requires it, like ResearchBox), so it classifies from names and paths only. [data_check](mod-data-check.qmd) reclassifies afterwards using file *contents* too, and its classification is authoritative for where a file is placed in a paper's structure. `repo_check`'s own pass exists to power its own report — the file-naming check, the classification dropdown, and the study/repository mismatch check below.
+
+### Study/repository mismatch
+
+If the manuscript explicitly names studies (e.g. "Study 1", "Study 2"), `repo_check` compares that roster against the studies the *files* actually separate into. A mismatch — a named study with no matching files, or a file-derived group not named in the manuscript — is flagged in the report. A manuscript that never names studies explicitly has no roster to compare against, so this check is silently skipped rather than treated as a mismatch.
+
+## File naming conventions
+
+`check_file_naming()` checks every file name for machine-parseability: no spaces or special characters, and every file classifiable by name or extension (`data_type != "unknown"`). Issues are split into two severities:
+
+- **bad** — a real naming problem (should be fixed);
+- **suggestion** — not required, but a good habit (e.g. a more descriptive name).
+
+```{r}
+mo$naming_issues |> head(5) |> knitr::kable()
+```
+
+## Special file types
+
+### Proprietary E-Prime files
+
+E-Prime's `.edat`/`.edat2` (and `.emrg`/`.emrg2` merge files) are proprietary binary formats that only the E-Prime software can open — metacheck neither downloads nor reads them. The analysable data lives in E-Prime's plain-text export instead. `repo_check` flags any `.edat`/`.emrg` file that has **no matching `.txt` export** alongside it (matched by file stem), so authors know to also share the readable export (File → Export in E-Prime).
+
+### Restricted-access files
+
+A PsychArchives item flagged `restrictedAccess`/`embargoedAccess` hides its files behind institutional (SSO) login — they cannot be fetched programmatically. `repo_check` flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.
+
+### Non-`.zip` archives
+
+Only `.zip` stores its file listing in a way that can be inspected via an HTTP range request without downloading the whole archive; `.7z`/`.rar`/`.tar.gz` must be downloaded whole, and some formats metacheck cannot read at all. `repo_check` only *lists* archive files — it never opens one (peeking inside a `.zip`, or downloading an archive, is `data_check`'s job) — but it does warn when an archive is in a non-`.zip` format, since that limits how discoverable and reusable its contents are.
 
 ## A clean example and one with problems
 
@@ -83,7 +152,7 @@ mo$table[mo$table$file_type %in% "archive", c("repo_name", "file_name")] |>
   knitr::kable()
 ```
 
-A **clean** result, by contrast, would include a README in every linked repository (`files_readme` ≥ 1 for each) and share files individually rather than as a zip (`files_zip` of 0) — producing a green light with no items to address.
+A **clean** result, by contrast, would include a README in every linked repository (`files_readme` ≥ 1 for each), share files individually rather than as a zip (`files_zip` of 0), have no unclassifiable or badly-named files, agree with the manuscript's study roster, and have no closed registrations — producing a green light with no items to address.
 
 ## Options
 
@@ -100,6 +169,32 @@ module_run(paper, "repo_check", local_path = "path/to/files", local_only = TRUE)
 
 `local_only = TRUE` is useful when you cannot or do not want to contact external services — for example when checking a reviewer submission you downloaded as a zip. See the [Local Files](local-files.qmd) chapter for details.
 
+`model` and `params` are passed through to `data_group_llm()` for study grouping, and only take effect when `llm_use(TRUE)` and the deterministic grouping rules cannot place a file:
+
+```{r}
+#| eval: false
+module_run(paper, "repo_check", model = "gpt-4o-mini", params = list(temperature = 0))
+```
+
+## The traffic light and what you get back
+
+| Light | Meaning |
+|---|---|
+| **green** | repositories were found; every one has a README; no archive files, unclassifiable files, or bad file names; no study/repository mismatch; and no closed OSF registrations |
+| **yellow** | at least one repository is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript's study roster disagrees with the repository's file grouping, or a registration points at a closed source project |
+| **na** | no repository links were found in the paper at all |
+
+| Element | What it contains |
+|---|---|
+| `$table` | one row per file across all repositories: `repo_url`, `file_name`, `file_path`, `file_url`, `file_location`, `file_size`, `file_type`, `data_type`, `doc_role`, `group`, `paper_id` |
+| `$summary_table` | per-paper aggregates: `repo_n`, `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch` |
+| `$naming_issues` | full output of `check_file_naming()` — one row per issue, with severity |
+| `$roster_check` | the manuscript-vs-file study roster comparison (`roster`, `missing`, `extra`), or `NULL` if not applicable |
+| `$gated_repos` | repositories found but not listed (e.g. a GitHub repo over the size gate, or a private OSF component), with the reason |
+| `$group_no_evidence` | `TRUE` if study grouping had no evidence to work from |
+| `$report` | formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, and a full classification breakdown |
+| `$summary_text` | plain-text bulleted summary of each check |
+
 ## Related
 
-The companion [code_check](mod-code-check.qmd) module analyses the actual code files that `repo_check` discovers.
+The companion [code_check](mod-code-check.qmd) module analyses the actual code files that `repo_check` discovers. [data_check](mod-data-check.qmd) re-downloads and reclassifies the data files using their contents (not just names/paths), and [data_validate](mod-data-validate.qmd) runs quality checks on the columns it finds.
