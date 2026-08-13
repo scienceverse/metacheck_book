@@ -308,6 +308,41 @@ llm_max_calls(100)   # raise it
 
 See `?llm` for the full set of arguments and details.
 
+### Response length
+
+Every call to `llm()` needs some limit on how long the answer may be, because a provider that reaches the limit truncates the response without a clear error. Rather than repeating `params = list(max_tokens = ...)` at every call, set the default once for the session with `llm_max_tokens()`:
+
+```{r}
+#| eval: false
+llm_max_tokens()       # read the current default
+llm_max_tokens(8192)   # raise it for the session
+```
+
+An explicit `max_tokens` passed to a single call still takes precedence. The setting matters most when a module asks one question about a great deal of material at once, such as `codebook_check` or `data_check` describing many columns in a single pass; that is the case most likely to need more room than the built-in default.
+
+### Reasoning effort
+
+Some models spend extra tokens "thinking" before answering. For the work Metacheck asks of a model this is mostly wasted: the questions are ones of reading and pattern-matching over material the prompt already supplies (name this variable's label, list the scales in these sentences, group these files by study), not arithmetic, multi-step inference, or planning. Those extra tokens also come out of the same budget as the visible answer, which is a confirmed cause of truncated structured responses on `gpt-oss` models via Groq. Low reasoning effort is therefore the right default for this package rather than a compromise on quality.
+
+Set it with `llm_reasoning()`, which accepts `"low"`, `"medium"`, `"high"` or `"none"`:
+
+```{r}
+#| eval: false
+llm_reasoning()        # read the current setting
+llm_reasoning("low")   # the recommended default
+```
+
+There is no single reasoning switch that works across providers, so Metacheck translates this one setting into whatever the model family actually understands:
+
+| Model family | What it accepts |
+|---|---|
+| `openai/gpt-oss-*` (Groq or another OpenAI-compatible host) | `"low"`, `"medium"`, `"high"`; `"low"` is the minimum, as this family cannot turn reasoning off entirely |
+| `qwen3*` models | `"none"` fully disables reasoning tokens, unlike `gpt-oss` |
+| Mistral's reasoning models (`mistral-small-latest`, `mistral-medium-3-5`) | only two settings, `"high"` for the full thinking passage or `"none"` to omit it |
+| Ollama-hosted reasoning models (DeepSeek-R1, Qwen3, and similar) | a simple on/off flag rather than a graded level, so both `"low"` and `"none"` turn thinking off, and there is no equivalent of `"medium"` or `"high"` |
+
+A model with no reasoning setting of any kind is left alone: Metacheck never sends an unsupported parameter, because providers differ in whether they ignore one quietly or reject the whole request.
+
 ### Caching responses
 
 Because `llm()` runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default and cached replays do not count against `llm_max_calls()`. The [Caching and Reuse](caching.qmd) chapter explains how it works, and how to inspect or clear it (`llm_cache()`, `llm_cache_clear()`).

@@ -1,7 +1,7 @@
 ---
-title: "Data Validate"
+title: "Data Quality Checks"
 vignette: >
-  %\VignetteIndexEntry{Data Validate}
+  %\VignetteIndexEntry{Data Quality Checks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,16 +13,27 @@ llm_use(FALSE)
 ```
 
 ::: callout-warning
-This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:
+These checks are still under development and are not in the released version of Metacheck. They are in the development version, which you can install as a pre-compiled binary from the scienceverse R-universe (see [Setting up Metacheck](get-started.qmd)):
 
 ```r
-remotes::install_github("scienceverse/metacheck@data_check")
+install.packages("metacheck.dev",
+  repos = c("https://scienceverse.r-universe.dev", "https://cloud.r-project.org"))
 ```
+:::
+
+::: callout-important
+## `data_validate` is now part of `data_check`
+
+These checks used to be a separate module that you ran after `data_check`. They are now part of `data_check` itself, so there is no `data_validate` module to run: `module_run(paper, "data_validate")` will fail. Run [`data_check`](mod-data-check.qmd) instead, and every check described in this chapter runs automatically as part of it.
+
+The two were merged because they always had to be run in the right order and pass results between themselves. One module now covers file classification, column description, data-quality findings, spreadsheet formatting and careless responding.
+
+This chapter still describes each check in its own right, because knowing what is being checked, and why, matters when you read the results. Where a result is returned, we name the element of `data_check`'s output that holds it.
 :::
 
 ## What it checks
 
-The `data_validate` module runs automated **data-quality checks** on every column extracted by [`data_check`](mod-data-check.qmd), flagging the kinds of problems that are easy to miss by eye but common in shared data. Every check is a small, dependency-free base-R function that returns a uniform `list(problem, message, values)`, so the module can run them all over every column and collect the findings. The checks are:
+`data_check` runs automated **data-quality checks** on every column it extracts, flagging the kinds of problems that are easy to miss by eye but common in shared data. Every check is a small, dependency-free base-R function that returns a uniform `list(problem, message, values)`, so the module can run them all over every column and collect the findings. The checks are:
 
 - **Values outside a rating scale** — a value outside a Likert/rating scale's valid range, classified as a miscoded missing value, a keying typo, or unexplained.
 - **Constant and near-constant columns** — a column with a single repeated value that carries no information.
@@ -36,7 +47,7 @@ The `data_validate` module runs automated **data-quality checks** on every colum
 - **Mixed / legacy encoding** — text whose bytes are not valid UTF-8.
 - **Personal information** — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, credit-card numbers, geographic coordinates, free text).
 
-For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_validate` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet. These were formerly checked by a separate `excel_check` module; that module no longer exists, and its checks now run automatically as part of `data_validate`, on the same file `data_check` already located.
+For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_check` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet. These were formerly checked by a separate `excel_check` module; that module no longer exists, and its checks now run automatically as part of `data_check`, on the same files it has already located.
 
 It also produces an inventory of **demographic columns**, a **Qualtrics survey metadata** summary, a **careless-responding** screen for survey data, and a **combined distribution figure** of the numeric columns.
 
@@ -61,25 +72,31 @@ utils::write.csv(study, file.path(repo, "data", "study.csv"), row.names = FALSE)
 ```
 
 ```{r}
-mo <- module_run(test_paper(), "data_validate",
+mo <- module_run(test_paper(), "data_check",
                  local_path = repo, local_only = TRUE)
 
 mo$traffic_light
 cat(mo$summary_text)
 ```
 
-Running `data_validate` automatically runs `data_check` first (to read and classify the columns) and then applies the quality checks to the result.
+`data_check` reads and classifies the columns first, then applies the quality checks to the result, so a single call does both.
 
 ## The findings table
 
-Every flagged column appears in the `table`, one row per (column, check):
+Every flagged column appears in `$findings`, one row per (column, check):
 
 ```{r}
-mo$table[, c("column", "check", "detail")] |>
+mo$findings[, c("column", "check", "detail")] |>
   knitr::kable()
 ```
 
 The `check` column names the category of problem, and `detail` explains it in words. Below we describe each check and the function that implements it.
+
+::: callout-note
+## `$findings` and `$table` are different things
+
+`data_check` returns both, at deliberately different grains. `$table` has one row per **column**, describing what each column is. `$findings` has one row per **problem**, describing what is wrong. They are separate because one column can raise several findings, and because a spreadsheet-formatting or careless-responding finding has no single column to attach to at all. When this chapter refers to a finding, it is in `$findings`.
+:::
 
 ## Values outside a rating scale: `data_check_scale_values()`
 
@@ -155,7 +172,7 @@ data_check_colname("this/is:an*illegal|name")$problem
 
 ## Spreadsheet formatting
 
-Every check so far reads the data **after** `data_check` has parsed it into a data frame — but a spreadsheet file can be badly formatted in ways that are invisible once it is read that way. `data_validate` also inspects the **raw workbook** directly for four kinds of non-machine-readable formatting:
+Every check so far reads the data **after** `data_check` has parsed it into a data frame — but a spreadsheet file can be badly formatted in ways that are invisible once it is read that way. `data_check` also inspects the **raw workbook** directly for four kinds of non-machine-readable formatting:
 
 - **Colour coding** — cells whose *fill colour* is used to encode information (for example, marking excluded participants in red). Colour is invisible to any analysis script and is lost on CSV export.
 - **Merged cells** — merged ranges break the rectangular grid that data frames require, and typically indicate multi-level headers that a program cannot parse.
@@ -165,7 +182,7 @@ Every check so far reads the data **after** `data_check` has parsed it into a da
 This runs on **every spreadsheet format** `data_check` recognises — `.xlsx`, OpenDocument `.ods`/`.fods`, and legacy `.xls` — reading the workbook's own XML directly for colour and merge information that a data-reading package like `readxl` discards entirely. It runs on the file `data_check` already located (via its `structure` table), independently of whether that file could actually be extracted into a clean tabular preview: a merged banner cell or an offset header is very often *why* extraction failed in the first place, so this check must not depend on a successful preview to run.
 
 ::: callout-note
-This was formerly a separate module, `excel_check`. It no longer exists on its own — every check it performed is now part of `data_validate`, run automatically alongside the column-level checks, on the same files.
+This was formerly a separate module, `excel_check`. It no longer exists on its own — every check it performed is now part of `data_check`, run automatically alongside the column-level checks, on the same files.
 :::
 
 ```{r}
@@ -192,28 +209,28 @@ openxlsx::write.xlsx(data.frame(id = 1:3, score = c(1.1, 2.2, 3.3)),
 
 ```{r}
 #| eval: !expr requireNamespace("openxlsx", quietly = TRUE)
-mo_xl <- module_run(test_paper(), "data_validate",
+mo_xl <- module_run(test_paper(), "data_check",
                     local_path = repo_xl, local_only = TRUE)
-mo_xl$table[!is.na(mo_xl$table$label) | mo_xl$table$check %in%
+mo_xl$findings[!is.na(mo_xl$findings$label) | mo_xl$findings$check %in%
              c("Colour coding", "Merged cells", "Empty or unnamed columns"),
            c("source_file", "label", "check", "detail")] |>
   knitr::kable()
 ```
 
-Only `messy.xlsx` is flagged; the clean workbook produces no rows. These findings carry `column = NA` in the `$table` (the issue is not about one column, it is about the sheet), and the sheet name is shown under `label` instead. They join the same "Issues Identified" report table as every other check, so a reviewer sees every problem with a file in one place rather than in a separate report.
+Only `messy.xlsx` is flagged; the clean workbook produces no rows. These findings carry `column = NA` in `$findings` (the issue is not about one column, it is about the sheet), and the sheet name is shown under `label` instead. They join the same "Issues Identified" report table as every other check, so a reviewer sees every problem with a file in one place rather than in a separate report.
 
 Two further, related checks fire on any spreadsheet regardless of formatting:
 
-- **"Not a rectangular dataset"** — `data_check` itself already decided this file does not read as a usable dataset (mostly free text, or almost entirely empty); `data_validate` adds the structural note here so the finding shows up in the same table rather than only in `data_check`'s own output.
+- **"Not a rectangular dataset"** — `data_check` itself already decided this file does not read as a usable dataset (mostly free text, or almost entirely empty); `data_check` adds the structural note here so the finding shows up in the same table rather than only in `data_check`'s own output.
 - **"Un-inspectable (.xls)"** — legacy binary `.xls` has no XML to inspect for colour or merges; it is still checked for an offset header (which does not need the XML structure), but colour/merge/empty-row-or-column checks are skipped with a note recommending conversion to `.xlsx` or `.ods`.
 
 ## Mixed / legacy encoding
 
-`data_check` records, per column, how many values had to be re-interpreted as Latin-1 because their bytes were not valid UTF-8 (the `utf8_repaired` count). `data_validate` turns any non-zero count into a **Mixed encoding** finding: metacheck read the file by re-interpreting those bytes, but on another system such characters corrupt silently (`é` becomes `Ã©` or `�`), so the researcher is told to re-save the file as UTF-8 (with the exact steps for Excel, R, and SPSS).
+`data_check` records, per column, how many values had to be re-interpreted as Latin-1 because their bytes were not valid UTF-8 (the `utf8_repaired` count). `data_check` turns any non-zero count into a **Mixed encoding** finding: metacheck read the file by re-interpreting those bytes, but on another system such characters corrupt silently (`é` becomes `Ã©` or `�`), so the researcher is told to re-save the file as UTF-8 (with the exact steps for Excel, R, and SPSS).
 
 ## Personal-information screening
 
-`data_validate` screens each column for content that should not be shared openly, reported as *"review before sharing"* prompts that **never echo the matching value**. Four detectors run:
+`data_check` screens each column for content that should not be shared openly, reported as *"review before sharing"* prompts that **never echo the matching value**. Four detectors run:
 
 - **`data_check_pii_values()`** — values that look like emails, IP addresses, national IDs, or credit-card numbers.
 - **`data_check_pii_name()`** — a column *name* such as `email`, `firstname`, `address`, `dob`, `ssn`.
@@ -229,19 +246,19 @@ utils::write.csv(data.frame(
   full_name   = c("Ada Lovelace", "Alan Turing", "Grace Hopper")
 ), file.path(pii, "data", "responses.csv"), row.names = FALSE)
 
-mo_pii <- module_run(test_paper(), "data_validate",
+mo_pii <- module_run(test_paper(), "data_check",
                      local_path = pii, local_only = TRUE)
-mo_pii$table[, c("column", "check")] |>
+mo_pii$findings[, c("column", "check")] |>
   knitr::kable()
 ```
 
 ## Codebook ground truth
 
-When `codebook_check` has run, `data_validate` uses its output as ground truth for the numeric checks. The internal `codebook_of()` lookup decodes the documented **valid values** (a code list) and **declared missing values** from the codebook table's JSON columns: a documented 1–5 value set makes a `6` out-of-range even when the data alone would not reveal the scale, and a declared `-99` is flagged as missing directly. The `label_of()` lookup attaches each column's documented **label** to its findings for context.
+When `codebook_check` has run, `data_check` uses its output as ground truth for the numeric checks. The internal `codebook_of()` lookup decodes the documented **valid values** (a code list) and **declared missing values** from the codebook table's JSON columns: a documented 1–5 value set makes a `6` out-of-range even when the data alone would not reveal the scale, and a declared `-99` is flagged as missing directly. The `label_of()` lookup attaches each column's documented **label** to its findings for context.
 
 ## Demographic variables
 
-Almost every human-subjects study reports the same three demographic variables — **age, gender/sex, and race/ethnicity** — so `data_validate` picks them out and lists them, reusing `data_check`'s precomputed `concept` facet (or recomputing it with `data_check_demographic()` against an older `data_check` run). Detection requires the column **name and values to agree**, so a `condition` column coded `1`/`2` is never mistaken for gender.
+Almost every human-subjects study reports the same three demographic variables — **age, gender/sex, and race/ethnicity** — so `data_check` picks them out and lists them, reusing `data_check`'s precomputed `concept` facet (or recomputing it with `data_check_demographic()` against an older `data_check` run). Detection requires the column **name and values to agree**, so a `condition` column coded `1`/`2` is never mistaken for gender.
 
 ```{r}
 demo <- file.path(tempdir(), "demo_demo")
@@ -254,7 +271,7 @@ utils::write.csv(data.frame(
   score     = rnorm(30)
 ), file.path(demo, "data", "study.csv"), row.names = FALSE)
 
-mo_demo <- module_run(test_paper(), "data_validate",
+mo_demo <- module_run(test_paper(), "data_check",
                       local_path = demo, local_only = TRUE)
 mo_demo$demographics |>
   knitr::kable()
@@ -264,7 +281,7 @@ This is an **inventory, not a problem flag** — it helps a reviewer see at a gl
 
 ## Qualtrics survey metadata
 
-Qualtrics exports have a fixed, recognisable shape (see the [Data Check](mod-data-check.qmd) chapter). `data_validate` summarises the metadata that is **reliably extractable from any Qualtrics file** with `.dv_qualtrics_summary()`, locating each metadata column by its semantic tag (`.dv_q_col()`) rather than its exact name:
+Qualtrics exports have a fixed, recognisable shape (see the [Data Check](mod-data-check.qmd) chapter). `data_check` summarises the metadata that is **reliably extractable from any Qualtrics file** with `.dv_qualtrics_summary()`, locating each metadata column by its semantic tag (`.dv_q_col()`) rather than its exact name:
 
 - **preview / unfinished responses** — rows where `Status` marks a preview or spam, `Finished` is false, or `Progress` is below 100, which usually need dropping before analysis;
 - the **completion-time distribution** — the median `Duration`, with a count of implausibly fast responses (under half the median *and* under two minutes);
@@ -275,7 +292,7 @@ The substantive question columns are deliberately *not* interpreted here — tha
 
 ## Careless responding
 
-For **survey data**, `data_validate` additionally screens for **careless responding** — respondents who straightline (give the same answer to every item) or answer unusually flatly or erratically. This uses the [`careless`](https://cran.r-project.org/package=careless) package's *longstring* and *intra-individual response variability* (IRV) indices, computed per scale block by `.dv_careless_block()`.
+For **survey data**, `data_check` additionally screens for **careless responding** — respondents who straightline (give the same answer to every item) or answer unusually flatly or erratically. This uses the [`careless`](https://cran.r-project.org/package=careless) package's *longstring* and *intra-individual response variability* (IRV) indices, computed per scale block by `.dv_careless_block()`.
 
 Because these indices only make sense on a block of items measured on a common scale, and a finding is only actionable if you can point to *which* respondent, the check runs only when **both** conditions hold:
 
@@ -299,7 +316,7 @@ items <- rbind(items,
 survey_df <- cbind(participant_id = seq_len(n + 2), items)
 utils::write.csv(survey_df, file.path(survey, "data", "mood.csv"), row.names = FALSE)
 
-mo_car <- module_run(test_paper(), "data_validate",
+mo_car <- module_run(test_paper(), "data_check",
                      local_path = survey, local_only = TRUE)
 mo_car$careless |>
   knitr::kable()
@@ -319,7 +336,7 @@ The synthetic example above shows the mechanics. To see the check on real resear
 
 ```{r}
 #| eval: false
-mo <- module_run(test_paper(), "data_validate",
+mo <- module_run(test_paper(), "data_check",
                  local_path = "divine-protection-replication", local_only = TRUE)
 mo$careless[, c("scale", "respondent", "longstring", "irv", "reason")]
 ```
@@ -337,7 +354,7 @@ Respondent 129 answered **all 40 items identically** (`longstring = 40`, `IRV = 
 
 ```{r}
 #| eval: false
-mo <- module_run(test_paper(), "data_validate",
+mo <- module_run(test_paper(), "data_check",
                  local_path = "parents-failure-mindsets", local_only = TRUE)
 unique(mo$careless$scale)
 ```
@@ -350,11 +367,11 @@ Even though the three scales sit next to each other on the same response metric,
 
 ## Distributions in a report
 
-When you pass `plot_distributions = TRUE` (and have `ggplot2` installed), `data_validate` draws a **single combined figure** with one small histogram per numeric column, the outlier fences drawn as dashed red lines, built by `data_validate_dist_facets()`. Earlier versions drew one plot per column, which was slow and unreadable on wide files (a survey export can have hundreds of numeric columns). The combined figure renders once as a self-contained inline image (so a moved report keeps its plot) and caps the number of panels at `max_facets` (default 40), noting how many columns were omitted if it truncates. All columns are still *checked* — only the figure is limited.
+When you pass `plot_distributions = TRUE` (and have `ggplot2` installed), `data_check` draws a **single combined figure** with one small histogram per numeric column, the outlier fences drawn as dashed red lines, built by `data_validate_dist_facets()`. Earlier versions drew one plot per column, which was slow and unreadable on wide files (a survey export can have hundreds of numeric columns). The combined figure renders once as a self-contained inline image (so a moved report keeps its plot) and caps the number of panels at `max_facets` (default 40), noting how many columns were omitted if it truncates. All columns are still *checked* — only the figure is limited.
 
 ```{r}
 #| eval: false
-module_run(test_paper(), "data_validate", local_path = repo,
+module_run(test_paper(), "data_check", local_path = repo,
            local_only = TRUE, plot_distributions = TRUE, max_facets = 60)
 ```
 
@@ -374,7 +391,7 @@ Spreadsheet-formatting findings are file-level, not column-level, so they are ne
 ```{r}
 #| eval: false
 # make the outlier rule stricter or more lenient (default k = 1.5)
-module_run(test_paper(), "data_validate",
+module_run(test_paper(), "data_check",
            local_path = repo, local_only = TRUE, outlier_k = 3)
 ```
 
@@ -382,20 +399,24 @@ A larger `outlier_k` widens the fences used for the distribution figure and the 
 
 ## What you get back
 
+These are elements of what `data_check` returns. The [Data Check](mod-data-check.qmd) chapter lists the rest.
+
 | Element | What it contains |
 |---|---|
 | `$traffic_light` | `green` / `yellow` / `red` / `na` |
 | `$summary_text` | plain-text summary with a per-check breakdown |
-| `$summary_table` | `paper_id`, `column_n`, `flagged_n`, `spreadsheet_file_n`, `spreadsheet_flagged_file_n` |
-| `$table` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` — spreadsheet-formatting findings join the same table with `column = NA` and the sheet name in `label` |
+| `$summary_table` | `paper_id`, `column_n`, `flagged_n`, `spreadsheet_file_n`, `spreadsheet_flagged_file_n`, alongside `data_file_n` and `empty_col_n` from the file-classification pass |
+| `$findings` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` — spreadsheet-formatting findings join the same table with `column = NA` and the sheet name in `label` |
+| `$table` | one row per **column** rather than per problem: what each column is, with its facets and summary statistics |
 | `$demographics` | one row per detected demographic column: `source_file`, `column`, `demographic` |
 | `$qualtrics` | one row per detected Qualtrics export: response count, preview/unfinished rows, median time, collection window, PII fields present |
 | `$careless` | one row per flagged respondent (survey data), aggregated across scale blocks |
+| `$previews` | the data frames themselves, as read from each file |
 | `$report` | formatted report with the issue breakdown, out-of-range table, spreadsheet-formatting table, combined distribution figure, Qualtrics summary, and careless-responding table |
 
 `spreadsheet_file_n` counts every spreadsheet file examined (`.xlsx`/`.xls`/`.ods`/`.fods`), whether or not it had any issues; `spreadsheet_flagged_file_n` counts how many of those had at least one formatting finding.
 
 ## Related
 
-- [Data Check](mod-data-check.qmd) is run first and supplies the columns, facets, and read data frames, including which files are spreadsheets and where they are stored locally.
+- [Data Check](mod-data-check.qmd) is the module these checks are part of. It classifies the files, reads them, and describes every column, and the checks in this chapter then run on that result.
 - [Codebook Check](mod-codebook-check.qmd) checks whether those columns are documented — the `label` column here, and the codebook ground truth for the numeric checks, come from its output when available.

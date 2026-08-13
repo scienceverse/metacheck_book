@@ -22,28 +22,40 @@ This chapter explains what each cache stores, where it lives, how entries are ke
 ## The short version
 
 - **LLM responses** are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with `llm_cache()`; wipe with `llm_cache_clear()`.
-- **Downloaded repository files** are cached automatically (always on). The same file is fetched once and reused by every module and every later session. Clear it by deleting the cache directory.
-- Both caches live in a persistent per-user location (via `rappdirs`), so they survive across R sessions.
+- **Downloaded repository files** are *not* cached by default. `data_check` and `code_check` download into a temporary folder that is discarded when the R session ends. Pass `cache = TRUE` to keep the files instead, and clear them with `repo_cache_clear()`.
+- Both caches live in the current working directory, so a project's cache sits with the project. See where they are with `metacheck_cache_info()`.
 :::
 
 ## Where the caches live
 
-Both on-disk caches are stored in the standard per-user cache location for your operating system, resolved by the `rappdirs` package under `scienceverse/metacheck`. You never need to create or manage these directories by hand — Metacheck creates them on first use.
+Both on-disk caches default to a folder in your **current working directory**, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.
 
-| Cache | Directory (under the user cache dir) | Contents |
+| Cache | Folder (in the working directory) | Contents |
 |---|---|---|
-| LLM responses | `metacheck/llm/` | one `.rds` per distinct LLM call |
-| Repository files | `metacheck/repo_files/` | one sub-folder per repository, mirroring its files |
+| LLM responses | `.metacheck_llm_cache/` | one `.rds` per distinct LLM call |
+| Repository files | `.metacheck_repo_cache/` | one sub-folder per repository, mirroring its files |
 
-You can see the exact paths on your machine with:
+You never need to create these directories by hand; Metacheck creates them on first use. To see where they are and how much space they take, use `metacheck_cache_info()`, which returns the location and size of both:
 
 ```{r}
 #| eval: false
-rappdirs::user_cache_dir("metacheck/llm", "scienceverse")
-rappdirs::user_cache_dir("metacheck/repo_files", "scienceverse")
+metacheck_cache_info()
 ```
 
-On Windows these sit under `…/AppData/Local/scienceverse/metacheck/Cache/`, on macOS under `~/Library/Caches/…`, and on Linux under `~/.cache/…`.
+Because the folder names begin with a dot, they are hidden in most file browsers, and because they sit inside your project you may want to keep them out of version control. Metacheck does not write to your `.gitignore` for you, so add a line yourself if you use git:
+
+```
+.metacheck_*
+```
+
+You can move both caches somewhere else by setting one option, which is useful if you want a single shared cache across several projects:
+
+```{r}
+#| eval: false
+options(metacheck.cache.dir = "~/metacheck_caches")
+```
+
+Each cache also has its own override for finer control: the `metacheck.repo_cache.dir` option for the repository files, and the `METACHECK_LLM_CACHE_DIR` environment variable for the LLM responses.
 
 ## The LLM response cache
 
@@ -104,9 +116,9 @@ Re-running a report on the same paper is close to free on the LLM side: the firs
 
 ### What it does
 
-Modules that read file *contents* — [data_check](mod-data-check.qmd) and [code_check](mod-code-check.qmd) — need local copies of the files a repository shares. `repo_check` only *lists* the files on OSF, GitHub, and Zenodo (it does not fetch them). When a content-reading module needs a file, it is downloaded once into a shared cache and read from there. Every later read — by another module in the same run, or by any module in a later session — reuses the cached copy instead of downloading again.
+Modules that read file *contents* — [data_check](mod-data-check.qmd) and [code_check](mod-code-check.qmd) — need local copies of the files a repository shares. `repo_check` only *lists* the files on OSF, GitHub, Zenodo and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.
 
-This is why, in a long archive-building run, an interruption is cheap to recover from: the files already fetched are still on disk, and resuming skips straight past them.
+Whether those copies survive the session is up to you, and by default they do not. With `cache = TRUE`, the files are kept in the cache folder and reused by later sessions as well, which is what makes a long archive-building run cheap to recover from after an interruption: the files already fetched are still on disk, and resuming skips straight past them.
 
 ### How entries are keyed
 
@@ -114,42 +126,66 @@ Each repository gets its own sub-folder, named by a filesystem-safe encoding of 
 
 Reuse is decided by a simple, robust test: if the target path already exists **and is non-empty**, it is treated as already downloaded and reused. A zero-byte file (the fingerprint of a download that failed partway) is *not* trusted — it is re-fetched. This means a broken partial download never silently poisons later runs.
 
-### It is always on
+### Turning it on
 
-Unlike the LLM cache, the download cache has **no on/off switch** — reuse of already-fetched files is always active, because there is no downside: the file on disk is a byte-for-byte copy of the remote file. What you *can* control is how much gets downloaded in the first place, through the `data_check` arguments described below.
+Unlike the LLM cache, which is on by default, the download cache is **off by default**. Both `data_check` and `code_check` take a `cache` argument that is `FALSE` unless you say otherwise:
+
+```{r}
+#| eval: false
+# the default: files go to a temporary folder, discarded when R exits
+module_run(paper, "data_check")
+
+# keep the files, and reuse them in later sessions
+module_run(paper, "data_check", cache = TRUE)
+```
+
+With `cache = FALSE` the files are still downloaded and still read; they are simply written to a session folder that R removes on exit, so nothing accumulates on your disk. Files fetched earlier in the same session are reused either way.
+
+Turn it on when you are checking the same repositories repeatedly, or building an archive over several runs, and the download is worth keeping. Leave it off for a one-off check of somebody else's repository, where you would otherwise be left with copies of their files you never asked to keep.
+
+Reuse of a cached file is safe because a downloaded file is a byte-for-byte copy of the remote one. What you *can* control separately is how much gets downloaded in the first place, through the arguments described below.
 
 ### Controlling what gets downloaded
 
 The download cache stores whatever the modules fetch, and `data_check` gives you fine control over that:
 
-- **`download`** — `"data"` (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); `"all"` fetches every file in the repository (the right choice when building a complete archive with `convert_psychds()`); `FALSE`/`"none"` downloads nothing and classifies files by name only.
-- **`skip_types`** — a vector of file *types* never to download even under `download = "all"` — e.g. `"asset"` for stimuli and media a release links to rather than mirrors.
-- **`peek_zips`** — look *inside* each `.zip` using an HTTP range request (without downloading the whole archive) and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead.
+- **`download`** — `"data"` (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); `"all"` fetches every file in the repository, which is the right choice when building a complete archive; `FALSE`/`"none"` downloads nothing and classifies files by name only.
+- **`skip_types`** — a vector of file *types* never to download even under `download = "all"`. When left as `NULL`, the default, `"materials"` and `"unknown"` are skipped: stimuli and software, and the classifier's collection of manuscripts, logs and unrecognised content, which would only inflate an archive. Pass an explicit vector to override this, or `character(0)` to download every type. The six types are `"data"`, `"code"`, `"documentation"`, `"materials"`, `"output"` and `"unknown"`. Skipped files still appear in the manifest, with the reason.
+- **`peek_zips`** — look *inside* each `.zip` using an HTTP range request, without downloading the whole archive, and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead. It is `FALSE` by default in `data_check`. Note that `repo_check` has an argument of the same name that does something related but distinct: there it is `TRUE` by default, and it lists each archive's contents in place of the archive itself, without downloading anything.
 - **`max_file_size`** / **`max_download_size`** — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository's total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.
 
 These arguments decide *what enters the cache*; once a file is in, it stays and is reused. See the [data_check](mod-data-check.qmd) chapter for full details and examples.
 
-### Clearing it
+### Inspecting and clearing it
 
-There is no dedicated clearing function; the cache is just files on disk. To reclaim space or force fresh downloads, delete the directory (or a single repository's sub-folder within it):
+Three functions report on the cache and one clears it:
 
 ```{r}
 #| eval: false
-# the whole download cache
-unlink(rappdirs::user_cache_dir("metacheck/repo_files", "scienceverse"),
-       recursive = TRUE)
+repo_cache_dir()     # where it is
+repo_cache_size()    # how large it is, in bytes
+metacheck_cache_info()  # location and size of both caches at once
+
+repo_cache_clear()   # delete everything in it
 ```
 
-Because entries are keyed by repository URL and relative path, deleting is safe: anything still needed is simply re-downloaded on the next run.
+`repo_cache_clear()` also takes a single repository URL, so you can discard one repository's files while keeping the rest — useful when a repository has changed on the server and you want its files fetched afresh:
+
+```{r}
+#| eval: false
+repo_cache_clear("https://osf.io/abc123")
+```
+
+Because entries are keyed by repository URL and relative path, clearing is always safe: anything still needed is simply downloaded again on the next run.
 
 ## How the caches work together in a full run
 
 When you run several modules on a paper — or build an archive across a corpus — the two caches complement each other:
 
 1. `repo_check` lists the repository's files (no download).
-2. `data_check` / `code_check` download the files they need into the **repository-file cache**; a second module reading the same file reuses it.
+2. `data_check` / `code_check` download the files they need; a second module reading the same file in the same run reuses that copy. With `cache = TRUE` the copies are kept for later sessions as well.
 3. When an LLM is enabled, `data_check`, `codebook_check`, and other LLM-using modules send text to `llm()`, whose answers are stored in the **LLM response cache**.
-4. Re-running the whole pipeline, or resuming an interrupted archive build, replays both caches: files are read from disk and LLM answers are replayed, so only genuinely new work is done.
+4. Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the downloads too if you ran with `cache = TRUE`; without it, the files are fetched again, because the previous session's copies were discarded. This is the main reason to turn the download cache on for an archive build you expect to resume.
 
 Modules such as `codebook_check` do not have a *separate* results cache of their own — their re-run savings come entirely from these two shared caches (the files they read and the LLM answers they request). This keeps the caching story simple: there are two on-disk caches, and every module benefits from them without needing its own.
 
@@ -162,7 +198,7 @@ One module, [funding_check](mod-funding-check.qmd), builds a list of organisatio
 | Cache | Scope | On by default | Key | Toggle | Clear |
 |---|---|---|---|---|---|
 | LLM responses | on disk, cross-session | yes | model + prompt + text + type + params | `llm_cache()` | `llm_cache_clear()` |
-| Repository files | on disk, cross-session | yes (always on) | repo URL + relative path | — (control via `data_check` download args) | delete the cache directory |
+| Repository files | on disk, cross-session | **no** (`cache = TRUE` to enable) | repo URL + relative path | `cache` argument of `data_check` / `code_check` | `repo_cache_clear()` |
 | Funding synonyms | in memory, per session | yes | — | — | ends with the session |
 
 The guiding principle is the same for both on-disk caches: **cache only what is reproducible, and key it on everything that could change the result.** LLM answers are cached because temperature 0 makes them reproducible; downloaded files are cached because a byte-for-byte copy of a remote file is trivially reproducible. In both cases, changing the thing that matters — a prompt, a model, a repository — produces a fresh result automatically, so the caches speed you up without ever giving you a stale answer.

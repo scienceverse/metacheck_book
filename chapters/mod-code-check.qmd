@@ -59,7 +59,7 @@ analysis.R   clean.do  model.sas survey.sps study.jasp
        "R"    "Stata"      "SAS"     "SPSS"     "JASP"
 ```
 
-A `.jasp` or `.omv` file bundles a dataset *with* its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by `data_check`, and their analysis syntax recovered by `read_jasp()` / `read_omv()`). Only R-type files are *parsed* — the other text languages are checked for everything except parse errors.
+A `.jasp` or `.omv` file bundles a dataset *with* its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by `data_check`, and their analysis syntax recovered by `import_jasp()` / `import_omv()`). Only R-type files are *parsed* — the other text languages are checked for everything except parse errors.
 
 ## Reading code: `code_read()` and `code_extract_r()`
 
@@ -166,7 +166,7 @@ Without one of these, package versions can silently drift between when the analy
 .code_version_pin_check(all_files, code_text_list = list(r_script_lines))
 ```
 
-This is also exposed to [reproducibility_check](mod-reproducibility-check.qmd)'s Docker backend, which uses the declared R version (when found) to pick a matching base image — see `docker_use_declared_version` in that chapter.
+This is also exposed for the forthcoming [reproducibility_check](mod-reproducibility-check.qmd)'s Docker backend, which will use the declared R version (when found) to pick a matching base image — see `docker_use_declared_version` in that chapter.
 
 ## A clean example and one with problems
 
@@ -183,7 +183,7 @@ mo$table[, c("file_name", "code_abs_path", "loaded_files_missing", "parse_error"
 
 ## Downloading and options
 
-`code_check` downloads the code files it will check into the shared cache (`download = TRUE`, the default) so their contents are read locally and reused on later runs, rather than streamed from the repository URL each time. It shares `data_check`'s size caps (`max_file_size`, `max_download_size` — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (`cache`, default `FALSE`). It also shares `repo_check`'s local-file options:
+`code_check` downloads the code files it will check (`download = TRUE`, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass `cache = TRUE`; otherwise they are discarded when the session ends. It shares `data_check`'s size caps (`max_file_size`, `max_download_size` — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (`cache`, default `FALSE`). It also shares `repo_check`'s local-file options:
 
 ```{r}
 #| eval: false
@@ -217,7 +217,7 @@ module_run(paper, "code_check", manifest = "path/to/manifest/dir")
 | `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_setwd`, `code_missing_files`, `code_min_comments`, `code_parse_errors`, `code_packages_n`, `code_version_pinned`) |
 | `$report` | formatted report sections: comments, missing files, absolute paths, working directory, libraries, packages/dependencies, reproducible environment, and parsable code |
 | `$summary_text` | plain-text bulleted summary of each check |
-| `$version_pin` | the raw output of `.code_version_pin_check()` (mechanisms found, declared R version(s), and any `renv.lock` package table) — also used internally by `reproducibility_check()`'s Docker backend to pick a matching base image |
+| `$version_pin` | the raw output of `.code_version_pin_check()` (mechanisms found, declared R version(s), and any `renv.lock` package table) — intended to be used by the forthcoming `reproducibility_check()`'s Docker backend to pick a matching base image |
 
 Downloaded code files (and any recovered `.spv`/`.smcl`/`.out`/`.html`-derived syntax files) are cached and reused via the same `cache`/`max_file_size`/`max_download_size` mechanism `data_check` uses — see the [Caching](caching.qmd) chapter.
 

@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -446,7 +452,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">5.5.2</span> A worked example: extracting power analyses</a></li>
   <li><a href="#sending-a-whole-paper" id="toc-sending-a-whole-paper" class="nav-link" data-scroll-target="#sending-a-whole-paper"><span class="header-section-number">5.5.3</span> Sending a whole paper</a></li>
   <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">5.5.4</span> Rate limiting</a></li>
-  <li><a href="#caching-responses" id="toc-caching-responses" class="nav-link" data-scroll-target="#caching-responses"><span class="header-section-number">5.5.5</span> Caching responses</a></li>
+  <li><a href="#response-length" id="toc-response-length" class="nav-link" data-scroll-target="#response-length"><span class="header-section-number">5.5.5</span> Response length</a></li>
+  <li><a href="#reasoning-effort" id="toc-reasoning-effort" class="nav-link" data-scroll-target="#reasoning-effort"><span class="header-section-number">5.5.6</span> Reasoning effort</a></li>
+  <li><a href="#caching-responses" id="toc-caching-responses" class="nav-link" data-scroll-target="#caching-responses"><span class="header-section-number">5.5.7</span> Caching responses</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -896,8 +904,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>   <span class="co"># raise it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See <code>?llm</code> for the full set of arguments and details.</p>
-</section><section id="caching-responses" class="level3" data-number="5.5.5"><h3 data-number="5.5.5" class="anchored" data-anchor-id="caching-responses">
-<span class="header-section-number">5.5.5</span> Caching responses</h3>
+</section><section id="response-length" class="level3" data-number="5.5.5"><h3 data-number="5.5.5" class="anchored" data-anchor-id="response-length">
+<span class="header-section-number">5.5.5</span> Response length</h3>
+<p>Every call to <code>llm()</code> needs some limit on how long the answer may be, because a provider that reaches the limit truncates the response without a clear error. Rather than repeating <code>params = list(max_tokens = ...)</code> at every call, set the default once for the session with <code>llm_max_tokens()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_tokens</span><span class="op">(</span><span class="op">)</span>       <span class="co"># read the current default</span></span>
+<span><span class="fu">llm_max_tokens</span><span class="op">(</span><span class="fl">8192</span><span class="op">)</span>   <span class="co"># raise it for the session</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>An explicit <code>max_tokens</code> passed to a single call still takes precedence. The setting matters most when a module asks one question about a great deal of material at once, such as <code>codebook_check</code> or <code>data_check</code> describing many columns in a single pass; that is the case most likely to need more room than the built-in default.</p>
+</section><section id="reasoning-effort" class="level3" data-number="5.5.6"><h3 data-number="5.5.6" class="anchored" data-anchor-id="reasoning-effort">
+<span class="header-section-number">5.5.6</span> Reasoning effort</h3>
+<p>Some models spend extra tokens “thinking” before answering. For the work Metacheck asks of a model this is mostly wasted: the questions are ones of reading and pattern-matching over material the prompt already supplies (name this variable’s label, list the scales in these sentences, group these files by study), not arithmetic, multi-step inference, or planning. Those extra tokens also come out of the same budget as the visible answer, which is a confirmed cause of truncated structured responses on <code>gpt-oss</code> models via Groq. Low reasoning effort is therefore the right default for this package rather than a compromise on quality.</p>
+<p>Set it with <code>llm_reasoning()</code>, which accepts <code>"low"</code>, <code>"medium"</code>, <code>"high"</code> or <code>"none"</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_reasoning</span><span class="op">(</span><span class="op">)</span>        <span class="co"># read the current setting</span></span>
+<span><span class="fu">llm_reasoning</span><span class="op">(</span><span class="st">"low"</span><span class="op">)</span>   <span class="co"># the recommended default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There is no single reasoning switch that works across providers, so Metacheck translates this one setting into whatever the model family actually understands:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Model family</th>
+<th>What it accepts</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code>openai/gpt-oss-*</code> (Groq or another OpenAI-compatible host)</td>
+<td>
+<code>"low"</code>, <code>"medium"</code>, <code>"high"</code>; <code>"low"</code> is the minimum, as this family cannot turn reasoning off entirely</td>
+</tr>
+<tr class="even">
+<td>
+<code>qwen3*</code> models</td>
+<td>
+<code>"none"</code> fully disables reasoning tokens, unlike <code>gpt-oss</code>
+</td>
+</tr>
+<tr class="odd">
+<td>Mistral’s reasoning models (<code>mistral-small-latest</code>, <code>mistral-medium-3-5</code>)</td>
+<td>only two settings, <code>"high"</code> for the full thinking passage or <code>"none"</code> to omit it</td>
+</tr>
+<tr class="even">
+<td>Ollama-hosted reasoning models (DeepSeek-R1, Qwen3, and similar)</td>
+<td>a simple on/off flag rather than a graded level, so both <code>"low"</code> and <code>"none"</code> turn thinking off, and there is no equivalent of <code>"medium"</code> or <code>"high"</code>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A model with no reasoning setting of any kind is left alone: Metacheck never sends an unsupported parameter, because providers differ in whether they ignore one quietly or reject the whole request.</p>
+</section><section id="caching-responses" class="level3" data-number="5.5.7"><h3 data-number="5.5.7" class="anchored" data-anchor-id="caching-responses">
+<span class="header-section-number">5.5.7</span> Caching responses</h3>
 <p>Because <code>llm()</code> runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default and cached replays do not count against <code>llm_max_calls()</code>. The <a href="../chapters/caching.html">Caching and Reuse</a> chapter explains how it works, and how to inspect or clear it (<code>llm_cache()</code>, <code>llm_cache_clear()</code>).</p>
 
 

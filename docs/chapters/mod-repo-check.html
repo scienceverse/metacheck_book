@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -436,7 +442,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="#repositories-it-searches" id="toc-repositories-it-searches" class="nav-link" data-scroll-target="#repositories-it-searches"><span class="header-section-number">21.4</span> Repositories it searches</a>
   <ul class="collapse">
 <li><a href="#osf-registrations-follow-their-source-project" id="toc-osf-registrations-follow-their-source-project" class="nav-link" data-scroll-target="#osf-registrations-follow-their-source-project"><span class="header-section-number">21.4.1</span> OSF registrations follow their source project</a></li>
-  <li><a href="#github-size-gating" id="toc-github-size-gating" class="nav-link" data-scroll-target="#github-size-gating"><span class="header-section-number">21.4.2</span> GitHub size gating</a></li>
+  <li><a href="#github-repositories-are-listed-in-full" id="toc-github-repositories-are-listed-in-full" class="nav-link" data-scroll-target="#github-repositories-are-listed-in-full"><span class="header-section-number">21.4.2</span> GitHub repositories are listed in full</a></li>
   </ul>
 </li>
   <li>
@@ -451,7 +457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#proprietary-e-prime-files" id="toc-proprietary-e-prime-files" class="nav-link" data-scroll-target="#proprietary-e-prime-files"><span class="header-section-number">21.7.1</span> Proprietary E-Prime files</a></li>
   <li><a href="#restricted-access-files" id="toc-restricted-access-files" class="nav-link" data-scroll-target="#restricted-access-files"><span class="header-section-number">21.7.2</span> Restricted-access files</a></li>
-  <li><a href="#non-.zip-archives" id="toc-non-.zip-archives" class="nav-link" data-scroll-target="#non-.zip-archives"><span class="header-section-number">21.7.3</span> Non-<code>.zip</code> archives</a></li>
+  <li><a href="#archives-and-looking-inside-a-.zip" id="toc-archives-and-looking-inside-a-.zip" class="nav-link" data-scroll-target="#archives-and-looking-inside-a-.zip"><span class="header-section-number">21.7.3</span> Archives, and looking inside a <code>.zip</code></a></li>
   </ul>
 </li>
   <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">21.8</span> A clean example and one with problems</a></li>
@@ -480,7 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="what-it-checks" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">21.1</span> What it checks</h2>
-<p>The <code>repo_check</code> module finds links to <strong>research repositories</strong> in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: <a href="../chapters/mod-code-check.html">code_check</a>, <a href="../chapters/mod-data-check.html">data_check</a>, and <a href="../chapters/mod-data-validate.html">data_validate</a> all build on the file list <code>repo_check</code> produces.</p>
+<p>The <code>repo_check</code> module finds links to <strong>research repositories</strong> in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: <a href="../chapters/mod-code-check.html">code_check</a> and <a href="../chapters/mod-data-check.html">data_check</a> both build on the file list <code>repo_check</code> produces.</p>
 <p>Beyond listing files, <code>repo_check</code> runs a set of checks on what it finds:</p>
 <ul>
 <li>whether each repository has a <strong>README</strong>;</li>
@@ -518,8 +524,10 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 7 files in 1 repository.
-#&gt; -  We found 0 README files and 1 repository without READMEs.</code></pre>
+#&gt; -  We found 1 empty repository.
+#&gt; -  We found 14 files in 4 repositories.
+#&gt; -  We found 1 README file and 3 repositories without READMEs.
+#&gt; -  We found 1 archive file.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> lists every file found across all linked repositories:</p>
@@ -543,46 +551,64 @@ Note
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">README</td>
+<td style="text-align: left;">readme</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">papercheck.png</td>
+<td style="text-align: left;">image</td>
+<td style="text-align: right;">1564236</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">183</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">629bx</td>
+<td style="text-align: left;">bad.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">172</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">629bx</td>
+<td style="text-align: left;">bad.Rmd</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">413</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">629bx</td>
+<td style="text-align: left;">example2.csv</td>
+<td style="text-align: left;">data</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">629bx</td>
+<td style="text-align: left;">Archive.zip</td>
+<td style="text-align: left;">archive</td>
+<td style="text-align: right;">6410</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">4377</td>
 <td style="text-align: left;">Code/Study 1.r</td>
 <td style="text-align: left;">code</td>
 <td style="text-align: right;">183</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">4377</td>
 <td style="text-align: left;">Codebook/Study 1 - csv - dataset 1.csv___CODEBOOK.csv</td>
 <td style="text-align: left;">data</td>
 <td style="text-align: right;">96</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">4377</td>
 <td style="text-align: left;">Codebook/Study 1.csv___CODEBOOK.csv</td>
 <td style="text-align: left;">data</td>
 <td style="text-align: right;">96</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Data/Study 1 - csv - dataset 1.csv</td>
-<td style="text-align: left;">data</td>
-<td style="text-align: right;">185</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Data/Study 1.csv</td>
-<td style="text-align: left;">data</td>
-<td style="text-align: right;">185</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Materials/Study 1 - test txt file.txt</td>
-<td style="text-align: left;">text</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Table of Contents Box #4377.csv</td>
-<td style="text-align: left;">data</td>
-<td style="text-align: right;">573</td>
 </tr>
 </tbody>
 </table>
@@ -618,7 +644,7 @@ Note
 <td>GitHub</td>
 <td><code>github_links()</code></td>
 <td>
-<code>github_tree_files()</code> — one repo-metadata + one full-tree API call, gated for size</td>
+<code>github_tree_files()</code> — one repo-metadata + one full-tree API call, listing the repository in full</td>
 </tr>
 <tr class="odd">
 <td>ResearchBox</td>
@@ -645,16 +671,24 @@ Note
 <ul>
 <li>if the source project is <strong>public</strong>, its files are listed under the source project’s own URL (not the registration’s);</li>
 <li>if the source project is <strong>closed or inaccessible</strong>, the report flags this explicitly, distinguishing two cases: the registration itself still holds a mirrored copy of the files (nothing is lost, but the permanent home is unreachable), or no copy exists anywhere (the files are genuinely unreachable).</li>
-</ul></section><section id="github-size-gating" class="level3" data-number="21.4.2"><h3 data-number="21.4.2" class="anchored" data-anchor-id="github-size-gating">
-<span class="header-section-number">21.4.2</span> GitHub size gating</h3>
-<p>A GitHub repository can be arbitrarily large, so <code>repo_check</code> gates recursive listing by default:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>,</span>
-<span>           github_gate <span class="op">=</span> <span class="cn">TRUE</span>,               <span class="co"># default</span></span>
-<span>           github_max_repo_size_mb <span class="op">=</span> <span class="fl">500</span>,     <span class="co"># default</span></span>
-<span>           github_max_files <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>           <span class="co"># default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</ul></section><section id="github-repositories-are-listed-in-full" class="level3" data-number="21.4.2"><h3 data-number="21.4.2" class="anchored" data-anchor-id="github-repositories-are-listed-in-full">
+<span class="header-section-number">21.4.2</span> GitHub repositories are listed in full</h3>
+<p>Every GitHub repository is listed in full, whatever its size, exactly as OSF, Zenodo, ResearchBox, PsychArchives and local directories have always been treated. Listing a repository is cheap — it costs two API calls and transfers no file contents — so there is nothing to configure and no size threshold to set.</p>
+<p>There remain two reasons a GitHub repository can fail to be listed, and neither is one a setting can fix. Either the repository is invalid or inaccessible (it has been renamed, deleted, or made private), or it exceeds GitHub’s own limit of 100,000 items per tree request, in which case GitHub returns a listing it marks as truncated and metacheck reports it as too large to list rather than silently using a partial one. Repositories in either state are recorded in <code>$gated_repos</code> (see below) with the reason, so a report can explain <em>why</em> a paper produced no GitHub files instead of simply reporting none found.</p>
+<p>Note that this concerns <em>listing</em> only. How much of a repository is ever <strong>downloaded</strong> is still capped, by the per-file and per-repository size limits in <code>data_check</code> described in the <a href="../chapters/mod-data-check.html">data_check</a> chapter.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>A repository over either threshold is skipped (not listed), with a warning naming the repository and the reason. Set <code>github_gate = FALSE</code> to force a full recursive listing regardless of size. Repositories skipped this way are recorded in <code>$gated_repos</code> (see below), so downstream modules and reports can explain <em>why</em> a paper produced no GitHub files, instead of just reporting none found.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A change from earlier versions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Earlier versions of <code>repo_check</code> took three arguments — <code>github_gate</code>, <code>github_max_repo_size_mb</code> and <code>github_max_files</code> — that skipped listing a repository over a size threshold. These have been removed, so code passing them will now fail. Delete them from any script that used them; no replacement is needed, because listing is no longer gated.</p>
+</div>
+</div>
 </section></section><section id="study-grouping" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="study-grouping">
 <span class="header-section-number">21.5</span> Study grouping</h2>
 <p><code>repo_check</code> runs a <strong>preliminary</strong> classification and grouping pass over every file it finds:</p>
@@ -680,7 +714,7 @@ Note
 <strong>suggestion</strong> — not required, but a good habit (e.g.&nbsp;a more descriptive name).</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">naming_issues</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">naming_issues</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
 </div>
@@ -693,9 +727,15 @@ Note
 </section><section id="restricted-access-files" class="level3" data-number="21.7.2"><h3 data-number="21.7.2" class="anchored" data-anchor-id="restricted-access-files">
 <span class="header-section-number">21.7.2</span> Restricted-access files</h3>
 <p>A PsychArchives item flagged <code>restrictedAccess</code>/<code>embargoedAccess</code> hides its files behind institutional (SSO) login — they cannot be fetched programmatically. <code>repo_check</code> flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.</p>
-</section><section id="non-.zip-archives" class="level3" data-number="21.7.3"><h3 data-number="21.7.3" class="anchored" data-anchor-id="non-.zip-archives">
-<span class="header-section-number">21.7.3</span> Non-<code>.zip</code> archives</h3>
-<p>Only <code>.zip</code> stores its file listing in a way that can be inspected via an HTTP range request without downloading the whole archive; <code>.7z</code>/<code>.rar</code>/<code>.tar.gz</code> must be downloaded whole, and some formats metacheck cannot read at all. <code>repo_check</code> only <em>lists</em> archive files — it never opens one (peeking inside a <code>.zip</code>, or downloading an archive, is <code>data_check</code>’s job) — but it does warn when an archive is in a non-<code>.zip</code> format, since that limits how discoverable and reusable its contents are.</p>
+</section><section id="archives-and-looking-inside-a-.zip" class="level3" data-number="21.7.3"><h3 data-number="21.7.3" class="anchored" data-anchor-id="archives-and-looking-inside-a-.zip">
+<span class="header-section-number">21.7.3</span> Archives, and looking inside a <code>.zip</code>
+</h3>
+<p>An archive shared as a single file hides what is in it. By default <code>repo_check</code> therefore reads each <code>.zip</code>’s own listing and reports the files inside it, in place of the archive as one opaque row. This costs one HTTP range request per archive and downloads none of its contents: a <code>.zip</code> stores a directory of what it holds at the end of the file, and a server that honours range requests will return just that stretch of bytes. The helper that does this is <code>zip_peek()</code>, and you can call it yourself on any archive URL.</p>
+<p>Turn it off to leave archives as single rows and make no per-archive request at all:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, peek_zips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This works for <code>.zip</code> only. <code>.7z</code>, <code>.rar</code> and <code>.tar.gz</code> keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. <code>repo_check</code> warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and <code>data_check</code> opens it after downloading, as before.</p>
 </section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="21.8"><h2 data-number="21.8" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
 <span class="header-section-number">21.8</span> A clean example and one with problems</h2>
 <p>The demo paper links to three repositories, and running <code>repo_check</code> on it produces a <strong>yellow</strong> light — there are problems to address. The summary text reports exactly what:</p>
@@ -707,8 +747,10 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 7 files in 1 repository.
-#&gt; -  We found 0 README files and 1 repository without READMEs.</code></pre>
+#&gt; -  We found 1 empty repository.
+#&gt; -  We found 14 files in 4 repositories.
+#&gt; -  We found 1 README file and 3 repositories without READMEs.
+#&gt; -  We found 1 archive file.</code></pre>
 </div>
 </div>
 <p>Here the issues are a <strong>missing README</strong> and an <strong>archive file</strong> whose contents could not be examined. The per-paper summary table counts each file type — note <code>files_readme</code> is 0 (no README was shared) and <code>files_zip</code> is 1 (one archive):</p>
@@ -737,12 +779,12 @@ Note
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
 </tr></tbody>
 </table>
 </div>
@@ -752,12 +794,17 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="st">"archive"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_name"</span>, <span class="st">"file_name"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<table class="caption-top">
+<table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
+<th style="text-align: left;"></th>
 <th style="text-align: left;">repo_name</th>
 <th style="text-align: left;">file_name</th>
 </tr></thead>
-<tbody></tbody>
+<tbody><tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">629bx</td>
+<td style="text-align: left;">Archive.zip</td>
+</tr></tbody>
 </table>
 </div>
 </div>
@@ -851,7 +898,7 @@ Note
 </tbody>
 </table></section><section id="related" class="level2" data-number="21.11"><h2 data-number="21.11" class="anchored" data-anchor-id="related">
 <span class="header-section-number">21.11</span> Related</h2>
-<p>The companion <a href="../chapters/mod-code-check.html">code_check</a> module analyses the actual code files that <code>repo_check</code> discovers. <a href="../chapters/mod-data-check.html">data_check</a> re-downloads and reclassifies the data files using their contents (not just names/paths), and <a href="../chapters/mod-data-validate.html">data_validate</a> runs quality checks on the columns it finds.</p>
+<p>The companion <a href="../chapters/mod-code-check.html">code_check</a> module analyses the actual code files that <code>repo_check</code> discovers. <a href="../chapters/mod-data-check.html">data_check</a> re-downloads and reclassifies the data files using their contents (not just names and paths), and runs the <a href="../chapters/mod-data-validate.html">data-quality checks</a> on the columns it finds.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

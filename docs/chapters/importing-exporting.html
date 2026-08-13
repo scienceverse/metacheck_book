@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -455,7 +461,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" id="toc-spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts" class="nav-link" data-scroll-target="#spss-viewer-building-a-readable-view-from-the-extracted-tables-and-charts"><span class="header-section-number">27.5.2</span> SPSS Viewer: building a readable view from the extracted tables and charts</a></li>
   </ul>
 </li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">27.6</span> Summary</a></li>
+  <li>
+<a href="#part-5-mplus-and-stata-output" id="toc-part-5-mplus-and-stata-output" class="nav-link" data-scroll-target="#part-5-mplus-and-stata-output"><span class="header-section-number">27.6</span> Part 5: Mplus and Stata output</a>
+  <ul class="collapse">
+<li><a href="#mplus-.out-files" id="toc-mplus-.out-files" class="nav-link" data-scroll-target="#mplus-.out-files"><span class="header-section-number">27.6.1</span> Mplus <code>.out</code> files</a></li>
+  <li><a href="#stata-.smcl-logs" id="toc-stata-.smcl-logs" class="nav-link" data-scroll-target="#stata-.smcl-logs"><span class="header-section-number">27.6.2</span> Stata <code>.smcl</code> logs</a></li>
+  <li><a href="#exporting-both-to-html" id="toc-exporting-both-to-html" class="nav-link" data-scroll-target="#exporting-both-to-html"><span class="header-section-number">27.6.3</span> Exporting both to HTML</a></li>
+  </ul>
+</li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">27.7</span> Summary</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/importing-exporting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -679,7 +693,7 @@ Important
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">tables</span>, <span class="kw">function</span><span class="op">(</span><span class="va">tb</span><span class="op">)</span> <span class="va">tb</span><span class="op">$</span><span class="va">analysis</span> <span class="op"><a href="https://rdrr.io/r/base/Control.html">%||%</a></span> <span class="cn">NA_character_</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Reliability"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>import_spv()</code> returns a <strong>list of result tables</strong> — the same shape <a href="../chapters/mod-reproducibility-check.html">read_stat_tables()</a> already returns for <code>.jasp</code> and <code>.omv</code>, so all three formats can be processed identically downstream. Each table is a list with:</p>
+<p><code>import_spv()</code> returns a <strong>list of result tables</strong> — the same shape <code>read_stat_tables()</code> returns for <code>.jasp</code>, <code>.omv</code> and <code>.ipynb</code>, so every format can be processed identically downstream. Each table is a list with:</p>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Element</th>
@@ -833,7 +847,7 @@ Important
 <span><span class="co">#&gt; [[1]]$fn</span></span>
 <span><span class="co">#&gt; function (x) </span></span>
 <span><span class="co">#&gt; 4.03 + 2.86e-06 * x</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x000001dd6ae292a0&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; &lt;environment: 0x000002bb197bbc78&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>stat_results_long()</code> and <code>stat_output_json()</code> skip chart entries automatically (a chart’s <code>x</code>/<code>y</code> or <code>category</code>/<code>value</code> columns are plotted points, not statistics to extract), so passing <code>import_spv()</code>’s output straight through the usual pipeline is always safe, chart-bearing file or not.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -879,37 +893,99 @@ Note
 </div>
 <iframe src="example-chart-output.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
 <p>Not every chart in a <code>.spv</code> file can be rendered this way yet — see the note in <a href="#spv-charts">Part 3</a> on which mark types are currently supported. A chart that cannot be decoded is skipped, with the rest of the file’s tables (and any other decodable charts) still exported normally.</p>
-<hr></section></section><section id="summary" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="summary">
-<span class="header-section-number">27.6</span> Summary</h2>
+<hr></section></section><section id="part-5-mplus-and-stata-output" class="level2" data-number="27.6"><h2 data-number="27.6" class="anchored" data-anchor-id="part-5-mplus-and-stata-output">
+<span class="header-section-number">27.6</span> Part 5: Mplus and Stata output</h2>
+<p>Two further formats are read the same way, though neither is an archive containing a dataset: both are output logs, so there is analysis output to recover but no data file to import.</p>
+<section id="mplus-.out-files" class="level3" data-number="27.6.1"><h3 data-number="27.6.1" class="anchored" data-anchor-id="mplus-.out-files">
+<span class="header-section-number">27.6.1</span> Mplus <code>.out</code> files</h3>
+<p><code>import_mplus_output()</code> reads an Mplus output file. Mplus marks its own structure with ALL-CAPS section headings, so the importer splits the file on those and extracts each section’s fixed-width result tables:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu">import_mplus_output</span><span class="op">(</span><span class="st">"model.out"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Each table carries a <code>syntax</code> element holding the file’s own <code>INPUT INSTRUCTIONS</code> block, which is Mplus’s verbatim record of the analysis that was run. Because one <code>.out</code> file is one Mplus run, that same syntax appears on every table from the file.</p>
+<p>One caution specific to this format: <code>.out</code> is not an Mplus-owned extension, unlike <code>.sav</code> or <code>.dta</code>. Plenty of unrelated programs write <code>.out</code> files. Metacheck therefore checks the content rather than trusting the name, reading the Mplus version banner that genuine output always carries as its first real line, and refuses a file that lacks it.</p>
+</section><section id="stata-.smcl-logs" class="level3" data-number="27.6.2"><h3 data-number="27.6.2" class="anchored" data-anchor-id="stata-.smcl-logs">
+<span class="header-section-number">27.6.2</span> Stata <code>.smcl</code> logs</h3>
+<p><code>import_stata_smcl()</code> reads a Stata log written in Stata Markup and Control Language. It renders the markup to plain text, then splits the log into one chunk per command, using Stata’s own echo of each command as the boundary:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu">import_stata_smcl</span><span class="op">(</span><span class="st">"analysis.smcl"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here <code>analysis</code> is the Stata command that produced the table, such as <code>summarize communication_index barrier_index</code>, and <code>syntax</code> repeats it, because in Stata the echoed command <em>is</em> the syntax. Note that a <code>.smcl</code> log never contains charts: <code>graph export</code> is recovered as ordinary command text, but Stata writes the image itself to a separate file on disk, so there is no chart data inside the log to extract.</p>
+</section><section id="exporting-both-to-html" class="level3" data-number="27.6.3"><h3 data-number="27.6.3" class="anchored" data-anchor-id="exporting-both-to-html">
+<span class="header-section-number">27.6.3</span> Exporting both to HTML</h3>
+<p>Each has a matching exporter that builds a readable HTML view, in the same way as the three formats above:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">export_mplus_html</span><span class="op">(</span><span class="st">"model.out"</span>, out <span class="op">=</span> <span class="st">"model.html"</span><span class="op">)</span></span>
+<span><span class="fu">export_stata_smcl_html</span><span class="op">(</span><span class="st">"analysis.smcl"</span>, out <span class="op">=</span> <span class="st">"analysis.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>These two are not reached by <code>read_stat_tables()</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>read_stat_tables()</code> dispatches on the file extension and handles <code>.jasp</code>, <code>.omv</code>, <code>.spv</code> and <code>.ipynb</code>. It does not recognise <code>.out</code> or <code>.smcl</code>, so call <code>import_mplus_output()</code> or <code>import_stata_smcl()</code> directly for those. Both return the same table-list shape, so everything downstream works identically once you have the tables.</p>
+</div>
+</div>
+<hr></section></section><section id="summary" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">27.7</span> Summary</h2>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Task</th>
 <th>JASP</th>
 <th>jamovi</th>
 <th>SPSS Viewer</th>
+<th>Mplus</th>
+<th>Stata</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Import data + analyses</td>
+<td>Import</td>
 <td><code>import_jasp(path)</code></td>
 <td><code>import_omv(path)</code></td>
 <td><code>import_spv(path)</code></td>
+<td><code>import_mplus_output(path)</code></td>
+<td><code>import_stata_smcl(path)</code></td>
 </tr>
 <tr class="even">
 <td>Export readable HTML</td>
 <td><code>export_jasp_html(path, out)</code></td>
 <td><code>export_omv_html(path, out)</code></td>
 <td><code>export_spv_html(path, out)</code></td>
+<td><code>export_mplus_html(path, out)</code></td>
+<td><code>export_stata_smcl_html(path, out)</code></td>
 </tr>
 <tr class="odd">
+<td>Contains the dataset?</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No (output only)</td>
+<td>No (output only)</td>
+<td>No (output only)</td>
+</tr>
+<tr class="even">
 <td>Rendered view in the archive?</td>
 <td>Yes (re-exported, plots inlined)</td>
 <td>Yes (re-exported, plots inlined)</td>
 <td>No (tables and charts both built fresh from decoded data — see <a href="#spv-charts">Part 3</a>)</td>
+<td>No (built from the extracted sections)</td>
+<td>No (built from the rendered log)</td>
+</tr>
+<tr class="odd">
+<td>Reached by <code>read_stat_tables()</code>?</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No — call the importer directly</td>
+<td>No — call the importer directly</td>
 </tr>
 </tbody>
 </table>
-<p>All three importers return data in the shape the rest of metacheck already expects — a labelled data.frame for <code>import_jasp()</code>/<code>import_omv()</code>, and <a href="../chapters/mod-reproducibility-check.html">read_stat_tables()</a>’s table-list shape for <code>import_spv()</code> — so <a href="../chapters/mod-data-check.html">data_check</a>, <a href="../chapters/mod-codebook-check.html">codebook_check</a>, and <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> all consume these formats automatically, with no extra steps.</p>
+<p>Every importer returns data in the shape the rest of metacheck already expects: a labelled data.frame for <code>import_jasp()</code> and <code>import_omv()</code>, and a list of result tables for the output formats. That means <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-codebook-check.html">codebook_check</a> consume the JASP and jamovi files automatically, with no extra steps, and the extracted result tables from any of the five formats can be flattened with <code>stat_results_long()</code> and written as a structured document with <code>stat_output_json()</code>.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

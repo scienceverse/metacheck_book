@@ -29,7 +29,7 @@ Metacheck is an R based tool, but it would be useful to load data, code, and out
 
 Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types. 
 
-Each format is a single archive that bundles the **data**, its **variable metadata** (measurement level, value labels), and the **analyses** that were run against it — which is exactly why [reproducibility_check](mod-reproducibility-check.qmd) treats a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself.
+Each format is a single archive that bundles the **data**, its **variable metadata** (measurement level, value labels), and the **analyses** that were run against it — which is exactly why the forthcoming [reproducibility_check](mod-reproducibility-check.qmd) will treat a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself. The importers described in this chapter are available now, independently of that module.
 
 There is exactly **one import function per format**:
 
@@ -132,7 +132,7 @@ length(tables)
 unique(vapply(tables, function(tb) tb$analysis %||% NA_character_, character(1)))
 ```
 
-`import_spv()` returns a **list of result tables** — the same shape [read_stat_tables()](mod-reproducibility-check.qmd) already returns for `.jasp` and `.omv`, so all three formats can be processed identically downstream. Each table is a list with:
+`import_spv()` returns a **list of result tables** — the same shape `read_stat_tables()` returns for `.jasp`, `.omv` and `.ipynb`, so every format can be processed identically downstream. Each table is a list with:
 
 | Element | Contents |
 |---|---|
@@ -259,12 +259,60 @@ Not every chart in a `.spv` file can be rendered this way yet — see the note i
 
 ---
 
+## Part 5: Mplus and Stata output
+
+Two further formats are read the same way, though neither is an archive containing a dataset: both are output logs, so there is analysis output to recover but no data file to import.
+
+### Mplus `.out` files
+
+`import_mplus_output()` reads an Mplus output file. Mplus marks its own structure with ALL-CAPS section headings, so the importer splits the file on those and extracts each section's fixed-width result tables:
+
+```{r}
+#| eval: false
+tables <- import_mplus_output("model.out")
+```
+
+Each table carries a `syntax` element holding the file's own `INPUT INSTRUCTIONS` block, which is Mplus's verbatim record of the analysis that was run. Because one `.out` file is one Mplus run, that same syntax appears on every table from the file.
+
+One caution specific to this format: `.out` is not an Mplus-owned extension, unlike `.sav` or `.dta`. Plenty of unrelated programs write `.out` files. Metacheck therefore checks the content rather than trusting the name, reading the Mplus version banner that genuine output always carries as its first real line, and refuses a file that lacks it.
+
+### Stata `.smcl` logs
+
+`import_stata_smcl()` reads a Stata log written in Stata Markup and Control Language. It renders the markup to plain text, then splits the log into one chunk per command, using Stata's own echo of each command as the boundary:
+
+```{r}
+#| eval: false
+tables <- import_stata_smcl("analysis.smcl")
+```
+
+Here `analysis` is the Stata command that produced the table, such as `summarize communication_index barrier_index`, and `syntax` repeats it, because in Stata the echoed command *is* the syntax. Note that a `.smcl` log never contains charts: `graph export` is recovered as ordinary command text, but Stata writes the image itself to a separate file on disk, so there is no chart data inside the log to extract.
+
+### Exporting both to HTML
+
+Each has a matching exporter that builds a readable HTML view, in the same way as the three formats above:
+
+```{r}
+#| eval: false
+export_mplus_html("model.out", out = "model.html")
+export_stata_smcl_html("analysis.smcl", out = "analysis.html")
+```
+
+::: {.callout-note}
+## These two are not reached by `read_stat_tables()`
+
+`read_stat_tables()` dispatches on the file extension and handles `.jasp`, `.omv`, `.spv` and `.ipynb`. It does not recognise `.out` or `.smcl`, so call `import_mplus_output()` or `import_stata_smcl()` directly for those. Both return the same table-list shape, so everything downstream works identically once you have the tables.
+:::
+
+---
+
 ## Summary
 
-| Task | JASP | jamovi | SPSS Viewer |
-|---|---|---|---|
-| Import data + analyses | `import_jasp(path)` | `import_omv(path)` | `import_spv(path)` |
-| Export readable HTML | `export_jasp_html(path, out)` | `export_omv_html(path, out)` | `export_spv_html(path, out)` |
-| Rendered view in the archive? | Yes (re-exported, plots inlined) | Yes (re-exported, plots inlined) | No (tables and charts both built fresh from decoded data — see [Part 3](#spv-charts)) |
+| Task | JASP | jamovi | SPSS Viewer | Mplus | Stata |
+|---|---|---|---|---|---|
+| Import | `import_jasp(path)` | `import_omv(path)` | `import_spv(path)` | `import_mplus_output(path)` | `import_stata_smcl(path)` |
+| Export readable HTML | `export_jasp_html(path, out)` | `export_omv_html(path, out)` | `export_spv_html(path, out)` | `export_mplus_html(path, out)` | `export_stata_smcl_html(path, out)` |
+| Contains the dataset? | Yes | Yes | No (output only) | No (output only) | No (output only) |
+| Rendered view in the archive? | Yes (re-exported, plots inlined) | Yes (re-exported, plots inlined) | No (tables and charts both built fresh from decoded data — see [Part 3](#spv-charts)) | No (built from the extracted sections) | No (built from the rendered log) |
+| Reached by `read_stat_tables()`? | Yes | Yes | Yes | No — call the importer directly | No — call the importer directly |
 
-All three importers return data in the shape the rest of metacheck already expects — a labelled data.frame for `import_jasp()`/`import_omv()`, and [read_stat_tables()](mod-reproducibility-check.qmd)'s table-list shape for `import_spv()` — so [data_check](mod-data-check.qmd), [codebook_check](mod-codebook-check.qmd), and [reproducibility_check](mod-reproducibility-check.qmd) all consume these formats automatically, with no extra steps.
+Every importer returns data in the shape the rest of metacheck already expects: a labelled data.frame for `import_jasp()` and `import_omv()`, and a list of result tables for the output formats. That means [data_check](mod-data-check.qmd) and [codebook_check](mod-codebook-check.qmd) consume the JASP and jamovi files automatically, with no extra steps, and the extracted result tables from any of the five formats can be flattened with `stat_results_long()` and written as a structured document with `stat_output_json()`.

@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -482,8 +488,9 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:</p>
+<p>This module is under development and is not yet in either the released version of Metacheck or the <code>dev</code> development version. It currently lives on its own branch, so installing it means building from source, which needs a compiler (Rtools on Windows, the Xcode command-line tools on macOS, the standard development tools on Linux):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Everything in this chapter, including <code>reproducibility_check</code> itself and the <code>repro_*</code> helper functions, requires that branch.</p>
 </div>
 </div>
 <section id="what-it-checks" class="level2" data-number="28.1"><h2 data-number="28.1" class="anchored" data-anchor-id="what-it-checks">
@@ -533,10 +540,10 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We assessed 1 R code file for reproducibility (static analysis; no code was run).
+#&gt; -  We assessed 4 R code files for reproducibility (static analysis; no code was run).
 #&gt; -  0 files appear runnable so far (parses, inputs resolve, placeable in the run order).
-#&gt; -  1 referenced input unavailable (0 withheld due to size).
-#&gt; -  1 installable dependency detected.</code></pre>
+#&gt; -  2 referenced inputs unavailable (0 withheld due to size).
+#&gt; -  3 installable dependencies detected.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> has one row per R code file, carrying the static assessments as columns:</p>
@@ -564,7 +571,35 @@ Note
 <th style="text-align: right;">paths_rewritten</th>
 <th style="text-align: left;">runnable</th>
 </tr></thead>
-<tbody><tr class="odd">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">none</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bad.R</td>
+<td style="text-align: left;">bad.R</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">none</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bad.Rmd</td>
+<td style="text-align: left;">bad.Rmd</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">none</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">Code/Study 1.r</td>
 <td style="text-align: left;">Code/Study 1.r</td>
 <td style="text-align: left;">TRUE</td>
@@ -572,7 +607,8 @@ Note
 <td style="text-align: left;">numeric</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: left;">FALSE</td>
-</tr></tbody>
+</tr>
+</tbody>
 </table>
 </div>
 </div>

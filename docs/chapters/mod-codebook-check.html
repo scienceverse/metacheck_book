@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -475,8 +481,9 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module is currently under development, and not available in the main version of Metacheck. To try it out, install the development version of Metacheck:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This module is still under development and is not in the released version of Metacheck. It is in the development version, which you can install as a pre-compiled binary from the scienceverse R-universe (see <a href="../chapters/get-started.html">Setting up Metacheck</a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"metacheck.dev"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://scienceverse.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="what-it-checks" class="level2" data-number="25.1"><h2 data-number="25.1" class="anchored" data-anchor-id="what-it-checks">
@@ -684,14 +691,20 @@ Note
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 12%">
 <col style="width: 8%">
-<col style="width: 13%">
-<col style="width: 15%">
-<col style="width: 13%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 9%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">paper_id</th>
@@ -702,15 +715,27 @@ Note
 <th style="text-align: right;">conflicted_n</th>
 <th style="text-align: right;">codebook_var_n</th>
 <th style="text-align: right;">unused_var_n</th>
+<th style="text-align: right;">scale_blocks_n</th>
+<th style="text-align: right;">scale_named_n</th>
+<th style="text-align: right;">scale_unnamed_n</th>
+<th style="text-align: right;">task_files_n</th>
+<th style="text-align: right;">task_named_n</th>
+<th style="text-align: right;">task_paper_only_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">787ea4c265ae44</td>
+<td style="text-align: left;">818598105ef76b</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 </tr></tbody>
 </table>
@@ -814,7 +839,7 @@ Note
 <li>the scale <strong>name</strong> goes in schema.org’s own <a href="https://schema.org/measurementTechnique"><code>measurementTechnique</code></a> property — its intended use is exactly to name the instrument a variable was measured with;</li>
 <li>the <strong>grouping</strong> (which variables belong to the scale, and the confidence) goes in a namespaced <code>metacheck:scale</code> / <code>metacheck:scales</code> extension, since schema.org has no native grouping and Psych-DS tolerates namespaced JSON-LD.</li>
 </ul>
-<p><code>convert_psychds()</code> and <code>convert_codebook()</code> both emit these, so the scale information travels with the converted dataset. The <a href="../chapters/mod-data-validate.html">Data Validate</a> module reuses the identified names, labelling its careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix.</p>
+<p><code>convert_psychds()</code> and <code>convert_codebook()</code> both emit these, so the scale information travels with the converted dataset. The <a href="../chapters/mod-data-validate.html">data-quality checks</a> reuse the identified names, labelling their careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
@@ -1304,8 +1329,8 @@ Note
     }
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="../chapters/mod-data-validate.html" class="pagination-link" aria-label="Data Validate">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span>
+      <a href="../chapters/mod-data-validate.html" class="pagination-link" aria-label="Data Quality Checks">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -456,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><p>The first step to using Metacheck is to read in a manuscript. Currently, Metacheck relies on GROBID, which works with PDF files. If you have a manuscript in a different format, save a copy as a PDF. You have two options to convert a PDF to the GROBID .xml format. First, you can use a local version of GROBID. We will explain this below, but it requires more technical knowledge, and sufficient space on your harddrive. Alternatively, you can use an online server. As this is much simpler, and you can use a GROBID server at Eindhoven University of Technology that is GDPRR compliant and does not store any data. This is the approach we will use by default in this manual. Nevertheless, you might prefer not to send your manuscript to an external server, or you might not be allowed to. We have developed Metacheck to always work locally, without an internet connection, to also make it available in these more restrictive situations.</p>
 <p>The function <code>convert()</code> can read PDF files and save them in <a href="https://www.scienceverse.org/schema/paper.json">JSON format</a>. This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don’t supply an <code>api_url</code>, Metacheck will use a <a href="https://www.scienceverse.org/metacheck/convert.json">list of active servers</a> and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology that is GDPR compliant.</p>
-<p>You can also supplement the reference section created by GROBID with information retrieved from CrossRef by setting <code>crossref_lookup = TRUE</code>. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. You can always add this information later with the <code>add_bibmatch()</code> function.</p>
+<p>You can also supplement the reference section created by GROBID with information retrieved from CrossRef by setting <code>crossref_lookup = TRUE</code>. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. You can always add this information later with the <code>add_bib_match()</code> function.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pdf_file</span> <span class="op">&lt;-</span> <span class="fu">demofile</span><span class="op">(</span><span class="st">"pdf"</span><span class="op">)</span></span>
 <span><span class="va">json_file</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span>file_path <span class="op">=</span> <span class="va">pdf_file</span>,</span>

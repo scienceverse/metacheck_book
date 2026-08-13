@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -572,7 +578,7 @@ Note
 </div>
 <pre><code>analysis.R   clean.do  model.sas survey.sps study.jasp
        "R"    "Stata"      "SAS"     "SPSS"     "JASP"</code></pre>
-<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>read_jasp()</code> / <code>read_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
+<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>import_jasp()</code> / <code>import_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
 </section><section id="reading-code-code_read-and-code_extract_r" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="reading-code-code_read-and-code_extract_r">
 <span class="header-section-number">22.3</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code>
 </h2>
@@ -593,13 +599,13 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 1 R, 0 SAS, 0 SPSS, 0 Stata, and 0 JASP code file.
+#&gt; -  We found 4 R, 0 SAS, 0 SPSS, 0 Stata, and 0 JASP code files.
 #&gt; -  All your code files had comments.
-#&gt; -  1 file loaded in the code was missing in the repository.
+#&gt; -  4 files loaded in the code were missing in the repository.
 #&gt; -  Absolute file paths were found.
 #&gt; -  No setwd() calls were found.
-#&gt; -  All libraries/imports were loaded in one block.
-#&gt; -  The code loaded 1 distinct package.
+#&gt; -  Libraries/imports were loaded in multiple places.
+#&gt; -  The code loaded 3 distinct packages.
 #&gt; -  No parsing issues of R-type files were found.</code></pre>
 </div>
 </div>
@@ -626,14 +632,40 @@ Note
 <th style="text-align: right;">percentage_comment</th>
 <th style="text-align: right;">loaded_files_missing</th>
 </tr></thead>
-<tbody><tr class="odd">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bad.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0714286</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bad.Rmd</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0666667</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">Code/Study 1.r</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0.1666667</td>
 <td style="text-align: right;">1</td>
-</tr></tbody>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
@@ -774,18 +806,38 @@ Note
 <th style="text-align: right;">loaded_files_missing</th>
 <th style="text-align: left;">parse_error</th>
 </tr></thead>
-<tbody><tr class="odd">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bad.R</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bad.Rmd</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">Code/Study 1.r</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">FALSE</td>
-</tr></tbody>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
 </section><section id="downloading-and-options" class="level2" data-number="22.7"><h2 data-number="22.7" class="anchored" data-anchor-id="downloading-and-options">
 <span class="header-section-number">22.7</span> Downloading and options</h2>
-<p><code>code_check</code> downloads the code files it will check into the shared cache (<code>download = TRUE</code>, the default) so their contents are read locally and reused on later runs, rather than streamed from the repository URL each time. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, <code>max_download_size</code> — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
+<p><code>code_check</code> downloads the code files it will check (<code>download = TRUE</code>, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass <code>cache = TRUE</code>; otherwise they are discarded when the session ends. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, <code>max_download_size</code> — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>

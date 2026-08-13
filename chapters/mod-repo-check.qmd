@@ -13,7 +13,7 @@ library(metacheck)
 
 ## What it checks
 
-The `repo_check` module finds links to **research repositories** in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: [code_check](mod-code-check.qmd), [data_check](mod-data-check.qmd), and [data_validate](mod-data-validate.qmd) all build on the file list `repo_check` produces.
+The `repo_check` module finds links to **research repositories** in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: [code_check](mod-code-check.qmd) and [data_check](mod-data-check.qmd) both build on the file list `repo_check` produces.
 
 Beyond listing files, `repo_check` runs a set of checks on what it finds:
 
@@ -64,7 +64,7 @@ mo$summary_table
 | Platform | Link finder | How files are listed |
 |---|---|---|
 | OSF | `osf_links()` | recursive `osf_info()`, including registrations (see below) |
-| GitHub | `github_links()` | `github_tree_files()` — one repo-metadata + one full-tree API call, gated for size |
+| GitHub | `github_links()` | `github_tree_files()` — one repo-metadata + one full-tree API call, listing the repository in full |
 | ResearchBox | `rbox_links()` | `rbox_file_download()` (downloads and unzips the box) |
 | PsychArchives | `psycharchives_links()` | `psycharchives_file_download()` (DSpace REST API; lists without downloading) |
 | Zenodo | `zenodo_links()` | `zenodo_info()` |
@@ -76,19 +76,19 @@ An OSF **registration** is a locked snapshot. Many "Open-Ended Registration" ent
 - if the source project is **public**, its files are listed under the source project's own URL (not the registration's);
 - if the source project is **closed or inaccessible**, the report flags this explicitly, distinguishing two cases: the registration itself still holds a mirrored copy of the files (nothing is lost, but the permanent home is unreachable), or no copy exists anywhere (the files are genuinely unreachable).
 
-### GitHub size gating
+### GitHub repositories are listed in full
 
-A GitHub repository can be arbitrarily large, so `repo_check` gates recursive listing by default:
+Every GitHub repository is listed in full, whatever its size, exactly as OSF, Zenodo, ResearchBox, PsychArchives and local directories have always been treated. Listing a repository is cheap — it costs two API calls and transfers no file contents — so there is nothing to configure and no size threshold to set.
 
-```{r}
-#| eval: false
-module_run(paper, "repo_check",
-           github_gate = TRUE,               # default
-           github_max_repo_size_mb = 500,     # default
-           github_max_files = 1000)           # default
-```
+There remain two reasons a GitHub repository can fail to be listed, and neither is one a setting can fix. Either the repository is invalid or inaccessible (it has been renamed, deleted, or made private), or it exceeds GitHub's own limit of 100,000 items per tree request, in which case GitHub returns a listing it marks as truncated and metacheck reports it as too large to list rather than silently using a partial one. Repositories in either state are recorded in `$gated_repos` (see below) with the reason, so a report can explain *why* a paper produced no GitHub files instead of simply reporting none found.
 
-A repository over either threshold is skipped (not listed), with a warning naming the repository and the reason. Set `github_gate = FALSE` to force a full recursive listing regardless of size. Repositories skipped this way are recorded in `$gated_repos` (see below), so downstream modules and reports can explain *why* a paper produced no GitHub files, instead of just reporting none found.
+Note that this concerns *listing* only. How much of a repository is ever **downloaded** is still capped, by the per-file and per-repository size limits in `data_check` described in the [data_check](mod-data-check.qmd) chapter.
+
+::: {.callout-note}
+## A change from earlier versions
+
+Earlier versions of `repo_check` took three arguments — `github_gate`, `github_max_repo_size_mb` and `github_max_files` — that skipped listing a repository over a size threshold. These have been removed, so code passing them will now fail. Delete them from any script that used them; no replacement is needed, because listing is no longer gated.
+:::
 
 ## Study grouping
 
@@ -125,9 +125,18 @@ E-Prime's `.edat`/`.edat2` (and `.emrg`/`.emrg2` merge files) are proprietary bi
 
 A PsychArchives item flagged `restrictedAccess`/`embargoedAccess` hides its files behind institutional (SSO) login — they cannot be fetched programmatically. `repo_check` flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.
 
-### Non-`.zip` archives
+### Archives, and looking inside a `.zip`
 
-Only `.zip` stores its file listing in a way that can be inspected via an HTTP range request without downloading the whole archive; `.7z`/`.rar`/`.tar.gz` must be downloaded whole, and some formats metacheck cannot read at all. `repo_check` only *lists* archive files — it never opens one (peeking inside a `.zip`, or downloading an archive, is `data_check`'s job) — but it does warn when an archive is in a non-`.zip` format, since that limits how discoverable and reusable its contents are.
+An archive shared as a single file hides what is in it. By default `repo_check` therefore reads each `.zip`'s own listing and reports the files inside it, in place of the archive as one opaque row. This costs one HTTP range request per archive and downloads none of its contents: a `.zip` stores a directory of what it holds at the end of the file, and a server that honours range requests will return just that stretch of bytes. The helper that does this is `zip_peek()`, and you can call it yourself on any archive URL.
+
+Turn it off to leave archives as single rows and make no per-archive request at all:
+
+```{r}
+#| eval: false
+module_run(paper, "repo_check", peek_zips = FALSE)
+```
+
+This works for `.zip` only. `.7z`, `.rar` and `.tar.gz` keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. `repo_check` warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and `data_check` opens it after downloading, as before.
 
 ## A clean example and one with problems
 
@@ -197,4 +206,4 @@ module_run(paper, "repo_check", model = "gpt-4o-mini", params = list(temperature
 
 ## Related
 
-The companion [code_check](mod-code-check.qmd) module analyses the actual code files that `repo_check` discovers. [data_check](mod-data-check.qmd) re-downloads and reclassifies the data files using their contents (not just names/paths), and [data_validate](mod-data-validate.qmd) runs quality checks on the columns it finds.
+The companion [code_check](mod-code-check.qmd) module analyses the actual code files that `repo_check` discovers. [data_check](mod-data-check.qmd) re-downloads and reclassifies the data files using their contents (not just names and paths), and runs the [data-quality checks](mod-data-validate.qmd) on the columns it finds.

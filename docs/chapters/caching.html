@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Validate</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -409,14 +409,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -445,9 +451,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#what-it-does" id="toc-what-it-does" class="nav-link" data-scroll-target="#what-it-does"><span class="header-section-number">6.3.1</span> What it does</a></li>
   <li><a href="#how-entries-are-keyed" id="toc-how-entries-are-keyed" class="nav-link" data-scroll-target="#how-entries-are-keyed"><span class="header-section-number">6.3.2</span> How entries are keyed</a></li>
-  <li><a href="#it-is-always-on" id="toc-it-is-always-on" class="nav-link" data-scroll-target="#it-is-always-on"><span class="header-section-number">6.3.3</span> It is always on</a></li>
+  <li><a href="#turning-it-on" id="toc-turning-it-on" class="nav-link" data-scroll-target="#turning-it-on"><span class="header-section-number">6.3.3</span> Turning it on</a></li>
   <li><a href="#controlling-what-gets-downloaded" id="toc-controlling-what-gets-downloaded" class="nav-link" data-scroll-target="#controlling-what-gets-downloaded"><span class="header-section-number">6.3.4</span> Controlling what gets downloaded</a></li>
-  <li><a href="#clearing-it-1" id="toc-clearing-it-1" class="nav-link" data-scroll-target="#clearing-it-1"><span class="header-section-number">6.3.5</span> Clearing it</a></li>
+  <li><a href="#inspecting-and-clearing-it" id="toc-inspecting-and-clearing-it" class="nav-link" data-scroll-target="#inspecting-and-clearing-it"><span class="header-section-number">6.3.5</span> Inspecting and clearing it</a></li>
   </ul>
 </li>
   <li><a href="#how-the-caches-work-together-in-a-full-run" id="toc-how-the-caches-work-together-in-a-full-run" class="nav-link" data-scroll-target="#how-the-caches-work-together-in-a-full-run"><span class="header-section-number">6.4</span> How the caches work together in a full run</a></li>
@@ -489,14 +495,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <strong>LLM responses</strong> are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with <code>llm_cache()</code>; wipe with <code>llm_cache_clear()</code>.</li>
 <li>
-<strong>Downloaded repository files</strong> are cached automatically (always on). The same file is fetched once and reused by every module and every later session. Clear it by deleting the cache directory.</li>
-<li>Both caches live in a persistent per-user location (via <code>rappdirs</code>), so they survive across R sessions.</li>
+<strong>Downloaded repository files</strong> are <em>not</em> cached by default. <code>data_check</code> and <code>code_check</code> download into a temporary folder that is discarded when the R session ends. Pass <code>cache = TRUE</code> to keep the files instead, and clear them with <code>repo_cache_clear()</code>.</li>
+<li>Both caches live in the current working directory, so a project’s cache sits with the project. See where they are with <code>metacheck_cache_info()</code>.</li>
 </ul>
 </div>
 </div>
 <section id="where-the-caches-live" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="where-the-caches-live">
 <span class="header-section-number">6.1</span> Where the caches live</h2>
-<p>Both on-disk caches are stored in the standard per-user cache location for your operating system, resolved by the <code>rappdirs</code> package under <code>scienceverse/metacheck</code>. You never need to create or manage these directories by hand — Metacheck creates them on first use.</p>
+<p>Both on-disk caches default to a folder in your <strong>current working directory</strong>, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -505,28 +511,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </colgroup>
 <thead><tr class="header">
 <th>Cache</th>
-<th>Directory (under the user cache dir)</th>
+<th>Folder (in the working directory)</th>
 <th>Contents</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>LLM responses</td>
-<td><code>metacheck/llm/</code></td>
+<td><code>.metacheck_llm_cache/</code></td>
 <td>one <code>.rds</code> per distinct LLM call</td>
 </tr>
 <tr class="even">
 <td>Repository files</td>
-<td><code>metacheck/repo_files/</code></td>
+<td><code>.metacheck_repo_cache/</code></td>
 <td>one sub-folder per repository, mirroring its files</td>
 </tr>
 </tbody>
 </table>
-<p>You can see the exact paths on your machine with:</p>
+<p>You never need to create these directories by hand; Metacheck creates them on first use. To see where they are and how much space they take, use <code>metacheck_cache_info()</code>, which returns the location and size of both:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_cache_dir.html">user_cache_dir</a></span><span class="op">(</span><span class="st">"metacheck/llm"</span>, <span class="st">"scienceverse"</span><span class="op">)</span></span>
-<span><span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_cache_dir.html">user_cache_dir</a></span><span class="op">(</span><span class="st">"metacheck/repo_files"</span>, <span class="st">"scienceverse"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">metacheck_cache_info</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>On Windows these sit under <code>…/AppData/Local/scienceverse/metacheck/Cache/</code>, on macOS under <code>~/Library/Caches/…</code>, and on Linux under <code>~/.cache/…</code>.</p>
+<p>Because the folder names begin with a dot, they are hidden in most file browsers, and because they sit inside your project you may want to keep them out of version control. Metacheck does not write to your <code>.gitignore</code> for you, so add a line yourself if you use git:</p>
+<pre><code>.metacheck_*</code></pre>
+<p>You can move both caches somewhere else by setting one option, which is useful if you want a single shared cache across several projects:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>metacheck.cache.dir <span class="op">=</span> <span class="st">"~/metacheck_caches"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Each cache also has its own override for finer control: the <code>metacheck.repo_cache.dir</code> option for the repository files, and the <code>METACHECK_LLM_CACHE_DIR</code> environment variable for the LLM responses.</p>
 </section><section id="the-llm-response-cache" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="the-llm-response-cache">
 <span class="header-section-number">6.2</span> The LLM response cache</h2>
 <section id="why-it-is-safe-to-cache-an-llm-answer" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="why-it-is-safe-to-cache-an-llm-answer">
@@ -556,7 +567,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">6.2.3</span> Turning it on and off</h3>
 <p>The cache is <strong>on by default</strong>. Query or set it with <code>llm_cache()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># is the cache on? (TRUE by default)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># is the cache on? (TRUE by default)</span></span>
 <span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>     <span class="co"># force every call to hit the provider afresh</span></span>
 <span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># re-enable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -565,7 +576,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">6.2.4</span> Clearing it</h3>
 <p>To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use <code>llm_cache_clear()</code>, which deletes all cache entries and returns how many it removed:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># returns the number of entries deleted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># returns the number of entries deleted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You do not normally need to clear the cache to pick up a <em>changed</em> prompt or model: because those are part of the key, a change produces a fresh call automatically. Clearing is for reclaiming space or forcing a clean slate.</p>
 </section><section id="what-this-means-in-practice" class="level3" data-number="6.2.5"><h3 data-number="6.2.5" class="anchored" data-anchor-id="what-this-means-in-practice">
@@ -575,38 +586,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">6.3</span> The repository-file download cache</h2>
 <section id="what-it-does" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="what-it-does">
 <span class="header-section-number">6.3.1</span> What it does</h3>
-<p>Modules that read file <em>contents</em> — <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-code-check.html">code_check</a> — need local copies of the files a repository shares. <code>repo_check</code> only <em>lists</em> the files on OSF, GitHub, and Zenodo (it does not fetch them). When a content-reading module needs a file, it is downloaded once into a shared cache and read from there. Every later read — by another module in the same run, or by any module in a later session — reuses the cached copy instead of downloading again.</p>
-<p>This is why, in a long archive-building run, an interruption is cheap to recover from: the files already fetched are still on disk, and resuming skips straight past them.</p>
+<p>Modules that read file <em>contents</em> — <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-code-check.html">code_check</a> — need local copies of the files a repository shares. <code>repo_check</code> only <em>lists</em> the files on OSF, GitHub, Zenodo and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.</p>
+<p>Whether those copies survive the session is up to you, and by default they do not. With <code>cache = TRUE</code>, the files are kept in the cache folder and reused by later sessions as well, which is what makes a long archive-building run cheap to recover from after an interruption: the files already fetched are still on disk, and resuming skips straight past them.</p>
 </section><section id="how-entries-are-keyed" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="how-entries-are-keyed">
 <span class="header-section-number">6.3.2</span> How entries are keyed</h3>
 <p>Each repository gets its own sub-folder, named by a filesystem-safe encoding of its URL (the scheme is stripped and any awkward characters are replaced), so two different repositories never collide and the <em>same</em> repository always resolves to the same folder across sessions. Inside that folder, each file is stored <strong>at its repository-relative path</strong>, not just its basename — so two files both called <code>data.csv</code> in different sub-folders are kept apart rather than overwriting each other.</p>
 <p>Reuse is decided by a simple, robust test: if the target path already exists <strong>and is non-empty</strong>, it is treated as already downloaded and reused. A zero-byte file (the fingerprint of a download that failed partway) is <em>not</em> trusted — it is re-fetched. This means a broken partial download never silently poisons later runs.</p>
-</section><section id="it-is-always-on" class="level3" data-number="6.3.3"><h3 data-number="6.3.3" class="anchored" data-anchor-id="it-is-always-on">
-<span class="header-section-number">6.3.3</span> It is always on</h3>
-<p>Unlike the LLM cache, the download cache has <strong>no on/off switch</strong> — reuse of already-fetched files is always active, because there is no downside: the file on disk is a byte-for-byte copy of the remote file. What you <em>can</em> control is how much gets downloaded in the first place, through the <code>data_check</code> arguments described below.</p>
+</section><section id="turning-it-on" class="level3" data-number="6.3.3"><h3 data-number="6.3.3" class="anchored" data-anchor-id="turning-it-on">
+<span class="header-section-number">6.3.3</span> Turning it on</h3>
+<p>Unlike the LLM cache, which is on by default, the download cache is <strong>off by default</strong>. Both <code>data_check</code> and <code>code_check</code> take a <code>cache</code> argument that is <code>FALSE</code> unless you say otherwise:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the default: files go to a temporary folder, discarded when R exits</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># keep the files, and reuse them in later sessions</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>With <code>cache = FALSE</code> the files are still downloaded and still read; they are simply written to a session folder that R removes on exit, so nothing accumulates on your disk. Files fetched earlier in the same session are reused either way.</p>
+<p>Turn it on when you are checking the same repositories repeatedly, or building an archive over several runs, and the download is worth keeping. Leave it off for a one-off check of somebody else’s repository, where you would otherwise be left with copies of their files you never asked to keep.</p>
+<p>Reuse of a cached file is safe because a downloaded file is a byte-for-byte copy of the remote one. What you <em>can</em> control separately is how much gets downloaded in the first place, through the arguments described below.</p>
 </section><section id="controlling-what-gets-downloaded" class="level3" data-number="6.3.4"><h3 data-number="6.3.4" class="anchored" data-anchor-id="controlling-what-gets-downloaded">
 <span class="header-section-number">6.3.4</span> Controlling what gets downloaded</h3>
 <p>The download cache stores whatever the modules fetch, and <code>data_check</code> gives you fine control over that:</p>
 <ul>
 <li>
-<strong><code>download</code></strong> — <code>"data"</code> (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); <code>"all"</code> fetches every file in the repository (the right choice when building a complete archive with <code>convert_psychds()</code>); <code>FALSE</code>/<code>"none"</code> downloads nothing and classifies files by name only.</li>
+<strong><code>download</code></strong> — <code>"data"</code> (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); <code>"all"</code> fetches every file in the repository, which is the right choice when building a complete archive; <code>FALSE</code>/<code>"none"</code> downloads nothing and classifies files by name only.</li>
 <li>
-<strong><code>skip_types</code></strong> — a vector of file <em>types</em> never to download even under <code>download = "all"</code> — e.g.&nbsp;<code>"asset"</code> for stimuli and media a release links to rather than mirrors.</li>
+<strong><code>skip_types</code></strong> — a vector of file <em>types</em> never to download even under <code>download = "all"</code>. When left as <code>NULL</code>, the default, <code>"materials"</code> and <code>"unknown"</code> are skipped: stimuli and software, and the classifier’s collection of manuscripts, logs and unrecognised content, which would only inflate an archive. Pass an explicit vector to override this, or <code>character(0)</code> to download every type. The six types are <code>"data"</code>, <code>"code"</code>, <code>"documentation"</code>, <code>"materials"</code>, <code>"output"</code> and <code>"unknown"</code>. Skipped files still appear in the manifest, with the reason.</li>
 <li>
-<strong><code>peek_zips</code></strong> — look <em>inside</em> each <code>.zip</code> using an HTTP range request (without downloading the whole archive) and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead.</li>
+<strong><code>peek_zips</code></strong> — look <em>inside</em> each <code>.zip</code> using an HTTP range request, without downloading the whole archive, and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead. It is <code>FALSE</code> by default in <code>data_check</code>. Note that <code>repo_check</code> has an argument of the same name that does something related but distinct: there it is <code>TRUE</code> by default, and it lists each archive’s contents in place of the archive itself, without downloading anything.</li>
 <li>
 <strong><code>max_file_size</code></strong> / <strong><code>max_download_size</code></strong> — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository’s total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.</li>
 </ul>
 <p>These arguments decide <em>what enters the cache</em>; once a file is in, it stays and is reused. See the <a href="../chapters/mod-data-check.html">data_check</a> chapter for full details and examples.</p>
-</section><section id="clearing-it-1" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="clearing-it-1">
-<span class="header-section-number">6.3.5</span> Clearing it</h3>
-<p>There is no dedicated clearing function; the cache is just files on disk. To reclaim space or force fresh downloads, delete the directory (or a single repository’s sub-folder within it):</p>
+</section><section id="inspecting-and-clearing-it" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="inspecting-and-clearing-it">
+<span class="header-section-number">6.3.5</span> Inspecting and clearing it</h3>
+<p>Three functions report on the cache and one clears it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the whole download cache</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html">unlink</a></span><span class="op">(</span><span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_cache_dir.html">user_cache_dir</a></span><span class="op">(</span><span class="st">"metacheck/repo_files"</span>, <span class="st">"scienceverse"</span><span class="op">)</span>,</span>
-<span>       recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repo_cache_dir</span><span class="op">(</span><span class="op">)</span>     <span class="co"># where it is</span></span>
+<span><span class="fu">repo_cache_size</span><span class="op">(</span><span class="op">)</span>    <span class="co"># how large it is, in bytes</span></span>
+<span><span class="fu">metacheck_cache_info</span><span class="op">(</span><span class="op">)</span>  <span class="co"># location and size of both caches at once</span></span>
+<span></span>
+<span><span class="fu">repo_cache_clear</span><span class="op">(</span><span class="op">)</span>   <span class="co"># delete everything in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Because entries are keyed by repository URL and relative path, deleting is safe: anything still needed is simply re-downloaded on the next run.</p>
+<p><code>repo_cache_clear()</code> also takes a single repository URL, so you can discard one repository’s files while keeping the rest — useful when a repository has changed on the server and you want its files fetched afresh:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repo_cache_clear</span><span class="op">(</span><span class="st">"https://osf.io/abc123"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Because entries are keyed by repository URL and relative path, clearing is always safe: anything still needed is simply downloaded again on the next run.</p>
 </section></section><section id="how-the-caches-work-together-in-a-full-run" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="how-the-caches-work-together-in-a-full-run">
 <span class="header-section-number">6.4</span> How the caches work together in a full run</h2>
 <p>When you run several modules on a paper — or build an archive across a corpus — the two caches complement each other:</p>
@@ -614,9 +641,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>repo_check</code> lists the repository’s files (no download).</li>
 <li>
-<code>data_check</code> / <code>code_check</code> download the files they need into the <strong>repository-file cache</strong>; a second module reading the same file reuses it.</li>
+<code>data_check</code> / <code>code_check</code> download the files they need; a second module reading the same file in the same run reuses that copy. With <code>cache = TRUE</code> the copies are kept for later sessions as well.</li>
 <li>When an LLM is enabled, <code>data_check</code>, <code>codebook_check</code>, and other LLM-using modules send text to <code>llm()</code>, whose answers are stored in the <strong>LLM response cache</strong>.</li>
-<li>Re-running the whole pipeline, or resuming an interrupted archive build, replays both caches: files are read from disk and LLM answers are replayed, so only genuinely new work is done.</li>
+<li>Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the downloads too if you ran with <code>cache = TRUE</code>; without it, the files are fetched again, because the previous session’s copies were discarded. This is the main reason to turn the download cache on for an archive build you expect to resume.</li>
 </ol>
 <p>Modules such as <code>codebook_check</code> do not have a <em>separate</em> results cache of their own — their re-run savings come entirely from these two shared caches (the files they read and the LLM answers they request). This keeps the caching story simple: there are two on-disk caches, and every module benefits from them without needing its own.</p>
 </section><section id="a-note-on-the-in-memory-synonym-cache" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="a-note-on-the-in-memory-synonym-cache">
@@ -653,10 +680,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td>Repository files</td>
 <td>on disk, cross-session</td>
-<td>yes (always on)</td>
+<td>
+<strong>no</strong> (<code>cache = TRUE</code> to enable)</td>
 <td>repo URL + relative path</td>
-<td>— (control via <code>data_check</code> download args)</td>
-<td>delete the cache directory</td>
+<td>
+<code>cache</code> argument of <code>data_check</code> / <code>code_check</code>
+</td>
+<td><code>repo_cache_clear()</code></td>
 </tr>
 <tr class="odd">
 <td>Funding synonyms</td>

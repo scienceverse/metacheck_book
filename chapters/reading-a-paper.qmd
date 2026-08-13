@@ -18,7 +18,7 @@ The first step to using Metacheck is to read in a manuscript. Currently, Metache
 
 The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, Metacheck will use a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology that is GDPR compliant.
 
-You can also supplement the reference section created by GROBID with information retrieved from CrossRef by setting `crossref_lookup = TRUE`. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. You can always add this information later with the `add_bibmatch()` function.
+You can also supplement the reference section created by GROBID with information retrieved from CrossRef by setting `crossref_lookup = TRUE`. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. You can always add this information later with the `add_bib_match()` function.
 
 ```{r, eval = FALSE}
 pdf_file <- demofile("pdf")
