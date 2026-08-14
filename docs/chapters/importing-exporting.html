@@ -409,20 +409,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  <a href="../chapters/archiving-osf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/uploading-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Uploading Files to Zenodo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -507,7 +513,7 @@ Important
 <span class="header-section-number">27.1</span> Overview</h2>
 <p>Metacheck is an R based tool, but it would be useful to load data, code, and output files from common statistical software packages. This would allow the reproducibility_check module to take the output, and check it against the values reported in the manuscript. In psychology, SPSS, JASP, and Jamovi are commonly used. JASP and Jamovi have made the extremely sensible design choice that a .jasp or .omv file contain the data, code, and output. This means that sharing those files guarantees complete reproducibility of the analysis by design.</p>
 <p>Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types.</p>
-<p>Each format is a single archive that bundles the <strong>data</strong>, its <strong>variable metadata</strong> (measurement level, value labels), and the <strong>analyses</strong> that were run against it — which is exactly why <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> treats a self-contained <code>.jasp</code>/<code>.omv</code>/<code>.spv</code> file as reproducible “for free”: no code needs to be executed, because the results are already stored inside the file itself.</p>
+<p>Each format is a single archive that bundles the <strong>data</strong>, its <strong>variable metadata</strong> (measurement level, value labels), and the <strong>analyses</strong> that were run against it — which is exactly why the forthcoming <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> will treat a self-contained <code>.jasp</code>/<code>.omv</code>/<code>.spv</code> file as reproducible “for free”: no code needs to be executed, because the results are already stored inside the file itself. The importers described in this chapter are available now, independently of that module.</p>
 <p>There is exactly <strong>one import function per format</strong>:</p>
 <ul>
 <li><code>import_jasp(path)</code></li>
@@ -847,7 +853,7 @@ Important
 <span><span class="co">#&gt; [[1]]$fn</span></span>
 <span><span class="co">#&gt; function (x) </span></span>
 <span><span class="co">#&gt; 4.03 + 2.86e-06 * x</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x000002bb197bbc78&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; &lt;environment: 0x000001d398b7e498&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>stat_results_long()</code> and <code>stat_output_json()</code> skip chart entries automatically (a chart’s <code>x</code>/<code>y</code> or <code>category</code>/<code>value</code> columns are plotted points, not statistics to extract), so passing <code>import_spv()</code>’s output straight through the usual pipeline is always safe, chart-bearing file or not.</p>
 <div class="callout callout-style-default callout-note callout-titled">

@@ -409,20 +409,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  <a href="../chapters/archiving-osf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/uploading-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Uploading Files to Zenodo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -682,7 +688,7 @@ Note
 </div>
 </div>
 <p>The code list is stored as a compact JSON string (<code>{"1":"Male","2":"Female","-99":"Refused"}</code>); a code whose label reads as missingness (<code>Refused</code>, <code>N/A</code>, <code>Prefer not to answer</code>, …) is additionally recorded in <code>missing_values</code>, so a sentinel like <code>-99</code> is flagged as a missing code rather than a real value.</p>
-<p>All four properties are exported into the Psych-DS metadata by <code>convert_psychds()</code>: the code list becomes a schema.org <strong>code list</strong> (one <code>PropertyValue</code> per code), and the missing scheme, question, and universe become namespaced <code>metacheck:</code> fields — so they travel with the converted dataset.</p>
+<p>All four properties are designed to be exported into the Psych-DS metadata by <code>convert_psychds()</code> (not yet available; see <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>): the code list becomes a schema.org <strong>code list</strong> (one <code>PropertyValue</code> per code), and the missing scheme, question, and universe become namespaced <code>metacheck:</code> fields, so they travel with the converted dataset.</p>
 </section><section id="the-summary-counts" class="level2" data-number="25.5"><h2 data-number="25.5" class="anchored" data-anchor-id="the-summary-counts">
 <span class="header-section-number">25.5</span> The summary counts</h2>
 <div class="cell">
@@ -723,7 +729,7 @@ Note
 <th style="text-align: right;">task_paper_only_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">818598105ef76b</td>
+<td style="text-align: left;">074340c9c38454</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
@@ -839,7 +845,7 @@ Note
 <li>the scale <strong>name</strong> goes in schema.org’s own <a href="https://schema.org/measurementTechnique"><code>measurementTechnique</code></a> property — its intended use is exactly to name the instrument a variable was measured with;</li>
 <li>the <strong>grouping</strong> (which variables belong to the scale, and the confidence) goes in a namespaced <code>metacheck:scale</code> / <code>metacheck:scales</code> extension, since schema.org has no native grouping and Psych-DS tolerates namespaced JSON-LD.</li>
 </ul>
-<p><code>convert_psychds()</code> and <code>convert_codebook()</code> both emit these, so the scale information travels with the converted dataset. The <a href="../chapters/mod-data-validate.html">data-quality checks</a> reuse the identified names, labelling their careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix.</p>
+<p><code>convert_psychds()</code> and <code>convert_codebook()</code> will both emit these, so the scale information travels with the converted dataset; neither is available yet. What does work today is that the <a href="../chapters/mod-data-validate.html">data-quality checks</a> reuse the identified names, labelling their careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
@@ -923,7 +929,7 @@ Note
 <ul>
 <li>
 <a href="../chapters/mod-data-check.html">Data Check</a> supplies the columns being documented.</li>
-<li>The <code>convert_codebook()</code> function turns this output into a fully <strong>labelled</strong> data frame and a runnable codebook document — see the <a href="../chapters/creating-a-report.html">Creating a Report</a> workflow.</li>
+<li>The <code>convert_codebook()</code> function will turn this output into a fully <strong>labelled</strong> data frame and a runnable codebook document. It is not yet available in the released version or in <code>dev</code> — see <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>.</li>
 <li>
 <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> checks the repository’s <em>structure</em> against a standard, complementing this check of its <em>documentation</em>.</li>
 </ul>

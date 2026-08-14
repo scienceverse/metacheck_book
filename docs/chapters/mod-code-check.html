@@ -409,20 +409,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  <a href="../chapters/archiving-osf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/uploading-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Uploading Files to Zenodo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -783,7 +789,7 @@ Note
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This is also exposed to <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s Docker backend, which uses the declared R version (when found) to pick a matching base image — see <code>docker_use_declared_version</code> in that chapter.</p>
+<p>This is also exposed for the forthcoming <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s Docker backend, which will use the declared R version (when found) to pick a matching base image — see <code>docker_use_declared_version</code> in that chapter.</p>
 </section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
 <span class="header-section-number">22.6</span> A clean example and one with problems</h2>
 <p>Common problems the module surfaces:</p>
@@ -904,7 +910,7 @@ Note
 </tr>
 <tr class="odd">
 <td><code>$version_pin</code></td>
-<td>the raw output of <code>.code_version_pin_check()</code> (mechanisms found, declared R version(s), and any <code>renv.lock</code> package table) — also used internally by <code>reproducibility_check()</code>’s Docker backend to pick a matching base image</td>
+<td>the raw output of <code>.code_version_pin_check()</code> (mechanisms found, declared R version(s), and any <code>renv.lock</code> package table) — intended to be used by the forthcoming <code>reproducibility_check()</code>’s Docker backend to pick a matching base image</td>
 </tr>
 </tbody>
 </table>

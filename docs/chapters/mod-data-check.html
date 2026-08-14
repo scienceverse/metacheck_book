@@ -409,20 +409,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  <a href="../chapters/archiving-osf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/uploading-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Uploading Files to Zenodo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -516,7 +522,7 @@ Warning
 <li>
 <strong>Runs data-quality checks</strong> on those columns, and on the raw workbook of every spreadsheet, described in <a href="../chapters/mod-data-validate.html">Data Quality Checks</a>. These were formerly two separate modules, <code>data_validate</code> and <code>excel_check</code>; both are now part of <code>data_check</code>.</li>
 <li>
-<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>codebook_check</code> and <code>psychds_check</code> build on <code>data_check</code>’s output rather than re-reading the files, and <code>convert_psychds()</code> uses its classification and study grouping to build a Psych-DS archive.</li>
+<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>codebook_check</code> builds on <code>data_check</code>’s output rather than re-reading the files, and the forthcoming <code>psychds_check</code> and <code>convert_psychds()</code> will use its classification and study grouping to build a Psych-DS archive.</li>
 </ol>
 <p>On its own, <code>data_check</code> gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -689,10 +695,10 @@ Note
 #&gt; └── analysis.R
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(17L, 2L, 20L, 2L, 20L, 19L), Mean = c(41.7, 
-#&gt;     NA, NA, NA, 617, 48.02), SD = c(10.224, NA, NA, NA, 175.529, 
-#&gt;     9.558), Min = c(24, NA, NA, NA, 315, 27.7), Max = c(62, NA, 
-#&gt;     NA, NA, 829, 69)), row.names = c("age", "condition", "participant_id",</code></pre>
+#&gt;     0), "N Unique" = c(15L, 2L, 20L, 2L, 20L, 19L), Mean = c(41.1, 
+#&gt;     NA, NA, NA, 570.45, 49.015), SD = c(12.888, NA, NA, NA, 189.819, 
+#&gt;     8.68), Min = c(19, NA, NA, NA, 306, 32.5), Max = c(63, NA, 
+#&gt;     NA, NA, 883, 62.5)), row.names = c("age", "condition", "participant_id",</code></pre>
 </div>
 </div>
 <p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
@@ -890,7 +896,7 @@ Note
 <p>Alongside the facets, <code>data_col_stats()</code> computes a one-row block of statistics for each column: <code>n</code>, <code>n_missing</code>, <code>n_unique</code>, <code>mean</code>, <code>sd</code>, <code>se</code>, <code>median</code>, <code>min</code>, <code>max</code>, <code>range</code>, <code>p25</code>, <code>p75</code>, <code>iqr</code>, <code>skewness</code>, and <code>kurtosis</code>. Non-numeric or empty columns return <code>n</code>/<code>n_missing</code>/<code>n_unique</code> with the numeric statistics as <code>NA</code>. These feed the report’s <em>Descriptives Overview</em> (one table per source file) and are carried into the data-quality checks and the Psych-DS <code>variableMeasured</code> block.</p>
 </section><section id="study-groups" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="study-groups">
 <span class="header-section-number">23.7</span> Study groups</h2>
-<p>A single repository often bundles several studies (Experiment 1, Study 2a, a pilot). <code>data_check</code> assigns every analysable file a <strong>study group</strong> (<code>ex1</code>, <code>ex2a</code>, <code>pilot1</code>, …, or <code>shared</code>) so a multi-study repository can be split into self-contained Psych-DS datasets by <code>convert_psychds()</code>. This is done by <code>data_group_llm()</code>, but — despite the name — it is <strong>deterministic wherever the evidence allows</strong>, and only falls back to the model for files nothing else can place. Four passes run in order, each more specific overriding the last:</p>
+<p>A single repository often bundles several studies (Experiment 1, Study 2a, a pilot). <code>data_check</code> assigns every analysable file a <strong>study group</strong> (<code>ex1</code>, <code>ex2a</code>, <code>pilot1</code>, …, or <code>shared</code>) so a multi-study repository can be split into self-contained Psych-DS datasets (by <code>convert_psychds()</code>, not yet available). This is done by <code>data_group_llm()</code>, but — despite the name — it is <strong>deterministic wherever the evidence allows</strong>, and only falls back to the model for files nothing else can place. Four passes run in order, each more specific overriding the last:</p>
 <ol type="1">
 <li>
 <strong>By source repository</strong> (<code>.data_group_from_repo()</code>): a paper that links several repositories with <em>different</em> files is multi-study, one study per repository. Repositories whose file sets overlap ≥90% (Jaccard) are treated as mirrors of one study, not two.</li>
@@ -901,7 +907,7 @@ Note
 <li>
 <strong>By LLM</strong> (only when <code>llm_use(TRUE)</code>): the last resort, seeing only files the deterministic passes could not place. When those placed everything — the common multi-repo case — no call is made at all.</li>
 </ol>
-<p>Two guards make the result trustworthy. <code>data_study_roster()</code> reads the manuscript for the studies it <em>names</em> (“Experiment 1, 2a, 3”) — the authoritative list — and relabels slot-named groups to the authors’ labels when the counts match; <code>.data_group_check_roster()</code> reports any disagreement rather than guessing. And a <strong>data file is never <code>shared</code></strong>: data always belongs to a study, so any data file the passes left <code>shared</code> falls back to its repository’s study or to the sole study. Without an LLM, files that no deterministic pass can place stay <code>NA</code> (unknown), and <code>psychds_check</code> reports that subgrouping could not be detected.</p>
+<p>Two guards make the result trustworthy. <code>data_study_roster()</code> reads the manuscript for the studies it <em>names</em> (“Experiment 1, 2a, 3”) — the authoritative list — and relabels slot-named groups to the authors’ labels when the counts match; <code>.data_group_check_roster()</code> reports any disagreement rather than guessing. And a <strong>data file is never <code>shared</code></strong>: data always belongs to a study, so any data file the passes left <code>shared</code> falls back to its repository’s study or to the sole study. Without an LLM, files that no deterministic pass can place stay <code>NA</code> (unknown), and subgrouping cannot be detected.</p>
 </section><section id="reading-files-format-tolerance" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="reading-files-format-tolerance">
 <span class="header-section-number">23.8</span> Reading files: format tolerance</h2>
 <p><code>data_check</code> reads tabular files with <code>data_read_head()</code> (<code>n_rows = Inf</code> reads the whole file), which is deliberately tolerant of the messy encodings and formats research data actually ships in:</p>
@@ -931,7 +937,7 @@ Note
 <li>
 <strong><code>.txt</code> reclassification</strong> (<code>txt_classify_content()</code>): a <code>.txt</code> is ambiguous by name (an E-Prime export, a task log, a codebook, or prose all ship as <code>.txt</code>), so all <code>.txt</code> files are fetched under <code>download = "data"</code> and reclassified from their <em>content</em> once on disk. Only ever an <em>upgrade</em> to <code>data</code> (an E-Prime header block, or a delimited table with a real header row); an unrecognised <code>.txt</code> keeps whatever its name implied, so prose is never mistaken for data. A name-based README/codebook verdict is authoritative and never overridden.</li>
 <li>
-<strong>Trial-level files</strong> (<code>.bh_is_trial_level_file()</code>): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file <em>per participant per block</em>. Treating each as its own dataset would produce hundreds of fragmented “datasets” for one instrument, so they are held out of the tabular extractor, recorded, and later <strong>merged per instrument</strong> into <code>paradata/&lt;instrument&gt;.json</code> by <code>convert_psychds()</code>, following the <a href="https://behaverse.github.io/data-model/">Behaverse Data Model</a> <code>trial</code> standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. The Behaverse schema is described in full in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</li>
+<strong>Trial-level files</strong> (<code>.bh_is_trial_level_file()</code>): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file <em>per participant per block</em>. Treating each as its own dataset would produce hundreds of fragmented “datasets” for one instrument, so they are held out of the tabular extractor, recorded, and are designed to be later <strong>merged per instrument</strong> into <code>paradata/&lt;instrument&gt;.json</code> by <code>convert_psychds()</code> (not yet available), following the <a href="https://behaverse.github.io/data-model/">Behaverse Data Model</a> <code>trial</code> standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. The Behaverse schema is described in full in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</li>
 </ul></section><section id="qualtrics-survey-exports" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="qualtrics-survey-exports">
 <span class="header-section-number">23.10</span> Qualtrics survey exports</h2>
 <p>Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved response-metadata columns (<code>StartDate</code>, <code>Duration (in seconds)</code>, <code>Finished</code>, <code>ResponseId</code>, …) and, for the “use choice text” export, extra header rows (question text and an <code>ImportId</code> JSON row) as the first <em>data</em> rows, which force every column to text. <code>data_check</code> detects these files with <code>data_check_is_qualtrics()</code> (matching ≥4 reserved metadata names and/or the <code>ImportId</code> row), strips the extra header rows with <code>data_strip_qualtrics_header()</code> so the columns type correctly, and tags each metadata column with its semantic role via <code>.qualtrics_tag_cols()</code>. The reserved-name → tag map is the schema <code>.qualtrics_meta_cols</code> (<code>startdate → qualtrics_start</code>, <code>durationinseconds → qualtrics_duration</code>, <code>finished → qualtrics_finished</code>, …), matched case-insensitively after stripping non-alphanumerics so <code>Duration (in seconds)</code> and the R-mangled <code>Duration..in.seconds.</code> both hit. The substantive question columns are deliberately <em>not</em> interpreted here — that is the job of the Qualtrics metadata summary and the scale-block detection in <code>codebook_check</code>.</p>
@@ -983,7 +989,7 @@ Note
 </tr>
 </tbody>
 </table>
-<p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> on its own beforehand — running <code>codebook_check</code>, <code>psychds_check</code>, or <code>convert_psychds()</code> triggers it automatically and reuses the result.</p>
+<p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> on its own beforehand — running <code>codebook_check</code> triggers it automatically and reuses the result, as the forthcoming <code>psychds_check</code> and <code>convert_psychds()</code> will.</p>
 </section><section id="downloading-files" class="level2" data-number="23.12"><h2 data-number="23.12" class="anchored" data-anchor-id="downloading-files">
 <span class="header-section-number">23.12</span> Downloading files</h2>
 <p>When a paper links to an online repository, <code>data_check</code> downloads the files it needs into a shared on-disk cache (reused across runs and across modules, so a file is never fetched twice — see <a href="../chapters/caching.html">Caching and Reuse</a>). The <code>download</code> argument controls <strong>what</strong> is fetched:</p>
@@ -991,7 +997,7 @@ Note
 <li>
 <code>download = "data"</code> (the default) fetches only the machine-readable files the checks analyse — tabular data plus codebook/README files, and every <code>.txt</code> (which is reclassified from content afterwards).</li>
 <li>
-<code>download = "all"</code> fetches <strong>every</strong> file in the repository (code, materials, PDFs, assets, …). This is the right choice when building a complete data archive with <code>convert_psychds()</code>.</li>
+<code>download = "all"</code> fetches <strong>every</strong> file in the repository (code, materials, PDFs, assets, …). This is the right choice when building a complete data archive.</li>
 <li>
 <code>download = "none"</code> (or <code>FALSE</code>) downloads nothing — files are only classified by name. <code>TRUE</code> is accepted as a synonym for <code>"data"</code>.</li>
 </ul>
@@ -1036,7 +1042,7 @@ Note
 </div>
 </section><section id="a-file-manifest" class="level3" data-number="23.12.4"><h3 data-number="23.12.4" class="anchored" data-anchor-id="a-file-manifest">
 <span class="header-section-number">23.12.4</span> A file manifest</h3>
-<p>Pass <code>manifest = "some/dir"</code> to write a per-paper JSON manifest (<code>.data_check_write_manifest()</code>) listing every repository file with its URL, size, type, Psych-DS target path, and whether it was downloaded (and if not, why). It records this <strong>provenance</strong> in a self-describing block whose field names map onto DDI-Codebook 2.5 elements (<code>provenance$ddi_mapping</code>), the metacheck/R version and platform, and — when the LLM was used — the model. Files not downloaded are split into <strong>intentional</strong> (a policy decision — download mode, <code>skip_types</code>, the size caps — where re-running changes nothing) and <strong>unintentional</strong> (wanted but not fetched: a transient failure or a missing URL — the re-run signal, flagged <code>rerun_recommended</code>). Unsized files are resolved with a lightweight <code>HEAD</code> request so the manifest carries real sizes — useful for auditing a corpus or choosing size caps before a large archive build.</p>
+<p>Pass <code>manifest = "some/dir"</code> to write a per-paper JSON manifest (<code>.data_check_write_manifest()</code>) listing every repository file with its name and path, its repository and file URL, its size, its data type and format, and whether it was downloaded (and if not, why). It records this <strong>provenance</strong> in a self-describing block whose field names map onto DDI-Codebook 2.5 elements (<code>provenance$ddi_mapping</code>), the metacheck/R version and platform, and — when the LLM was used — the model. Files not downloaded are split into <strong>intentional</strong> (a policy decision — download mode, <code>skip_types</code>, the size caps — where re-running changes nothing) and <strong>unintentional</strong> (wanted but not fetched: a transient failure or a missing URL — the re-run signal, flagged <code>rerun_recommended</code>). Unsized files are resolved with a lightweight <code>HEAD</code> request so the manifest carries real sizes — useful for auditing a corpus or choosing size caps before a large archive build.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"none"</span>, manifest <span class="op">=</span> <span class="st">"manifests"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1066,7 +1072,20 @@ Note
 </section><section id="building-a-psych-ds-archive-convert_psychds" class="level2" data-number="23.14"><h2 data-number="23.14" class="anchored" data-anchor-id="building-a-psych-ds-archive-convert_psychds">
 <span class="header-section-number">23.14</span> Building a Psych-DS archive: <code>convert_psychds()</code>
 </h2>
-<p><code>data_check</code>’s classification, facets, study groups, and read data frames are what make it possible to <em>rebuild</em> a repository as a standard-compliant dataset. That is the job of <code>convert_psychds()</code>, which is documented in full — together with the <strong>Psych-DS</strong>, <strong>OpenScales OSD</strong>, and <strong>Behaverse</strong> schemas it writes — in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter. In short: run <code>data_check</code> with <code>download = "all"</code> (so every file is on disk), then <code>convert_psychds(paper)</code> copies each file to its standard Psych-DS location, generates a <code>dataset_description.json</code> (with <code>variableMeasured</code> built from these facets and the codebook labels), splits multi-study repositories into <code>study-&lt;group&gt;/</code> datasets under a <code>collection.json</code>, writes identified scales as <code>scales/&lt;code&gt;.osd</code> files, and normalises trial-level data into <code>paradata/&lt;instrument&gt;.json</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>convert_psychds()</code> is not yet available in the released version or in <code>dev</code>. This section describes what <code>data_check</code>’s output is <em>for</em>; see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter for the current state of that work.</p>
+</div>
+</div>
+<p><code>data_check</code>’s classification, facets, study groups, and read data frames are what make it possible to <em>rebuild</em> a repository as a standard-compliant dataset. That will be the job of <code>convert_psychds()</code>, which is documented in full — together with the <strong>Psych-DS</strong>, <strong>OpenScales OSD</strong>, and <strong>Behaverse</strong> schemas it writes — in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter. In short: run <code>data_check</code> with <code>download = "all"</code> (so every file is on disk), then <code>convert_psychds(paper)</code> copies each file to its standard Psych-DS location, generates a <code>dataset_description.json</code> (with <code>variableMeasured</code> built from these facets and the codebook labels), splits multi-study repositories into <code>study-&lt;group&gt;/</code> datasets under a <code>collection.json</code>, writes identified scales as <code>scales/&lt;code&gt;.osd</code> files, and normalises trial-level data into <code>paradata/&lt;instrument&gt;.json</code>.</p>
 </section><section id="related" class="level2" data-number="23.15"><h2 data-number="23.15" class="anchored" data-anchor-id="related">
 <span class="header-section-number">23.15</span> Related</h2>
 <ul>
@@ -1075,7 +1094,7 @@ Note
 <li>
 <a href="../chapters/mod-codebook-check.html">Codebook Check</a> checks whether the columns are documented.</li>
 <li>
-<a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> checks the repository against the Psych-DS standard, and hosts <code>convert_psychds()</code> and the schema reference.</li>
+<a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> describes checking a repository against the Psych-DS standard, and hosts <code>convert_psychds()</code> and the schema reference. Neither is available yet.</li>
 </ul>
 
 

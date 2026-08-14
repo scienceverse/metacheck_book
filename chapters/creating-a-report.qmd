@@ -16,7 +16,7 @@ library(metacheck)
 
 So far we have looked at individual modules in isolation. In practice you usually want to run *several* checks on a paper at once and collect the results into a single document you can read, save, or hand to a co-author. This chapter shows how to go from a single paper object to a full Metacheck report.
 
-We start with the all-in-one `report()` function, then unpack what it does — running one module with `module_run()`, running several with `report_module_run()`, and turning the result into a document with `report_qmd()`. Finally we cover the slightly tricky part: passing settings through to the modules.
+We start with the all-in-one `report()` function, and its counterpart `report_repository()` for when you have a folder of shared files rather than a manuscript. We then unpack what they do — running one module with `module_run()`, running several with `report_module_run()`, and turning the result into a document with `report_qmd()`. Finally we cover the slightly tricky part: passing settings through to the modules.
 
 ## Loading a paper
 
@@ -77,6 +77,45 @@ report(paper,
 ```
 
 Rendering to HTML requires [Quarto](https://quarto.org) to be installed. If rendering fails for any reason, `report()` falls back to saving the `qmd` source (and warns you), so you never lose the result of running the modules.
+
+## Checking a folder instead of a paper: `report_repository()`
+
+Everything above starts from a manuscript. Sometimes there is no manuscript: you have a folder of shared files on your own computer — a repository you downloaded, or your own work before you share it — and you want to know what is in it and what could be improved.
+
+`report_repository()` is for that case. Give it a folder and it writes a report:
+
+```{r}
+#| eval: false
+report_repository("my_downloaded_project")
+```
+
+It runs the four modules that read a repository's files, in the order they depend on each other:
+
+| Module | What it asks |
+|---|---|
+| [`repo_check`](mod-repo-check.qmd) | What files are here? It sorts each into a type, looks inside `.zip` archives, and flags a missing README or an unreadable format. |
+| [`code_check`](mod-code-check.qmd) | What does the analysis code look like? Which language, which packages, does it parse, does it hard-code a path that only existed on one machine. |
+| [`data_check`](mod-data-check.qmd) | What is in the data? It describes every column and runs [data-quality checks](mod-data-validate.qmd), including a screen for columns that may hold personal information. |
+| [`codebook_check`](mod-codebook-check.qmd) | Are those columns documented anywhere? |
+
+The report is named after the folder, so the call above writes `my_downloaded_project_report.html` into your working directory. Name the file yourself to put it elsewhere, and pass `modules` to run fewer of them:
+
+```{r}
+#| eval: false
+report_repository("my_downloaded_project",
+                  output_file = "reports/project_check.html")
+
+report_repository("my_downloaded_project",
+                  modules = c("repo_check", "data_check"))
+```
+
+Only the folder you name is read. No links are followed and nothing is downloaded, so the whole thing works offline. Whether a language model is used follows your own `llm_use()` setting, exactly as when you run the modules individually.
+
+::: {.callout-note}
+## Why you do not pass a paper
+
+The modules attach their results to a paper object, so `report_repository()` creates an empty one for them with `test_paper()`. You never see it, but it is why the report's header carries the folder name as its subtitle and lists no authors or DOI — there is no manuscript to take them from. If you *do* have the manuscript, read it with `read()` and use `report()` instead, and the repository modules will follow the links in the paper rather than needing a local folder.
+:::
 
 ## Running a single module
 
@@ -213,6 +252,7 @@ report(
 | You want to… | Use |
 |---|---|
 | Run modules and write a finished report file | `report(paper, modules, output_file, output_format, args)` |
+| Check a folder of files, with no manuscript | `report_repository(path, output_file, output_format, modules)` |
 | Run one module and inspect the result | `module_run(paper, module, ...)` |
 | Run several modules, keep the result, write no file | `report_module_run(paper, modules, args)` |
 | Format module output as report text | `report_qmd(module_output, paper)` or `module_report(mo)` |

@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>Appendix A — Archiving an OSF Account on Zenodo – The Metacheck Manual</title>
+<title>Appendix A — Downloading an OSF Account – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/osf-schemas.html" rel="next">
+<link href="../chapters/uploading-to-zenodo.html" rel="next">
 <link href="../chapters/ollama.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/archiving-osf-to-zenodo.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/archiving-osf-to-zenodo.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/archiving-osf.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/archiving-osf.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -409,20 +409,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/archiving-osf-to-zenodo.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></span></a>
+  <a href="../chapters/archiving-osf.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/uploading-to-zenodo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Uploading Files to Zenodo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
   </div>
 </li>
       </ul>
@@ -435,51 +441,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#choosing-a-data-repository" id="toc-choosing-a-data-repository" class="nav-link active" data-scroll-target="#choosing-a-data-repository"><span class="header-section-number">A.1</span> Choosing a Data Repository</a></li>
-  <li><a href="#downloading-all-your-private-repositories-from-the-open-science-framework" id="toc-downloading-all-your-private-repositories-from-the-open-science-framework" class="nav-link" data-scroll-target="#downloading-all-your-private-repositories-from-the-open-science-framework"><span class="header-section-number">A.2</span> Downloading all your private Repositories from the Open Science Framework</a></li>
-  <li><a href="#before-you-start" id="toc-before-you-start" class="nav-link" data-scroll-target="#before-you-start"><span class="header-section-number">A.3</span> Before you start</a></li>
+<li><a href="#downloading-all-your-private-repositories-from-the-open-science-framework" id="toc-downloading-all-your-private-repositories-from-the-open-science-framework" class="nav-link active" data-scroll-target="#downloading-all-your-private-repositories-from-the-open-science-framework"><span class="header-section-number">A.1</span> Downloading all your private Repositories from the Open Science Framework</a></li>
+  <li><a href="#before-you-start" id="toc-before-you-start" class="nav-link" data-scroll-target="#before-you-start"><span class="header-section-number">A.2</span> Before you start</a></li>
   <li>
-<a href="#step-1-create-your-access-tokens" id="toc-step-1-create-your-access-tokens" class="nav-link" data-scroll-target="#step-1-create-your-access-tokens"><span class="header-section-number">A.4</span> Step 1: Create your access tokens</a>
+<a href="#step-1-create-your-access-token" id="toc-step-1-create-your-access-token" class="nav-link" data-scroll-target="#step-1-create-your-access-token"><span class="header-section-number">A.3</span> Step 1: Create your access token</a>
   <ul class="collapse">
-<li><a href="#why-you-need-an-osf-token" id="toc-why-you-need-an-osf-token" class="nav-link" data-scroll-target="#why-you-need-an-osf-token"><span class="header-section-number">A.4.1</span> Why you need an OSF token</a></li>
-  <li><a href="#creating-the-osf-token" id="toc-creating-the-osf-token" class="nav-link" data-scroll-target="#creating-the-osf-token"><span class="header-section-number">A.4.2</span> Creating the OSF token</a></li>
-  <li><a href="#storing-the-osf-token" id="toc-storing-the-osf-token" class="nav-link" data-scroll-target="#storing-the-osf-token"><span class="header-section-number">A.4.3</span> Storing the OSF token</a></li>
-  <li><a href="#creating-the-zenodo-tokens" id="toc-creating-the-zenodo-tokens" class="nav-link" data-scroll-target="#creating-the-zenodo-tokens"><span class="header-section-number">A.4.4</span> Creating the Zenodo tokens</a></li>
+<li><a href="#why-you-need-an-osf-token" id="toc-why-you-need-an-osf-token" class="nav-link" data-scroll-target="#why-you-need-an-osf-token"><span class="header-section-number">A.3.1</span> Why you need an OSF token</a></li>
+  <li><a href="#creating-the-osf-token" id="toc-creating-the-osf-token" class="nav-link" data-scroll-target="#creating-the-osf-token"><span class="header-section-number">A.3.2</span> Creating the OSF token</a></li>
+  <li><a href="#storing-the-osf-token" id="toc-storing-the-osf-token" class="nav-link" data-scroll-target="#storing-the-osf-token"><span class="header-section-number">A.3.3</span> Storing the OSF token</a></li>
   </ul>
 </li>
   <li>
-<a href="#step-2-download-your-osf-projects" id="toc-step-2-download-your-osf-projects" class="nav-link" data-scroll-target="#step-2-download-your-osf-projects"><span class="header-section-number">A.5</span> Step 2: Download your OSF projects</a>
+<a href="#step-2-download-your-osf-projects" id="toc-step-2-download-your-osf-projects" class="nav-link" data-scroll-target="#step-2-download-your-osf-projects"><span class="header-section-number">A.4</span> Step 2: Download your OSF projects</a>
   <ul class="collapse">
-<li><a href="#finding-your-osf-user-id" id="toc-finding-your-osf-user-id" class="nav-link" data-scroll-target="#finding-your-osf-user-id"><span class="header-section-number">A.5.1</span> Finding your OSF user ID</a></li>
-  <li><a href="#looking-at-what-you-have-before-downloading" id="toc-looking-at-what-you-have-before-downloading" class="nav-link" data-scroll-target="#looking-at-what-you-have-before-downloading"><span class="header-section-number">A.5.2</span> Looking at what you have before downloading</a></li>
-  <li><a href="#downloading-a-single-project" id="toc-downloading-a-single-project" class="nav-link" data-scroll-target="#downloading-a-single-project"><span class="header-section-number">A.5.3</span> Downloading a single project</a></li>
-  <li><a href="#downloading-everything" id="toc-downloading-everything" class="nav-link" data-scroll-target="#downloading-everything"><span class="header-section-number">A.5.4</span> Downloading everything</a></li>
-  <li><a href="#downloading-only-some-projects" id="toc-downloading-only-some-projects" class="nav-link" data-scroll-target="#downloading-only-some-projects"><span class="header-section-number">A.5.5</span> Downloading only some projects</a></li>
-  <li><a href="#the-mode-argument" id="toc-the-mode-argument" class="nav-link" data-scroll-target="#the-mode-argument"><span class="header-section-number">A.5.6</span> The <code>mode</code> argument</a></li>
-  <li><a href="#wikis-logs-and-other-things-that-are-not-files" id="toc-wikis-logs-and-other-things-that-are-not-files" class="nav-link" data-scroll-target="#wikis-logs-and-other-things-that-are-not-files"><span class="header-section-number">A.5.7</span> Wikis, logs, and other things that are not files</a></li>
-  <li><a href="#checking-that-the-download-worked" id="toc-checking-that-the-download-worked" class="nav-link" data-scroll-target="#checking-that-the-download-worked"><span class="header-section-number">A.5.8</span> Checking that the download worked</a></li>
+<li><a href="#finding-your-osf-user-id" id="toc-finding-your-osf-user-id" class="nav-link" data-scroll-target="#finding-your-osf-user-id"><span class="header-section-number">A.4.1</span> Finding your OSF user ID</a></li>
+  <li><a href="#looking-at-what-you-have-before-downloading" id="toc-looking-at-what-you-have-before-downloading" class="nav-link" data-scroll-target="#looking-at-what-you-have-before-downloading"><span class="header-section-number">A.4.2</span> Looking at what you have before downloading</a></li>
+  <li><a href="#downloading-a-single-project" id="toc-downloading-a-single-project" class="nav-link" data-scroll-target="#downloading-a-single-project"><span class="header-section-number">A.4.3</span> Downloading a single project</a></li>
+  <li><a href="#while-you-are-at-it-why-not-check-the-repository" id="toc-while-you-are-at-it-why-not-check-the-repository" class="nav-link" data-scroll-target="#while-you-are-at-it-why-not-check-the-repository"><span class="header-section-number">A.4.4</span> While you are at it, why not check the repository?</a></li>
+  <li><a href="#downloading-everything" id="toc-downloading-everything" class="nav-link" data-scroll-target="#downloading-everything"><span class="header-section-number">A.4.5</span> Downloading everything</a></li>
+  <li><a href="#downloading-only-some-projects" id="toc-downloading-only-some-projects" class="nav-link" data-scroll-target="#downloading-only-some-projects"><span class="header-section-number">A.4.6</span> Downloading only some projects</a></li>
+  <li><a href="#the-mode-argument" id="toc-the-mode-argument" class="nav-link" data-scroll-target="#the-mode-argument"><span class="header-section-number">A.4.7</span> The <code>mode</code> argument</a></li>
+  <li><a href="#wikis-logs-and-other-things-that-are-not-files" id="toc-wikis-logs-and-other-things-that-are-not-files" class="nav-link" data-scroll-target="#wikis-logs-and-other-things-that-are-not-files"><span class="header-section-number">A.4.8</span> Wikis, logs, and other things that are not files</a></li>
+  <li><a href="#checking-that-the-download-worked" id="toc-checking-that-the-download-worked" class="nav-link" data-scroll-target="#checking-that-the-download-worked"><span class="header-section-number">A.4.9</span> Checking that the download worked</a></li>
   </ul>
 </li>
-  <li>
-<a href="#uploading-files-to-zenodo" id="toc-uploading-files-to-zenodo" class="nav-link" data-scroll-target="#uploading-files-to-zenodo"><span class="header-section-number">A.6</span> Uploading Files to Zenodo</a>
-  <ul class="collapse">
-<li><a href="#practise-on-the-sandbox-first" id="toc-practise-on-the-sandbox-first" class="nav-link" data-scroll-target="#practise-on-the-sandbox-first"><span class="header-section-number">A.6.1</span> Practise on the sandbox first</a></li>
-  <li><a href="#what-ends-up-on-zenodo" id="toc-what-ends-up-on-zenodo" class="nav-link" data-scroll-target="#what-ends-up-on-zenodo"><span class="header-section-number">A.6.2</span> What ends up on Zenodo</a></li>
-  <li><a href="#folders-and-why-zenodo-does-not-have-any" id="toc-folders-and-why-zenodo-does-not-have-any" class="nav-link" data-scroll-target="#folders-and-why-zenodo-does-not-have-any"><span class="header-section-number">A.6.3</span> Folders, and why Zenodo does not have any</a></li>
-  <li><a href="#splitting-materials-into-their-own-archive" id="toc-splitting-materials-into-their-own-archive" class="nav-link" data-scroll-target="#splitting-materials-into-their-own-archive"><span class="header-section-number">A.6.4</span> Splitting materials into their own archive</a></li>
-  <li><a href="#choosing-what-gets-split" id="toc-choosing-what-gets-split" class="nav-link" data-scroll-target="#choosing-what-gets-split"><span class="header-section-number">A.6.5</span> Choosing what gets split</a></li>
-  <li><a href="#downloading-files-from-zip-archives" id="toc-downloading-files-from-zip-archives" class="nav-link" data-scroll-target="#downloading-files-from-zip-archives"><span class="header-section-number">A.6.6</span> Downloading Files from ZIP Archives</a></li>
-  <li><a href="#drafts-and-publishing" id="toc-drafts-and-publishing" class="nav-link" data-scroll-target="#drafts-and-publishing"><span class="header-section-number">A.6.7</span> Drafts, and publishing</a></li>
-  <li><a href="#uploading-to-the-real-zenodo" id="toc-uploading-to-the-real-zenodo" class="nav-link" data-scroll-target="#uploading-to-the-real-zenodo"><span class="header-section-number">A.6.8</span> Uploading to the real Zenodo</a></li>
-  </ul>
-</li>
-  <li><a href="#the-whole-process-in-one-place" id="toc-the-whole-process-in-one-place" class="nav-link" data-scroll-target="#the-whole-process-in-one-place"><span class="header-section-number">A.7</span> The whole process in one place</a></li>
-  <li><a href="#when-something-goes-wrong" id="toc-when-something-goes-wrong" class="nav-link" data-scroll-target="#when-something-goes-wrong"><span class="header-section-number">A.8</span> When something goes wrong</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/archiving-osf-to-zenodo.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  <li><a href="#where-to-put-the-files-next" id="toc-where-to-put-the-files-next" class="nav-link" data-scroll-target="#where-to-put-the-files-next"><span class="header-section-number">A.5</span> Where to put the files next</a></li>
+  <li><a href="#when-something-goes-wrong" id="toc-when-something-goes-wrong" class="nav-link" data-scroll-target="#when-something-goes-wrong"><span class="header-section-number">A.6</span> When something goes wrong</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/archiving-osf.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/archiving-osf-to-zenodo.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/archiving-osf-to-zenodo.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Archiving an OSF Account on Zenodo</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title">Appendix A — Archiving an OSF Account on Zenodo</h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/archiving-osf.html">Appendices</a></li><li class="breadcrumb-item"><a href="../chapters/archiving-osf.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Downloading an OSF Account</span></a></li></ol></nav><div class="quarto-title">
+<h1 class="title">Appendix A — Downloading an OSF Account</h1>
 </div>
 
 
@@ -493,21 +485,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>The Center for Open Science recently announced that the Open Science Framework will no longer host closed repositories. It will continue to host open repositories, but will not accept new files. This means researchers who used the Open Science Framework to store closed repositories will need to download them (and perhaps store them somewhere else), and that they need to host their files elsewhere in the future. In this chapter we explain how to use Metacheck to download all your OSF data, and choose another repository for future use. We recommend the use of Zenodo, and explain how you can upload repositories to Zenodo (either from the OSF, or in the future, local folders you want to share).</p>
-<section id="choosing-a-data-repository" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="choosing-a-data-repository">
-<span class="header-section-number">A.1</span> Choosing a Data Repository</h2>
-<p>There are many data repositories, each with strengths and weaknesses. Some data repositories used in psychology are Zenodo, GitHub, ResearchBox, and PsyArchives. <a href="https://researchbox.org">ResearchBox</a> asks users to provide some meta-data when uploading files, which can facilitate - but is typically not sufficient - to classify files. ResearchBox backs up publicly available files as a .zip on Zenodo. GitHub also offers storage for data and code. GitHub itself is not a stable storage (e.g., it can be changed or), but it is straightforward to create a <a href="https://help.zenodo.org/docs/github/archive-software/github-upload/">release that is also archived on Zenodo</a>. Zenodo is hosted by CERN and commissioned by the European Commission through the OpenAIRE project. <a href="https://www.psycharchives.org">PsyArchives</a> is hosted by ZPID, manually checks data uploads, requires researchers to provide meta-data to make the data FAIR, and allows researchers to share their files under restrictions. While public files on PsychArchives can be downloaded automatically, files shared under more restrictive licenses can be downloaded manually, but not by software. Zenodo and GitHub allow users to access files through a public API. Files on PsychArchives can als be accessed through an API, even though it is not publicly described. ResearchBox does not have an API yet, which is an important limitation for machine accessibility. For example, while our R package Metacheck can automatically download all OSF files through the OSF API, retrieve the meta-data, and upload all files to Zenodo, the lack of an API means that we can’t automatically upload files to ResearchBox for you.</p>
-<p>The R package <code>Metacheck</code> contains a <code>repo_check()</code> module that resolves links to OSF, GitHub, Zenodo, and PsychArchives to their respective APIs, lists every file with its size and type, and flags components that are private, embargoed, or otherwise inaccessible to a machine. The <code>code_check</code> and <code>data_check</code> modules (explained in their respective chapters) can download files selectively (e.g., researchers can only download code files). The package can also scrape the ResearchBox website and download the zip archive that contains all shared files, but due to the lack of an API, it can’t retrieve the information that researchers provided.</p>
-<p>PsychArchives and ResearchBox make it possible to share an anonymous link to the datafiles for peer review. GitHub repositories can be made anonymous for blind peer review through <a href="https://anonymous.4open.science">Anonymous GitHub</a>. Zenodo allows users to create a new upload in Zenodo, keep it private, fill in the metadata while not disclosing any personal information, and without publishing the record, click Share, Links, and create a secret link with the permission that people with the link “Can preview draft”. This allows reviewers to access the unpublished draft, while the files remain invisible to the public. When shared publicly, Zenodo and PsychArchives allow users to create a Digital Object Identifier, which provides a stable link to the files.</p>
-<p>PsychArchives is limited to psychology and related disciplines. If you work in psychology, it is a solid choice for a repository, and its requirement to provide extensive metadata might be effortful, but facilitates FAIR re-use, as long as files are shared publicly. ResearchBox is an easy to use solution if you want to make your data available to other people for manual download, but until it has an API, software can’t easily interact with ResearchBox. Zenodo is often the best general-purpose archival repository, whether it is used directly, or through ResearchBox or a GitHub release linked to Zenodo, although domain-specific repositories can be preferable when they store more detailed metadata. Never share data on your personal homepage, or in a cloud storage service such as dropbox or OneDrive, as such files can’t be approached through an API, and are not stable.</p>
-</section><section id="downloading-all-your-private-repositories-from-the-open-science-framework" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="downloading-all-your-private-repositories-from-the-open-science-framework">
-<span class="header-section-number">A.2</span> Downloading all your private Repositories from the Open Science Framework</h2>
+</header><p>The Center for Open Science recently announced that the Open Science Framework will no longer host closed repositories. It will continue to host open repositories, but will not accept new files. This means researchers who used the Open Science Framework to store closed repositories will need to download them, and host their files elsewhere in the future. This chapter explains how to use Metacheck to download all your OSF data onto your own computer, and how to check what you have before deciding what to do with it.</p>
+<p>Where those files should go next is a separate question, taken up in <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a>. You do not need that chapter if you only want a copy of your own repositories.</p>
+<section id="downloading-all-your-private-repositories-from-the-open-science-framework" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="downloading-all-your-private-repositories-from-the-open-science-framework">
+<span class="header-section-number">A.1</span> Downloading all your private Repositories from the Open Science Framework</h2>
 <p>The whole process has two steps:</p>
 <ol type="1">
 <li>Create an access token for the OSF.</li>
 <li>Download your OSF projects onto your own computer.</li>
-</ol></section><section id="before-you-start" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="before-you-start">
-<span class="header-section-number">A.3</span> Before you start</h2>
+</ol></section><section id="before-you-start" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="before-you-start">
+<span class="header-section-number">A.2</span> Before you start</h2>
 <p>You need R (version 4.3.0 or newer) and, ideally, RStudio. You also need the metacheck package. The functions in this chapter are part of the development version, so install that rather than the stable release. The Setting up Metacheck chapter explains this in full; the short version is that the development version is published on the scienceverse R-universe as a separate package called <code>metacheck.dev</code>, built automatically from the <code>dev</code> branch. It is supplied as a pre-compiled binary on Windows and macOS, so you do not need any build tools:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"metacheck.dev"</span>,</span>
 <span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://scienceverse.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -523,15 +510,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="step-1-create-your-access-tokens" class="level2" data-number="A.4"><h2 data-number="A.4" class="anchored" data-anchor-id="step-1-create-your-access-tokens">
-<span class="header-section-number">A.4</span> Step 1: Create your access tokens</h2>
+</section><section id="step-1-create-your-access-token" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="step-1-create-your-access-token">
+<span class="header-section-number">A.3</span> Step 1: Create your access token</h2>
 <p>An access token is a long string of letters and numbers that proves to a website that a program is acting on your behalf. It works like a password that you give to one specific program, and that you can revoke without changing your real password.</p>
-<section id="why-you-need-an-osf-token" class="level3" data-number="A.4.1"><h3 data-number="A.4.1" class="anchored" data-anchor-id="why-you-need-an-osf-token">
-<span class="header-section-number">A.4.1</span> Why you need an OSF token</h3>
+<p>You need one token for the OSF, created here. If you go on to upload the files to Zenodo, that needs its own separate token, explained in <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a>.</p>
+<section id="why-you-need-an-osf-token" class="level3" data-number="A.3.1"><h3 data-number="A.3.1" class="anchored" data-anchor-id="why-you-need-an-osf-token">
+<span class="header-section-number">A.3.1</span> Why you need an OSF token</h3>
 <p>Without a token, the OSF allows only <strong>100 requests per hour</strong>, only for public OSF projects. Listing all files in a large account uses far more than that, so a download will stop part way through.</p>
 <p>With a token, you may make <strong>10,000 requests per day</strong>, and you can also reach your own private projects, which are invisible without a Token.</p>
-</section><section id="creating-the-osf-token" class="level3" data-number="A.4.2"><h3 data-number="A.4.2" class="anchored" data-anchor-id="creating-the-osf-token">
-<span class="header-section-number">A.4.2</span> Creating the OSF token</h3>
+</section><section id="creating-the-osf-token" class="level3" data-number="A.3.2"><h3 data-number="A.3.2" class="anchored" data-anchor-id="creating-the-osf-token">
+<span class="header-section-number">A.3.2</span> Creating the OSF token</h3>
 <p>Go to <a href="https://osf.io/settings/tokens" class="uri">https://osf.io/settings/tokens</a>. If you are not logged in, log in first and then open that link again.</p>
 <p>Click the <strong>Create Token</strong> button.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -580,8 +568,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>The copy symbol</figcaption></figure>
 </div>
 <p>A green bar appears briefly in the top right to confirm the copy succeeded.</p>
-</section><section id="storing-the-osf-token" class="level3" data-number="A.4.3"><h3 data-number="A.4.3" class="anchored" data-anchor-id="storing-the-osf-token">
-<span class="header-section-number">A.4.3</span> Storing the OSF token</h3>
+</section><section id="storing-the-osf-token" class="level3" data-number="A.3.3"><h3 data-number="A.3.3" class="anchored" data-anchor-id="storing-the-osf-token">
+<span class="header-section-number">A.3.3</span> Storing the OSF token</h3>
 <p>Now store the token so that R finds it automatically every time it starts. R reads a file called <code>.Renviron</code> when it starts, and anything in that file becomes available to your session.</p>
 <p>Type this in the R console and press Enter:</p>
 <div class="cell">
@@ -620,72 +608,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is forgotten when you close R.</p>
 </div>
 </div>
-</section><section id="creating-the-zenodo-tokens" class="level3" data-number="A.4.4"><h3 data-number="A.4.4" class="anchored" data-anchor-id="creating-the-zenodo-tokens">
-<span class="header-section-number">A.4.4</span> Creating the Zenodo tokens</h3>
-<p>Zenodo runs two entirely separate websites:</p>
-<ul>
-<li><p><strong>The sandbox</strong>, at <a href="https://sandbox.zenodo.org" class="uri">https://sandbox.zenodo.org</a>, which is for practising. It behaves exactly like the real thing but nothing on it is permanent, and its identifiers do not resolve publicly. It is periodically wiped. We strongly recommend making an account here as well, in addition to your normal Zenodo account, to test out whether you are correctly uploading your files, before you use the Metacheck functions to actually upload all your files automatically.</p></li>
-<li><p><strong>The real Zenodo</strong>, at <a href="https://zenodo.org" class="uri">https://zenodo.org</a>, where deposits are permanent.</p></li>
-</ul>
-<p>They have separate accounts and separate tokens. A token from one will not work on the other. This is deliberate, and it is what makes it safe to practise.</p>
-<p>Start with the sandbox. Register at <a href="https://sandbox.zenodo.org/login/" class="uri">https://sandbox.zenodo.org/login/</a> — your real Zenodo login does not work there, so you need a separate account. Then follow exactly the same steps below, but on the sandbox website.</p>
-<p>Log in to Zenodo. Logging in with your ORCID is usually easiest. From the dropdown menu in the top right, choose <strong>Applications</strong>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/tokens/zenodo-menu-applications.png" class="img-fluid figure-img" alt="The Zenodo account dropdown menu showing Profile, Change password, Notifications, Storage, Linked accounts, GitHub, Security, Applications, and Log out"></p>
-<figcaption>The account dropdown menu with Applications</figcaption></figure>
-</div>
-<p>You will see the applications page.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/tokens/zenodo-applications-page.png" class="img-fluid figure-img" alt="The Zenodo applications page showing personal access tokens"></p>
-<figcaption>The Zenodo applications page</figcaption></figure>
-</div>
-<p>Click <strong>+ New Token</strong>. Give it a name you will recognise, such as <code>metacheck</code>. For the scopes, tick <strong>deposit:write</strong> and <strong>deposit:actions</strong>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/tokens/zenodo-new-token.png" class="img-fluid figure-img" alt="The new personal access token page with the name metacheck and the deposit:actions and deposit:write scopes ticked"></p>
-<figcaption>Naming the token and choosing the scopes</figcaption></figure>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>What the two Zenodo scopes do
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><code>deposit:write</code> allows creating a deposit and adding files to it. <code>deposit:actions</code> allows publishing it. You need both, even though you will probably publish by hand through the website rather than from R.</p>
-</div>
-</div>
-<p>Click <strong>Create</strong>. The token appears in pink text.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="../images/tokens/zenodo-token-created.png" class="img-fluid figure-img" alt="The Zenodo page showing a newly created personal access token in pink"></p>
-<figcaption>The newly created Zenodo token</figcaption></figure>
-</div>
-<p>Copy it and store it somewhere safe, then click <strong>Save</strong>. As with the OSF, you cannot see this token again afterwards.</p>
-<p>Add your tokens to <code>.Renviron</code> in the same way as before, using these names:</p>
-<pre><code>ZENODO_SANDBOX_PAT="paste-your-sandbox-token-here"
-ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
-<p>Save, restart R, and check:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">zenodo_pat</span><span class="op">(</span>sandbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>   <span class="co"># your sandbox token</span></span>
-<span><span class="fu">zenodo_pat</span><span class="op">(</span>sandbox <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># your real Zenodo token</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section></section><section id="step-2-download-your-osf-projects" class="level2" data-number="A.5"><h2 data-number="A.5" class="anchored" data-anchor-id="step-2-download-your-osf-projects">
-<span class="header-section-number">A.5</span> Step 2: Download your OSF projects</h2>
-<section id="finding-your-osf-user-id" class="level3" data-number="A.5.1"><h3 data-number="A.5.1" class="anchored" data-anchor-id="finding-your-osf-user-id">
-<span class="header-section-number">A.5.1</span> Finding your OSF user ID</h3>
+</section></section><section id="step-2-download-your-osf-projects" class="level2" data-number="A.4"><h2 data-number="A.4" class="anchored" data-anchor-id="step-2-download-your-osf-projects">
+<span class="header-section-number">A.4</span> Step 2: Download your OSF projects</h2>
+<section id="finding-your-osf-user-id" class="level3" data-number="A.4.1"><h3 data-number="A.4.1" class="anchored" data-anchor-id="finding-your-osf-user-id">
+<span class="header-section-number">A.4.1</span> Finding your OSF user ID</h3>
 <p>Your user ID is the five-character code in the address of your OSF profile page. Go to: <code>https://osf.io/profile</code> and it will be provided on the screen:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="../images/tokens/osf_id.png" class="img-fluid figure-img" alt="Your OSF ID"></p>
 <figcaption>Your OSF ID</figcaption></figure>
 </div>
 <p>If your profile is at <code>https://osf.io/pct7w</code>, your user ID is <code>pct7w</code>.</p>
-</section><section id="looking-at-what-you-have-before-downloading" class="level3" data-number="A.5.2"><h3 data-number="A.5.2" class="anchored" data-anchor-id="looking-at-what-you-have-before-downloading">
-<span class="header-section-number">A.5.2</span> Looking at what you have before downloading</h3>
+</section><section id="looking-at-what-you-have-before-downloading" class="level3" data-number="A.4.2"><h3 data-number="A.4.2" class="anchored" data-anchor-id="looking-at-what-you-have-before-downloading">
+<span class="header-section-number">A.4.2</span> Looking at what you have before downloading</h3>
 <p>It is worth seeing what is there before downloading anything. The code below retrieved all the OSF projects of Daniel Lakens. Unless you have an OSF personal access token of Daniel Lakens, you can only see his public projects. This request can take a while if you have many projects on the OSF:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu">osf_user_projects</span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu">osf_user_projects</span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The code returns a table with one row per project and these columns:</p>
 <table class="caption-top table">
@@ -731,19 +668,41 @@ ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
 <p>An OSF project can contain components, which are sub-projects. These are not listed separately, because downloading a project automatically brings its components’ files with it, however deeply they are nested.</p>
 </div>
 </div>
-</section><section id="downloading-a-single-project" class="level3" data-number="A.5.3"><h3 data-number="A.5.3" class="anchored" data-anchor-id="downloading-a-single-project">
-<span class="header-section-number">A.5.3</span> Downloading a single project</h3>
+</section><section id="downloading-a-single-project" class="level3" data-number="A.4.3"><h3 data-number="A.4.3" class="anchored" data-anchor-id="downloading-a-single-project">
+<span class="header-section-number">A.4.3</span> Downloading a single project</h3>
 <p>You can download a single project, using the code from the <code>osf_id</code> column in the table <code>projects</code> created above:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># just one project, by its code</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># just one project, by its code</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The name you specify is the folder the download goes into, so make sure the name is meaningful. Inside it, the project gets a folder named after its OSF ID, and each component gets a folder named after the component’s title with its own OSF ID appended, so that two components sharing a title cannot collide and every folder can be traced back to the component it came from. If you enter an ID that does not exist, or one that has been deleted from the OSF, Metacheck will provide a warning.</p>
-</section><section id="downloading-everything" class="level3" data-number="A.5.4"><h3 data-number="A.5.4" class="anchored" data-anchor-id="downloading-everything">
-<span class="header-section-number">A.5.4</span> Downloading everything</h3>
+</section><section id="while-you-are-at-it-why-not-check-the-repository" class="level3" data-number="A.4.4"><h3 data-number="A.4.4" class="anchored" data-anchor-id="while-you-are-at-it-why-not-check-the-repository">
+<span class="header-section-number">A.4.4</span> While you are at it, why not check the repository?</h3>
+<p>You now have the whole project on your own computer. This is a good moment to look at what you actually shared, because you are about to archive it somewhere permanent, and it is much easier to fix a missing README or an undocumented column now than after the files have a DOI.</p>
+<p>Metacheck is designed to assist researchers though automated checks. One way it can do this is by asking users to upload a paper, and it will check if improvements can be made to how research is reported. But in the 0.2.0 version of metacheck, a range of new modules exist that allow users to check data and code in a folder, and automatically suggests improvements to the repository, data, and code.</p>
+<p>One line checks the folder you just downloaded:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This writes a report <code>how_many_registered_studies_are_published_report.html</code> into your working directory. Open it in a browser and read it as a list of suggestions: a missing README to write, a column to document, a stray file to remove. It covers what files are there, what the analysis code looks like, what is in the data, and whether the data columns are documented anywhere. The <a href="../chapters/creating-a-report.html">Creating a Report</a> chapter explains the function and its arguments in full.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Check for personal information before you upload, not after
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Among these checks is a screen for columns that look like they hold email addresses, IP addresses, names, or geographic coordinates. Some of your OSF projects were private precisely because they contain such data. A file published on Zenodo cannot be deleted, so look at this report before you upload anything.</p>
+</div>
+</div>
+</section><section id="downloading-everything" class="level3" data-number="A.4.5"><h3 data-number="A.4.5" class="anchored" data-anchor-id="downloading-everything">
+<span class="header-section-number">A.4.5</span> Downloading everything</h3>
 <p>To download every project the account contains, give the user ID directly:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>That is all you need: everything is downloaded, with no size limits, because this function exists to download a repository in full.</p>
 <p>The arguments you may want to change:</p>
@@ -789,24 +748,24 @@ ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
 <p>Downloading a whole account means listing every project and fetching every file. For an account with a hundred projects this can take hours and use a lot of disk space. Metacheck makes it easy to download only one of your projects, or a list of some of the projects.</p>
 </div>
 </div>
-</section><section id="downloading-only-some-projects" class="level3" data-number="A.5.5"><h3 data-number="A.5.5" class="anchored" data-anchor-id="downloading-only-some-projects">
-<span class="header-section-number">A.5.5</span> Downloading only some projects</h3>
+</section><section id="downloading-only-some-projects" class="level3" data-number="A.4.6"><h3 data-number="A.4.6" class="anchored" data-anchor-id="downloading-only-some-projects">
+<span class="header-section-number">A.4.6</span> Downloading only some projects</h3>
 <p>Because <code>osf_user_projects()</code> returns an ordinary table, you can select whichever subset you want and pass it straight back. This is the case that matters most here: public repositories will remain available on the OSF, so the projects you actually need to rescue are the private ones. The <code>public</code> column is <code>FALSE</code> for those, so one line selects them:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># download your private projects (as the OSF will no longer host them)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># download your private projects (as the OSF will no longer host them)</span></span>
 <span><span class="va">projects</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">public</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span>download_to <span class="op">=</span> <span class="st">"my_private_osf_archive"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="the-mode-argument" class="level3" data-number="A.5.6"><h3 data-number="A.5.6" class="anchored" data-anchor-id="the-mode-argument">
-<span class="header-section-number">A.5.6</span> The <code>mode</code> argument</h3>
+</section><section id="the-mode-argument" class="level3" data-number="A.4.7"><h3 data-number="A.4.7" class="anchored" data-anchor-id="the-mode-argument">
+<span class="header-section-number">A.4.7</span> The <code>mode</code> argument</h3>
 <p>By default, <code>osf_file_download</code> will download all files from your repository. This uses the default <code>mode = "all"</code> setting. The OSF can bundle a component’s files into a single compressed archive, so metacheck asks for one archive per component and never lists the individual files.</p>
 <p>It is also possible to only download a selection of files. For example, if you already have a back-up of all stimuli, and their file-size is large, you might want to exclude these files from the download. Alternatively, you might want to reduce the size of all downloaded files by only downloading smaller files.</p>
 <p>The <code>mode = "select"</code> option lists every file through an individual API call to the OSF. It retrieves information about each file (such as the name, the extension, and the file size), which is what lets you select which files to download, and what <code>max_file_size</code> and <code>max_download_size</code> filter on. Listing all individual files makes downloading large repositories extremely slow. For example, Daniel Lakens was a co-author on Many Labs 2 (OSF id <code>8cd4r</code>, 44 components and 1,907 files). Listing every file from the Many Labs 2 project takes <strong>63 minutes and 909 API requests</strong>, and only then can files be downloaded. Fetching the same project as archives using the default <code>mode = "all"</code> setting retrieved all 1.9 GB of files in <strong>under 7 minutes</strong>.</p>
 <p>There are two further values. <code>mode = "zip"</code> lists the files first, exactly like <code>"select"</code>, but then transports whole components as archives; this makes fewer requests than <code>"select"</code>, though it is not faster, and its <code>unzip</code> argument decides whether the archives are unpacked after downloading or kept as zip files. <code>mode = "files"</code> is an older name for <code>"select"</code> and is still accepted.</p>
 <p>The code below makes these almost 2000 API calls, and subsequently downloads only files smaller than 1 MB, using the <code>mode = "select"</code> option.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only files under 1 MB, each verified against its reported size</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only files under 1 MB, each verified against its reported size</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8cd4r"</span>, download_to <span class="op">=</span> <span class="st">"Many_Labs_2"</span>,</span>
 <span>                    mode <span class="op">=</span> <span class="st">"select"</span>, max_file_size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -837,8 +796,8 @@ Note
 </div>
 </div>
 <p>The <code>|&gt;</code> symbol is called a pipe. It takes whatever is on its left and passes it as the first argument to the function on its right, which lets you read a sequence of steps from top to bottom.</p>
-</section><section id="wikis-logs-and-other-things-that-are-not-files" class="level3" data-number="A.5.7"><h3 data-number="A.5.7" class="anchored" data-anchor-id="wikis-logs-and-other-things-that-are-not-files">
-<span class="header-section-number">A.5.7</span> Wikis, logs, and other things that are not files</h3>
+</section><section id="wikis-logs-and-other-things-that-are-not-files" class="level3" data-number="A.4.8"><h3 data-number="A.4.8" class="anchored" data-anchor-id="wikis-logs-and-other-things-that-are-not-files">
+<span class="header-section-number">A.4.8</span> Wikis, logs, and other things that are not files</h3>
 <p>An OSF project is often a record as much as data storage The wiki may hold the protocol, the reasoning behind a decision, or the interpretation of the results, and the activity log is the only account of when things changed. None of that is a file, so downloading the files alone would lose it.</p>
 <p>Metacheck therefore also retrieves this metadata in wikis and logs by default. Inside each project’s folder you will find an <code>_osf_metadata</code> folder containing:</p>
 <table class="caption-top table">
@@ -871,10 +830,10 @@ Note
 </table>
 <p>A project with no wiki simply has no <code>wiki_</code> file, and the <code>README.md</code> says so explicitly. This costs about four extra API requests per project. If you want the files only, turn it off:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span>, metadata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span>, metadata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="checking-that-the-download-worked" class="level3" data-number="A.5.8"><h3 data-number="A.5.8" class="anchored" data-anchor-id="checking-that-the-download-worked">
-<span class="header-section-number">A.5.8</span> Checking that the download worked</h3>
+</section><section id="checking-that-the-download-worked" class="level3" data-number="A.4.9"><h3 data-number="A.4.9" class="anchored" data-anchor-id="checking-that-the-download-worked">
+<span class="header-section-number">A.4.9</span> Checking that the download worked</h3>
 <p>When the download finishes, every file that was supposed to arrive is checked against your disk, and against the size the OSF said it should be. This matters when you are archiving hundreds of files in one go.</p>
 <p>What the result looks like depends on the mode, because the two modes know different things.</p>
 <p>In <code>mode = "all"</code> there is no file listing, so the table has <strong>one row per component</strong>:</p>
@@ -924,7 +883,7 @@ Note
 </tbody>
 </table>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># keep the result of the download so you can look at it</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># keep the result of the download so you can look at it</span></span>
 <span><span class="co"># This also makes it easier to upload the files you downloaded to for example Zenodo</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span>
 <span></span>
@@ -993,7 +952,7 @@ Note
 </div>
 <p>To check everything arrived, keep the result of the download in a variable. These columns only exist in <code>mode = "select"</code>, so this example asks for that mode:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span>,</span>
 <span>                             mode <span class="op">=</span> <span class="st">"select"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># how many files arrived, out of those that were meant to</span></span>
@@ -1004,214 +963,24 @@ Note
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">checked</span>, <span class="op">!</span><span class="va">downloaded</span> <span class="op">&amp;</span> <span class="va">attempted</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If some files are missing, run the same download command again. Occasionally the OSF refuses a request when many arrive at once; Metacheck waits and retries twice automatically, but a file can still be missed on a busy day. In <code>mode = "select"</code> the download resumes into the same folder, so only the missing files are fetched, and you will see a message such as <code>54 of 57 files from pngda are already on disk and were not downloaded again.</code></p>
-</section></section><section id="uploading-files-to-zenodo" class="level2" data-number="A.6"><h2 data-number="A.6" class="anchored" data-anchor-id="uploading-files-to-zenodo">
-<span class="header-section-number">A.6</span> Uploading Files to Zenodo</h2>
-<section id="practise-on-the-sandbox-first" class="level3" data-number="A.6.1"><h3 data-number="A.6.1" class="anchored" data-anchor-id="practise-on-the-sandbox-first">
-<span class="header-section-number">A.6.1</span> Practise on the sandbox first</h3>
-<p><code>zenodo_upload()</code> sends files to the <strong>sandbox</strong> unless you tell it otherwise. Do a complete run there first. Nothing on the sandbox is permanent, so you can make mistakes freely. As you are automatically uploading files, and files on Zenodo can’t be deleted, and get a DOI (which is costly, and makes the files permanent) you want to test if you are doing things correctly first.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Check for Personal Data
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Before uploading files, check carefully whether you are not uploading data with personally identifying information! You might have kept some folders private because they contain data you can’t share. If so, this data has now been downloaded to your computer, and need to be removed before you continue with uploading data to Zenodo.</p>
-<p>You can use the <code>data_check</code> module in Metacheck to assist you in checking if there is personally identifying information. It will warn for columns consisting information such as email addresses, IP addresses, and open text entries that might contain sensitive data.</p>
-</div>
-</div>
-<p>Take the result of the download – the <code>result</code> from the previous step – and pass it straight on if all data can be shared publicly. Note that the folder name will be used on Zenodo as the file name by default, so make sure the file name is meaningful and clear.</p>
+</section></section><section id="where-to-put-the-files-next" class="level2" data-number="A.5"><h2 data-number="A.5" class="anchored" data-anchor-id="where-to-put-the-files-next">
+<span class="header-section-number">A.5</span> Where to put the files next</h2>
+<p>Your projects are now on your own computer. The next question is where they should live, since the OSF will not go on hosting closed repositories.</p>
+<p>We recommend Zenodo, and Metacheck can upload your downloaded projects to it directly, taking the title, description, authors, ORCIDs, keywords and licence from the original OSF project. That is the subject of its own chapter: <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a>.</p>
+<p>The <code>result</code> object returned by <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> is exactly what the upload functions expect, so the two chapters fit together:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Or point at a specific folder. In the example repository, a folder called ‘Non-Anonymous Data’ is downloaded alongside the main public folder. This folder can’t be shared. So we only select the folder with data that can be shared for upload to Zenodo.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">zenodo_upload</span><span class="op">(</span><span class="st">"how_many_registered_studies_are_published/An_Inception_Cohort_Study_Quantifying_How_Many_Registered_Studies_are_Published_8uqfb"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Before anything is sent, you will see a summary of how many folders and files are involved, how large they are, whether they will be zipped, in how they will be zipped, which server they are going to, and whether they will be published. You then have to confirm. Nothing is uploaded until you do. This confirmation is skipped when R is running without a person at the keyboard, such as in a script started from the command line, where the upload simply proceeds. You can turn the question off yourself with <code>ask = FALSE</code>.</p>
-<p>The other arguments you may want to change:</p>
-<ul>
-<li>
-<code>upload_type</code> is the kind of record Zenodo creates. It is <code>"dataset"</code> by default; <code>"publication"</code> and <code>"software"</code> are the other common choices.</li>
-<li>
-<code>upload_osf_metadata</code> decides whether the <code>_osf_metadata</code> folder that <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> saved inside each project is uploaded along with the files, so that the archive on Zenodo describes itself. It is <code>TRUE</code> by default. Setting it to <code>FALSE</code> deposits only the data files; the metadata is read either way, because that is where the deposit’s title, licence and authors come from.</li>
-<li>
-<code>metadata</code> takes a list of extra fields to add to every deposit, overriding whatever was taken from the OSF.</li>
-<li>
-<code>max_file_size</code> is the largest file to upload, in megabytes. Anything larger is skipped and reported. It is <code>NULL</code> by default, meaning no limit.</li>
-</ul></section><section id="what-ends-up-on-zenodo" class="level3" data-number="A.6.2"><h3 data-number="A.6.2" class="anchored" data-anchor-id="what-ends-up-on-zenodo">
-<span class="header-section-number">A.6.2</span> What ends up on Zenodo</h3>
-<p>One Zenodo deposit is created per folder. Where the folder came from an OSF project, the details are taken from that project automatically:</p>
-<ul>
-<li>the project’s title,</li>
-<li>its description,</li>
-<li>its contributors as the authors, with their ORCIDs where the OSF has them,</li>
-<li>its tags as keywords,</li>
-<li>its licence, and</li>
-<li>a link back to the original OSF project.</li>
-</ul>
-<p>If the OSF project has no licence that Zenodo recognises, <code>cc-by-4.0</code> is used and you are warned that this happened. You can choose a different one:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span>license <span class="op">=</span> <span class="st">"cc0-1.0"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section><section id="folders-and-why-zenodo-does-not-have-any" class="level3" data-number="A.6.3"><h3 data-number="A.6.3" class="anchored" data-anchor-id="folders-and-why-zenodo-does-not-have-any">
-<span class="header-section-number">A.6.3</span> Folders, and why Zenodo does not have any</h3>
-<p>Your download almost certainly has folders in it. A typical project looks something like this:</p>
-<pre><code>Study/
-  README.md
-  Data/raw.csv
-  Code/01_analysis.R
-  Materials/stimuli.png
-  Materials/instructions.mp4</code></pre>
-<p>Zenodo only stores files, and it has no option to create folders. In its own words, in answer to the question “Can I upload folders/directories?”:</p>
-<blockquote class="blockquote">
-<p>Zenodo does not support uploading and organising files into folders/directories. Instead, you can create a ZIP archive and upload it, in which case Zenodo will display the file structure inside the ZIP.</p>
-</blockquote>
-<p>A Zenodo record is a flat list of files and nothing else. So there are exactly two things <code>zenodo_upload()</code> can do with your folders. It does the first of them unless you say otherwise.</p>
-<p><strong>Pack the folder into a ZIP archive.</strong> This is what happens by default. The folder is packed into an archive, which Zenodo displays with its structure intact. Someone who wants to access your files can download the files, unzip them, and they will have a local copy which has the original folder structure, so a re-user sees <code>Data/</code>, <code>Code/</code> and <code>Materials/</code> as you arranged them:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The advantage is that your project arrives as a project rather than as an unstructured long list of files. The downside is that a reader who wants one small data file must download the whole archive. This could be a problem if you have a folder with 40GB of materials that you used in your study (e.g., video files), when all a re-user wants is to take a look at the data file and the code file. Metacheck solved this problem through it’s <code><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download()</a></code> function, which is smart enough to be able to peek inside a zip file, and download only the file types you want (e.g., data and code files). Metacheck is able to do this because Zenodo is a really well-thought through data repository that allows users to download parts of .zip files. This function will be explained later.</p>
-<p>The second option is to upload the files individually, ignoring the folder structure. This might be fine if you are sharing just a few files, or many similar files. Set <code>as_zip = FALSE</code> and every file is uploaded on its own, with the folders dropped:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span>as_zip <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The five files above would then appear on Zenodo as <code>01_analysis.R</code>, <code>raw.csv</code>, <code>instructions.mp4</code>, <code>stimuli.png</code>, and <code>README.md</code>. Names are kept short and readable. A folder name is only added when two files would otherwise clash, so a project with <code>wave1/data.csv</code> and <code>wave2/data.csv</code> produces <code>wave1__data.csv</code> and <code>wave2__data.csv</code> rather than one file is overwritten by the other.</p>
-<p>The advantage is that a reader can see each file, preview it in the browser, and download just the one they want. The cost is that the arrangement of your project is gone, and a reader has to work out from the names alone which file was data and which was a stimulus. For a small flat folder, where the structure carries no meaning worth keeping, that is a reasonable trade-off.</p>
-</section><section id="splitting-materials-into-their-own-archive" class="level3" data-number="A.6.4"><h3 data-number="A.6.4" class="anchored" data-anchor-id="splitting-materials-into-their-own-archive">
-<span class="header-section-number">A.6.4</span> Splitting materials into their own archive</h3>
-<p>A single archive would be a poor default for a large project. Researchers shared data and code for people who want to re-analyze their data, and they share materials for researchers who want to replicate their study. These are two different use-cases. And as materials are often much larger than data files, <code>zenodo_upload()</code> by default creates two archives, one for <strong>materials</strong> and another for everything else. If there are no materials, only one zip file is created.</p>
-<p>So the default upload produces two archives:</p>
-<pre><code>Study.zip             README.md, Data/raw.csv, Code/01_analysis.R
-Study_materials.zip   Materials/stimuli.png, Materials/instructions.mp4</code></pre>
-<p>Both archives store the same <code>Study/</code> folder at the top, which is what makes it possible to unzip both files, and recreate the original folder structure, while also enabling re-users to only download one of the two archives, and have only the files they need.</p>
-</section><section id="choosing-what-gets-split" class="level3" data-number="A.6.5"><h3 data-number="A.6.5" class="anchored" data-anchor-id="choosing-what-gets-split">
-<span class="header-section-number">A.6.5</span> Choosing what gets split</h3>
-<p>Files are sorted into six categories: <code>data</code>, <code>code</code>, <code>materials</code>, <code>documentation</code>, <code>output</code>, and <code>unknown</code>. These are the same categories, worked out by the same function, that the <code>repo_check()</code> function in Metacheck uses to classify files. The parameter <code>split_materials</code> says which of those categories to put in their own archive. It defaults to <code>"materials"</code>. You can change it. Set <code>split_materials = NULL</code> when the project is small enough that splitting only makes it harder to use:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span>split_materials <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Pass more than one category and each gets its own archive, so a reader can take the data and code without your generated figures and tables:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span></span>
-<span>  split_materials <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"materials"</span>, <span class="st">"output"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>That produces <code>Study.zip</code>, <code>Study_materials.zip</code>, and <code>Study_output.zip</code>. Unzipping all three still rebuilds the original folder exactly.</p>
-</section><section id="downloading-files-from-zip-archives" class="level3" data-number="A.6.6"><h3 data-number="A.6.6" class="anchored" data-anchor-id="downloading-files-from-zip-archives">
-<span class="header-section-number">A.6.6</span> Downloading Files from ZIP Archives</h3>
-<p>It is best practice to use the .zip format when archiving files, because it is possible for software to peek inside a .zip without downloading the entire file an unzipping it. On the Zenodo website, an archive is one item. A visitor cannot see what is inside it, cannot preview a single file in the browser, and cannot download one file on its own. Splitting the materials off reduces that cost but does not remove it: the data and code archive is still all-or-nothing.</p>
-<p>This is the strongest argument for <code>as_zip = FALSE</code>, and if the people you expect to read your work will be clicking around the Zenodo page by hand, it is a good reason to choose it.</p>
-<p>For anyone working from R, however, metacheck removes the problem. <code><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download()</a></code> takes an <code>unzip_types</code> argument, and when you use it, files are read out of an archive <strong>without downloading the archive</strong>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only the data files, out of whatever archives the record contains</span></span>
-<span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download</a></span><span class="op">(</span><span class="st">"21918913"</span>, unzip_types <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This works because of two facts about how ZIP archives and Zenodo happen to fit together. A ZIP stores a listing of its contents at the end, and compresses each file inside it separately rather than as one continuous stream. Zenodo serves files over HTTP with byte-range support, meaning a program may ask for particular stretches of a file instead of the whole thing. So metacheck reads the listing from the end of the archive, works out where the files you asked for begin and end, and requests only those stretches. Nothing else crosses the network.</p>
-<p>The saving is not marginal. Running the line above on that record, which is a 25.6 MB archive of an ecology study, writes 11 data files totalling 46 kilobytes. The other 25.5 MB is never transferred.</p>
-<p>Files keep the folders they had inside the archive, so what lands on your disk looks like the project rather than a heap:</p>
-<pre><code>21918913/baumlab-Bruce_etal_2026_JAnimEcol-9fe2cfa/
-  01_data/KI_Monitoring_SiteData.csv
-  01_data/summarized_digitization_data.csv
-  03_tables_figures/Table_1.csv
-  ...</code></pre>
-<p>The categories are the same six used for splitting – <code>data</code>, <code>code</code>, <code>materials</code>, <code>documentation</code>, <code>output</code>, and <code>unknown</code> – so you can ask for whatever part you need, and combine them:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># just the code, to see how an analysis was done</span></span>
-<span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download</a></span><span class="op">(</span><span class="st">"21918913"</span>, unzip_types <span class="op">=</span> <span class="st">"code"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># data and documentation together, so you get the codebook with the data</span></span>
-<span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download</a></span><span class="op">(</span><span class="st">"21918913"</span>, unzip_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"documentation"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>On the record used here, the second of those writes 13 files rather than 11. The first writes only one, which is a useful thing to see: that archive contains no analysis scripts at all, only an RStudio project file and a PDF of the analysis. Asking for <code>"code"</code> correctly reports that there is almost none. A small result is not necessarily a fault in the classification – sometimes it is telling you something about the repository.</p>
-<p><code>max_file_size</code> applies to each file inside the archive rather than to the archive itself, so you can exclude anything unexpectedly large while still taking everything else:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># data files, but nothing above 5 MB</span></span>
-<span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download</a></span><span class="op">(</span><span class="st">"21918913"</span>, unzip_types <span class="op">=</span> <span class="st">"data"</span>, max_file_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Note that <code><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download()</a></code> has different defaults from <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code>: its <code>max_file_size</code> is 10 MB and its <code>max_download_size</code> is 100 MB, rather than no limit. This function is mainly used to look at somebody else’s record, where you rarely want their largest files by accident. If you are retrieving a record in full, set both to <code>NULL</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_file_download.html">zenodo_file_download</a></span><span class="op">(</span><span class="st">"21918913"</span>, max_file_size <span class="op">=</span> <span class="cn">NULL</span>, max_download_size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Leaving <code>unzip_types</code> unset keeps the old behaviour: archives are downloaded whole and left zipped.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Nothing is lost when this does not work
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Reading inside an archive depends on the server allowing range requests and on the archive’s listing being readable. When either fails, metacheck says so and downloads the whole archive instead, exactly as it would have done otherwise. The option can save you a download; it cannot cost you a file.</p>
-</div>
-</div>
-<p>None of this helps somebody browsing Zenodo in a web browser, so it does not fully answer the objection. It does mean that the archive you upload stays usable to anyone working in R, which is the audience most likely to want your data and code rather than a look at your stimuli.</p>
-</section><section id="drafts-and-publishing" class="level3" data-number="A.6.7"><h3 data-number="A.6.7" class="anchored" data-anchor-id="drafts-and-publishing">
-<span class="header-section-number">A.6.7</span> Drafts, and publishing</h3>
-<p>Deposits are created as <strong>drafts</strong>. A draft is private, can be edited or deleted, and does not have a permanent identifier yet. Nothing is published unless you explicitly ask.</p>
-<p>The function returns a table with a <code>url</code> for each deposit. Open those links, check the files and the description are right, and then press Publish on the Zenodo website when you are satisfied.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Publishing on the real Zenodo cannot be undone
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Once a record is published on zenodo.org it is permanent. It is given a DOI, and neither the record nor the DOI can be deleted. Check your drafts carefully before publishing, and practise on the sandbox first.</p>
-</div>
-</div>
-<p>You can publish from R by setting <code>publish = TRUE</code>, but the safer habit is to review each draft on the website and publish by hand.</p>
-</section><section id="uploading-to-the-real-zenodo" class="level3" data-number="A.6.8"><h3 data-number="A.6.8" class="anchored" data-anchor-id="uploading-to-the-real-zenodo">
-<span class="header-section-number">A.6.8</span> Uploading to the real Zenodo</h3>
-<p>When a sandbox run has gone the way you expect, repeat it against the real Zenodo by adding <code>sandbox = FALSE</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span>sandbox <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>This still creates drafts, so you still have to publish each one yourself.</p>
-</section></section><section id="the-whole-process-in-one-place" class="level2" data-number="A.7"><h2 data-number="A.7" class="anchored" data-anchor-id="the-whole-process-in-one-place">
-<span class="header-section-number">A.7</span> The whole process in one place</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 1. see what is there</span></span>
-<span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu">osf_user_projects</span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span>
-<span><span class="va">projects</span></span>
-<span></span>
-<span><span class="co"># 2. download the private ones -- everything, no size limits, the fast way</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">projects</span>, <span class="va">public</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 3. check everything arrived</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">files</span><span class="op">)</span>              <span class="co"># how many files in total</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">result</span>, <span class="op">!</span><span class="va">downloaded</span><span class="op">)</span>    <span class="co"># any component that failed</span></span>
-<span></span>
-<span><span class="co"># 4. practise the upload on the sandbox</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 5. when that looks right, upload for real (still as drafts)</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span>sandbox <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section><section id="when-something-goes-wrong" class="level2" data-number="A.8"><h2 data-number="A.8" class="anchored" data-anchor-id="when-something-goes-wrong">
-<span class="header-section-number">A.8</span> When something goes wrong</h2>
+<p>Before you upload anything, check what is in the files. A record published on Zenodo cannot be deleted, and some of your OSF projects were private for a reason. Run <code>report_repository()</code> on the download and read the personal-information section of the report, as described earlier in this chapter.</p>
+</section><section id="when-something-goes-wrong" class="level2" data-number="A.6"><h2 data-number="A.6" class="anchored" data-anchor-id="when-something-goes-wrong">
+<span class="header-section-number">A.6</span> When something goes wrong</h2>
 <p><strong><code>osf_pat()</code> returns <code>""</code>.</strong> R cannot find your token. Restart R, then check <code>.Renviron</code> has the line <code>OSF_PAT="..."</code> with quotation marks and a blank line at the end of the file.</p>
-<p><strong>“No token found for the Zenodo sandbox”.</strong> The sandbox needs its own token stored as <code>ZENODO_SANDBOX_PAT</code>, from an account registered at sandbox.zenodo.org. A token from the real Zenodo will not work there.</p>
-<p><strong>“Zenodo did not accept the token”.</strong> The token is for the other Zenodo server, was typed incompletely, or lacks the <code>deposit:write</code> scope. Create a new one.</p>
 <p><strong>The download stops part way, or many files fail.</strong> Usually the OSF rate limit. Set an OSF token if you have not, and run the same command again with the same <code>download_to</code>. The folder is reused either way. In <code>mode = "select"</code> files already on disk at the right size are not fetched twice, so only the missing ones are downloaded; in the default <code>mode = "all"</code> every archive is fetched again, because that mode never listed the files and so cannot tell what is already correct.</p>
 <p><strong>Some files show <code>downloaded = FALSE</code>.</strong> In <code>mode = "select"</code>, look at <code>attempted</code>: if it is <code>FALSE</code> you excluded the file yourself with <code>max_file_size</code> or <code>max_download_size</code>, and if it is <code>TRUE</code> the transfer genuinely failed, so run the download again. In <code>mode = "all"</code>, <code>downloaded</code> refers to a whole component, so a <code>FALSE</code> there means its archive could not be retrieved.</p>
 <p><strong>“could not be found on the OSF” or “has been deleted or withdrawn”.</strong> The first means the ID does not exist, so check it against the project’s web address; the second means the project was on the OSF but has since been removed, and its files cannot be recovered.</p>
 <p><strong>A private project’s files fail while its file names are listed.</strong> The listing and the download are separate requests, and only the listing was authorised. Check <code>osf_pat()</code> returns your token, and that the token has the <code>osf.full_read</code> scope.</p>
-<p><strong>A Zenodo deposit is titled after a folder, with “Unknown” as the author.</strong> The OSF details for that project could not be read, usually because it is private and your token cannot see it. Correct the draft on Zenodo before publishing.</p>
+<p>For problems with the Zenodo upload itself, see the troubleshooting section of the <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a> chapter.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1619,8 +1388,8 @@ Study_materials.zip   Materials/stimuli.png, Materials/instructions.mp4</code></
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/osf-schemas.html" class="pagination-link" aria-label="OSF Registration Schemas">
-        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/uploading-to-zenodo.html" class="pagination-link" aria-label="Uploading Files to Zenodo">
+        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Uploading Files to Zenodo</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1631,7 +1400,7 @@ Study_materials.zip   Materials/stimuli.png, Materials/instructions.mp4</code></
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/archiving-osf-to-zenodo.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/archiving-osf.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
 </div>
