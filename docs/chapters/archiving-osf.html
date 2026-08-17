@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
   </div>
 </li>
       </ul>
@@ -486,6 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><p>The Center for Open Science recently announced that the Open Science Framework will no longer host closed repositories. It will continue to host open repositories, but will not accept new files. This means researchers who used the Open Science Framework to store closed repositories will need to download them, and host their files elsewhere in the future. This chapter explains how to use Metacheck to download all your OSF data onto your own computer, and how to check what you have before deciding what to do with it.</p>
+<p>The easiest way to do this is the hosted Shiny app at <a href="https://shiny.ieis.tue.nl/metacheck_osf/">https://shiny.ieis.tue.nl/metacheck_osf/</a>, which needs no installation. The rest of this chapter explains how to do the same thing from R, which gives you more control over the download.</p>
 <p>Where those files should go next is a separate question, taken up in <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a>. You do not need that chapter if you only want a copy of your own repositories.</p>
 <section id="downloading-all-your-private-repositories-from-the-open-science-framework" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="downloading-all-your-private-repositories-from-the-open-science-framework">
 <span class="header-section-number">A.1</span> Downloading all your private Repositories from the Open Science Framework</h2>
@@ -495,20 +496,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Download your OSF projects onto your own computer.</li>
 </ol></section><section id="before-you-start" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="before-you-start">
 <span class="header-section-number">A.2</span> Before you start</h2>
-<p>You need R (version 4.3.0 or newer) and, ideally, RStudio. You also need the metacheck package. The functions in this chapter are part of the development version, so install that rather than the stable release. The Setting up Metacheck chapter explains this in full; the short version is that the development version is published on the scienceverse R-universe as a separate package called <code>metacheck.dev</code>, built automatically from the <code>dev</code> branch. It is supplied as a pre-compiled binary on Windows and macOS, so you do not need any build tools:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"metacheck.dev"</span>,</span>
-<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://scienceverse.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Because R-universe renames the package, you load it as <code>metacheck.dev</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">metacheck.dev</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Install <em>either</em> the stable <code>metacheck</code> <em>or</em> the development <code>metacheck.dev</code>, and do not load both in the same session. Everything else in this chapter works the same way whichever of the two you have installed.</p>
-<p>Alternatively you can install from GitHub, which builds the package from source and therefore needs a compiler (Rtools on Windows, the Xcode command-line tools on macOS, the standard development tools on Linux):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<p>You need R (version 4.3.0 or newer) and, ideally, RStudio. You also need the metacheck package. The functions in this chapter are part of the development version, so install that rather than the stable release. The Setting up Metacheck chapter explains this in full; the short version is that the development version is not available as a pre-compiled binary from R-universe, so install it directly from GitHub, which builds the package from source and therefore needs a compiler (Rtools on Windows, the Xcode command-line tools on macOS, the standard development tools on Linux):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A source install keeps the name <code>metacheck</code>, so you load it with <code><a href="https://github.com/scienceverse/metacheck">library(metacheck)</a></code>.</p>
-<p>You can type commands into the <strong>console</strong>, which is the panel in RStudio where R shows its output and waits for you to type, or in a new R file, where you can copy paste lines of code, and run them individually, or all together. When this chapter shows a line like <code>osf_pat()</code>, type it into the console or your R file, and press Enter or CTRL+Enter on the line of the code to run it.</p>
+<p>You can type commands into the <strong>console</strong>, which is the panel in RStudio where R shows its output and waits for you to type, or in a new R file, where you can copy paste lines of code, and run them individually, or all together. When this chapter shows a line like <code><a href="https://scienceverse.github.io/metacheck/reference/osf_pat.html">osf_pat()</a></code>, type it into the console or your R file, and press Enter or CTRL+Enter on the line of the code to run it.</p>
 <p>Load the package:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="step-1-create-your-access-token" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="step-1-create-your-access-token">
 <span class="header-section-number">A.3</span> Step 1: Create your access token</h2>
@@ -573,7 +568,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now store the token so that R finds it automatically every time it starts. R reads a file called <code>.Renviron</code> when it starts, and anything in that file becomes available to your session.</p>
 <p>Type this in the R console and press Enter:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="../images/tokens/r-edit-renviron.png" class="img-fluid figure-img" alt="The R console with usethis::edit_r_environ() typed in it"></p>
@@ -588,7 +583,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Save the file with <strong>Ctrl+S</strong>, then restart R with <strong>Ctrl+Shift+F10</strong>. The restart matters: <code>.Renviron</code> is only read when R starts, so the token does not exist in your session until you restart.</p>
 <p>Check that it worked:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">osf_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_pat.html">osf_pat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This should print your token. If it prints <code>""</code> (two quotation marks with nothing between them), the token is not being found. The usual causes are forgetting to restart R, forgetting the quotation marks, or a missing blank line at the end of the file.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -603,7 +598,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>If you would rather not store the token in a file, you can set it for the current session:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">osf_pat</span><span class="op">(</span><span class="st">"paste-your-token-here"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_pat.html">osf_pat</a></span><span class="op">(</span><span class="st">"paste-your-token-here"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is forgotten when you close R.</p>
 </div>
@@ -622,7 +617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">A.4.2</span> Looking at what you have before downloading</h3>
 <p>It is worth seeing what is there before downloading anything. The code below retrieved all the OSF projects of Daniel Lakens. Unless you have an OSF personal access token of Daniel Lakens, you can only see his public projects. This request can take a while if you have many projects on the OSF:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu">osf_user_projects</span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_user_projects.html">osf_user_projects</a></span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The code returns a table with one row per project and these columns:</p>
 <table class="caption-top table">
@@ -672,7 +667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">A.4.3</span> Downloading a single project</h3>
 <p>You can download a single project, using the code from the <code>osf_id</code> column in the table <code>projects</code> created above:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># just one project, by its code</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># just one project, by its code</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The name you specify is the folder the download goes into, so make sure the name is meaningful. Inside it, the project gets a folder named after its OSF ID, and each component gets a folder named after the component’s title with its own OSF ID appended, so that two components sharing a title cannot collide and every folder can be traced back to the component it came from. If you enter an ID that does not exist, or one that has been deleted from the OSF, Metacheck will provide a warning.</p>
@@ -682,7 +677,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Metacheck is designed to assist researchers though automated checks. One way it can do this is by asking users to upload a paper, and it will check if improvements can be made to how research is reported. But in the 0.2.0 version of metacheck, a range of new modules exist that allow users to check data and code in a folder, and automatically suggests improvements to the repository, data, and code.</p>
 <p>One line checks the folder you just downloaded:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository</a></span><span class="op">(</span><span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This writes a report <code>how_many_registered_studies_are_published_report.html</code> into your working directory. Open it in a browser and read it as a list of suggestions: a missing README to write, a column to document, a stray file to remove. It covers what files are there, what the analysis code looks like, what is in the data, and whether the data columns are documented anywhere. The <a href="../chapters/creating-a-report.html">Creating a Report</a> chapter explains the function and its arguments in full.</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -702,7 +697,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">A.4.5</span> Downloading everything</h3>
 <p>To download every project the account contains, give the user ID directly:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>That is all you need: everything is downloaded, with no size limits, because this function exists to download a repository in full.</p>
 <p>The arguments you may want to change:</p>
@@ -750,9 +745,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="downloading-only-some-projects" class="level3" data-number="A.4.6"><h3 data-number="A.4.6" class="anchored" data-anchor-id="downloading-only-some-projects">
 <span class="header-section-number">A.4.6</span> Downloading only some projects</h3>
-<p>Because <code>osf_user_projects()</code> returns an ordinary table, you can select whichever subset you want and pass it straight back. This is the case that matters most here: public repositories will remain available on the OSF, so the projects you actually need to rescue are the private ones. The <code>public</code> column is <code>FALSE</code> for those, so one line selects them:</p>
+<p>Because <code><a href="https://scienceverse.github.io/metacheck/reference/osf_user_projects.html">osf_user_projects()</a></code> returns an ordinary table, you can select whichever subset you want and pass it straight back. This is the case that matters most here: public repositories will remain available on the OSF, so the projects you actually need to rescue are the private ones. The <code>public</code> column is <code>FALSE</code> for those, so one line selects them:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># download your private projects (as the OSF will no longer host them)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># download your private projects (as the OSF will no longer host them)</span></span>
 <span><span class="va">projects</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">public</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span>download_to <span class="op">=</span> <span class="st">"my_private_osf_archive"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -765,7 +760,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>There are two further values. <code>mode = "zip"</code> lists the files first, exactly like <code>"select"</code>, but then transports whole components as archives; this makes fewer requests than <code>"select"</code>, though it is not faster, and its <code>unzip</code> argument decides whether the archives are unpacked after downloading or kept as zip files. <code>mode = "files"</code> is an older name for <code>"select"</code> and is still accepted.</p>
 <p>The code below makes these almost 2000 API calls, and subsequently downloads only files smaller than 1 MB, using the <code>mode = "select"</code> option.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only files under 1 MB, each verified against its reported size</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># only files under 1 MB, each verified against its reported size</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8cd4r"</span>, download_to <span class="op">=</span> <span class="st">"Many_Labs_2"</span>,</span>
 <span>                    mode <span class="op">=</span> <span class="st">"select"</span>, max_file_size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -792,7 +787,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Without an OSF token, <code>osf_user_projects()</code> only lists the public projects, so <code>subset(public == FALSE)</code> would return nothing. If that selection is empty and you were expecting projects, check <code>osf_pat()</code> returns your token.</p>
+<p>Without an OSF token, <code><a href="https://scienceverse.github.io/metacheck/reference/osf_user_projects.html">osf_user_projects()</a></code> only lists the public projects, so <code>subset(public == FALSE)</code> would return nothing. If that selection is empty and you were expecting projects, check <code><a href="https://scienceverse.github.io/metacheck/reference/osf_pat.html">osf_pat()</a></code> returns your token.</p>
 </div>
 </div>
 <p>The <code>|&gt;</code> symbol is called a pipe. It takes whatever is on its left and passes it as the first argument to the function on its right, which lets you read a sequence of steps from top to bottom.</p>
@@ -830,7 +825,7 @@ Note
 </table>
 <p>A project with no wiki simply has no <code>wiki_</code> file, and the <code>README.md</code> says so explicitly. This costs about four extra API requests per project. If you want the files only, turn it off:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span>, metadata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span>, metadata <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="checking-that-the-download-worked" class="level3" data-number="A.4.9"><h3 data-number="A.4.9" class="anchored" data-anchor-id="checking-that-the-download-worked">
 <span class="header-section-number">A.4.9</span> Checking that the download worked</h3>
@@ -883,7 +878,7 @@ Note
 </tbody>
 </table>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># keep the result of the download so you can look at it</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># keep the result of the download so you can look at it</span></span>
 <span><span class="co"># This also makes it easier to upload the files you downloaded to for example Zenodo</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span>
 <span></span>
@@ -952,7 +947,7 @@ Note
 </div>
 <p>To check everything arrived, keep the result of the download in a variable. These columns only exist in <code>mode = "select"</code>, so this example asks for that mode:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"8uqfb"</span>, download_to <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published"</span>,</span>
 <span>                             mode <span class="op">=</span> <span class="st">"select"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># how many files arrived, out of those that were meant to</span></span>
@@ -969,17 +964,17 @@ Note
 <p>We recommend Zenodo, and Metacheck can upload your downloaded projects to it directly, taking the title, description, authors, ORCIDs, keywords and licence from the original OSF project. That is the subject of its own chapter: <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a>.</p>
 <p>The <code>result</code> object returned by <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> is exactly what the upload functions expect, so the two chapters fit together:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span><span class="st">"pct7w"</span>, download_to <span class="op">=</span> <span class="st">"my_osf_archive"</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_upload.html">zenodo_upload</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Before you upload anything, check what is in the files. A record published on Zenodo cannot be deleted, and some of your OSF projects were private for a reason. Run <code>report_repository()</code> on the download and read the personal-information section of the report, as described earlier in this chapter.</p>
+<p>Before you upload anything, check what is in the files. A record published on Zenodo cannot be deleted, and some of your OSF projects were private for a reason. Run <code><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository()</a></code> on the download and read the personal-information section of the report, as described earlier in this chapter.</p>
 </section><section id="when-something-goes-wrong" class="level2" data-number="A.6"><h2 data-number="A.6" class="anchored" data-anchor-id="when-something-goes-wrong">
 <span class="header-section-number">A.6</span> When something goes wrong</h2>
-<p><strong><code>osf_pat()</code> returns <code>""</code>.</strong> R cannot find your token. Restart R, then check <code>.Renviron</code> has the line <code>OSF_PAT="..."</code> with quotation marks and a blank line at the end of the file.</p>
+<p><strong><code><a href="https://scienceverse.github.io/metacheck/reference/osf_pat.html">osf_pat()</a></code> returns <code>""</code>.</strong> R cannot find your token. Restart R, then check <code>.Renviron</code> has the line <code>OSF_PAT="..."</code> with quotation marks and a blank line at the end of the file.</p>
 <p><strong>The download stops part way, or many files fail.</strong> Usually the OSF rate limit. Set an OSF token if you have not, and run the same command again with the same <code>download_to</code>. The folder is reused either way. In <code>mode = "select"</code> files already on disk at the right size are not fetched twice, so only the missing ones are downloaded; in the default <code>mode = "all"</code> every archive is fetched again, because that mode never listed the files and so cannot tell what is already correct.</p>
 <p><strong>Some files show <code>downloaded = FALSE</code>.</strong> In <code>mode = "select"</code>, look at <code>attempted</code>: if it is <code>FALSE</code> you excluded the file yourself with <code>max_file_size</code> or <code>max_download_size</code>, and if it is <code>TRUE</code> the transfer genuinely failed, so run the download again. In <code>mode = "all"</code>, <code>downloaded</code> refers to a whole component, so a <code>FALSE</code> there means its archive could not be retrieved.</p>
 <p><strong>“could not be found on the OSF” or “has been deleted or withdrawn”.</strong> The first means the ID does not exist, so check it against the project’s web address; the second means the project was on the OSF but has since been removed, and its files cannot be recovered.</p>
-<p><strong>A private project’s files fail while its file names are listed.</strong> The listing and the download are separate requests, and only the listing was authorised. Check <code>osf_pat()</code> returns your token, and that the token has the <code>osf.full_read</code> scope.</p>
+<p><strong>A private project’s files fail while its file names are listed.</strong> The listing and the download are separate requests, and only the listing was authorised. Check <code><a href="https://scienceverse.github.io/metacheck/reference/osf_pat.html">osf_pat()</a></code> returns your token, and that the token has the <code>osf.full_read</code> scope.</p>
 <p>For problems with the Zenodo upload itself, see the troubleshooting section of the <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a> chapter.</p>
 
 

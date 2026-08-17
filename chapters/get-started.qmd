@@ -16,6 +16,10 @@ library(metacheck)
 ```
 
 
+## The easiest way to get started
+
+This manual mostly explains how to use Metacheck from R. If you do not want to install anything, you can instead use the hosted Shiny app at [https://shiny.ieis.tue.nl/metacheck/](https://shiny.ieis.tue.nl/metacheck/): upload a paper and it creates a standard report, with no installation required. The options are more limited than running Metacheck from R — for example, the use of LLMs is limited, you can only view the report rather than store the result, and you cannot set parameters for modules — but it is the easiest way to use Metacheck.
+
 ## Installation
 
 Before you install Metacheck, you need two things on your computer:
@@ -47,28 +51,7 @@ If you are installing Metacheck for a workshop or a class, ask participants to i
 
 ### Installing the development version
 
-Metacheck is under active development. The development version often has new modules or functions before they reach the stable release, but it may also have more bugs. There are two ways to install it.
-
-#### From R-universe (recommended)
-
-The development version is also published on the scienceverse R-universe as a separate package, **`metacheck.dev`**, built automatically from the `dev` branch. Like the stable install, this provides pre-compiled binaries, so it needs **no build tools**:
-
-``` r
-install.packages("metacheck.dev",
-  repos = c("https://scienceverse.r-universe.dev", "https://cloud.r-project.org"))
-```
-
-Because R-universe renames the package, you load it as `metacheck.dev` rather than `metacheck`:
-
-``` r
-library(metacheck.dev)
-```
-
-The package's functions are otherwise identical, so the rest of this book applies unchanged. Note that you should install *either* the stable `metacheck` *or* the development `metacheck.dev`, not load both in the same session.
-
-#### From GitHub (build from source)
-
-You can also install directly from [GitHub](https://github.com/scienceverse/metacheck). This is only necessary if you need a change that has not yet been built on R-universe, or a development branch other than `dev`. Installing this way builds Metacheck from source, which requires a compiler toolchain that does not ship with R by default:
+Metacheck is under active development. The development version often has new modules or functions before they reach the stable release, but it may also have more bugs. R-universe only ever hosts one build per package name per universe, so the development version is not available as a pre-compiled binary; install it directly from [GitHub](https://github.com/scienceverse/metacheck) instead. Installing this way builds Metacheck from source, which requires a compiler toolchain that does not ship with R by default:
 
 - **Windows:** Install **Rtools**, matching the version to your R version (Rtools44 for R 4.4.x, Rtools43 for R 4.3.x, and so on), from [https://cran.r-project.org/bin/windows/Rtools/](https://cran.r-project.org/bin/windows/Rtools/). Use the default options. This is a large download.
 - **macOS:** Install the Xcode command-line tools by running `xcode-select --install` in the Terminal. For some packages you may also need a Fortran compiler, available from [https://mac.r-project.org/tools/](https://mac.r-project.org/tools/).

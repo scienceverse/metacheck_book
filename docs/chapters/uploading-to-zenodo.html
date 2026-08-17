@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
   </div>
 </li>
       </ul>
@@ -525,7 +525,7 @@ ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
 </div>
 </section><section id="practise-on-the-sandbox-first" class="level2" data-number="B.2"><h2 data-number="B.2" class="anchored" data-anchor-id="practise-on-the-sandbox-first">
 <span class="header-section-number">B.2</span> Practise on the sandbox first</h2>
-<p><code>zenodo_upload()</code> sends files to the <strong>sandbox</strong> unless you tell it otherwise. Do a complete run there first. Nothing on the sandbox is permanent, so you can make mistakes freely. As you are automatically uploading files, and files on Zenodo can’t be deleted, and get a DOI (which is costly, and makes the files permanent) you want to test if you are doing things correctly first.</p>
+<p><code><a href="https://scienceverse.github.io/metacheck/reference/zenodo_upload.html">zenodo_upload()</a></code> sends files to the <strong>sandbox</strong> unless you tell it otherwise. Do a complete run there first. Nothing on the sandbox is permanent, so you can make mistakes freely. As you are automatically uploading files, and files on Zenodo can’t be deleted, and get a DOI (which is costly, and makes the files permanent) you want to test if you are doing things correctly first.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -537,7 +537,7 @@ ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <p>Before uploading, check carefully that you are not about to publish data with personally identifying information. You may have kept some projects private precisely because they hold data you cannot share; that data is now on your own computer, and must be removed before you upload anything to Zenodo.</p>
-<p>Run <code>report_repository()</code> on the folder and read the personal-information section of the report, described in <a href="../chapters/creating-a-report.html">Creating a Report</a>. It flags columns whose name or contents look like email addresses, IP addresses, national identification numbers, geographic coordinates, or open text entries that might name someone.</p>
+<p>Run <code><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository()</a></code> on the folder and read the personal-information section of the report, described in <a href="../chapters/creating-a-report.html">Creating a Report</a>. It flags columns whose name or contents look like email addresses, IP addresses, national identification numbers, geographic coordinates, or open text entries that might name someone.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_osf_archive/some_project"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -591,7 +591,7 @@ ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
 <blockquote class="blockquote">
 <p>Zenodo does not support uploading and organising files into folders/directories. Instead, you can create a ZIP archive and upload it, in which case Zenodo will display the file structure inside the ZIP.</p>
 </blockquote>
-<p>A Zenodo record is a flat list of files and nothing else. So there are exactly two things <code>zenodo_upload()</code> can do with your folders. It does the first of them unless you say otherwise.</p>
+<p>A Zenodo record is a flat list of files and nothing else. So there are exactly two things <code><a href="https://scienceverse.github.io/metacheck/reference/zenodo_upload.html">zenodo_upload()</a></code> can do with your folders. It does the first of them unless you say otherwise.</p>
 <p><strong>Pack the folder into a ZIP archive.</strong> This is what happens by default. The folder is packed into an archive, which Zenodo displays with its structure intact. Someone who wants to access your files can download the files, unzip them, and they will have a local copy which has the original folder structure, so a re-user sees <code>Data/</code>, <code>Code/</code> and <code>Materials/</code> as you arranged them:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -605,7 +605,7 @@ ZENODO_PAT="paste-your-real-zenodo-token-here"</code></pre>
 <p>The advantage is that a reader can see each file, preview it in the browser, and download just the one they want. The cost is that the arrangement of your project is gone, and a reader has to work out from the names alone which file was data and which was a stimulus. For a small flat folder, where the structure carries no meaning worth keeping, that is a reasonable trade-off.</p>
 </section><section id="splitting-materials-into-their-own-archive" class="level2" data-number="B.5"><h2 data-number="B.5" class="anchored" data-anchor-id="splitting-materials-into-their-own-archive">
 <span class="header-section-number">B.5</span> Splitting materials into their own archive</h2>
-<p>A single archive would be a poor default for a large project. Researchers shared data and code for people who want to re-analyze their data, and they share materials for researchers who want to replicate their study. These are two different use-cases. And as materials are often much larger than data files, <code>zenodo_upload()</code> by default creates two archives, one for <strong>materials</strong> and another for everything else. If there are no materials, only one zip file is created.</p>
+<p>A single archive would be a poor default for a large project. Researchers shared data and code for people who want to re-analyze their data, and they share materials for researchers who want to replicate their study. These are two different use-cases. And as materials are often much larger than data files, <code><a href="https://scienceverse.github.io/metacheck/reference/zenodo_upload.html">zenodo_upload()</a></code> by default creates two archives, one for <strong>materials</strong> and another for everything else. If there are no materials, only one zip file is created.</p>
 <p>So the default upload produces two archives:</p>
 <pre><code>Study.zip             README.md, Data/raw.csv, Code/01_analysis.R
 Study_materials.zip   Materials/stimuli.png, Materials/instructions.mp4</code></pre>
@@ -705,7 +705,7 @@ Study_materials.zip   Materials/stimuli.png, Materials/instructions.mp4</code></
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/scienceverse/metacheck">metacheck</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1. see what is there</span></span>
-<span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu">osf_user_projects</span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span>
+<span><span class="va">projects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_user_projects.html">osf_user_projects</a></span><span class="op">(</span><span class="st">"pct7w"</span><span class="op">)</span></span>
 <span><span class="va">projects</span></span>
 <span></span>
 <span><span class="co"># 2. download the private ones -- everything, no size limits, the fast way</span></span>
@@ -715,13 +715,13 @@ Study_materials.zip   Materials/stimuli.png, Materials/instructions.mp4</code></
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 3. check what you are about to share, before it becomes permanent</span></span>
-<span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_osf_archive"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository</a></span><span class="op">(</span><span class="st">"my_osf_archive"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 4. practise the upload on the sandbox</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_upload.html">zenodo_upload</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 5. when that looks right, upload for real (still as drafts)</span></span>
-<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu">zenodo_upload</span><span class="op">(</span>sandbox <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">result</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/zenodo_upload.html">zenodo_upload</a></span><span class="op">(</span>sandbox <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="when-something-goes-wrong" class="level2" data-number="B.11"><h2 data-number="B.11" class="anchored" data-anchor-id="when-something-goes-wrong">
 <span class="header-section-number">B.11</span> When something goes wrong</h2>

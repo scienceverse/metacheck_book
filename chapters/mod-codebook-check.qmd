@@ -13,11 +13,11 @@ llm_use(FALSE)
 ```
 
 ::: callout-warning
-This module is still under development and is not in the released version of Metacheck. It is in the development version, which you can install as a pre-compiled binary from the scienceverse R-universe (see [Setting up Metacheck](get-started.qmd)):
+This module is still under development and is not in the released version of Metacheck. It is in the development version, which you install from GitHub (see [Setting up Metacheck](get-started.qmd)):
 
 ```r
-install.packages("metacheck.dev",
-  repos = c("https://scienceverse.r-universe.dev", "https://cloud.r-project.org"))
+install.packages("pak")
+pak::pkg_install("scienceverse/metacheck@dev")
 ```
 :::
 

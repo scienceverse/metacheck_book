@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
   </div>
 </li>
       </ul>
@@ -506,9 +506,9 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module is still under development and is not in the released version of Metacheck. It is in the development version, which you can install as a pre-compiled binary from the scienceverse R-universe (see <a href="../chapters/get-started.html">Setting up Metacheck</a>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"metacheck.dev"</span>,</span>
-<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://scienceverse.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This module is still under development and is not in the released version of Metacheck. It is in the development version, which you install from GitHub (see <a href="../chapters/get-started.html">Setting up Metacheck</a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="what-it-checks" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="what-it-checks">
@@ -570,7 +570,9 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We classified 2 files: 1 data, 1 code.
-#&gt; -  We found 1 tabular data file and extracted 6 columns from 1 of them.</code></pre>
+#&gt; -  We found 1 tabular data file and extracted 6 columns from 1 of them.
+#&gt; -  We grouped the files into 1 study group (ex1).
+#&gt; -  The study-group step did not get an answer for 2 files (the model request failed); they were grouped by the fallback rules instead. We ran automated data-quality checks on 6 columns and found no issues. We detected demographic column for Age.</code></pre>
 </div>
 </div>
 </section><section id="file-classification" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="file-classification">
@@ -691,14 +693,14 @@ Note
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">tree_lines</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; ├── data/
-#&gt; │   └── study.csv
-#&gt; └── analysis.R
+#&gt; │   └── study.csv  📊 data ex1
+#&gt; └── analysis.R     💻 code ex1
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(15L, 2L, 20L, 2L, 20L, 19L), Mean = c(41.1, 
-#&gt;     NA, NA, NA, 570.45, 49.015), SD = c(12.888, NA, NA, NA, 189.819, 
-#&gt;     8.68), Min = c(19, NA, NA, NA, 306, 32.5), Max = c(63, NA, 
-#&gt;     NA, NA, 883, 62.5)), row.names = c("age", "condition", "participant_id",</code></pre>
+#&gt;     0), "N Unique" = c(15L, 2L, 20L, 2L, 20L, 20L), Mean = c(37.95, 
+#&gt;     NA, NA, NA, 611.2, 50.86), SD = c(15.34, NA, NA, NA, 169.426, 
+#&gt;     9.935), Min = c(18, NA, NA, NA, 310, 30.5), Max = c(63, NA, 
+#&gt;     NA, NA, 849, 77.3)), row.names = c("age", "condition", "participant_id",</code></pre>
 </div>
 </div>
 <p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>

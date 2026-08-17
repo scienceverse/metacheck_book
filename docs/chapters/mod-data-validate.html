@@ -448,7 +448,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference for new users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
   </div>
 </li>
       </ul>
@@ -515,9 +515,9 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>These checks are still under development and are not in the released version of Metacheck. They are in the development version, which you can install as a pre-compiled binary from the scienceverse R-universe (see <a href="../chapters/get-started.html">Setting up Metacheck</a>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"metacheck.dev"</span>,</span>
-<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://scienceverse.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These checks are still under development and are not in the released version of Metacheck. They are in the development version, which you install from GitHub (see <a href="../chapters/get-started.html">Setting up Metacheck</a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -598,13 +598,15 @@ Note
 <span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "green"</code></pre>
+<pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We classified 1 file: 1 data.
-#&gt; -  We found 1 tabular data file and extracted 5 columns from 1 of them.</code></pre>
+#&gt; -  We found 1 tabular data file and extracted 5 columns from 1 of them.
+#&gt; -  We grouped the files into 1 study group (ex1).
+#&gt; -  The study-group step did not get an answer for 1 file (the model request failed); it was grouped by the fallback rules instead. We ran automated data-quality checks on 5 columns; 1 column has at least one potential issue (1 column with inconsistent category casing). We detected demographic column for Age.</code></pre>
 </div>
 </div>
 <p><code>data_check</code> reads and classifies the columns first, then applies the quality checks to the result, so a single call does both.</p>
@@ -615,7 +617,23 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">findings</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column"</span>, <span class="st">"check"</span>, <span class="st">"detail"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 16%">
+<col style="width: 69%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">check</th>
+<th style="text-align: left;">detail</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">condition</td>
+<td style="text-align: left;">Case issues</td>
+<td style="text-align: left;">Categories differing only by case: Control/control</td>
+</tr></tbody>
+</table>
 </div>
 </div>
 <p>The <code>check</code> column names the category of problem, and <code>detail</code> explains it in words. Below we describe each check and the function that implements it.</p>
@@ -749,7 +767,45 @@ Note
 <span>           <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source_file"</span>, <span class="st">"label"</span>, <span class="st">"check"</span>, <span class="st">"detail"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 20%">
+<col style="width: 62%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">source_file</th>
+<th style="text-align: left;">label</th>
+<th style="text-align: left;">check</th>
+<th style="text-align: left;">detail</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">messy.xlsx</td>
+<td style="text-align: left;">Data</td>
+<td style="text-align: left;">Colour coding</td>
+<td style="text-align: left;">1 cell use fill colour to encode information; colour is lost on CSV export.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">messy.xlsx</td>
+<td style="text-align: left;">Data</td>
+<td style="text-align: left;">Merged cells</td>
+<td style="text-align: left;">1 merged range (A7:B7) break the rectangular grid.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">messy.xlsx</td>
+<td style="text-align: left;">Data</td>
+<td style="text-align: left;">Empty or unnamed columns</td>
+<td style="text-align: left;">1 column is empty or have a blank header.</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <p>Only <code>messy.xlsx</code> is flagged; the clean workbook produces no rows. These findings carry <code>column = NA</code> in <code>$findings</code> (the issue is not about one column, it is about the sheet), and the sheet name is shown under <code>label</code> instead. They join the same “Issues Identified” report table as every other check, so a reviewer sees every problem with a file in one place rather than in a separate report.</p>
@@ -789,7 +845,26 @@ Note
 <span><span class="va">mo_pii</span><span class="op">$</span><span class="va">findings</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column"</span>, <span class="st">"check"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">check</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">email</td>
+<td style="text-align: left;">Personal info (values)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">email</td>
+<td style="text-align: left;">Personal info (column name)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">full_name</td>
+<td style="text-align: left;">Personal info (column name)</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section><section id="codebook-ground-truth" class="level2" data-number="24.11"><h2 data-number="24.11" class="anchored" data-anchor-id="codebook-ground-truth">
@@ -814,7 +889,30 @@ Note
 <span><span class="va">mo_demo</span><span class="op">$</span><span class="va">demographics</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">source_file</th>
+<th style="text-align: left;">column</th>
+<th style="text-align: left;">demographic</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">study.csv</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: left;">age</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">study.csv</td>
+<td style="text-align: left;">gender</td>
+<td style="text-align: left;">gender</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">study.csv</td>
+<td style="text-align: left;">ethnicity</td>
+<td style="text-align: left;">race</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <p>This is an <strong>inventory, not a problem flag</strong> — it helps a reviewer see at a glance whether the shared data documents its sample’s demographics (and, with the personal-information screen above, whether doing so raises disclosure concerns). The result is returned in <code>$demographics</code>.</p>
@@ -858,7 +956,41 @@ Note
 <span><span class="va">mo_car</span><span class="op">$</span><span class="va">careless</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 2%">
+<col style="width: 9%">
+<col style="width: 35%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">respondent</th>
+<th style="text-align: left;">source_file</th>
+<th style="text-align: right;">n_blocks_flagged</th>
+<th style="text-align: left;">scales</th>
+<th style="text-align: left;">reasons</th>
+<th style="text-align: right;">max_longstring</th>
+<th style="text-align: right;">irv</th>
+<th style="text-align: left;">short_scale_only</th>
+<th style="text-align: left;">threshold</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">61</td>
+<td style="text-align: left;">mood.csv</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">mood (1-5, 10 items)</td>
+<td style="text-align: left;">straightlining</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">same answer 10 times in a row, out of 10 items (flagged at 8)</td>
+</tr></tbody>
+</table>
 </div>
 </div>
 <p>The per-block findings are aggregated to <strong>one row per respondent</strong> by <code>.dv_careless_by_respondent()</code>, which records how many blocks flagged each person, on which scales, the worst longstring and most extreme IRV, and a <code>short_scale_only</code> flag — <code>TRUE</code> when <em>every</em> flag is short-scale straightlining (a run of identical answers on a scale of ≤7 items), which on a short unidirectional scale is often normal coherent answering rather than carelessness. These are <strong>prompts to inspect those rows</strong>, not automatic exclusions.</p>

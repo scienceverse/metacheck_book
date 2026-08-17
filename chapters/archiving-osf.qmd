@@ -20,6 +20,8 @@ knitr::opts_chunk$set(
 
 The Center for Open Science recently announced that the Open Science Framework will no longer host closed repositories. It will continue to host open repositories, but will not accept new files. This means researchers who used the Open Science Framework to store closed repositories will need to download them, and host their files elsewhere in the future. This chapter explains how to use Metacheck to download all your OSF data onto your own computer, and how to check what you have before deciding what to do with it.
 
+The easiest way to do this is the hosted Shiny app at [https://shiny.ieis.tue.nl/metacheck_osf/](https://shiny.ieis.tue.nl/metacheck_osf/), which needs no installation. The rest of this chapter explains how to do the same thing from R, which gives you more control over the download.
+
 Where those files should go next is a separate question, taken up in [Uploading Files to Zenodo](uploading-to-zenodo.qmd). You do not need that chapter if you only want a copy of your own repositories.
 
 ## Downloading all your private Repositories from the Open Science Framework
@@ -35,29 +37,10 @@ You need R (version 4.3.0 or newer) and, ideally, RStudio. You also need the
 metacheck package. The functions in this chapter are part of the development
 version, so install that rather than the stable release. The Setting up
 Metacheck chapter explains this in full; the short version is that the
-development version is published on the scienceverse R-universe as a separate
-package called `metacheck.dev`, built automatically from the `dev` branch. It is
-supplied as a pre-compiled binary on Windows and macOS, so you do not need any
-build tools:
-
-``` r
-install.packages("metacheck.dev",
-  repos = c("https://scienceverse.r-universe.dev", "https://cloud.r-project.org"))
-```
-
-Because R-universe renames the package, you load it as `metacheck.dev`:
-
-``` r
-library(metacheck.dev)
-```
-
-Install *either* the stable `metacheck` *or* the development `metacheck.dev`,
-and do not load both in the same session. Everything else in this chapter works
-the same way whichever of the two you have installed.
-
-Alternatively you can install from GitHub, which builds the package from source
-and therefore needs a compiler (Rtools on Windows, the Xcode command-line tools
-on macOS, the standard development tools on Linux):
+development version is not available as a pre-compiled binary from
+R-universe, so install it directly from GitHub, which builds the package from
+source and therefore needs a compiler (Rtools on Windows, the Xcode
+command-line tools on macOS, the standard development tools on Linux):
 
 ``` r
 install.packages("pak")
