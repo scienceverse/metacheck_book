@@ -1,442 +1,3751 @@
 ---
-title: "Function reference for new users"
-df-print: paged
-vignette: >
-  %\VignetteIndexEntry{Function reference for new users}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "Function reference"
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
-```
+This appendix lists every exported function in Metacheck, generated directly
+from the package's roxygen documentation (the same source `?function_name`
+reads from). It is grouped by task rather than alphabetically, so functions
+used together stay together. Unlike a hand-written summary, this page is
+regenerated from source and cannot drift out of sync with the installed
+package's actual exports.
 
-```{r}
-#| include: false
-library(metacheck)
-```
-
-This article lists the functions in Metacheck with a short, plain-language
-explanation of what each one does and a small example. It is meant for people
-who are starting to use the package and want a map of what is available.
-
-It is organised in two parts:
-
-1. **Public functions** — the functions you call directly, grouped by task.
-2. **Internal functions** — helpers used inside the package, listed for
-   completeness.
-
-Examples that work offline are run when this page is built, so their output is
-real. Examples that need the internet (looking up DOIs, downloading from
-repositories, querying an LLM) are shown but not run; they are marked with a
-comment.
-
-Two example data sets ship with the package and are used throughout:
-
-- `demopaper()` is a single small paper object, good for quick examples.
-- `psychsci` is a list of 250 open-access papers from *Psychological Science*.
-
-```{r}
-paper <- demopaper()
-```
-
-# Public functions
+As of this build, that is **232 functions** across **19 groups**.
 
 ## Getting a paper to work with
 
-Everything in Metacheck operates on a *paper object* (or a list of them). These
-functions create or load one.
+### `demopaper`
 
-**`demopaper()`** — returns a ready-made example paper, so you can try things
-without loading a file.
+*Get demo paper*
 
-```{r}
-paper <- demopaper()
-class(paper)
+```r
+demopaper()
 ```
 
-**`test_paper(text)`** — builds a minimal paper from a string of text. Handy for
-testing a check on a sentence you type yourself.
+**Returns:** paper object
 
-```{r}
-tp <- test_paper("There was an effect, t(28) = 2.40, p = .02, d = 0.45.")
-tp$text$text
+### `test_paper`
+
+*Test paper*
+
+```r
+test_paper(text = LETTERS, url = character(0))
 ```
 
-**`demofile(ext)`** — returns the path to a bundled example file of a given type
-(for trying the import functions).
+Create a paper object with the specified text (mainly for testing/demos).
 
-```{r}
-demofile("pdf")
+**Returns:** a paper object
+
+### `demofile`
+
+*Get a demo file*
+
+```r
+demofile(ext = c("json", "pdf", "docx", "doc", "xml", "qmd"))
 ```
 
-**`read(file_path)`** — reads a paper from a Metacheck JSON file (or a folder of
-them) into a paper object.
+Return the file path for various versions of the demo paper. Use `demopaper()` to directly read it as a paper object from the json file.
 
-```{r}
-#| eval: false
-paper <- read("mypaper.json")
+**Returns:** file path
+
+### `read`
+
+*Read in grobid XML or bibr JSON*
+
+```r
+read(file_path, include_images = FALSE, recursive = FALSE)
 ```
 
-**`paper(id, ...)`** — constructs a paper object from components directly.
-**`paperlist(...)`** — combines several papers into one list that the checks can
-loop over.
+**Returns:** a paper or paperlist
 
-```{r}
-pl <- paperlist(demopaper(), test_paper("t(10) = 2.0, d = 0.6."))
-length(pl)
+### `paper`
+
+*Create a paper object*
+
+```r
+paper(id = NULL, ...)
 ```
 
-**`paper_id(paper)`** — the paper's identifier.
-**`paper_table(paper, table)`** — pull one of the paper's component tables
-(e.g. `"info"`, `"author"`, `"bib"`).
-**`ref_table(paper)`** — the reference list as a tidy table.
+Create a new paper object or load a paper from PDF or XML
 
-```{r}
+**Returns:** An object with class scivrs_paper
+
+### `paperlist`
+
+*Create a paperlist object*
+
+```r
+paperlist(..., merge_duplicates = FALSE)
+```
+
+Create a new paperlist object from individual paper objects or lists of paper objects
+
+**Returns:** An object with class scivrs_paperlist
+
+### `paper_id`
+
+*Get Paper IDs*
+
+```r
 paper_id(paper)
+```
+
+**Returns:** a vector of paper_ids
+
+### `paper_table`
+
+*Paper tables*
+
+```r
+paper_table(paper, table, cols = NULL)
+```
+
+Return a table from a paper object or concatenate tables across a list of paper objects.
+
+**Returns:** a merged table
+
+### `ref_table`
+
+*Reference and DOI table*
+
+```r
 ref_table(paper)
 ```
 
-**`paper_validate(paper)`** — checks a paper object against the expected schema.
-**`paper_write(paper, file_name)`** — saves a paper object to a JSON file.
-**`fig_image_view(paper, figure_id)`** — displays a figure image from the paper.
+Return a table with fixed DOIs and reference text from a paper object or concatenate tables across a list of paper objects.
 
-```{r}
-#| eval: false
+**Returns:** a merged table
+
+### `paper_validate`
+
+*Validate a Paper Object*
+
+```r
 paper_validate(paper)
-paper_write(paper, "mypaper.json")
 ```
+
+Checks if a paper object conforms to the JSON schema.
+
+**Returns:** TRUE or error
+
+### `paper_write`
+
+*Write paper*
+
+```r
+paper_write(paper, file_name = NULL, save_path = ".")
+```
+
+Save a paper as a JSON file.
+
+**Returns:** the path to the JSON file
+
+### `fig_image_view`
+
+*View a figure image*
+
+```r
+fig_image_view(paper, figure_id = 1)
+```
+
+**Returns:** plots the figure
+
+## Managing collections of papers
+
+### `papers_load`
+
+*Load a paper corpus*
+
+```r
+papers_load(
+name,
+repo = "scienceverse/papers",
+cache = FALSE,
+overwrite = FALSE
+)
+```
+
+Downloads a paper corpus RDS file from the scienceverse/papers GitHub
+repository and loads it into R as a paperlist object. By default the file
+is downloaded to a temporary location and discarded after loading, which
+is the right choice for one-off use. Set `cache = TRUE` to save it
+permanently in the user data directory instead, so subsequent calls reuse
+the cached copy rather than re-downloading. Use `papers_remove()` to
+delete a cached corpus.
+
+**Returns:** a paperlist object
+
+### `papers_available`
+
+*List available paper corpora*
+
+```r
+papers_available(repo = "scienceverse/papers")
+```
+
+Queries the GitHub Releases API for the scienceverse/papers repository and
+returns a table of available paper corpora that can be loaded with
+`papers_load()`.
+
+**Returns:** a data frame with columns `name`, `tag`, `size_mb`, and `cached`
+
+### `papers_metadata`
+
+*Get a paper corpus's Dublin Core metadata*
+
+```r
+papers_metadata(name, repo = "scienceverse/papers")
+```
+
+Fetches and parses `metadata.json` for a corpus from the scienceverse/papers
+GitHub repository. This file documents provenance that is not stored in the
+corpus `.rds` itself: how the corpus was built, what years/license it
+covers, and so on. See each corpus's `README.md` on the
+[papers repository](https://github.com/scienceverse/papers) for a fuller
+narrative description, including known gaps and data-quality caveats.
+
+**Returns:** a named list of the corpus's Dublin Core metadata fields (colons
+in the original `dc:field` names are replaced with underscores, e.g.
+`dc:title` becomes `dc_title`)
+
+### `papers_remove`
+
+*Remove a cached paper corpus*
+
+```r
+papers_remove(name)
+```
+
+Deletes the locally cached RDS file for a corpus to free disk space.
+
+**Returns:** `TRUE` invisibly if deleted, `FALSE` if not cached
 
 ## Importing papers from PDFs and XML
 
-These convert source documents (usually a PDF) into the Metacheck JSON format.
-Most need an external service (a GROBID server or the bibr backend), so they are
-shown but not run here.
+### `convert`
 
-**`convert(file_path, save_path)`** — the main entry point: convert a document to
-Metacheck JSON, picking a method automatically.
-**`convert_grobid(...)`** / **`convert_bibr(...)`** — convert using a specific
-backend.
-**`grobid_to_bibr(xml_path)`** — turn GROBID TEI XML into the bibr structure.
-**`format_bib_authors(authors)`** — format an author list for a bibliography.
+*Convert documents*
 
-```{r}
-#| eval: false
-# needs a running GROBID server or the bibr backend
-paper <- convert("mypaper.pdf", save_path = "out/")
+```r
+convert(
+file_path,
+save_path = ".",
+method = c("auto", "bibr", "grobid", "xml"),
+crossref_lookup = FALSE,
+keep_xml = TRUE,
+...
+)
 ```
 
-## Searching the text
+Uses grobid or bibr to convert a file to paper format.
 
-**`search_text(paper, pattern)`** (also available as **`text_search()`** — they
-are the same function) — find text matching a regular expression.
+**Returns:** the path to the JSON file
 
-```{r}
-search_text(paper, "significant") |> head(3)
+### `convert_grobid`
+
+*Convert a PDF to Grobid XML*
+
+```r
+convert_grobid(
+file_path,
+save_path = ".",
+api_url = "https://grobid.hti.ieis.tue.nl",
+start_page = -1,
+end_page = -1,
+consolidate_citations = 0,
+consolidate_header = 0,
+consolidate_funders = 0
+)
 ```
 
-Use `return = "match"` to get just the matched pieces, `fixed = TRUE` to match
-literally, and `exclude = TRUE` to get the rows that *don't* match.
+This function uses a GDPR-compliant public grobid server maintained by Eindhoven Technical University. You can set up your own local grobid server following instructions from <https://grobid.readthedocs.io/> and set the argument `api_url` to its path (probably <http://localhost:8070>). See <https://github.com/grobidOrg/grobid#demo> for other publicly available servers (we cannot guarantee their privay).
 
-```{r}
-search_text(paper, "significant", return = "match")
-search_text(paper, "p = 0.005", fixed = TRUE)
-nrow(search_text(paper, "significant", exclude = TRUE))
+**Returns:** XML object
+
+### `convert_bibr`
+
+*Convert documents using bibr*
+
+```r
+convert_bibr(
+file_path,
+save_path = ".",
+backend = c("auto", "scivrs", "selfhosted"),
+api_key = NULL,
+api_url = NULL,
+include_figures = FALSE,
+start_page = 1,
+end_page = Inf,
+poll_interval = 2,
+timeout = 600
+)
 ```
 
-**`expand_text(results, paper, expand_to)`** (also **`text_expand()`**) — add a
-column with surrounding context (e.g. the whole sentence or paragraph) to a
-search/extraction result.
+Converts document files (PDF, DOC, DOCX) to structured JSON using the bibr
+extraction service. Supports two backends: the Scienceverse platform
+(`"scivrs"`) which uses a job queue with load balancing, and a
+self-hosted bibr instance (`"selfhosted"`) for direct API access.
 
-```{r}
-pv <- extract_p_values(paper)
-expand_text(pv, paper, expand_to = "sentence")$expanded[1]
+**Returns:** Path(s) to the saved JSON file(s)
+
+### `grobid_to_bibr`
+
+*Convert Grobid TEI XML file to bibr format*
+
+```r
+grobid_to_bibr(xml_path, save_path = ".", crossref_lookup = FALSE)
 ```
 
-## Extracting statistics and links
+**Returns:** a paper object
 
-**`extract_eq(paper)`** — list every "name `<comparator>` value" equation in the
-text (test statistics, means, effect sizes, …). This is the canonical place to
-get statistics; checks should read from here rather than re-scanning the text.
+### `format_bib_authors`
 
-```{r}
-extract_eq(paper) |> head()
+*Format Bib Authors*
+
+```r
+format_bib_authors(authors)
 ```
 
-**`extract_p_values(paper)`** — the p-values, with comparator and numeric value.
+Formats a structured author list (data frame with given/family columns)
+as a display string.
 
-```{r}
-extract_p_values(paper)[, c("text", "p_comp", "p_value")]
+**Returns:** a character string (or vector) of formatted author names
+
+## Searching and extracting from the text
+
+### `search_text`
+
+*Search text*
+
+```r
+text_search(
+paper,
+pattern = ".*",
+return = c("sentence", "paragraph", "section", "header", "match", "paper_id"),
+ignore.case = TRUE,
+fixed = FALSE,
+perl = FALSE,
+exclude = FALSE,
+search_header = FALSE,
+include_refs = FALSE
+)
+
+search_text(
+paper,
+pattern = ".*",
+return = c("sentence", "paragraph", "section", "header", "match", "paper_id"),
+ignore.case = TRUE,
+fixed = FALSE,
+perl = FALSE,
+exclude = FALSE,
+search_header = FALSE,
+include_refs = FALSE
+)
 ```
 
-**`extract_urls(paper)`** — text rows containing a URL or DOI.
+Search the text of a paper or list of paper objects. Also works on the table results of a `text_search()` call.
 
-```{r}
-extract_urls(paper)[, c("text_id", "text")] |> head(3)
+**Returns:** a data frame of matches
+
+### `text_search`
+
+*Search text*
+
+```r
+text_search(
+paper,
+pattern = ".*",
+return = c("sentence", "paragraph", "section", "header", "match", "paper_id"),
+ignore.case = TRUE,
+fixed = FALSE,
+perl = FALSE,
+exclude = FALSE,
+search_header = FALSE,
+include_refs = FALSE
+)
+
+search_text(
+paper,
+pattern = ".*",
+return = c("sentence", "paragraph", "section", "header", "match", "paper_id"),
+ignore.case = TRUE,
+fixed = FALSE,
+perl = FALSE,
+exclude = FALSE,
+search_header = FALSE,
+include_refs = FALSE
+)
 ```
 
-**`stats(text)`** — run statcheck-style consistency checks on reported
-statistics.
-**`json_expand(table, col)`** — expand a column of JSON strings into columns.
+Search the text of a paper or list of paper objects. Also works on the table results of a `text_search()` call.
 
-```{r}
-#| eval: false
-stats(paper)
+**Returns:** a data frame of matches
+
+### `expand_text`
+
+*Expand text*
+
+```r
+text_expand(
+results_table,
+paper,
+expand_to = c("sentence", "paragraph", "div", "section"),
+plus = 0,
+minus = 0
+)
+
+expand_text(
+results_table,
+paper,
+expand_to = c("sentence", "paragraph", "div", "section"),
+plus = 0,
+minus = 0
+)
 ```
+
+If you have a table resulting from `text_search()` or a module return object, you can expand the text column to the full sentence, paragraph, or section. You can also set `plus` and `minus` to append and prepend sentences to the result (only when `expand_to` is "sentence").
+
+**Returns:** a results table with the expanded text
+
+### `text_expand`
+
+*Expand text*
+
+```r
+text_expand(
+results_table,
+paper,
+expand_to = c("sentence", "paragraph", "div", "section"),
+plus = 0,
+minus = 0
+)
+
+expand_text(
+results_table,
+paper,
+expand_to = c("sentence", "paragraph", "div", "section"),
+plus = 0,
+minus = 0
+)
+```
+
+If you have a table resulting from `text_search()` or a module return object, you can expand the text column to the full sentence, paragraph, or section. You can also set `plus` and `minus` to append and prepend sentences to the result (only when `expand_to` is "sentence").
+
+**Returns:** a results table with the expanded text
+
+### `text_peek`
+
+*Peek at the first lines of a text file*
+
+```r
+text_peek(path, n = 20L)
+```
+
+Reads the first `n` lines of a file as text, tolerating the encodings research
+data actually ships in: a UTF-8/UTF-16 BOM, UTF-16 (E-Prime exports), and
+Latin-1 bytes that would otherwise make `readLines()` output error in later
+string operations. Intended for cheap format sniffing — deciding *what* a file
+is before committing to a reader — not for reading data.
+
+**Returns:** a character vector of at most `n` lines (UTF-8), or `character(0)`.
+
+### `extract_eq`
+
+*Extract Equations*
+
+```r
+extract_eq(paper)
+```
+
+List all equations in the text, returning the matched text (e.g., 't(28) = 2.4', 'p = 0.04') and document location in a table. This is the canonical extractor for reported statistics and effect sizes; modules that need statistics should read from this table rather than re-scanning the text.
+
+**Returns:** a data frame with one row per equation and the columns `lhs` (the statistic name, e.g. "t", "F", "p"), `df` (parenthetical degrees of freedom such as "(28)" or "(2, 57)", otherwise NA), `comp` (the comparator, e.g. "="), `rhs` (the reported value as text), `grp_id` (groups equations in the same sentence), `text_id`, and `paper_id`.
+
+### `extract_p_values`
+
+*Extract P-Values*
+
+```r
+extract_p_values(paper)
+```
+
+List all p-values in the text, returning the matched text (e.g., 'p = 0.04') and document location in a table.
+
+**Returns:** a table
+
+### `extract_urls`
+
+*Extract URLs*
+
+```r
+extract_urls(paper)
+```
+
+Get a table of URLs from a paper or paperlist. Matches urls that start with http or doi:
+
+**Returns:** a table
+
+### `extract_tests`
+
+*Extract the statistical tests a paper reports*
+
+```r
+extract_tests(paper)
+```
+
+Builds the paper-side counterpart to the analysis output that
+`reproducibility_check` extracts: one row per reported TEST, with its
+components kept together and the sentence it was reported in retained, so a
+matched result can be traced back to the claim it supports.
+
+**Returns:** a data.frame, one row per reported test, with `paper_id`,
+`test_no` (sequential within the paper), `text_id`, `paragraph_id`,
+`section_id`, `sentence` (the reporting sentence), `anchor` (the test
+statistic the report is built around, e.g. `"t"`), `n_components`,
+`components` (a list-column of `name`/`comp`/`value`/`df`), and `reported`
+(the test rendered back as text, e.g. `"t(23) = 3.77, p = .001, d = 0.77"`).
+
+### `stats`
+
+*Check Stats*
+
+```r
+stats(text, ...)
+```
+
+**Returns:** a table of statistics
+
+### `json_expand`
+
+*Expand a JSON column*
+
+```r
+json_expand(table, col = "answer", suffix = c("", ".json"))
+```
+
+It is useful to ask an LLM to return data in JSON structured format, but can be frustrating to extract the data, especially where the LLM makes syntax mistakes. This function tries to expand a column with a JSON-formatted response into columns and deals with it gracefully (sets an 'error' column to "parsing error") if there are errors. It also fixes column data types, if possible.
+
+**Returns:** the table plus the expanded columns
+
+### `causal_relations`
+
+*Extract causal relations from sentence(s) via a Hugging Face Space*
+
+```r
+causal_relations(
+sentence,
+rel_mode = "auto",
+rel_threshold = 0.5,
+cause_decision = "cls+span",
+timeout = 10,
+verbose = FALSE
+)
+```
+
+Sends one or more input sentences to a public Gradio app hosted on Hugging Face
+(the *lakens-causal-sentences* Space), created based on code by Rasoul Norouzi, retrieves the result via Server-Sent Events (SSE),
+and returns a tidy data frame with one row per detected cause–effect relation.
+
+**Returns:** A base `data.frame` with columns:
+
+- `sentence` (character): the original input sentence,
+
+- `causal` (logical): whether the sentence is causal per the model,
+
+- `cause` (character): extracted cause span (or `NA`),
+
+- `effect` (character): extracted effect span (or `NA`).
 
 ## Running checks (modules)
 
-Checks in Metacheck are *modules*. These functions list, describe, and run them.
+### `module_list`
 
-**`module_list()`** — the available modules.
+*List modules*
 
-```{r}
-module_list()[, c("name", "title", "section")] |> head()
+```r
+module_list(module_dir = system.file("modules", package = "metacheck"))
 ```
 
-**`module_run(paper, module)`** — run a module; returns a list with `table`,
-`summary_table`, `traffic_light`, `summary_text`, and `report`.
+**Returns:** a data frame of modules
 
-```{r}
-out <- module_run(paper, "all_urls")
-out$traffic_light
+### `module_run`
+
+*Run a module*
+
+```r
+module_run(paper, module, ...)
 ```
 
-**`module_help(module)`** / **`module_info(module)`** — documentation and
-metadata for a module.
-**`module_template(module_name)`** — scaffold a new module file.
-**`get_prev_outputs(module, item)`** — inside a module, read the output of a
-module that ran earlier.
+**Returns:** a list of the returned table and report text
 
-```{r}
-module_info("all_urls")$title
+### `module_help`
+
+*Get Module Help*
+
+```r
+module_help(module = NULL)
 ```
+
+See the help files for a module by name (get a list of names from `module_list()`)
+
+**Returns:** the help text
+
+### `module_info`
+
+*Get module information*
+
+```r
+module_info(module)
+```
+
+**Returns:** a list of module info
+
+### `module_template`
+
+*Create a Module from a Template*
+
+```r
+module_template(module_name, path = "./modules")
+```
+
+**Returns:** the file path (invisibly)
+
+### `get_prev_outputs`
+
+*Get Previous Outputs*
+
+```r
+get_prev_outputs(module, item, parent_n = 2)
+```
+
+A helper for creating modules. Checks for previous module outputs in a chain and returns the named list item if it exists in any parent environment.
+
+**Returns:** the extracted list item, or NULL if not found
 
 ## Building a report
 
-**`report(paper, modules)`** — run a set of modules and render a full report
-document.
-**`report_module_run(...)`** — run the modules that make up a report.
-**`module_report(module_output)`** — turn one module's output into its report
-section.
-**`report_qmd(...)`** — produce the Quarto source for a module's section.
+### `report`
 
-```{r}
-report_txt <- module_report(out)
-class(report_txt)
+*Create a Report*
+
+```r
+report(
+paper,
+modules = c("prereg_check", "funding_check", "coi_check", "power", "repo_check",
+"code_check", "stat_check", "stat_p_exact", "stat_p_nonsig", "stat_effect_size",
+"marginal", "ref_accuracy", "ref_replication", "ref_retraction", "ref_pubpeer",
+"ref_summary"),
+output_file = paste0(paper$paper_id, "_report.", output_format),
+output_format = c("html", "qmd"),
+args = list()
+)
 ```
 
-```{r}
-#| eval: false
-report(paper, modules = c("all_urls", "stat_effect_size"),
-       output_file = "report.html")
+Run specified modules on a paper and generate a report in quarto (qmd), html, or pdf format.
+
+**Returns:** the file path the report is saved to
+
+### `report_module_run`
+
+*Run modules for a report*
+
+```r
+report_module_run(paper, modules, args = list())
 ```
+
+Runs modules in order on the paper and orders by section and traffic light.
+
+**Returns:** a list of module outputs
+
+### `module_report`
+
+*Report from module output*
+
+```r
+module_report(module_output, header = 3)
+```
+
+**Returns:** text
+
+### `report_qmd`
+
+*Create Report from Module Output*
+
+```r
+report_qmd(module_output, paper = list())
+```
+
+**Returns:** report text
+
+### `report_app`
+
+*Launch Report App*
+
+```r
+report_app(quiet = FALSE, ...)
+```
+
+Launch the Report app: upload a PDF and generate a report with one
+click, with privacy options for what is sent to external servers.
+
+**Returns:** NULL (invisibly)
+
+### `report_repository`
+
+*Create a Report for a Local Repository*
+
+```r
+report_repository(
+path,
+output_file = NULL,
+output_format = c("html", "qmd"),
+modules = c("repo_check", "code_check", "data_check", "codebook_check"),
+args = list()
+)
+```
+
+Runs the repository modules on a folder of files on your own computer and
+writes a single report. Use it on a repository you have downloaded (for
+example with `osf_file_download()`) to see what was shared and what could be
+improved, before archiving the files somewhere permanent.
+
+**Returns:** the module output, invisibly, with the report's file path in its
+`save_path` attribute
 
 ## Report-building helpers
 
-Small helpers modules use to format their report sections.
+### `scroll_table`
 
-**`scroll_table(table)`** / **`report_table(table)`** — render a data frame as an
-HTML table.
-**`collapse_section(text, title)`** — wrap text in a collapsible block.
-**`link(url, text)`** — make an HTML link.
-**`plural(n)`** — `"s"` when `n != 1`, else `""` (for grammatical messages).
-**`format_ref(bib)`** — format a citation from a bibentry.
+*Make Scroll Table*
 
-```{r}
-plural(1)
-plural(2)
-link("https://example.org", "example")
-format_ref(citation("metacheck"))
+```r
+scroll_table(
+table,
+colwidths = "auto",
+maxrows = 2,
+escape = FALSE,
+column = "body"
+)
 ```
 
-## Looking up DOIs and metadata
+A helper function for making module reports.
 
-**`doi_clean(doi)`** — normalise a DOI string.
-**`doi_valid_format(doi)`** — does it look like a DOI?
-**`doi_resolves(doi)`** / **`doi_lookup(doi)`** — check/look up a DOI online.
+**Returns:** the markdown R chunk to create this table
 
-```{r}
-doi_clean("https://doi.org/10.1234/ABC")
-doi_valid_format("10.1234/abc")
+### `report_table`
+
+*Display a Table in a Report*
+
+```r
+report_table(table, colwidths = "auto", maxrows = 2, escape = FALSE)
 ```
 
-```{r}
-#| eval: false
-doi_lookup("10.1234/abc")   # needs internet
+A function to display tables in reports.
+
+**Returns:** the datatable
+
+### `collapse_section`
+
+*Make Collapsible Section*
+
+```r
+collapse_section(
+text,
+title = "Learn More",
+callout = c("tip", "note", "warning", "important", "caution"),
+collapse = TRUE
+)
 ```
 
-**`crossref_doi(doi)`** / **`crossref_query(ref)`** — Crossref metadata lookup.
-**`openalex_doi(doi)`** / **`openalex_query(title)`** — OpenAlex lookup.
-**`datacite_doi(doi)`** — DataCite lookup.
-**`add_bib_match(paper)`** — match a paper's references to online records.
+A helper function for making module reports.
 
-```{r}
-#| eval: false
-crossref_doi("10.1177/0956797614520714")  # needs internet
+**Returns:** text
+
+### `link`
+
+*Make an html link*
+
+```r
+link(url, text = url, new_window = TRUE, type = "")
 ```
+
+**Returns:** string
+
+### `plural`
+
+*Pluralise*
+
+```r
+plural(n, singular = "", plural = "s")
+```
+
+Helper function for conditional plurals. For example, if you want to return "1 error" or "2 errors", you can use this in a sprintf().
+
+**Returns:** a string
+
+### `format_ref`
+
+*Format Reference*
+
+```r
+format_ref(bib)
+```
+
+Format a reference for display in a report.
+
+**Returns:** formatted text
+
+## Looking up DOIs and bibliographic metadata
+
+### `doi_clean`
+
+*Clean DOIs*
+
+```r
+doi_clean(doi)
+```
+
+**Returns:** a character vector of cleaned DOIs (no https://doi.org or DOI:)
+
+### `doi_valid_format`
+
+*Validate DOI format*
+
+```r
+doi_valid_format(doi)
+```
+
+**Returns:** a logical vector
+
+### `doi_resolves`
+
+*Check whether a DOI resolves*
+
+```r
+doi_resolves(doi, timeout = 10)
+```
+
+Checks the doi.org API to see if a DOI is registered and has an associated URL
+(using `https://doi.org/api/handles`). Returns TRUE if it does, FALSE if the DOI
+does not exist or does not have an associated URL, and NA if the test failed.
+Clearly invalid DOIs (i.e. not starting with "10.") will return FALSE without
+server requests.
+
+**Returns:** Logical vector. For each input DOI, returns TRUE if the DOI resolves,
+FALSE if it does not resolve (or does not start with 10.), and NA if the check failed.
+
+### `doi_lookup`
+
+*Doi.org Info from DOI*
+
+```r
+doi_lookup(doi)
+```
+
+**Returns:** data frame with DOIs and info
+
+### `crossref_doi`
+
+*CrossRef Info from DOI*
+
+```r
+crossref_doi(
+doi,
+select = c("DOI", "type", "title", "author", "container-title", "volume", "issue",
+"page", "URL", "abstract", "year", "error")
+)
+```
+
+Valid selects for crossref API are:
+
+**Returns:** data frame with DOIs and info
+
+### `crossref_query`
+
+*Look up Reference in CrossRef*
+
+```r
+crossref_query(
+ref,
+min_score = 50,
+rows = 1,
+select = c("DOI", "score", "type", "title", "author", "editor", "publisher",
+"container-title", "year", "volume", "issue", "page", "URL")
+)
+```
+
+**Returns:** doi
+
+### `openalex_doi`
+
+*OpenAlex info from DOI*
+
+```r
+openalex_doi(doi, select = NULL)
+```
+
+See details for a list of root-level fields that can be selected.
+
+**Returns:** list with DOIs and info
+
+### `openalex_query`
+
+*Look up a reference in OpenAlex*
+
+```r
+openalex_query(title, source = NA, authors = NA, strict = TRUE)
+```
+
+**Returns:** A data frame with citation info
+
+### `datacite_doi`
+
+*Doi.org Info from DataCite*
+
+```r
+datacite_doi(doi)
+```
+
+**Returns:** bib_match data frame
+
+### `add_bib_match`
+
+*Match table from bib table*
+
+```r
+add_bib_match(paper, min_score = 50)
+```
+
+**Returns:** the paper or paperlist with bib_match table added
 
 ## Databases of comments, replications, retractions
 
-**`pubpeer_comments(doi)`** — PubPeer comments for a DOI.
-**`FLoRA()`** / **`FLoRA_update()`** / **`FLoRA_date()`** — the FLoRA replication
-database (loaded, refreshed, and dated).
-**`retractionwatch()`** (alias **`rw()`**) / **`rw_update()`** / **`rw_date()`** —
-the Retraction Watch database.
+### `pubpeer_comments`
 
-```{r}
-#| eval: false
-pubpeer_comments("10.1177/0956797614520714")  # needs internet
-rw()                                            # downloads the database
+*Get Pubpeer Comments*
+
+```r
+pubpeer_comments(doi)
 ```
 
-## Finding and downloading shared files
+Takes a DOI, and retrieves information from pubpeer related to post-publication peer review comments.
 
-Each repository has a `*_links()` function that finds links in a paper, an
-`*_info()` function that fetches metadata, and (where supported) a
-`*_file_download()` function.
+**Returns:** a dataframe with information from pubpeer
 
-**OSF:** `osf_links()`, `osf_info()`, `osf_file_download()`, `osf_type()`,
-`osf_check_id()`, `osf_api_check()`, `osf_delay()`, `osf_get_all_pages()`,
-`osf_preprint_list()`.
+### `FLoRA`
 
-**GitHub:** `github_links()`, `github_info()`, `github_repo()`,
-`github_files()`, `github_languages()`, `github_readme()`.
+*FORRT Replication Database (FLoRA)*
 
-**Zenodo:** `zenodo_links()`, `zenodo_info()`, `zenodo_file_download()`.
-
-**ResearchBox:** `rbox_links()`, `rbox_info()`, `rbox_file_download()`.
-
-**AsPredicted:** `aspredicted_links()`, `aspredicted_info()`.
-
-**Local files:** `local_files(path)` — list files in a local folder.
-
-The `*_links()` functions work offline on an already-loaded paper:
-
-```{r}
-osf_links(paper)[, c("href", "text_id")]
+```r
+FLoRA()
 ```
 
-The `*_info()` and download functions need the internet:
+FLoRA database containing DOIs of original studies and replications. Use `FLoRA_date()` to find the date it was downloaded, and `FLoRA_update()` to update it.
 
-```{r}
-#| eval: false
-osf_info("https://osf.io/5tbm9")          # fetch metadata
-osf_file_download("5tbm9", "downloads/")  # download files
-github_readme("scienceverse/metacheck")
+**Returns:** a data frame
+
+### `FLoRA_update`
+
+*Update FLoRA*
+
+```r
+FLoRA_update()
 ```
+
+metacheck comes with a built-in data frame called `FLoRA`. We update it regularly, but you can use this function to download the newest version. The download is >5MB, but this function will summarise the information into a smaller version and delete the original file.
+
+**Returns:** the path to the data frame (invisibly)
+
+### `FLoRA_date`
+
+*Get date FLoRA was updated*
+
+```r
+FLoRA_date()
+```
+
+**Returns:** the date
+
+### `retractionwatch`
+
+*RetractionWatch data*
+
+```r
+retractionwatch()
+
+rw()
+```
+
+DOIs and nature of statements from the RetractionWatch database. Use `rw_date()` to find the date it was downloaded, and `rw_update()` to update it.
+
+**Returns:** a data frame
+
+### `rw`
+
+*RetractionWatch data*
+
+```r
+retractionwatch()
+
+rw()
+```
+
+DOIs and nature of statements from the RetractionWatch database. Use `rw_date()` to find the date it was downloaded, and `rw_update()` to update it.
+
+**Returns:** a data frame
+
+### `rw_update`
+
+*Update retractionwatch*
+
+```r
+rw_update()
+```
+
+metacheck comes with a built-in data frame called `retractionwatch`. We update it regularly, but you can use this function to download the newest version. The download is >50MB, but this function will summarise the information into a smaller version (~0.5 MB) and delete the original file.
+
+**Returns:** the path to the data frame (invisibly)
+
+### `rw_date`
+
+*Get date retractionwatch was updated*
+
+```r
+rw_date()
+```
+
+**Returns:** the date
+
+## Preregistration comparison (regcheck)
+
+### `regcheck_compare`
+
+*Compare a Preregistration with a Paper via RegCheck*
+
+```r
+regcheck_compare(
+paper_text,
+prereg_text = NULL,
+registration_id = NULL,
+client = c("ollama", "groq", "openai", "deepseek"),
+base_url = NULL,
+api_token = NULL,
+dimensions = NULL,
+reasoning_effort = "medium",
+poll_interval = 5,
+timeout = 3600
+)
+```
+
+Sends the full text of a paper and the text of its (pre)registration to a
+[RegCheck](https://github.com/JamieCummins/regcheck) server, which uses an
+LLM to compare them dimension by dimension (e.g., sample size, hypotheses,
+exclusion criteria) and judge for each dimension whether the paper deviates
+from the registration.
+
+**Returns:** a data frame with one row per compared dimension, with columns
+`dimension`, `deviation_judgement` ("yes", "no", or "missing"),
+`paper_summary`, `prereg_summary`, `deviation_information`,
+`paper_quotes`, and `prereg_quotes`. The raw server result is attached
+as the "regcheck_result" attribute.
+
+### `regcheck_tidy`
+
+*Tidy a RegCheck result*
+
+```r
+regcheck_tidy(result)
+```
+
+Converts the raw result of a RegCheck comparison (a list with an `items`
+element, one item per compared dimension) into a data frame.
+
+**Returns:** a data frame with one row per dimension and columns `dimension`,
+`deviation_judgement`, `paper_summary`, `prereg_summary`,
+`deviation_information`, `paper_quotes`, and `prereg_quotes`
+
+### `regcheck_base_url`
+
+*RegCheck server URL for a client*
+
+```r
+regcheck_base_url(client = "ollama", base_url = NULL)
+```
+
+Returns the base URL to use for a given RegCheck client. An explicit
+`base_url` always wins, then the `REGCHECK_BASE_URL` environment variable,
+then a client-specific default: the bundled local RegCheck server
+(`http://localhost:8000`) for `"ollama"`, and the hosted RegCheck app for
+the API-based clients (`"groq"`, `"openai"`, `"deepseek"`).
+
+**Returns:** the base URL with any trailing slash removed
+
+### `regcheck_setup_local`
+
+*Set up the local RegCheck server (manual Python path)*
+
+```r
+regcheck_setup_local(python = NULL)
+```
+
+Creates a Python virtual environment inside the bundled RegCheck app
+directory, installs all dependencies, and downloads the NLTK data. Only
+needed if you are using the manual Python path — if you have Docker,
+use `regcheck_start_local()` directly with `method = "docker"`.
+
+**Returns:** invisibly, the path to the virtual environment
+
+### `regcheck_start_local`
+
+*Start the local RegCheck server*
+
+```r
+regcheck_start_local(method = c("docker", "python"), model = NULL, port = 8000)
+```
+
+Starts the bundled RegCheck server as a background process, either via
+Docker (recommended) or a manual Python virtual environment. The server
+runs at `http://localhost:8000` and is used automatically by
+`module_run(paper, "reg_check")` (the default `client = "ollama"`).
+
+**Returns:** invisibly, the process object
+
+### `regcheck_stop_local`
+
+*Stop the local RegCheck server*
+
+```r
+regcheck_stop_local()
+```
+
+Kills the background process started by `regcheck_start_local()`.
+
+**Returns:** invisibly NULL
+
+## Finding and downloading files from repository archives
+
+### `osf_links`
+
+*Find OSF Links in Papers*
+
+```r
+osf_links(paper)
+```
+
+Get all OSF links: real hyperlinks from the paper's own `url` table, plus a
+body-text fallback for a BARE mention like "osf.io/gms8z/" that the source
+PDF/HTML never encoded as an actual hyperlink (common in PDF-converted
+papers, where a plain-text URL mention loses its link formatting) — the
+`url` table only ever contains links the source document itself made
+clickable, so a repository this important cannot rely on that alone. Same
+two-tier approach `github_links()` already uses for GitHub.
+
+**Returns:** a table with the OSF url in the first (href) column
+
+### `osf_info`
+
+*Retrieve info from the OSF by ID*
+
+```r
+osf_info(osf_url, id_col = 1, recursive = FALSE, pb = NULL)
+```
+
+Repository listings are cached for the session (keyed by URL and
+`recursive`), so repeated calls do not re-query the OSF API; clear the cache
+with `osf_cache_clear()` or disable it with
+`options(metacheck.osf.cache = FALSE)`.
+
+**Returns:** a data frame of information
+
+### `osf_file_download`
+
+*Download all OSF Project Files*
+
+```r
+osf_file_download(
+osf_id,
+download_to = ".",
+max_file_size = NULL,
+max_download_size = NULL,
+max_folder_length = Inf,
+ignore_folder_structure = FALSE,
+mode = c("all", "select", "files", "zip"),
+unzip = TRUE,
+metadata = TRUE,
+osf_pat = NULL,
+pb = NULL
+)
+```
+
+Creates a directory for the OSF ID and downloads all of the files using a folder structure from the OSF project nodes and file storage structure. Returns (invisibly) a data frame with file info.
+
+**Returns:** data frame of file info, one row per file (`osf_id` is each file's
+own ID). It carries `download_path`, the absolute folder the project was
+saved in, plus `osf_project` and `osf_url` identifying the project, so the
+result can be passed straight to `zenodo_upload()`. `downloaded`,
+`size_on_disk`, and `attempted` report the verification described above.
+
+In `mode = "all"` there is no file listing, so the table has one row per
+**node** instead: `folder`, `osf_project`, `osf_url`, `title`, `files`
+(how many arrived), `bytes`, `download_path`, and `downloaded`. It can
+still be passed to `zenodo_upload()`, which uses `download_path`.
+
+### `osf_type`
+
+*Get OSF GUID Type*
+
+```r
+osf_type(guid)
+```
+
+**Returns:** the type, or `"inaccessible"` when the GUID is a validly-formed
+OSF ID but the resource itself could not be reached (private, embargoed,
+withdrawn, or deleted) -- distinct from `NA`, which means the input was
+not a valid OSF ID at all
+
+### `osf_check_id`
+
+*Check OSF IDs*
+
+```r
+osf_check_id(osf_id)
+```
+
+Check if strings are valid OSF IDs, URLs, or waterbutler IDs. Basically an improved wrapper for `osfr::as_id()` that returns NA for invalid IDs in a vector.
+
+**Returns:** a vector of valid IDs, with NA in place of invalid IDs
+
+### `osf_api_check`
+
+*Check OSF API Server Status*
+
+```r
+osf_api_check(
+osf_api = getOption("metacheck.osf.api"),
+on_error = c("stop", "warn", "ignore")
+)
+```
+
+Check the status of the OSF API server.
+
+**Returns:** the OSF status
+
+### `osf_delay`
+
+*Set the OSF delay*
+
+```r
+osf_delay(delay = NULL)
+```
+
+Sometimes the OSF gets fussy if you make too many calls, so you can set a delay of a few seconds before each call. Use `osf_delay()` to get or set the OSF delay.
+
+### `osf_get_all_pages`
+
+*Get All OSF API Query Pages*
+
+```r
+osf_get_all_pages(url, page_end = Inf)
+```
+
+OSF API queries only return up to 10 items per page, so this helper functions checks for extra pages and returns all of them
+
+**Returns:** a table of the returned data. When the request could not be
+completed (e.g. a private, embargoed, withdrawn, or deleted resource, or
+a network failure), this is an empty `list()` with an `osf_error`
+attribute set to `"forbidden"`, `"not_found"`, `"gone"`, or
+`"request_failed"` (a bare `NULL` cannot carry attributes in R, so it
+would silently discard this) -- callers that only check
+`length(result) == 0` keep working unchanged, and callers that need to
+tell "inaccessible" apart from "genuinely empty" can check
+`attr(result, "osf_error")`.
+
+### `osf_preprint_list`
+
+*Get A list of preprints from the OSF*
+
+```r
+osf_preprint_list(
+provider = NULL,
+date_created = NULL,
+date_modified = NULL,
+page_start = 1,
+page_end = page_start
+)
+```
+
+**Returns:** a table of preprint info
+
+### `osf_pat`
+
+*Set or get the OSF personal access token*
+
+```r
+osf_pat(pat = NULL)
+```
+
+Use `osf_pat()` to get the token used to authorise OSF API requests, or
+`osf_pat("your-token")` to set it for the rest of the session.
+
+**Returns:** the current token (character; `""` when none is set)
+
+### `osf_app`
+
+*Launch OSF Download App*
+
+```r
+osf_app(quiet = FALSE, ...)
+```
+
+Launch the OSF app: enter an OSF user or project ID, search and tick the
+projects you want, then download them with `osf_file_download()`.
+
+**Returns:** NULL (invisibly)
+
+### `osf_cache_clear`
+
+*Clear the session cache of OSF listings*
+
+```r
+osf_cache_clear()
+```
+
+**Returns:** the number of cached listings removed, invisibly
+
+### `osf_user_projects`
+
+*List the Projects Belonging to an OSF User*
+
+```r
+osf_user_projects(user_id, pb = NULL)
+```
+
+Every project an OSF user contributes to, as a table you can read and filter
+before downloading anything. Pass the whole table, or any subset of it, to
+`osf_file_download()`.
+
+**Returns:** a data frame with one row per project: `osf_id`, `name`,
+`category`, `public`, and `osf_url`. Zero rows when the user has no
+projects that could be listed.
+
+### `github_links`
+
+*Find GitHub Links in Papers*
+
+```r
+github_links(paper)
+```
+
+GitHub links can be in PDFs in several ways.
+
+**Returns:** a table with the GitHub url in the first (text) column
+
+### `github_info`
+
+*Get GitHub Repo Info*
+
+```r
+github_info(repo, recursive = FALSE)
+```
+
+**Returns:** a list of information about the repo
+
+### `github_repo`
+
+*Get Short GitHub Repo Name*
+
+```r
+github_repo(repo)
+```
+
+**Returns:** character string of short repo name
+
+### `github_files`
+
+*Get File List from GitHub*
+
+```r
+github_files(repo, dir = "", recursive = FALSE)
+```
+
+**Returns:** a data frame of files
+
+### `github_languages`
+
+*Get Languages from GitHub Repo*
+
+```r
+github_languages(repo)
+```
+
+**Returns:** vector of languages
+
+### `github_readme`
+
+*Get README from GitHub*
+
+```r
+github_readme(repo)
+```
+
+**Returns:** a character string of the README contents
+
+### `github_tree_files`
+
+*Get GitHub repository files via the Git Trees API*
+
+```r
+github_tree_files(repo)
+```
+
+Fetches the complete file tree of a GitHub repository in two API calls
+(repo metadata + recursive tree), rather than the N-request recursive
+`/contents/` crawl used by `github_files()`.
+
+### `zenodo_links`
+
+*Find Zenodo Links in Papers*
+
+```r
+zenodo_links(paper)
+```
+
+Get all Zenodo links: real hyperlinks from the paper's own `url` table,
+plus a body-text fallback for a BARE mention (a DOI like
+"10.5281/zenodo.1234567" is routinely cited without any URL scheme at all)
+that the source PDF/HTML never encoded as an actual hyperlink — the `url`
+table only ever contains links the source document itself made clickable.
+Same two-tier approach `github_links()` uses for GitHub.
+
+**Returns:** a table with the Zenodo url in the first (text) column
+
+### `zenodo_info`
+
+*Retrieve info from Zenodo by URL*
+
+```r
+zenodo_info(zenodo_url, id_col = 1, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `zenodo_file_download`
+
+*Download all Zenodo Project Files*
+
+```r
+zenodo_file_download(
+zenodo_id,
+download_to = ".",
+max_file_size = 10,
+max_download_size = 100,
+unzip_types = NULL,
+pb = NULL
+)
+```
+
+Creates a directory for the Zenodo ID and downloads all of the files using a folder structure from the Zenodo project nodes and file storage structure. Returns (invisibly) a data frame with file info.
+
+**Returns:** data frame of file info. When members are extracted from a zip, its
+row reports the zip with `extracted` giving the number of members written;
+`size_on_disk` and `checksum_ok` are then `NA`, because what is on disk is
+the members rather than the archive Zenodo published a size and MD5 for.
+
+### `zenodo_pat`
+
+*Set or get the Zenodo personal access token*
+
+```r
+zenodo_pat(pat = NULL, sandbox = TRUE)
+```
+
+Use `zenodo_pat()` to get the token used to authorise Zenodo uploads, or
+`zenodo_pat("your-token")` to set it for the rest of the session. The sandbox
+and the real Zenodo are separate services with separate accounts, so they
+need separate tokens and are stored separately here.
+
+**Returns:** the current token (character; `""` when none is set)
+
+### `zenodo_upload`
+
+*Upload Folders to Zenodo*
+
+```r
+zenodo_upload(
+folders,
+sandbox = TRUE,
+zenodo_pat = NULL,
+publish = FALSE,
+license = "cc-by-4.0",
+upload_type = "dataset",
+metadata = NULL,
+as_zip = TRUE,
+split_materials = "materials",
+upload_osf_metadata = TRUE,
+max_file_size = NULL,
+ask = TRUE,
+pb = NULL
+)
+```
+
+Creates a Zenodo deposition for each folder, uploads every file in it, and
+attaches metadata. Designed to take the output of `osf_file_download()`
+directly, so a whole OSF account can be archived on Zenodo in two steps:
+
+**Returns:** a data frame with one row per folder: the folder path, the Zenodo
+deposition id, its DOI, the URL to review it, how many files were uploaded
+and skipped, and whether it was published
+
+### `rbox_links`
+
+*Find ResearchBox Links in Papers*
+
+```r
+rbox_links(paper)
+```
+
+Get all ResearchBox links: real hyperlinks from the paper's own `url`
+table, plus a body-text fallback for a BARE mention like "researchbox.org/
+801" that the source PDF/HTML never encoded as an actual hyperlink (common
+in PDF-converted papers, where a plain-text URL mention loses its link
+formatting) — the `url` table only ever contains links the source
+document itself made clickable. Same two-tier approach `github_links()`
+uses for GitHub.
+
+**Returns:** a table with the ResearchBox url in the first (href) column
+
+### `rbox_info`
+
+*Retrieve info from ResearchBox by URL*
+
+```r
+rbox_info(rb_url, id_col = 1, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `rbox_file_download`
+
+*Retrieve files from ResearchBox by URL*
+
+```r
+rbox_file_download(rb_url, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `aspredicted_links`
+
+*Find AsPredicted Links in Papers*
+
+```r
+aspredicted_links(paper)
+```
+
+**Returns:** a table with the AsPredicted url in the first (href) column
+
+### `aspredicted_info`
+
+*Retrieve info from AsPredicted by URL*
+
+```r
+aspredicted_info(ap_url, id_col = 1, wait = 1)
+```
+
+**Returns:** a data frame of information
+
+### `dataverse_links`
+
+*Find Dataverse Links in Papers*
+
+```r
+dataverse_links(paper)
+```
+
+Get all Dataverse links: real hyperlinks from the paper's own `url` table,
+matched against a list of known Dataverse installations (see
+`dataverse_links()`'s source for the list; Dataverse is open-source software
+run by many independent hosts, unlike Zenodo, so there is no single hostname
+or DOI prefix to match against everything). Same two-tier hyperlink +
+bare-mention approach `zenodo_links()` uses, applied per known host.
+
+**Returns:** a table with the Dataverse url in the first (text) column
+
+### `dataverse_info`
+
+*Retrieve info from Dataverse by URL*
+
+```r
+dataverse_info(dataverse_url, id_col = 1, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `dataverse_file_download`
+
+*Download all files from a Dataverse dataset*
+
+```r
+dataverse_file_download(
+host,
+doi,
+download_to = ".",
+max_file_size = 10,
+max_download_size = 100,
+unzip_types = NULL,
+pb = NULL
+)
+```
+
+Creates a directory for the dataset and downloads all of its files. Returns
+(invisibly) a data frame with file info.
+
+**Returns:** data frame of file info. When members are extracted from a zip, its
+row reports the zip with `extracted` giving the number of members written;
+`size_on_disk` and `checksum_ok` are then `NA`, because what is on disk is
+the members rather than the archive Dataverse published a size and MD5 for.
+
+### `dataverse_pat`
+
+*Set or get a Dataverse API token*
+
+```r
+dataverse_pat(host, pat = NULL)
+```
+
+Dataverse installations each issue their own API token (unlike Zenodo/OSF,
+which are single services) -- a token from `dataverse.harvard.edu` is
+meaningless to `dataverse.nl`. Tokens are therefore stored per host.
+
+**Returns:** the current token (character; `""` when none is set)
+
+### `dryad_links`
+
+*Find Dryad Links in Papers*
+
+```r
+dryad_links(paper)
+```
+
+Get all Dryad links: real hyperlinks from the paper's own `url` table,
+plus a body-text fallback for a BARE mention (a DOI like
+"10.5061/dryad.j1fd7" is routinely cited without any URL scheme at all)
+that the source PDF/HTML never encoded as an actual hyperlink -- the `url`
+table only ever contains links the source document itself made clickable.
+Same two-tier approach `zenodo_links()` uses.
+
+**Returns:** a table with the Dryad url in the first (text) column
+
+### `dryad_info`
+
+*Retrieve info from Dryad by URL*
+
+```r
+dryad_info(dryad_url, id_col = 1, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `dryad_file_download`
+
+*Download all files from a Dryad dataset*
+
+```r
+dryad_file_download(
+dryad_doi,
+download_to = ".",
+max_file_size = 10,
+max_download_size = 100,
+unzip_types = NULL,
+pb = NULL
+)
+```
+
+Creates a directory for the dataset and downloads all of its files.
+Returns (invisibly) a data frame with file info.
+
+**Returns:** data frame of file info. When members are extracted from a zip, its
+row reports the zip with `extracted` giving the number of members written;
+`size_on_disk` and `checksum_ok` are then `NA`, because what is on disk is
+the members rather than the archive Dryad published a size and digest for.
+
+### `dryad_pat`
+
+*Set or get a Dryad API token*
+
+```r
+dryad_pat(pat = NULL)
+```
+
+Dryad issues OAuth2 bearer tokens from account settings. Unlike Figshare,
+Dataverse, Zenodo, and OSF, a token is REQUIRED to download file bytes even
+from a fully public dataset (verified live 2026-08-16: both the per-file
+and whole-dataset download endpoints answer 401 with no token, though
+dataset metadata and file listings are readable without one). Without a
+token, `dryad_file_download()` can list what a dataset contains but cannot
+fetch any of it.
+
+**Returns:** the current token (character; `""` when none is set)
+
+### `figshare_links`
+
+*Find Figshare Links in Papers*
+
+```r
+figshare_links(paper)
+```
+
+Get all Figshare links: real hyperlinks from the paper's own `url` table,
+plus a body-text fallback for a BARE mention (a DOI like
+"10.6084/m9.figshare.1234567" is routinely cited without any URL scheme at
+all) that the source PDF/HTML never encoded as an actual hyperlink -- the
+`url` table only ever contains links the source document itself made
+clickable. Same two-tier approach `zenodo_links()` uses.
+
+**Returns:** a table with the Figshare url in the first (text) column
+
+### `figshare_info`
+
+*Retrieve info from Figshare by URL*
+
+```r
+figshare_info(figshare_url, id_col = 1, host = "api.figshare.com", pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `figshare_file_download`
+
+*Download all files from a Figshare article*
+
+```r
+figshare_file_download(
+figshare_id,
+download_to = ".",
+max_file_size = 10,
+max_download_size = 100,
+unzip_types = NULL,
+host = "api.figshare.com",
+pb = NULL
+)
+```
+
+Creates a directory for the article and downloads all of its files.
+Returns (invisibly) a data frame with file info.
+
+**Returns:** data frame of file info. When members are extracted from a zip, its
+row reports the zip with `extracted` giving the number of members written;
+`size_on_disk` and `checksum_ok` are then `NA`, because what is on disk is
+the members rather than the archive Figshare published a size and MD5 for.
+
+### `figshare_pat`
+
+*Set or get a Figshare API token*
+
+```r
+figshare_pat(pat = NULL)
+```
+
+Figshare issues personal access tokens from account settings
+(https://figshare.com/account/applications). A token is optional for
+reading public articles (used here only to raise rate limits or read
+private ones), unlike Dataverse where a token is per-installation.
+
+**Returns:** the current token (character; `""` when none is set)
+
+### `reshare_links`
+
+*Find ReShare Links in Papers*
+
+```r
+reshare_links(paper)
+```
+
+Get all ReShare links: real hyperlinks from the paper's own `url` table,
+plus a body-text fallback for a BARE mention (a DOI like
+"10.5255/UKDA-SN-854001" is routinely cited without any URL scheme at all)
+that the source PDF/HTML never encoded as an actual hyperlink -- the `url`
+table only ever contains links the source document itself made clickable.
+Same two-tier approach `zenodo_links()` uses.
+
+**Returns:** a table with the ReShare url in the first (text) column
+
+### `reshare_info`
+
+*Retrieve info from ReShare by URL*
+
+```r
+reshare_info(reshare_url, id_col = 1, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `reshare_file_download`
+
+*Download all files from a ReShare deposit*
+
+```r
+reshare_file_download(
+reshare_id,
+download_to = ".",
+max_file_size = 10,
+max_download_size = 100,
+unzip_types = NULL,
+pb = NULL
+)
+```
+
+Creates a directory for the deposit and downloads all of its files.
+Returns (invisibly) a data frame with file info.
+
+**Returns:** data frame of file info. When members are extracted from a zip, its
+row reports the zip with `extracted` giving the number of members written;
+`size_on_disk` and `checksum_ok` are then `NA`, because what is on disk is
+the members rather than the archive ReShare published a size and MD5 for.
+
+### `researchdata4tu_links`
+
+*Find 4TU.ResearchData Links in Papers*
+
+```r
+researchdata4tu_links(paper)
+```
+
+Get all 4TU.ResearchData links: real hyperlinks from the paper's own `url`
+table, plus a body-text fallback for a BARE mention (a DOI like
+"10.4121/16766929" is routinely cited without any URL scheme at all) that
+the source PDF/HTML never encoded as an actual hyperlink -- the `url` table
+only ever contains links the source document itself made clickable. Same
+two-tier approach `zenodo_links()` uses.
+
+**Returns:** a table with the 4TU.ResearchData url in the first (text) column
+
+### `researchdata4tu_info`
+
+*Retrieve info from 4TU.ResearchData by URL*
+
+```r
+researchdata4tu_info(researchdata4tu_url, id_col = 1, pb = NULL)
+```
+
+Thin wrapper around `figshare_info()` with `host = "data.4tu.nl"` -- see
+the note at the top of this file for why 4TU.ResearchData's Djehuty
+platform can reuse the Figshare-family implementation directly.
+
+**Returns:** a data frame of information
+
+### `researchdata4tu_file_download`
+
+*Download all files from a 4TU.ResearchData article*
+
+```r
+researchdata4tu_file_download(
+researchdata4tu_id,
+download_to = ".",
+max_file_size = 10,
+max_download_size = 100,
+unzip_types = NULL,
+pb = NULL
+)
+```
+
+Thin wrapper around `figshare_file_download()` with `host = "data.4tu.nl"`
+-- see the note at the top of this file. Creates a directory for the
+article and downloads all of its files. Returns (invisibly) a data frame
+with file info.
+
+**Returns:** data frame of file info. When members are extracted from a zip, its
+row reports the zip with `extracted` giving the number of members written;
+`size_on_disk` and `checksum_ok` are then `NA`, because what is on disk is
+the members rather than the archive 4TU.ResearchData published a size and
+MD5 for.
+
+### `researchdata4tu_pat`
+
+*Set or get a 4TU.ResearchData API token*
+
+```r
+researchdata4tu_pat(pat = NULL)
+```
+
+4TU.ResearchData issues its own personal access tokens (from account
+settings on data.4tu.nl) -- a Figshare.com token is meaningless here, so
+this is stored separately from `figshare_pat()`. A token is optional for
+reading public articles (used here only to raise rate limits or read
+private ones).
+
+**Returns:** the current token (character; `""` when none is set)
+
+### `psycharchives_links`
+
+*Find PsychArchives Links in Papers*
+
+```r
+psycharchives_links(paper)
+```
+
+Get all PsychArchives links: real hyperlinks from the paper's own `url`
+table, plus a body-text fallback for a BARE mention (a handle like
+"20.500.12034/17526" is routinely cited without any URL scheme at all)
+that the source PDF/HTML never encoded as an actual hyperlink — the `url`
+table only ever contains links the source document itself made clickable.
+Same two-tier approach `github_links()` uses for GitHub.
+
+**Returns:** a table with the PsychArchives url in the first (href) column
+
+### `psycharchives_info`
+
+*Retrieve info from PsychArchives by URL*
+
+```r
+psycharchives_info(pa_url, id_col = 1, pb = NULL)
+```
+
+**Returns:** a data frame of information
+
+### `psycharchives_file_download`
+
+*Retrieve public file list from PsychArchives by URL*
+
+```r
+psycharchives_file_download(pa_url, pb = NULL)
+```
+
+Lists the publicly retrievable bitstreams of one or more PsychArchives items
+via the DSpace REST API, without downloading them. Each row carries an
+absolute `file_url` (the bitstream retrieve endpoint) so the actual bytes are
+fetched later by `download_repo_files()`, the same deferred path used for
+Zenodo and OSF. Restricted files are omitted by the API and never appear here.
+
+**Returns:** a data frame of file information (one row per public bitstream)
+
+### `local_files`
+
+*List Local Files*
+
+```r
+local_files(path, recursive = FALSE)
+```
+
+Lists all files in a local directory recursively and returns a data frame
+compatible with the `repo_check` output table, for use with `code_check`.
+
+**Returns:** a data frame with columns `repo_url`, `file_name`, `file_url`,
+`file_location`, `file_size`, `file_type`
+
+### `download_repo_files`
+
+*Download the files listed by `repo_check()`*
+
+```r
+download_repo_files(
+files,
+max_file_size = 100,
+max_download_size = 500,
+zip_timeout_s = 120,
+cache = FALSE,
+pb = NULL
+)
+```
+
+Fetches the bytes for a table of repository files (as produced by
+`repo_check()`), writing each into a per-session temp directory or a
+persistent on-disk cache, and fills in `file_location` for every file it
+successfully retrieves. Where a whole-repo archive download is available
+(OSF's Waterbutler `?zip=` endpoint, Zenodo's `files-archive` endpoint,
+Dataverse's `/api/access/dataset` endpoint, Dryad's `stash:download`
+endpoint, a GitHub zipball), it is used instead of one HTTP request per
+file; a repo whose archive download fails, or is rejected by the
+size/worth-it gate, falls back to file-by-file fetching automatically.
+Figshare, 4TU.ResearchData (Figshare-compatible), and ReShare have no
+documented whole-record bulk endpoint, so their files are always fetched
+one by one.
+
+**Returns:** `files` with `file_location` filled in for every file retrieved
+(unchanged, i.e. `NA`, for files that were skipped or failed), and three
+attributes: `"gated"` (data.frame: `repo_url`, `message` — repositories
+refused outright by the size caps), `"oversize_skipped"` (data.frame:
+`repo_url`, `file_name`, `file_size` — individual files skipped under
+`max_file_size`), and `"failed"` (data.frame: `repo_url`, `file_name`,
+`error` — files whose download was attempted but errored, e.g. a
+transient network failure).
+
+### `repo_cache_clear`
+
+*Delete the downloaded-repository file cache*
+
+```r
+repo_cache_clear(repo_url = NULL, quiet = FALSE)
+```
+
+Removes files fetched from data repositories by `data_check` / `code_check`
+from the on-disk cache (see `repo_cache_dir()`). The cache only speeds up
+re-runs — anything deleted is simply re-downloaded when next needed — so
+clearing it is always safe; the usual reason is to reclaim disk space after a
+large corpus build.
+
+**Returns:** the number of bytes freed (numeric), invisibly.
+
+### `repo_cache_dir`
+
+*Locate the downloaded-repository file cache*
+
+```r
+repo_cache_dir()
+```
+
+Files fetched from OSF/GitHub/Zenodo/ResearchBox by `data_check` and
+`code_check` are stored in a persistent on-disk cache so they are reused
+across modules and R sessions (never re-downloaded). This returns that
+cache's root directory.
+
+**Returns:** the cache root directory path (character), invisibly
+
+### `repo_cache_size`
+
+*Size of the downloaded-repository file cache*
+
+```r
+repo_cache_size()
+```
+
+**Returns:** total size of the cache in bytes (numeric). 0 when the cache is
+empty or absent.
 
 ## Asking a large language model
 
-**`llm(text, ...)`** — send text to a language model and get a structured
-answer.
-**`llm_use(...)`** — set which model/platform to use.
-**`llm_model(model)`** / **`llm_model_list(platform)`** — pick or list models.
-**`llm_max_calls(n)`** — cap how many calls a run may make.
-**`llm_cache(enabled)`** — turn the on-disk LLM response cache on or off, or
-query it (on by default).
-**`llm_cache_clear()`** — delete every cached LLM response.
+### `llm`
 
-```{r}
-#| eval: false
-llm_use("ollama")                       # choose a backend
-llm("Summarise this abstract: ...")     # query the model
-llm_cache()                             # is response caching on?
-llm_cache_clear()                       # wipe cached answers
+*Query an LLM*
+
+```r
+llm(
+text,
+system_prompt,
+type = NULL,
+text_col = "text",
+model = llm_model(),
+params = list(),
+phase = NULL
+)
 ```
 
-Cached answers are replayed on identical later calls, so re-running a report on
-the same paper does not re-bill the provider. Downloaded repository files are
-likewise cached and reused. See the [Caching and Reuse](caching.qmd) chapter.
+Ask a large language model (LLM) any question you want about a vector of
+text or the text from a text_search(). When `type` is provided, uses
+ellmer's structured output API to guarantee output conforming to the type
+spec; otherwise returns free-text responses in an `answer` column.
+
+**Returns:** a data frame of results
+
+### `llm_use`
+
+*Set or get metacheck LLM use*
+
+```r
+llm_use(llm_use = NULL)
+```
+
+Mainly for use in optional LLM workflows in modules
+
+**Returns:** the current option value (logical)
+
+### `llm_model`
+
+*Set the default LLM model*
+
+```r
+llm_model(model = NULL)
+```
+
+Use `llm_model_list()` to get a list of available models
+
+### `llm_model_list`
+
+*List LLM Models*
+
+```r
+llm_model_list(platform = NULL)
+```
+
+List available LLM models for the specified platform.
+
+**Returns:** a data frame of models and info
+
+### `llm_max_calls`
+
+*Set the maximum number of calls to the LLM*
+
+```r
+llm_max_calls(n = NULL)
+```
+
+### `llm_max_tokens`
+
+*Set the default max_tokens for LLM calls*
+
+```r
+llm_max_tokens(n = NULL)
+```
+
+`llm()` needs SOME max_tokens value on every call (a provider truncates a
+response with no clear error otherwise — a codebook/data-check pass over
+many columns at once is the case most likely to need more than the
+built-in default). Rather than requiring every module call to repeat
+`params = list(max_tokens = ...)` individually, set it once per session
+here; `llm()` falls back to this whenever a caller's own `params` does not
+already specify `max_tokens` (an explicit `params$max_tokens` on a single
+call still wins, same precedence as every other `params` entry).
+
+**Returns:** the current default max_tokens value (invisibly when setting)
+
+### `llm_reasoning`
+
+*Set the default reasoning effort for LLM calls*
+
+```r
+llm_reasoning(effort = NULL)
+```
+
+Every LLM call this package makes is a bounded, structured-extraction task
+over text already given in the prompt (classify a file, extract a
+variable's label, list the scales named in ~30 sentences, group files by
+study) — pattern-matching over given material, not multi-step reasoning
+(no arithmetic, no multi-hop inference, no planning). A "thinking"/
+"reasoning" model spending extra tokens re-deriving what the prompt already
+states is close to pure overhead here: it inflates cost/latency and eats
+into the same `max_tokens` budget as the visible answer, which is a
+confirmed real cause of truncated structured responses on `gpt-oss` models
+via Groq. Minimal reasoning effort is the right DEFAULT for what this
+package does, not a tradeoff against quality.
+
+**Returns:** the current default reasoning effort (invisibly when setting)
+
+### `llm_cache`
+
+*Enable, disable, or query the LLM response cache*
+
+```r
+llm_cache(enabled = NULL)
+```
+
+When enabled (the default), `llm()` stores each structured or free-text
+response on disk and replays it on identical later calls, so re-running a
+report on the same paper does not re-issue (or re-bill) the LLM requests.
+Because `llm()` runs at temperature 0 the replayed answer matches a fresh
+call. Cached entries are keyed by model, system prompt, input text, type
+spec, and params; changing any of these produces a fresh call.
+
+**Returns:** the current setting (logical), invisibly when setting
+
+### `llm_cache_clear`
+
+*Clear the on-disk LLM response cache*
+
+```r
+llm_cache_clear()
+```
+
+Deletes all cached LLM responses (see `llm_cache()`).
+
+**Returns:** the number of cache entries removed, invisibly
+
+### `metacheck_cache_info`
+
+*Show where metacheck's caches live and how big they are*
+
+```r
+metacheck_cache_info()
+```
+
+Prints the location and size of both on-disk caches — the downloaded
+repository-file cache and the LLM-response cache — so they are never hidden.
+By default each sits in a folder in the current working directory
+(`.metacheck_repo_cache` and `.metacheck_llm_cache`); relocate both with
+`options(metacheck.cache.dir = "/some/path")`.
+
+**Returns:** a data.frame (`cache`, `path`, `size_mb`), invisibly.
 
 ## Checking shared code
 
-**`code_read(file_path)`** — read a code file.
-**`code_parse_r(file_path)`** — parse R code into a table of calls.
-**`code_remove_comments(code_text, lang)`** — strip comments from code.
+### `code_read`
 
-```{r}
-code_remove_comments("x <- 1 # set x", lang = "R")
+*Read code from files*
+
+```r
+code_read(file_path)
 ```
+
+**Returns:** a character vector of the file contents
+
+### `code_parse_r`
+
+*Parse code to check for errors*
+
+```r
+code_parse_r(file_path = "", text = NULL)
+```
+
+**Returns:** a data frame with columns `file_path` and `line`
+
+### `code_remove_comments`
+
+*Remove comments from code text*
+
+```r
+code_remove_comments(
+code_text,
+lang = c("R", "Python", "SPSS", "SAS", "Stata", "Mplus", "MATLAB")
+)
+```
+
+**Returns:** the code_text minus comment lines
+
+### `code_abs_path`
+
+*Return Absolute Paths*
+
+```r
+code_abs_path(code_text)
+```
+
+Check code for the presence of absolute paths
+
+**Returns:** a vector of absolute paths
+
+### `code_extract_py`
+
+*Convert a Jupyter notebook to code only*
+
+```r
+code_extract_py(file_path = NULL, save_path = NULL, text = NULL)
+```
+
+A `.ipynb` is a JSON document, not a text script: its source lives in the
+`source` array of each `"code"` cell. This concatenates those cells in
+document order so the result can be checked by the same text-based helpers
+every other language goes through (`code_remove_comments()`,
+`code_library_names()`, `code_file_refs()`, ...) — the notebook analogue of
+`code_extract_r()` purling an `.Rmd`/`.qmd`.
+
+**Returns:** a character vector of source lines (empty when the file has
+no code cells or is not parseable JSON)
+
+### `code_extract_qmd_py`
+
+*Extract Python chunks from a Quarto document*
+
+```r
+code_extract_qmd_py(file_path = NULL, save_path = NULL, text = NULL)
+```
+
+A `.qmd` whose declared/inferred engine is Python (see `code_lang()`'s
+`.qmd_lang()`) cannot go through `code_extract_r()`: `knitr::purl()` only
+recovers ````{r}` chunks, so a Python-engine document would purl to
+nothing. This is the `.qmd` analogue of `code_extract_r()` for that case —
+concatenating the body of every ````{python}` fence in document
+order, the same "recover a checkable code file" idea `code_extract_py()`
+applies to a `.ipynb`'s code cells (chunk boundaries are preserved as a
+blank line so line counts stay meaningful).
+
+**Returns:** a character vector of Python source lines (empty when the
+document has no Python chunks)
+
+### `code_extract_r`
+
+*Convert Rmd/qmd files to R code only*
+
+```r
+code_extract_r(
+file_path = NULL,
+save_path = NULL,
+documentation = 0,
+text = NULL
+)
+```
+
+**Returns:** a character vector
+
+### `code_file_refs`
+
+*Get files referenced in code*
+
+```r
+code_file_refs(
+code_text,
+lang = c("R", "Python", "SPSS", "SAS", "Stata", "Mplus", "MATLAB"),
+include_writes = FALSE
+)
+```
+
+**Returns:** a vector of files that are referenced in the code
+
+### `code_lang`
+
+*Detect Code Language*
+
+```r
+code_lang(file_name)
+```
+
+Detects code language used in files, only for languages metacheck currently processes (R, SAS, SPSS, Stata, Mplus).
+
+**Returns:** a vector of languages
+
+### `code_library_lines`
+
+*Get Code Library Lines*
+
+```r
+code_library_lines(
+code_text,
+lang = c("R", "Python", "SPSS", "SAS", "Stata", "Mplus", "MATLAB")
+)
+```
+
+Returns the lines on which library/require calls exist. This is a helper function for the code_check module.
+
+**Returns:** a data frame with columns `code` and `line` (the line numbers on which library calls exist, after removing blank lines and comments)
+
+### `code_library_names`
+
+*Get package names loaded in code*
+
+```r
+code_library_names(
+code_text,
+lang = c("R", "Python", "SPSS", "SAS", "Stata", "Mplus", "MATLAB")
+)
+```
+
+Extracts the names of the packages/libraries a code file loads. Where
+`code_library_lines()` only reports the lines on which imports occur (to check
+they are grouped), this returns the actual package identifiers so they can be
+catalogued and searched, or written to a `requirements.txt`.
+
+**Returns:** a data frame with columns `package`, `source` (how the package was
+referenced: `library`, `require`, `requireNamespace`, `p_load`, `namespace`,
+`install`, or `import`), and `line` (the line number). Rows are unique on
+`package` + `source` + `line`. An empty frame (same columns) when none found.
+
+### `code_line_stats`
+
+*Get Code Composition Stats*
+
+```r
+code_line_stats(
+code_text,
+lang = c("R", "Python", "SPSS", "SAS", "Stata", "Mplus", "MATLAB")
+)
+```
+
+**Returns:** list with items `total_lines`, `comment_lines`, `code_lines`, and `percent_comment`
+
+### `code_packages`
+
+*Distinct packages from a code_check table*
+
+```r
+code_packages(packages)
+```
+
+The `code_check` module stores the packages each code file loads as a
+comma-joined string in its `table$packages` column. This returns the sorted,
+de-duplicated union across a set of those rows — the paper-level dependency
+list used for the module summary, the manifest `code` section, and the
+`requirements.txt` written into a Psych-DS archive by `convert_psychds()`.
+
+**Returns:** a sorted character vector of distinct package names (possibly empty)
+
+### `code_setwd`
+
+*Find setwd() calls in code*
+
+```r
+code_setwd(code_text)
+```
+
+A `setwd()` call in analysis code is a portability problem: it hardcodes an
+assumption about the working directory the code runs in (frequently an
+absolute path on the author's own machine), mutates global state, and makes a
+script depend on being run from a particular place. Best practice is to keep
+the working directory as the caller sets it and use relative paths. This scans
+the (comment-free) code for `setwd(...)` calls and returns one row per call,
+with the argument as written. R-only (the construct is R's; other languages
+have their own, e.g. Stata `cd`, which this does not scan).
+
+**Returns:** a data frame with columns `setwd_call` (the `setwd(...)` text as
+written) and `line` (its line number). Empty frame when none are found.
+
+## Checking shared data
+
+### `data_check_case_issues`
+
+*Flag categorical levels that differ only by letter case*
+
+```r
+data_check_case_issues(x)
+```
+
+e.g. "Male" and "male" — likely the same category entered inconsistently.
+
+**Returns:** list(problem, message, values)
+
+### `data_check_colname`
+
+*Flag a problematic column name*
+
+```r
+data_check_colname(col_name, max_chars = 64L)
+```
+
+Column names travel: they become variable names in analysis scripts, chunk
+labels and figure file names in generated codebooks, and keys in metadata
+files. A name that contains characters that are illegal in file names
+(`< > : " / \ | ? *`), control characters (tabs, newlines), leading/trailing
+whitespace, or that runs to hundreds of characters cannot be used in those
+places without modification — tools either fail (e.g. a figure file cannot
+be created on Windows) or silently rename the variable so it no longer
+matches the shared data. Good practice is short names built from letters,
+digits and underscores.
+
+**Returns:** list(problem, message, values)
+
+### `data_check_colname_collisions`
+
+*Flag column names that collide after sanitization*
+
+```r
+data_check_colname_collisions(col_names)
+```
+
+Many tools replace the special characters in a variable name with `_` or
+drop them: R's `make.names()`, SPSS/SAS/Stata on import, and generated
+codebooks (section ids, figure file names). Two columns whose names differ
+*only* in special characters — e.g. the phoneme symbols `t'` and a
+t-with-diacritic, which both sanitize to `t_` — therefore become
+indistinguishable the moment the data leave the original file, and links or
+merged results silently point at the wrong variable. Identical duplicate
+names collide trivially and are flagged too.
+
+**Returns:** a named list mapping each colliding column name to a message
+(empty list when all names stay distinct)
+
+### `data_check_constant`
+
+*Flag a constant or near-constant column*
+
+```r
+data_check_constant(x, threshold = 0.99)
+```
+
+**Returns:** list(problem, message, values)
+
+### `data_check_demographic`
+
+*Detect whether a column holds participant age, gender/sex, or race/ethnicity*
+
+```r
+data_check_demographic(col_name, x)
+```
+
+A content-based classifier for the three demographic variables collected by
+almost every human-subjects study. A column is tagged only when its NAME
+looks like the demographic AND its VALUES are consistent with it (see
+`.demographic_values_ok`), which keeps false positives low: a `condition`
+column coded 1/2 is not flagged as gender, and an `age` column of free text
+is not treated as usable age data.
+
+**Returns:** `"age"`, `"gender"`, or `"race"` when the column matches one of
+them, else `NA_character_`.
+
+### `data_check_design_name`
+
+*Does a column name look like an experimental design variable?*
+
+```r
+data_check_design_name(col)
+```
+
+Matches names built from design/condition tokens (condition, group,
+treatment, arm, dose, manipulation, intervention), requiring a word
+boundary so e.g. "charm" does not match "arm". Used to decide whether a
+constant column is suspicious: a design variable with one value suggests
+the file was filtered to a single condition before export.
+
+**Returns:** logical
+
+### `data_check_empty`
+
+*Flag a column with no observed values*
+
+```r
+data_check_empty(x)
+```
+
+All values are NA (or, for text, blank/whitespace-only). Such a column
+usually means a variable that never recorded anything or an export
+artifact, and it is invisible to `data_check_constant()` which strips NAs.
+
+**Returns:** list(problem, message, values)
+
+### `data_check_is_behaverse`
+
+*Detect trial-level behavioural-data source formats*
+
+```r
+data_check_is_behaverse(df)
+
+data_check_is_inquisit(df)
+
+data_check_is_jspsych(df)
+
+data_check_is_psychopy(df)
+```
+
+Each function reports whether a data frame is an export from a particular
+trial-level format, from its reserved column names. Used by codebook_check to
+recognise paradata (response times, trial/stimulus channels) and normalise it
+to the Behaverse `trial` schema rather than treating it as scale items.
+
+**Returns:** `TRUE` when `df` matches the format, else `FALSE`.
+
+### `data_check_is_inquisit`
+
+*Detect trial-level behavioural-data source formats*
+
+```r
+data_check_is_behaverse(df)
+
+data_check_is_inquisit(df)
+
+data_check_is_jspsych(df)
+
+data_check_is_psychopy(df)
+```
+
+Each function reports whether a data frame is an export from a particular
+trial-level format, from its reserved column names. Used by codebook_check to
+recognise paradata (response times, trial/stimulus channels) and normalise it
+to the Behaverse `trial` schema rather than treating it as scale items.
+
+**Returns:** `TRUE` when `df` matches the format, else `FALSE`.
+
+### `data_check_is_jspsych`
+
+*Detect trial-level behavioural-data source formats*
+
+```r
+data_check_is_behaverse(df)
+
+data_check_is_inquisit(df)
+
+data_check_is_jspsych(df)
+
+data_check_is_psychopy(df)
+```
+
+Each function reports whether a data frame is an export from a particular
+trial-level format, from its reserved column names. Used by codebook_check to
+recognise paradata (response times, trial/stimulus channels) and normalise it
+to the Behaverse `trial` schema rather than treating it as scale items.
+
+**Returns:** `TRUE` when `df` matches the format, else `FALSE`.
+
+### `data_check_is_psychopy`
+
+*Detect trial-level behavioural-data source formats*
+
+```r
+data_check_is_behaverse(df)
+
+data_check_is_inquisit(df)
+
+data_check_is_jspsych(df)
+
+data_check_is_psychopy(df)
+```
+
+Each function reports whether a data frame is an export from a particular
+trial-level format, from its reserved column names. Used by codebook_check to
+recognise paradata (response times, trial/stimulus channels) and normalise it
+to the Behaverse `trial` schema rather than treating it as scale items.
+
+**Returns:** `TRUE` when `df` matches the format, else `FALSE`.
+
+### `data_check_is_qualtrics`
+
+*Detect whether a data frame is a Qualtrics survey export*
+
+```r
+data_check_is_qualtrics(df, min_meta = 4L)
+```
+
+Fires when the columns include enough of Qualtrics' reserved response-metadata
+names (StartDate, EndDate, Progress, Duration (in seconds), Finished,
+RecordedDate, ResponseId, DistributionChannel, ...) that the file is
+unambiguously a Qualtrics export — these exact names essentially never
+co-occur outside Qualtrics. The `ResponseId` column (values like `R_xxxxx`)
+or a leftover `ImportId` JSON header cell is treated as corroborating.
+
+**Returns:** `TRUE` when `df` looks like a Qualtrics export, else `FALSE`.
+
+### `data_check_numeric_in_text`
+
+*Flag a mostly-numeric column stored as text*
+
+```r
+data_check_numeric_in_text(x, threshold = 0.8, n_max = 10)
+```
+
+When a column read as character is mostly numbers but has a few values that
+do not parse (e.g. "n/a", ">100", "50 approx"), those dirty cells forced the
+whole column to text — a data-quality problem in the source, not a read
+error. A *fully* numeric text column is not flagged here: the file readers
+auto-type clean numeric columns, so an all-numeric character column would
+indicate a reader problem rather than a data problem.
+
+**Returns:** list(problem, message, values)
+
+### `data_check_outliers`
+
+*Flag Tukey (IQR) outliers in a numeric vector*
+
+```r
+data_check_outliers(x, k = 1.5, n_max = 10)
+```
+
+Values below Q1 - k*IQR or above Q3 + k*IQR. This is the symmetric boxplot
+rule; a skew-aware (medcouple) variant can be added later.
+
+**Returns:** list(problem, message, values, lower, upper)
+
+### `data_check_pii_freetext`
+
+*Flag a free-text column that may contain incidental personal information*
+
+```r
+data_check_pii_freetext(
+x,
+min_median_chars = 40,
+min_unique_frac = 0.8,
+min_multiword_frac = 0.6,
+min_alpha_frac = 0.5
+)
+```
+
+Open-ended typed responses (comments, explanations, descriptions) can contain
+names, places, or other identifying detail, so they warrant a "review before
+sharing" prompt. The aim is to flag genuine typed prose only — not any long,
+varied string. Long values that are *not* prose (numeric matrices with blank
+headers, IDs, hashes, URLs, file paths, base64) are common in research data
+and previously produced false positives, so a column is flagged only when its
+typical value actually reads like written language:
+
+**Returns:** list(problem, message, values)
+
+### `data_check_pii_geo`
+
+*Flag a column that holds geographic coordinates*
+
+```r
+data_check_pii_geo(col_name, x, sibling_names = NULL)
+```
+
+A precise coordinate pins a participant to a place, so it is disclosure risk
+even when every other column is anonymous. Detected from the column NAME
+(word-split, so `LocationLatitude` and `gps_lat` are recognised, not only a
+bare `lat`), then confirmed two ways.
+
+**Returns:** list(problem, message, values)
+
+### `data_check_pii_name`
+
+*Flag a column whose name suggests personal information*
+
+```r
+data_check_pii_name(col_name)
+```
+
+Matches a column name against tokens that typically identify a person (name,
+email, address, date of birth, national id, ip, coordinates, ...) in English
+and the main European languages. Complements `data_check_pii_values()`:
+catches identifying columns whose values look ordinary (e.g. a
+`participant_name` free-text field).
+
+**Returns:** list(problem, message, values)
+
+### `data_check_pii_values`
+
+*Flag values that match a personal-information pattern*
+
+```r
+data_check_pii_values(x, broad_min_frac = 0.3)
+```
+
+Scans a column's values for standard PII patterns (email, IP address, SSN,
+credit-card-like). Reports which pattern matched and how many values, never
+the matching values themselves (so the report does not leak the PII).
+
+**Returns:** list(problem, message, values) — `values` is the matched pattern
+name(s), not the data
+
+### `data_check_scale_values`
+
+*Flag values that fall outside a rating scale's valid range*
+
+```r
+data_check_scale_values(
+x,
+sentinels = .data_missing_sentinels,
+declared = NULL,
+valid_values = NULL,
+valid_range = NULL,
+n_max = 10,
+min_ground_truth_coverage = 0.5
+)
+```
+
+A rating scale (Likert / rating item) has a small set of consecutive valid
+integer levels. Any value outside that set is a data problem, and this check
+both flags it and, for each value, offers the most likely explanation:
+
+- a **missing-data code** left as a number (a `-99` / `999` in the
+sentinel list, or a codebook-**declared** missing code) — recode to `NA`;
+
+- a **keying typo** of an in-scale value (a `33` for `3`, a `55` for
+`5`) — the probable intended value is named;
+
+- otherwise an **unexplained** out-of-range value to review.
+
+The valid range is ground truth when `valid_values` / `valid_range` are
+supplied (e.g. from a codebook), otherwise inferred by `.detect_likert_scale`.
+A column that is not a rating scale (continuous, many-level, non-integer, too
+few rows) has no fixed range and is not flagged here — unbounded variables
+(age, reaction time) have no principled "valid range" to violate.
+
+**Returns:** list(problem, message, values, lower, upper, classes) where `classes`
+labels each flagged value "missing", "typo:", or "unexplained"
+
+### `data_check_spss_filter`
+
+*Flag an SPSS "Select Cases" filter variable*
+
+```r
+data_check_spss_filter(col, x)
+```
+
+SPSS's Select Cases dialog creates a 0/1 variable named `filter_$`
+(mangled to `filter_.` or `filter_` by some importers). Its presence
+matters to a re-user either way: if it is constant at 1 the file was
+saved after deleting unselected cases, so the shared data are a
+pre-filtered subset; if it varies, the reported analyses likely used only
+the selected rows and the filter must be re-applied to reproduce them.
+
+**Returns:** list(problem, message, values)
+
+### `data_check_whitespace`
+
+*Flag values with leading or trailing whitespace*
+
+```r
+data_check_whitespace(x)
+```
+
+Padded values (e.g. "Male " vs "Male") silently split a category. Flags the
+affected values in a character/factor column.
+
+**Returns:** list(problem, message, values)
+
+### `data_classify_files`
+
+*Classify repository files into data_check semantic types*
+
+```r
+data_classify_files(file_name, file_path = NULL)
+```
+
+Rules-only classifier used by the `data_check` module when the LLM is off.
+Layers metacheck's `file_category()` (name-based readme/codebook/data/code
+rules) over an extension crosswalk built on `metacheck::file_types`, then
+applies format-locked extension overrides.
+
+**Returns:** a character vector of data_check types (see `.data_check_types`);
+`"unknown"` when no rule fires. See `.data_doc_role()` for the finer
+readme/codebook/supplemental distinction within `"documentation"`.
+
+### `data_col_concept`
+
+*Detect the substantive concept a column measures*
+
+```r
+data_col_concept(col_name, x)
+```
+
+A content classifier for the *concept* facet (what the column measures),
+independent of how it is stored or its measurement level. Uses name+value
+agreement like `data_check_demographic()`, which it wraps for the demographic
+concepts. Rules-only and deterministic; concepts under cryptic names are left
+`NA` for the LLM tier in `data_check` to fill.
+
+**Returns:** one of `"reaction_time"`, `"accuracy"`, `"condition"`, `"age"`,
+`"gender"`, `"race"`, `"timestamp"`, or `NA_character_`. (`id`, `date` and
+`likert` concepts are assigned by `data_col_facets()` from the role /
+representation / measurement level, not here.)
+
+### `data_col_facets`
+
+*Describe a data column as orthogonal facets (DDI-style)*
+
+```r
+data_col_facets(col_name, values, in_scale_block = NA)
+```
+
+Replaces the single `col_type` enum with independent properties, so the
+numeric character of a column (how it is stored, its measurement level) is
+kept separate from what it measures (its concept) and how it functions (its
+role). See the facet vocabulary in the "Column facets" section of this file.
+
+**Returns:** a list with `representation`, `measurement_level`, `concept`,
+`role`, `unit`, `quality`, `parse_note`, plus the numeric helpers carried
+over from `data_col_type()` (`numeric_values`, `n_coerced`, `is_numeric`,
+`ambiguous`) so `data_check` can compute statistics and target the LLM.
+
+### `data_col_stats`
+
+*Summary statistics for a numeric column*
+
+```r
+data_col_stats(x_for_stats, x_raw)
+```
+
+**Returns:** a one-row data.frame of statistics.
+
+### `data_col_type`
+
+*Classify a single data column by rule*
+
+```r
+data_col_type(col_name, values)
+```
+
+Rule order (ported from datacheck `classify_col_type_rules()`): all-NA →
+empty; ID name pattern → id; 1 unique → constant; 2 unique → binary;
+date-parseable → date; long strings → text; numeric → continuous (or
+ambiguous integer, flagged for LLM); comma-decimal → continuous variants.
+
+**Returns:** a list with `col_type` (a value from `.data_check_col_types`, or
+`NA` when only the LLM could decide), `ambiguous` (whether the LLM should
+be consulted), `numeric_values` (numeric vector for stats, or `NULL`),
+`n_coerced`, and `is_numeric`.
+
+### `data_format`
+
+*Classify a data file as tabular or raw*
+
+```r
+data_format(ext)
+```
+
+`"tabular"` means metacheck has a reader for the format (see
+`.readable_extensions`), so the file can be downloaded, parsed for columns,
+and converted to a Psych-DS CSV. Everything else is `"raw"`: it is recorded
+and archived with its true extension, but never parsed as a table.
+
+**Returns:** `"tabular"` or `"raw"` for each element (never `NA`; unknown
+extensions fall back to `"raw"`, since an unrecognised format has no
+reader).
+
+### `data_group_llm`
+
+*Assign a study group to each file with an LLM*
+
+```r
+data_group_llm(
+files,
+model = llm_model(),
+params = list(),
+batch_size = .data_check_llm_batch,
+paper = NULL
+)
+```
+
+Classifies every file in a repository into a study group from its path
+(folder + name) context, so a multi-study repository can be split into
+`study-<group>/` directories (used by `psychds_check`). Group codes follow
+datacheck's scheme: `ex1`, `ex2a`, `pilot1`, ... . Every file resolves to
+exactly one study — there is no `"shared"` group. The only files that stay
+collection-level (never grouped, `group` left `NA`) are the root README and
+the root `ro-crate-metadata.json` (see `.data_doc_role()`), which callers
+must exclude BEFORE calling this function (see `data_check.R`). Only
+meaningful with an LLM for the residual cases the deterministic passes leave
+unresolved; callers get a fully deterministic grouping when `llm_use(FALSE)`.
+
+**Returns:** a data.frame with `group` and `referenced_by` columns (one row per
+input file, same order) and `"model"`/`"roster"`/`"roster_check"`/
+`"unresolved"` attributes, or `NULL` only when `files` is empty/NULL.
+Every placeable file resolves to a real study group — there is no
+`"shared"` value and no partial-failure NULL return.
+
+### `data_is_manifest`
+
+*Detect a file manifest / table-of-contents masquerading as tabular data*
+
+```r
+data_is_manifest(df, repo_files, threshold = 0.8, min_exts = 2L)
+```
+
+A manifest (e.g. a "table of contents" CSV) is structurally a valid tabular
+file, so extension-based classification treats it as data. It is
+distinguished from real research data by content, using the repository's own
+file list as ground truth: a manifest has a column in which most values name
+other files in the repository. This is name- and header-agnostic — it does
+not rely on the file or its columns being *called* anything in particular.
+
+**Returns:** `TRUE` when `df` looks like a file manifest, else `FALSE`.
+
+### `data_promote_header_row`
+
+*Promote a mis-placed header row and drop leading metadata rows*
+
+```r
+data_promote_header_row(df, raw_rows = NULL, max_scan = 4L)
+```
+
+When a banner / blank / units / repeated-label row sits ABOVE the real header,
+the reader takes that top row as the header (inventing `…N` names, or spreading
+one label — `CDA` merged across 110 columns — into `CDA…1 … CDA…110`). This
+finds the true header among the first few rows via `.detect_header_row()`,
+promotes it to the column names, drops it and everything above, and re-types the
+freed columns. It is the inverse of `data_strip_qualtrics_header()` (which
+strips junk rows BELOW a correct header).
+
+**Returns:** a list with `df` (possibly re-headed), `promoted` (1-based count of
+metadata rows removed above the header, 0 = unchanged), and `stripped`
+(character vectors of those removed rows, for reporting).
+
+### `data_strip_qualtrics_header`
+
+*Strip Qualtrics secondary-header rows and re-type the columns*
+
+```r
+data_strip_qualtrics_header(df, max_strip = 2L)
+```
+
+A Qualtrics "use choice text" export has extra header rows (human question
+text, then an `ImportId` JSON row) directly under the machine-name header.
+`read.delim` reads the machine names as the header but keeps those two rows as
+the first data rows, which forces every column to character. This drops any
+leading rows that look like Qualtrics header rows (see
+`.qualtrics_is_header_row`) and coerces columns that are now fully numeric
+back to numeric, so the rest of `data_check` types the file correctly.
+
+**Returns:** the cleaned data.frame (unchanged if no header rows are found).
+
+### `data_study_roster`
+
+*Study roster named in a paper's text*
+
+```r
+data_study_roster(paper)
+```
+
+Reads the manuscript for the studies it names — "Experiment 1", "Study 2a",
+"Pilot 2" — and returns them as normalised group codes (`ex1`, `ex2a`,
+`pilot2`). This is the AUTHORITATIVE list of a paper's studies: the authors
+say how many there are and what they are called, so it both names the groups
+and gives a count to validate any file grouping against (see
+`.data_group_check_roster`). Deterministic and free — a regex over text we
+already extracted — so it runs BEFORE any LLM.
+
+**Returns:** a character vector of group codes, or `character(0)` when the text
+names no numbered study.
+
+### `parse_codebook`
+
+*Parse a codebook file into variable definitions*
+
+```r
+parse_codebook(
+path,
+header_lookahead = 5L,
+observed = list(),
+group = NA_character_
+)
+```
+
+Rule-based codebook reader. Handles structured tables (CSV/TSV/Excel with a
+variable-name column and a label column, including wide-format transposition
+and multi-row header scanning), and embedded haven labels (SPSS/Stata). For
+rich-text formats (docx/pdf/rtf/odt) it extracts plain text. Files that yield
+no structured definitions return their raw text lines (character vector) so
+the caller can route them to an LLM when `llm_use(TRUE)`.
+
+**Returns:** a data.frame of variable definitions (`codebook_variable`, `label`,
+`codebook_source`, `group`, `parse_method`); a character vector of text
+lines when only unstructured text is available; or `NULL` on failure.
+
+### `parse_qsf`
+
+*Parse a Qualtrics survey-definition file (.qsf) into codebook variables*
+
+```r
+parse_qsf(path)
+```
+
+Reads the survey object's questions and returns one row per data column the
+export would produce, carrying the item wording and the coded response
+options — the same shape as the other `parse_codebook()` back-ends, so the
+rows join the codebook / scale pipeline unchanged. The `group` column holds
+each question's `DataExportTag` stem, a high-confidence scale-block signal.
+
+**Returns:** a data.frame of variable definitions (`codebook_variable`, `label`,
+`codebook_source`, `group`, `value_labels`, `missing_values`, `question`,
+`parse_method`), or `NULL` when the file is not a parseable QSF
+or yields no questions.
+
+### `manifest_merge`
+
+*Merge fields into a metacheck manifest, preserving other sections*
+
+```r
+manifest_merge(path, patch)
+```
+
+The per-paper `*.manifest.json` is written by more than one module:
+`data_check` records the files/provenance, and `code_check` records the
+packages the code loads (a `code` section). Because each module rebuilds only
+its own part of the document, a plain overwrite would let whichever module ran
+last erase the other's section. This helper reads any existing manifest,
+overlays `patch` at the top level (each key in `patch` replaces that key
+wholesale; keys not in `patch` are kept untouched), and writes it back.
+
+**Returns:** (invisibly) the manifest path
+
+### `match_column_labels`
+
+*Match data columns against codebook variable definitions (rules only)*
+
+```r
+match_column_labels(columns_df, codebook_vars_df)
+```
+
+For each column in `columns_df`, find codebook variables whose normalised
+name matches, respecting experiment-group scoping. Resolves multiple
+definitions by haven priority, then rule-based label-equivalence
+(`normalize_label`); genuinely differing labels are flagged
+`conflicting_definition`. The LLM tiers (fuzzy matching, semantic merge) are
+applied separately by codebook_check when `llm_use(TRUE)`.
+
+**Returns:** a data.frame with one row per input column: `paper_id`,
+`source_file`, `column_name`, `group`, `label`, `codebook_variable`,
+`label_source`, `label_status`, `label_method`.
+
+## Importing and exporting statistical output
+
+### `import_jasp`
+
+*Read a JASP (.jasp) file*
+
+```r
+import_jasp(path)
+```
+
+Extracts the dataset, its variable metadata (measurement level, value labels)
+and the list of analyses stored in a `.jasp` archive. Handles both the legacy
+binary format and the modern embedded-SQLite format.
+
+**Returns:** a list with `data` (a data.frame; labelled columns carry haven-style
+`label`/`labels` attributes), `columns` (a data.frame of `name` and `type`),
+`analyses` (the parsed `analyses.json`, or `NULL`), `format`
+(`"binary"` or `"sqlite"`), and `data_file_path` (the original source path
+recorded in the archive, or `NA`).
+
+### `import_omv`
+
+*Read a jamovi (.omv) file*
+
+```r
+import_omv(path)
+```
+
+Extracts the dataset, its variable metadata (measurement level, value labels)
+and a summary of the analyses stored in a `.omv` archive. The jamovi
+counterpart of `import_jasp()`, returning the same structure so downstream
+code (codebook extraction, data checks) treats an `.omv` like a `.jasp` or
+`.sav`.
+
+**Returns:** a list with `data` (a data.frame; labelled columns carry haven-style
+`label`/`labels` attributes), `columns` (a data.frame of `name` and `type`),
+`analyses` (a character vector, one entry per analysis: its name and, when
+recoverable, the reproducible R syntax), `format` (`"jamovi"`), and
+`data_file_path` (`NA`; jamovi does not record the original import path).
+
+### `import_mplus_output`
+
+*Read an Mplus (.out) output file*
+
+```r
+import_mplus_output(path)
+```
+
+Splits the file into its ALL-CAPS-headed sections (Mplus's own structural
+marker -- see the file header) and extracts each section's fixed-width
+result tables and label/value statistics. The `INPUT INSTRUCTIONS`
+section (Mplus's own verbatim analysis syntax) is skipped here -- see
+`.mplus_export_syntax()` for recovering it separately as a sibling `.inp`
+file, the same way `.spv_export_syntax()` recovers `.sps` from `.spv`.
+
+**Returns:** a list of result tables, each `list(analysis, title, data, syntax, table_index)` -- the same shape `read_stat_tables()` returns
+for `.jasp`/`.omv`/`.spv`, so all formats can be processed identically
+downstream. `analysis` is the section title (e.g. `"MODEL RESULTS"`);
+`syntax` is the file's own recovered `INPUT INSTRUCTIONS` block (the
+same text on every table, since one `.out` file is one Mplus run).
+Empty list if the file has no recoverable section.
+
+### `import_stata_smcl`
+
+*Read a Stata Markup and Control Language (.smcl) output log*
+
+```r
+import_stata_smcl(path)
+```
+
+Renders the file's markup to plain text (see `.smcl_render()`), splits it
+into one chunk per Stata command (the `{com}. <command>` echo, mirroring
+`read_r_output()`'s R-console-echo splitting), and extracts each chunk's
+result tables and one-line statistics. `graph export "....png"` commands
+are recovered as ordinary command text; the PNG itself is never embedded
+in a `.smcl` file (Stata writes it to disk separately), so no chart data
+exists in this format to extract (see the file header).
+
+**Returns:** a list of result tables, each `list(analysis, title, data, syntax, table_index)` -- the same shape `read_stat_tables()` returns
+for `.jasp`/`.omv`/`.spv`, so all four formats can be processed
+identically downstream. `analysis` is the Stata command that produced
+the table (e.g. `"summarize communication_index barrier_index"`);
+`syntax` duplicates `analysis` (Stata's own echoed command IS its
+syntax, unlike `.spv` where syntax is recovered separately from a
+different structure). Empty list if the file has no recoverable
+command output.
+
+### `import_spv`
+
+*Read the statistical result tables from an SPSS Viewer (.spv) file*
+
+```r
+import_spv(path)
+```
+
+Ties the structure reader (`.spv_read_structure()`, which table exists,
+what analysis produced it, which format its data is in) and the two
+decoders (`.spv_decode_light_table()` for modern tables,
+`.spv_decode_legacy_data()` + `.spv_decode_legacy_table()` for pre-21
+tables) into the SAME shape `read_stat_tables()` already returns from
+JASP's `analyses.json` and jamovi's protobuf blobs.
+
+**Returns:** a list of result tables, each `list(analysis, title, data, syntax, table_index)` — the same shape `read_stat_tables()` returns for
+`.jasp`/`.omv` (`syntax` is `.spv`-specific: the exact SPSS syntax that
+produced the table, when recoverable). Empty list if the archive has no
+structure XML or no tables decode.
+
+### `export_jasp_html`
+
+*Export a JASP (.jasp) file's own rendered output as standalone HTML*
+
+```r
+export_jasp_html(path, out = NULL)
+```
+
+A `.jasp` archive already bundles a fully rendered `index.html` -- JASP's
+own output view, complete with result tables and any plots -- alongside the
+data (see the file header). This extracts that `index.html` as-is and
+inlines every plot it references (an `<img src="resources/.../*.png">`) as
+a base64 `data:` URI, so the result is a single, portable, self-contained
+file that looks exactly like JASP's own output window, with no external
+image files to keep alongside it.
+
+**Returns:** the path written to, invisibly
+
+### `export_omv_html`
+
+*Export a jamovi (.omv) file's own rendered output as standalone HTML*
+
+```r
+export_omv_html(path, out = NULL)
+```
+
+A `.omv` archive already bundles a fully rendered `index.html` -- jamovi's
+own output view, complete with result tables and any plots -- alongside the
+data (see the file header). This extracts that `index.html` as-is and
+inlines every plot it references (an `<img src="....png">` under one of
+the per-analysis `resources/` folders) as a base64 `data:` URI, so the
+result is a single, portable, self-contained file that looks exactly like
+jamovi's own output window, with no external image files to keep alongside
+it.
+
+**Returns:** the path written to, invisibly
+
+### `export_mplus_html`
+
+*Export an Mplus (.out) output file as standalone HTML*
+
+```r
+export_mplus_html(path, out = NULL)
+```
+
+Builds an HTML page from what `import_mplus_output()` already decodes:
+one heading per section (`SUMMARY OF ANALYSIS`, `MODEL FIT INFORMATION`,
+`MODEL RESULTS`, ...) and one `<table>` per detected result. Like
+`export_stata_smcl_html()`, this has no figures to embed: Mplus never
+writes chart data into the `.out` text file itself (see the file header).
+
+**Returns:** the path written to, invisibly
+
+### `export_stata_smcl_html`
+
+*Export a Stata (.smcl) output log as standalone HTML*
+
+```r
+export_stata_smcl_html(path, out = NULL)
+```
+
+Builds an HTML page from what `import_stata_smcl()` already decodes: one
+heading per Stata command (its exact syntax, since a `.smcl` command echo
+IS the syntax) and one `<table>` per detected result. Unlike
+`export_jasp_html()`/`export_omv_html()` (which re-export an
+already-rendered view) or `export_spv_html()` (which renders decoded
+charts as images), this has no figures to embed at all: a `.smcl` file
+never contains chart image data (see the file header) -- a `graph export` command is shown as recovered command text only.
+
+**Returns:** the path written to, invisibly
+
+### `export_spv_html`
+
+*Export an SPSS Viewer (.spv) file's tables and charts as standalone HTML*
+
+```r
+export_spv_html(path, out = NULL)
+```
+
+Unlike `.jasp`/`.omv`, a `.spv` archive carries no rendered view of its
+own (see the file header) -- so, unlike `export_jasp_html()` and
+`export_omv_html()`, this does not re-export an existing document. It
+builds a new HTML page from what `import_spv()` already decodes: one
+heading per analysis (its recovered SPSS syntax shown underneath, when
+recoverable), one `<table>` per result table, and -- for a chart entry
+(`import_spv()`'s `is_chart = TRUE`) -- a scatter plot rendered from its
+own decoded `(x, y)` points with any fitted trend lines SPSS itself
+computed drawn over it (see `.spv_decode_chart()`), embedded as a base64
+PNG the same way `export_jasp_html()` inlines its own plots.
+
+**Returns:** the path written to, invisibly
+
+### `read_stat_tables`
+
+*Read the statistical result tables from a JASP, jamovi or notebook file*
+
+```r
+read_stat_tables(path)
+```
+
+Opens a `.jasp`, `.omv`, `.spv` or `.ipynb` file and returns every result
+table as a tidy data frame together with the analysis it belongs to. No
+statistics knowledge is applied here — this is the lossless extraction
+layer; semantic typing happens downstream in `stat_output_json()` /
+`stat_results_long()`.
+
+**Returns:** a list with one element per result table, each a list of `analysis`
+(the nearest heading above the table), `title` (the table's own caption /
+first heading, when distinguishable), `data` (a data.frame of the table
+as rendered, header row as column names), and `table_index` (1-based
+ordinal position of this table among all tables in the rendered document —
+there is no source line to attach, since a JASP/jamovi analysis is
+GUI-produced). Empty list when the archive has no `index.html` or no
+tables.
+
+### `read_r_output`
+
+*Extract statistical results from captured R console output*
+
+```r
+read_r_output(text, source_label = NA_character_, code_lines = NULL)
+```
+
+Parses the text an R script prints (as captured from `source(script, echo = TRUE)`) into tidy result tables, one per detected result block. Handles both
+one-line test output (`t.test`, `cor.test`, ...) and fixed-width text tables
+(`summary(lm)`, `aov`, `anova`). The result matches the shape of
+`read_stat_tables()`, so it flows into the same STATO typing and ISA-JSON
+export.
+
+**Returns:** a list with one element per detected result block, each a list of
+`analysis` (the test/section label), `title`, `data` (a tidy data.frame),
+`line` (1-based source line, or `NA` when `code_lines` was not supplied),
+`line_seq` (1-based counter of results sharing that `line`, or `NA`), and
+`call_fn` (the recognised statistical function that produced the block,
+e.g. `"shapiro.test"`, or `""`) — the same structure `read_stat_tables()`
+returns, plus these three fields. `call_fn` lets `stato_type_column()`
+resolve statistic letters that are ambiguous in the printed output alone.
+
+### `stat_output_json`
+
+*Serialise extracted result tables as a structured statistical-output document*
+
+```r
+stat_output_json(tables, paper_id = "metacheck", source_file = NA_character_)
+```
+
+Builds a complete statistical-output document from the result tables of ONE
+`.jasp`/`.omv` file or executed R script: one document per source file, with
+an `analyses` array (one element per analysis heading/table) each carrying a
+`results` array (one element per result row) of STATO-typed statistic values
+(via `stato_type_column()`). This is a metacheck-native schema — a flat,
+self-describing document in the character of OSD/DDI-Lifecycle/Psych-DS —
+not a repurposing of an unrelated external standard's vocabulary; there is
+no external schema this validates against.
+
+**Returns:** a list ready to serialise with `jsonlite::toJSON(auto_unbox = TRUE)`, with elements `schema`, `schema_version`, `paper_id`,
+`source_file`, `source_format`, and `analyses` (a list of `list(analysis, results)`, where each result is `list(result_id, row_label, values)` and
+`values` is a named list keyed by the statistic's own short name, e.g.
+`t`/`df`/`p`/`d`, each a `list(value, stato_label, stato_iri)` —
+`stato_label`/`stato_iri` omitted when `stato_type_column()` found no
+class for that statistic). `NULL` when there are no tables or no
+table yields any typed value. `result_id` identifies the CODE ROW that
+produced it — see `stat_results_long()` for the id format (shared between
+both serialisations of one extraction).
+
+### `stat_output_validate`
+
+*Validate a statistical-output document's native shape*
+
+```r
+stat_output_validate(doc)
+```
+
+Checks that a `stat_output_json()` document has the required top-level
+fields, that `analyses` is a list of `list(analysis, results)`, and that
+every result carries a `result_id` and a non-empty `values` object whose
+entries each have a `value`. This is a native structural check, not an
+executed external JSON Schema — there is no external standard this document
+conforms to, by design (see the file header comment). Mirrors
+`behaverse_validate()`'s and `psychds-validate.R`'s hand-rolled approach.
+
+**Returns:** a list with `valid` (`TRUE` when no issues), `issues` (a character
+vector of problem descriptions), and `summary` (`n_errors`, `n_analyses`,
+`n_results`).
+
+### `stat_output_write`
+
+*Write extracted statistical output to a dedicated folder*
+
+```r
+stat_output_write(stat_output, root)
+```
+
+Writes `reproducibility_check`'s accumulated `stat_output` (one element per
+source file: JASP/jamovi files via `read_stat_tables()`, executed R scripts
+via `read_r_output()`) to `<root>/statistical_output/`, a folder sibling to
+the materialised `data/` — so the extracted statistics sit alongside the data
+and code that produced them. Two views are written from the SAME extraction:
+one combined `results_long.csv` (every source file's `stat_results_long()`
+rows stacked, one row per extracted statistic, easiest to load and filter),
+and one `<codename>.statistical_output.json` per source file (its
+`stat_output_json()` document). Called from inside `reproducibility_check`
+itself (not from the later psychds/scienceverse conversion step), so the
+folder exists at the same point in the pipeline the data/code files do.
+
+**Returns:** the path to `statistical_output/`, invisibly, or `NULL` (nothing
+written) when `stat_output` is empty or carries no rows/documents.
+
+### `stato_type_column`
+
+*Type a result-table column by its header, with a guaranteed fallback*
+
+```r
+stato_type_column(header, call_fn = NULL)
+```
+
+Maps a JASP/jamovi/R result-table column header to a STATO ontology class
+when one exists, then to a metacheck-minted statistic term for the standard
+statistics STATO has no class for, and otherwise falls back to the header
+text itself as an untyped label. Every column therefore gets a type, so no
+column is ever dropped from the statistical-output export.
+
+**Returns:** a list with `annotationValue` (the canonical label, or the header
+text when unmapped), `termSource` (`"STATO"`, `"metacheck"`, or `""`), and
+`termAccession` (the term IRI, or `""`).
+
+### `match_reported_output`
+
+*Match reported statistical tests against the extracted analysis output*
+
+```r
+match_reported_output(
+paper,
+output,
+include_tables = FALSE,
+min_components = 1L
+)
+```
+
+Recomposes the statistics a paper REPORTS (from `paper$eq`, grouped by the
+`grp_id` that ties one reported test's numbers together) into whole tests, then
+checks whether each test's component values co-occur in a single analysis of
+the paper's extracted OUTPUT (`reproducibility_check`'s statistical output). A
+test is matched on its whole signature, not lone numbers, so a match means the
+reported result actually appears in the reproducible output rather than a value
+coinciding by chance. The result carries, per matched test, which output file
+and analysis produced it (provenance).
+
+**Returns:** a data.frame, one row per recomposed reported test, with:
+`text_id`, `grp_id`, `reported` (the recomposed test as text, e.g.
+"W=183.5 p=.791 rb=-0.16"), `n_components`, `n_matched` (components found in
+the best-matching output analysis), `found` (logical), `match_values` (the
+matched components as "name=value" pairs), `not_matched` (the UNMATCHED
+components of that same test, same "name=value" form — always populated
+alongside `match_values` for a partial match, so exactly which claim failed
+to reproduce is visible, not just a count), `source_file` / `analysis`
+(provenance of the match), `confidence` ("full" all components matched
+/ "partial" / "none"), and `plausible_split` — NA unless this test's
+grouping came from `.regroup_by_evidence()` re-deriving test boundaries
+from OUTPUT co-occurrence rather than trusting `extract_tests()`'s
+text-only guess (see that function's own header comment): TRUE when a
+component split away from its original reported neighbours landed at a
+site sharing a `row_label` token with theirs (the same underlying
+variable, reached via a different analysis — plausible), FALSE when no
+such link was found (the split is NOT hidden or downgraded, only
+flagged, so a reader can judge the match's plausibility from the
+`source_file`/`analysis` of every piece involved). Attribute
+`"summary"` holds the roll-up.
 
 ## ORCID and contributor info
 
-**`check_orcid(orcid)`** — validate an ORCID and fetch the person.
-**`get_orcid(family, given)`** — look up an ORCID by name.
-**`orcid_person(orcid)`** — a person's ORCID record.
-**`credit_roles()`** — the CRediT contributor-role taxonomy.
+### `check_orcid`
 
-```{r}
-credit_roles() |> head()
+*Check validity of ORCiD*
+
+```r
+check_orcid(orcid)
 ```
 
-```{r}
-#| eval: false
-check_orcid("0000-0002-0247-239X")   # needs internet
+**Returns:** a formatted 16-character ORCiD or FALSE
+
+### `get_orcid`
+
+*Get ORCiD from Name*
+
+```r
+get_orcid(family, given = "*")
 ```
+
+**Returns:** A vector of matching ORCiDs
+
+### `orcid_person`
+
+*Get Person Details for ORCiD*
+
+```r
+orcid_person(orcid)
+```
+
+**Returns:** A data frame of details
+
+### `credit_roles`
+
+*CRediT Roles*
+
+```r
+credit_roles(display = c("explain", "names", "abbr"))
+```
+
+**Returns:** list of roles
 
 ## File types
 
-**`filetype(filename)`** — a coarse type for a filename (e.g. data, code,
-document).
-**`file_category(contents)`** — categorise file contents.
+### `filetype`
 
-```{r}
-filetype("analysis.R")
-filetype("data.csv")
+*Get file Type from Extension*
+
+```r
+filetype(filename)
 ```
+
+**Returns:** a named vector of file types
+
+### `file_category`
+
+*Categorise files*
+
+```r
+file_category(contents)
+```
+
+**Returns:** the table with new column file_category
+
+### `txt_classify_content`
+
+*Classify a downloaded .txt file from its content*
+
+```r
+txt_classify_content(path)
+```
+
+A `.txt` extension says nothing about what a file holds: research repositories
+ship experiment data (E-Prime exports, Ibex/task logs), codebooks, and plain
+prose notes all as `.txt`. The name-based classifier
+(`data_classify_files()`) runs on remote file names *before* download, so it
+cannot tell these apart and settles on a conservative guess. Once the file is
+on disk, its content can. This is the same fetch-then-reclassify pattern the
+module already uses for zips.
+
+**Returns:** a single data_check type, or `NA_character_` when undecided.
+
+### `check_file_naming`
+
+*Check repository files against the FAIR file-naming conventions*
+
+```r
+check_file_naming(file_name, file_path = file_name, data_type = NA_character_)
+```
+
+Checks every file's name against the naming conventions from the metacheck
+"machine readable FAIR data and code" guide: no spaces or special
+characters, lowercase only, no CamelCase, an actually-classifiable name
+(not `data_type == "unknown"`), zero-padded numbering across sibling files,
+YYYYMMDD dates, and four path-length budgets (255/228/100/50 characters).
+
+**Returns:** a data.frame with one row per naming violation: `file_name`,
+`rule`, `severity` (`"bad"` or `"suggestion"` — see Details), `detail`.
+0 rows when every file is clean.
+
+### `zip_peek`
+
+*Peek at the contents of a remote ZIP file without downloading it*
+
+```r
+zip_peek(url, tail_bytes = 131072)
+```
+
+Uses an HTTP range request to fetch only the tail of a ZIP archive and read
+its central directory, returning the name and uncompressed size of every entry
+inside. This lets a downloader decide whether a zip is worth fetching (does it
+contain data, or only stimuli/assets?) before spending the bandwidth.
+
+**Returns:** a data.frame with columns `name` (entry path inside the zip) and
+`size` (uncompressed bytes), excluding directory entries; or `NULL` when the
+host does not support range requests or the listing cannot be read (the
+caller should then download-and-inspect). Also returns `method`, `csize`,
+`offset`, and `crc`, which describe where each member's bytes sit in the
+archive so a single member can be fetched without the rest; `csize` and
+`offset` are `NA` for a Zip64 archive, which cannot be fetched this way.
+
+### `zip_decision`
+
+*Decide whether a remote ZIP is worth downloading for a data archive*
+
+```r
+zip_decision(url, skip_types = "materials")
+```
+
+Peeks inside the zip (see `zip_peek()`) and classifies its entries. A zip is
+worth downloading if it contains actual data or a codebook; a zip of only
+stimuli/software is better linked than mirrored.
+
+**Returns:** a list with `worth` (`TRUE`/`FALSE`, or `NA` when the peek failed so
+the caller can fall back to downloading), `reason`, `n_entries`, `types`
+(table of inner types), and `contents` (the peeked data.frame or `NULL`).
 
 ## Validation utilities
 
-**`validate(gt, module)`** — compare a module's current output against a coded
-ground-truth file.
-**`accuracy(expected, observed)`** — accuracy measures (sensitivity,
-specificity, d-prime, …) from two logical vectors.
+### `validate`
 
-```{r}
-accuracy(c(TRUE, TRUE, FALSE, FALSE), c(TRUE, FALSE, FALSE, FALSE))
+*Validate a module's output against coded ground truth*
+
+```r
+validate(gt, module, compare = "table")
 ```
+
+Runs `module` on a set of texts you have already coded by hand, then
+checks its output against your coding. Each text in `gt` becomes its own
+test paper; the module's output table (`compare`) is joined back to `gt`
+by `paper_id` and `text`, and for every column that appears in both, a
+`<column>.valid` logical column is added marking where the module's value
+matches your ground truth. Pass the result to `accuracy()` to summarise
+agreement (e.g. sensitivity, specificity, d-prime).
+
+**Returns:** `gt` full-joined with the module's `compare` table (columns
+suffixed `.gt` and `.mod` where names collide), plus one `<column>.valid`
+logical column per compared column
+
+### `accuracy`
+
+*Accuracy*
+
+```r
+accuracy(expected, observed)
+```
+
+Signal detection values for modules that classify papers as having a feature or not
+
+**Returns:** a list of accuracy parameters
+
+### `cap_gate_count`
+
+*Build a "cannot process this many items" count-cap message*
+
+```r
+cap_gate_count(
+n_needed,
+param,
+current,
+unit = "item",
+context = NULL,
+action = "process"
+)
+```
+
+When a unit of work (a repository, a codebook file, a survey) has more items
+than a count cap allows, the whole unit is skipped rather than truncated.
+Returns `NULL` when within the cap.
+
+**Returns:** a single string, or `NULL` when `n_needed <= current`
 
 ## General utilities
 
-**`email(email)`** — set the contact email used for polite API access.
-**`online(url)`** — is a URL reachable?
-**`verbose(verbose)`** — get/set whether functions print progress.
-**`pb(total)`** — a progress bar.
-**`rep_if(x, y, replace)`** — replace values equal to `y` with `replace`.
-**`path_sanitize(path)`** — make a string safe to use as a file path.
-**`message(...)`** — Metacheck's message wrapper.
-**`logger()`, `logpath()`, `lastlog()`** — write and read run logs.
+### `email`
 
-```{r}
-rep_if(c(1, NA, 3), NA, 0)
-path_sanitize("results: study/1?.csv")
+*Set or get email*
+
+```r
+email(email = NULL)
 ```
 
-```{r}
-#| eval: false
-email("you@example.org")
-online("https://osf.io")
+Get or set the contact email metacheck sends with requests to external
+APIs (e.g. Crossref's polite pool), so a host that needs to reach you
+about your usage can do so. Call with no argument to read the current
+value; call with a valid email address to set it for the rest of the
+session. Defaults to `"metacheck@scienceverse.org"` when never set.
+
+**Returns:** the current option value (character)
+
+### `online`
+
+*Check if the host of a URL is online*
+
+```r
+online(url = "google.com")
 ```
 
-# Internal functions
+Resolves the URL's host via DNS lookup to check whether it is reachable.
+A scheme (`http://`/`https://`) is added automatically if `url` doesn't
+have one. This only confirms the host resolves, not that the specific
+page or API endpoint responds.
 
-These are not part of the public interface and may change without notice. They
-are listed so the documentation is complete. Several are exported only for
-testing and begin with a dot.
+**Returns:** boolean
 
-```{r}
-#| echo: false
-ns <- getNamespace("metacheck")
-is_fun <- function(n) is.function(get(n, envir = ns))
-exported <- getNamespaceExports("metacheck")
-all_fun <- Filter(is_fun, ls(ns, all.names = TRUE))
-internal <- sort(setdiff(all_fun, exported[!grepl("^[.]|^%", exported)]))
-internal <- internal[!grepl("^%", internal)]
-internal
+### `verbose`
+
+*Set or get verbosity*
+
+```r
+verbose(verbose = NULL)
 ```
 
-```{r}
-#| echo: false
-cat(length(internal), "internal functions.\n")
+Get or set whether metacheck's own functions (e.g. `message()`, `pb()`)
+print progress messages and progress bars. Call with no argument to read
+the current value; call with `TRUE`/`FALSE` to set it for the rest of the
+session. Defaults to `TRUE` when never set.
+
+**Returns:** the current option value (logical)
+
+### `pb`
+
+*Progress Bar*
+
+```r
+pb(total, format = "[:bar] :current/:total")
 ```
+
+Creates a console progress bar (via the progress package) that respects
+`verbose()`: when verbosity is off, it returns a dummy object with
+no-op `tick()`/`message()`/`terminate()` methods, so callers can always
+call those methods without checking `verbose()` themselves.
+
+**Returns:** a function
+
+### `rep_if`
+
+*Replace If*
+
+```r
+rep_if(x, y, replace = NULL)
+```
+
+Replace values if NULL, NA, or specified value
+
+### `path_sanitize`
+
+*Sanitize File Path*
+
+```r
+path_sanitize(
+path,
+replacement = "_",
+remove_whitespace = TRUE,
+keep_sep = TRUE
+)
+```
+
+Make sure user-input file names are not problematic.
+
+**Returns:** the sanitized vector
+
+### `message`
+
+*Less scary green messages*
+
+```r
+message(..., domain = NULL, appendLF = TRUE)
+```
+
+Metacheck's replacement for `base::message()`: prints in green when run
+interactively (so it reads as informational rather than a warning), and
+is silent entirely when `verbose()` is `FALSE`.
+
+**Returns:** TRUE
+
+### `logger`
+
+*Log messages*
+
+```r
+logger(label = "", contents = list(), logpath = NULL)
+```
+
+Adds a logging message to the log. Keeps the log as a maximum of 1000 rows.
+
+**Returns:** called for side effects of writing to log, returns logpath
+
+### `logpath`
+
+*Get log path*
+
+```r
+logpath()
+```
+
+Checks the most recent log file created that day and creates a new one if missing.
+
+**Returns:** the log file path
+
+### `lastlog`
+
+*Get the last log*
+
+```r
+lastlog(i = 1, logpath = NULL)
+```
+
+Reads entries back from the on-disk log written by `logger()` (newest
+first, so `i = 1` is the most recent entry). Returns a single entry as a
+list, or several entries row-bound into a data frame.
+
+**Returns:** a list of the last log item, or a data frame of multiple items
+
