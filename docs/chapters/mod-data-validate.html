@@ -520,21 +520,6 @@ Warning
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span><code>data_validate</code> is now part of <code>data_check</code>
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>These checks used to be a separate module that you ran after <code>data_check</code>. They are now part of <code>data_check</code> itself, so there is no <code>data_validate</code> module to run: <code>module_run(paper, "data_validate")</code> will fail. Run <a href="../chapters/mod-data-check.html"><code>data_check</code></a> instead, and every check described in this chapter runs automatically as part of it.</p>
-<p>The two were merged because they always had to be run in the right order and pass results between themselves. One module now covers file classification, column description, data-quality findings, spreadsheet formatting and careless responding.</p>
-<p>This chapter still describes each check in its own right, because knowing what is being checked, and why, matters when you read the results. Where a result is returned, we name the element of <code>data_check</code>’s output that holds it.</p>
-</div>
-</div>
 <section id="what-it-checks" class="level2" data-number="24.1"><h2 data-number="24.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">24.1</span> What it checks</h2>
 <p><code>data_check</code> runs automated <strong>data-quality checks</strong> on every column it extracts, flagging the kinds of problems that are easy to miss by eye but common in shared data. Every check is a small, dependency-free base-R function that returns a uniform <code>list(problem, message, values)</code>, so the module can run them all over every column and collect the findings. The checks are:</p>
@@ -562,7 +547,7 @@ Warning
 <li>
 <strong>Personal information</strong> — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, credit-card numbers, geographic coordinates, free text).</li>
 </ul>
-<p>For every <strong>spreadsheet file</strong> (<code>.xlsx</code>, legacy <code>.xls</code>, OpenDocument <code>.ods</code>/<code>.fods</code>), <code>data_check</code> also inspects the <strong>raw workbook</strong>, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet. These were formerly checked by a separate <code>excel_check</code> module; that module no longer exists, and its checks now run automatically as part of <code>data_check</code>, on the same files it has already located.</p>
+<p>For every <strong>spreadsheet file</strong> (<code>.xlsx</code>, legacy <code>.xls</code>, OpenDocument <code>.ods</code>/<code>.fods</code>), <code>data_check</code> also inspects the <strong>raw workbook</strong>, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet.</p>
 <p>It also produces an inventory of <strong>demographic columns</strong>, a <strong>Qualtrics survey metadata</strong> summary, a <strong>careless-responding</strong> screen for survey data, and a <strong>combined distribution figure</strong> of the numeric columns.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">

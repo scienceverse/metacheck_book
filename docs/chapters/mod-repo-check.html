@@ -492,7 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="what-it-checks" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">21.1</span> What it checks</h2>
-<p>The <code>repo_check</code> module finds links to <strong>research repositories</strong> in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: <a href="../chapters/mod-code-check.html">code_check</a> and <a href="../chapters/mod-data-check.html">data_check</a> both build on the file list <code>repo_check</code> produces.</p>
+<p>The <code>repo_check</code> module finds links to <strong>research repositories</strong> in a paper, retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: <a href="../chapters/mod-code-check.html">code_check</a> and <a href="../chapters/mod-data-check.html">data_check</a> both build on the file list <code>repo_check</code> produces. See <a href="#repositories-it-searches">Repositories it searches</a> below for the full list of platforms it recognises.</p>
 <p>Beyond listing files, <code>repo_check</code> runs a set of checks on what it finds:</p>
 <ul>
 <li>whether each repository has a <strong>README</strong>;</li>
@@ -531,9 +531,10 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 14 files in 4 repositories.
-#&gt; -  We found 1 README file and 3 repositories without READMEs.
-#&gt; -  We found 1 archive file.</code></pre>
+#&gt; -  We found 78 files in 4 repositories.
+#&gt; -  We found 6 README files and 3 repositories without READMEs.
+#&gt; -  We could not classify 1 file.
+#&gt; -  We found 15 file naming problems to fix.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> lists every file found across all linked repositories:</p>
@@ -543,12 +544,6 @@ Note
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 64%">
-<col style="width: 11%">
-<col style="width: 11%">
-</colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">repo_name</th>
 <th style="text-align: left;">file_name</th>
@@ -557,19 +552,19 @@ Note
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">pngda</td>
 <td style="text-align: left;">README</td>
 <td style="text-align: left;">readme</td>
 <td style="text-align: right;">30</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">pngda</td>
 <td style="text-align: left;">papercheck.png</td>
 <td style="text-align: left;">image</td>
 <td style="text-align: right;">1564236</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">pngda</td>
 <td style="text-align: left;">test_script.R</td>
 <td style="text-align: left;">code</td>
 <td style="text-align: right;">183</td>
@@ -593,28 +588,28 @@ Note
 <td style="text-align: right;">5</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">629bx</td>
-<td style="text-align: left;">Archive.zip</td>
-<td style="text-align: left;">archive</td>
-<td style="text-align: right;">6410</td>
+<td style="text-align: left;">pngda</td>
+<td style="text-align: left;">README</td>
+<td style="text-align: left;">readme</td>
+<td style="text-align: right;">30</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Code/Study 1.r</td>
-<td style="text-align: left;">code</td>
-<td style="text-align: right;">183</td>
+<td style="text-align: left;">pngda</td>
+<td style="text-align: left;">papercheck.png</td>
+<td style="text-align: left;">image</td>
+<td style="text-align: right;">1564236</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Codebook/Study 1 - csv - dataset 1.csv___CODEBOOK.csv</td>
-<td style="text-align: left;">data</td>
-<td style="text-align: right;">96</td>
+<td style="text-align: left;">pngda</td>
+<td style="text-align: left;">README.md</td>
+<td style="text-align: left;">readme</td>
+<td style="text-align: right;">887</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">4377</td>
-<td style="text-align: left;">Codebook/Study 1.csv___CODEBOOK.csv</td>
-<td style="text-align: left;">data</td>
-<td style="text-align: right;">96</td>
+<td style="text-align: left;">pngda</td>
+<td style="text-align: left;">DESCRIPTION</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">867</td>
 </tr>
 </tbody>
 </table>
@@ -628,49 +623,106 @@ Note
 </div>
 </section><section id="repositories-it-searches" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="repositories-it-searches">
 <span class="header-section-number">21.4</span> Repositories it searches</h2>
-<p><code>repo_check</code> looks for links to five repository platforms, each via its own link-finding helper (<code>osf_links()</code>, <code>github_links()</code>, <code>rbox_links()</code>, <code>psycharchives_links()</code>, <code>zenodo_links()</code>) and its own file-listing call:</p>
+<p><code>repo_check</code> looks for links to the following repository platforms, each via its own link-finding helper and its own file-listing call. Some are a single hosted service (Zenodo, ResearchBox); others are open-source software that many independent organisations each run on their own address, in which case <code>repo_check</code> recognises any address on a maintained list rather than one fixed host — see each row’s note for how many addresses that currently covers.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead><tr class="header">
 <th>Platform</th>
 <th>Link finder</th>
 <th>How files are listed</th>
+<th>Coverage</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>OSF</td>
 <td><code>osf_links()</code></td>
 <td>recursive <code>osf_info()</code>, including registrations (see below)</td>
+<td>the Open Science Framework (single service)</td>
 </tr>
 <tr class="even">
 <td>GitHub</td>
 <td><code>github_links()</code></td>
 <td>
 <code>github_tree_files()</code> — one repo-metadata + one full-tree API call, listing the repository in full</td>
+<td>github.com (single service)</td>
 </tr>
 <tr class="odd">
+<td>GitLab</td>
+<td><code>gitlab_links()</code></td>
+<td><code>gitlab_tree_files()</code></td>
+<td>gitlab.com (single service)</td>
+</tr>
+<tr class="even">
 <td>ResearchBox</td>
 <td><code>rbox_links()</code></td>
 <td>
 <code>rbox_file_download()</code> (downloads and unzips the box)</td>
+<td>researchbox.org (single service)</td>
+</tr>
+<tr class="odd">
+<td>DSpace (legacy)</td>
+<td><code>dspace_links()</code></td>
+<td>
+<code>psycharchives_file_download()</code> (DSpace’s older REST API; lists without downloading)</td>
+<td>PsychArchives and 5 other installations still running this API version</td>
 </tr>
 <tr class="even">
-<td>PsychArchives</td>
-<td><code>psycharchives_links()</code></td>
+<td>DSpace 7</td>
+<td><code>dspace7_links()</code></td>
 <td>
-<code>psycharchives_file_download()</code> (DSpace REST API; lists without downloading)</td>
+<code>dspace7_file_download()</code> (DSpace 7’s newer REST API; lists without downloading)</td>
+<td>64 installations, including Cornell’s eCommons, Georgia Tech’s Digital Repository, and ETH Zürich’s Research Collection</td>
 </tr>
 <tr class="odd">
 <td>Zenodo</td>
 <td><code>zenodo_links()</code></td>
 <td><code>zenodo_info()</code></td>
+<td>zenodo.org (single service)</td>
+</tr>
+<tr class="even">
+<td>Dataverse</td>
+<td><code>dataverse_links()</code></td>
+<td>
+<code>dataverse_info()</code> / <code>dataverse_file_download()</code>
+</td>
+<td>121 independent installations, including Harvard Dataverse, DataverseNL, and the DANS Data Stations</td>
+</tr>
+<tr class="odd">
+<td>Figshare</td>
+<td><code>figshare_links()</code></td>
+<td>
+<code>figshare_info()</code> / <code>figshare_file_download()</code>
+</td>
+<td>figshare.com (any branded subdomain) plus 16 institutions with their own address on the same service, e.g.&nbsp;the University of Leicester and DTU Data</td>
+</tr>
+<tr class="even">
+<td>4TU.ResearchData</td>
+<td><code>researchdata4tu_links()</code></td>
+<td>
+<code>researchdata4tu_info()</code> / <code>researchdata4tu_file_download()</code>
+</td>
+<td>data.4tu.nl (single service; runs Djehuty, a documented copy of Figshare’s own API)</td>
+</tr>
+<tr class="odd">
+<td>Dryad</td>
+<td><code>dryad_links()</code></td>
+<td><code>dryad_info()</code></td>
+<td>datadryad.org (single service)</td>
+</tr>
+<tr class="even">
+<td>ReShare</td>
+<td><code>reshare_links()</code></td>
+<td><code>reshare_info()</code></td>
+<td>UK Data Service’s self-deposit repository (single service)</td>
 </tr>
 </tbody>
 </table>
+<p>DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.</p>
 <section id="osf-registrations-follow-their-source-project" class="level3" data-number="21.4.1"><h3 data-number="21.4.1" class="anchored" data-anchor-id="osf-registrations-follow-their-source-project">
 <span class="header-section-number">21.4.1</span> OSF registrations follow their source project</h3>
 <p>An OSF <strong>registration</strong> is a locked snapshot. Many “Open-Ended Registration” entries (common in older schemas) only <em>describe</em> what was shared, with the real files living in the project the registration was made from (<code>registered_from</code>). Since the manuscript usually links only the registration, <code>repo_check</code> follows <code>registered_from</code> automatically:</p>
@@ -679,7 +731,7 @@ Note
 <li>if the source project is <strong>closed or inaccessible</strong>, the report flags this explicitly, distinguishing two cases: the registration itself still holds a mirrored copy of the files (nothing is lost, but the permanent home is unreachable), or no copy exists anywhere (the files are genuinely unreachable).</li>
 </ul></section><section id="github-repositories-are-listed-in-full" class="level3" data-number="21.4.2"><h3 data-number="21.4.2" class="anchored" data-anchor-id="github-repositories-are-listed-in-full">
 <span class="header-section-number">21.4.2</span> GitHub repositories are listed in full</h3>
-<p>Every GitHub repository is listed in full, whatever its size, exactly as OSF, Zenodo, ResearchBox, PsychArchives and local directories have always been treated. Listing a repository is cheap — it costs two API calls and transfers no file contents — so there is nothing to configure and no size threshold to set.</p>
+<p>Every GitHub repository is listed in full, whatever its size, exactly as OSF, Zenodo, ResearchBox, DSpace and local directories have always been treated. Listing a repository is cheap — it costs two API calls and transfers no file contents — so there is nothing to configure and no size threshold to set.</p>
 <p>There remain two reasons a GitHub repository can fail to be listed, and neither is one a setting can fix. Either the repository is invalid or inaccessible (it has been renamed, deleted, or made private), or it exceeds GitHub’s own limit of 100,000 items per tree request, in which case GitHub returns a listing it marks as truncated and metacheck reports it as too large to list rather than silently using a partial one. Repositories in either state are recorded in <code>$gated_repos</code> (see below) with the reason, so a report can explain <em>why</em> a paper produced no GitHub files instead of simply reporting none found.</p>
 <p>Note that this concerns <em>listing</em> only. How much of a repository is ever <strong>downloaded</strong> is still capped, by the per-file and per-repository size limits in <code>data_check</code> described in the <a href="../chapters/mod-data-check.html">data_check</a> chapter.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -722,7 +774,59 @@ Note
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">naming_issues</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 6%">
+<col style="width: 3%">
+<col style="width: 63%">
+<col style="width: 6%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">file_name</th>
+<th style="text-align: left;">rule</th>
+<th style="text-align: left;">severity</th>
+<th style="text-align: left;">detail</th>
+<th style="text-align: left;">paper_id</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DESCRIPTION</td>
+<td style="text-align: left;">unclassifiable</td>
+<td style="text-align: left;">bad</td>
+<td style="text-align: left;">could not be classified by name or extension (data_type is ‘unknown’); add a recognisable keyword (data, code, materials, …) or a known extension</td>
+<td style="text-align: left;">to_err_is_human</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: left;">spaces</td>
+<td style="text-align: left;">bad</td>
+<td style="text-align: left;">contains a space</td>
+<td style="text-align: left;">to_err_is_human</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Study 1 - csv - dataset 1.csv___CODEBOOK.csv</td>
+<td style="text-align: left;">spaces</td>
+<td style="text-align: left;">bad</td>
+<td style="text-align: left;">contains a space</td>
+<td style="text-align: left;">to_err_is_human</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Study 1.csv___CODEBOOK.csv</td>
+<td style="text-align: left;">spaces</td>
+<td style="text-align: left;">bad</td>
+<td style="text-align: left;">contains a space</td>
+<td style="text-align: left;">to_err_is_human</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Study 1 - csv - dataset 1.csv</td>
+<td style="text-align: left;">spaces</td>
+<td style="text-align: left;">bad</td>
+<td style="text-align: left;">contains a space</td>
+<td style="text-align: left;">to_err_is_human</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section><section id="special-file-types" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="special-file-types">
@@ -732,7 +836,7 @@ Note
 <p>E-Prime’s <code>.edat</code>/<code>.edat2</code> (and <code>.emrg</code>/<code>.emrg2</code> merge files) are proprietary binary formats that only the E-Prime software can open — metacheck neither downloads nor reads them. The analysable data lives in E-Prime’s plain-text export instead. <code>repo_check</code> flags any <code>.edat</code>/<code>.emrg</code> file that has <strong>no matching <code>.txt</code> export</strong> alongside it (matched by file stem), so authors know to also share the readable export (File → Export in E-Prime).</p>
 </section><section id="restricted-access-files" class="level3" data-number="21.7.2"><h3 data-number="21.7.2" class="anchored" data-anchor-id="restricted-access-files">
 <span class="header-section-number">21.7.2</span> Restricted-access files</h3>
-<p>A PsychArchives item flagged <code>restrictedAccess</code>/<code>embargoedAccess</code> hides its files behind institutional (SSO) login — they cannot be fetched programmatically. <code>repo_check</code> flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.</p>
+<p>A DSpace (legacy) item flagged <code>restrictedAccess</code>/<code>embargoedAccess</code> — most often seen on PsychArchives — hides its files behind institutional (SSO) login — they cannot be fetched programmatically. <code>repo_check</code> flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.</p>
 </section><section id="archives-and-looking-inside-a-.zip" class="level3" data-number="21.7.3"><h3 data-number="21.7.3" class="anchored" data-anchor-id="archives-and-looking-inside-a-.zip">
 <span class="header-section-number">21.7.3</span> Archives, and looking inside a <code>.zip</code>
 </h3>
@@ -754,9 +858,10 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 14 files in 4 repositories.
-#&gt; -  We found 1 README file and 3 repositories without READMEs.
-#&gt; -  We found 1 archive file.</code></pre>
+#&gt; -  We found 78 files in 4 repositories.
+#&gt; -  We found 6 README files and 3 repositories without READMEs.
+#&gt; -  We could not classify 1 file.
+#&gt; -  We found 15 file naming problems to fix.</code></pre>
 </div>
 </div>
 <p>Here the issues are a <strong>missing README</strong> and an <strong>archive file</strong> whose contents could not be examined. The per-paper summary table counts each file type — note <code>files_readme</code> is 0 (no README was shared) and <code>files_zip</code> is 1 (one archive):</p>
@@ -766,12 +871,15 @@ Note
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 21%">
+<col style="width: 13%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 9%">
 <col style="width: 9%">
 <col style="width: 10%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 17%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
 <col style="width: 13%">
 </colgroup>
 <thead><tr class="header">
@@ -782,15 +890,21 @@ Note
 <th style="text-align: right;">files_code</th>
 <th style="text-align: right;">files_readme</th>
 <th style="text-align: right;">files_zip</th>
+<th style="text-align: right;">files_unknown</th>
+<th style="text-align: right;">naming_issues</th>
+<th style="text-align: left;">roster_mismatch</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">11</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">39</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">FALSE</td>
 </tr></tbody>
 </table>
 </div>
@@ -800,17 +914,12 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="st">"archive"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_name"</span>, <span class="st">"file_name"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="caption-top">
 <thead><tr class="header">
-<th style="text-align: left;"></th>
 <th style="text-align: left;">repo_name</th>
 <th style="text-align: left;">file_name</th>
 </tr></thead>
-<tbody><tr class="odd">
-<td style="text-align: left;">7</td>
-<td style="text-align: left;">629bx</td>
-<td style="text-align: left;">Archive.zip</td>
-</tr></tbody>
+<tbody></tbody>
 </table>
 </div>
 </div>

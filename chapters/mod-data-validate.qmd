@@ -21,16 +21,6 @@ pak::pkg_install("scienceverse/metacheck@dev")
 ```
 :::
 
-::: callout-important
-## `data_validate` is now part of `data_check`
-
-These checks used to be a separate module that you ran after `data_check`. They are now part of `data_check` itself, so there is no `data_validate` module to run: `module_run(paper, "data_validate")` will fail. Run [`data_check`](mod-data-check.qmd) instead, and every check described in this chapter runs automatically as part of it.
-
-The two were merged because they always had to be run in the right order and pass results between themselves. One module now covers file classification, column description, data-quality findings, spreadsheet formatting and careless responding.
-
-This chapter still describes each check in its own right, because knowing what is being checked, and why, matters when you read the results. Where a result is returned, we name the element of `data_check`'s output that holds it.
-:::
-
 ## What it checks
 
 `data_check` runs automated **data-quality checks** on every column it extracts, flagging the kinds of problems that are easy to miss by eye but common in shared data. Every check is a small, dependency-free base-R function that returns a uniform `list(problem, message, values)`, so the module can run them all over every column and collect the findings. The checks are:
@@ -47,7 +37,7 @@ This chapter still describes each check in its own right, because knowing what i
 - **Mixed / legacy encoding** — text whose bytes are not valid UTF-8.
 - **Personal information** — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, credit-card numbers, geographic coordinates, free text).
 
-For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_check` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet. These were formerly checked by a separate `excel_check` module; that module no longer exists, and its checks now run automatically as part of `data_check`, on the same files it has already located.
+For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_check` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet.
 
 It also produces an inventory of **demographic columns**, a **Qualtrics survey metadata** summary, a **careless-responding** screen for survey data, and a **combined distribution figure** of the numeric columns.
 

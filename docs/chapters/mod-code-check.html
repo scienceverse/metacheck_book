@@ -452,10 +452,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#comments-code_remove_comments-and-code_line_stats" id="toc-comments-code_remove_comments-and-code_line_stats" class="nav-link" data-scroll-target="#comments-code_remove_comments-and-code_line_stats"><span class="header-section-number">22.5.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code></a></li>
   <li><a href="#absolute-paths-code_abs_path" id="toc-absolute-paths-code_abs_path" class="nav-link" data-scroll-target="#absolute-paths-code_abs_path"><span class="header-section-number">22.5.3</span> Absolute paths: <code>code_abs_path()</code></a></li>
   <li><a href="#working-directory-code_setwd" id="toc-working-directory-code_setwd" class="nav-link" data-scroll-target="#working-directory-code_setwd"><span class="header-section-number">22.5.4</span> Working directory: <code>code_setwd()</code></a></li>
-  <li><a href="#library-placement-code_library_lines" id="toc-library-placement-code_library_lines" class="nav-link" data-scroll-target="#library-placement-code_library_lines"><span class="header-section-number">22.5.5</span> Library placement: <code>code_library_lines()</code></a></li>
-  <li><a href="#missing-loaded-files-code_file_refs" id="toc-missing-loaded-files-code_file_refs" class="nav-link" data-scroll-target="#missing-loaded-files-code_file_refs"><span class="header-section-number">22.5.6</span> Missing loaded files: <code>code_file_refs()</code></a></li>
-  <li><a href="#packages-loaded-code_library_names" id="toc-packages-loaded-code_library_names" class="nav-link" data-scroll-target="#packages-loaded-code_library_names"><span class="header-section-number">22.5.7</span> Packages loaded: <code>code_library_names()</code></a></li>
-  <li><a href="#reproducible-environment-.code_version_pin_check" id="toc-reproducible-environment-.code_version_pin_check" class="nav-link" data-scroll-target="#reproducible-environment-.code_version_pin_check"><span class="header-section-number">22.5.8</span> Reproducible environment: <code>.code_version_pin_check()</code></a></li>
+  <li><a href="#package-installation-code_install_packages" id="toc-package-installation-code_install_packages" class="nav-link" data-scroll-target="#package-installation-code_install_packages"><span class="header-section-number">22.5.5</span> Package installation: <code>code_install_packages()</code></a></li>
+  <li><a href="#library-placement-code_library_lines" id="toc-library-placement-code_library_lines" class="nav-link" data-scroll-target="#library-placement-code_library_lines"><span class="header-section-number">22.5.6</span> Library placement: <code>code_library_lines()</code></a></li>
+  <li><a href="#missing-loaded-files-code_file_refs" id="toc-missing-loaded-files-code_file_refs" class="nav-link" data-scroll-target="#missing-loaded-files-code_file_refs"><span class="header-section-number">22.5.7</span> Missing loaded files: <code>code_file_refs()</code></a></li>
+  <li><a href="#packages-loaded-code_library_names" id="toc-packages-loaded-code_library_names" class="nav-link" data-scroll-target="#packages-loaded-code_library_names"><span class="header-section-number">22.5.8</span> Packages loaded: <code>code_library_names()</code></a></li>
+  <li><a href="#reproducible-environment-.code_version_pin_check" id="toc-reproducible-environment-.code_version_pin_check" class="nav-link" data-scroll-target="#reproducible-environment-.code_version_pin_check"><span class="header-section-number">22.5.9</span> Reproducible environment: <code>.code_version_pin_check()</code></a></li>
   </ul>
 </li>
   <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">22.6</span> A clean example and one with problems</a></li>
@@ -490,6 +491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>whether files contain <strong>comments</strong>;</li>
 <li>whether they use <strong>absolute file paths</strong> (which break on other machines);</li>
 <li>whether they call <strong><code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code></strong> (which hardcodes an assumption about the working directory);</li>
+<li>whether they call <strong><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code></strong> (which installs software on whoever runs the script, without asking);</li>
 <li>whether the files they try to <strong>load</strong> are actually present in the repository;</li>
 <li>whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script; and</li>
 <li>whether the repository <strong>pins its R/package environment</strong> (<code>renv.lock</code>, a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> dump, or a <code>groundhog</code>/<code>checkpoint</code> date-pin call), so package versions do not silently drift between the original analysis and any later reproduction attempt.</li>
@@ -529,7 +531,7 @@ Note
 <td>
 <code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>
 </td>
-<td>yes (parsed, commented, paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code>, libraries, loaded files)</td>
+<td>yes (parsed, commented, paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code>, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, libraries, loaded files)</td>
 </tr>
 <tr class="even">
 <td>Python</td>
@@ -605,14 +607,16 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 4 R, 0 SAS, 0 SPSS, 0 Stata, and 0 JASP code files.
-#&gt; -  All your code files had comments.
-#&gt; -  4 files loaded in the code were missing in the repository.
+#&gt; -  We found 33 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  1 code file had no comments.
+#&gt; -  11 files loaded in the code were missing in the repository.
 #&gt; -  Absolute file paths were found.
 #&gt; -  No setwd() calls were found.
+#&gt; -  No install.packages() calls were found.
 #&gt; -  Libraries/imports were loaded in multiple places.
-#&gt; -  The code loaded 3 distinct packages.
-#&gt; -  No parsing issues of R-type files were found.</code></pre>
+#&gt; -  The code loaded 7 distinct packages.
+#&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found.
+#&gt; -  Parsing issues of R-type files were found.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> has one row per code file, with the reproducibility checks as columns:</p>
@@ -645,7 +649,7 @@ Note
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0.1666667</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">bad.R</td>
@@ -664,12 +668,244 @@ Note
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Code/Study 1.r</td>
+<td style="text-align: left;">good-example.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4000000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0.1666667</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">02.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">03.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">04.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">07.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">08.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">09.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">18.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">21.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">22.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">utils.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.5372549</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">._utils.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
@@ -709,7 +945,10 @@ Note
 #&gt; [1] 2
 #&gt; 
 #&gt; $percent_comments
-#&gt; [1] 0.3333333</code></pre>
+#&gt; [1] 0.3333333
+#&gt; 
+#&gt; $has_docstring
+#&gt; [1] NA</code></pre>
 </div>
 </div>
 </section><section id="absolute-paths-code_abs_path" class="level3" data-number="22.5.3"><h3 data-number="22.5.3" class="anchored" data-anchor-id="absolute-paths-code_abs_path">
@@ -741,12 +980,25 @@ Note
 #&gt; 1 setwd('C:/Users/lakens/project')     1</code></pre>
 </div>
 </div>
-</section><section id="library-placement-code_library_lines" class="level3" data-number="22.5.5"><h3 data-number="22.5.5" class="anchored" data-anchor-id="library-placement-code_library_lines">
-<span class="header-section-number">22.5.5</span> Library placement: <code>code_library_lines()</code>
+</section><section id="package-installation-code_install_packages" class="level3" data-number="22.5.5"><h3 data-number="22.5.5" class="anchored" data-anchor-id="package-installation-code_install_packages">
+<span class="header-section-number">22.5.5</span> Package installation: <code>code_install_packages()</code>
 </h3>
-<p><code>code_library_lines()</code> returns the line numbers on which imports/library loads occur, with language-specific patterns (R <code>library</code>/<code>require</code>/<code>renv::install</code>/<code>p_load</code>; SAS <code>%include</code>/<code>libname</code>/<code>filename</code>; SPSS <code>INSERT</code>/<code>BEGIN PROGRAM</code>; Stata <code>do</code>/<code>net install</code>/<code>ssc install</code>). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script’s requirements are easy to see.</p>
+<p><code>code_install_packages()</code> finds R <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls (on comment-free code, so a commented-out call is never flagged — only a live one). An <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> call in analysis code installs software on whoever runs the script, without asking: at minimum disruptive (an unexpected install, network access, a package version the author never tested against), and at worst a security risk if it points at an untrusted repository. Best practice is to document required packages (a README, a <code>renv.lock</code>/<code>DESCRIPTION</code>) rather than install them from inside the analysis code itself. This check is R-only, since <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> is an R construct; a namespace-qualified <code><a href="https://rdrr.io/r/utils/install.packages.html">utils::install.packages()</a></code> call is matched too.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_lines</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"x &lt;- 1"</span>, <span class="st">"library(tidyr)"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_install_packages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"install.packages('ggplot2')"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; # A tibble: 1 × 2
+#&gt;   install_packages_call        line
+#&gt;   &lt;chr&gt;                       &lt;int&gt;
+#&gt; 1 install.packages('ggplot2')     1</code></pre>
+</div>
+</div>
+</section><section id="library-placement-code_library_lines" class="level3" data-number="22.5.6"><h3 data-number="22.5.6" class="anchored" data-anchor-id="library-placement-code_library_lines">
+<span class="header-section-number">22.5.6</span> Library placement: <code>code_library_lines()</code>
+</h3>
+<p><code>code_library_lines()</code> returns the line numbers on which imports/library loads occur, with language-specific patterns (R <code>library</code>/<code>require</code>/<code><a href="https://rstudio.github.io/renv/reference/install.html">renv::install</a></code>/<code>p_load</code>; SAS <code>%include</code>/<code>libname</code>/<code>filename</code>; SPSS <code>INSERT</code>/<code>BEGIN PROGRAM</code>; Stata <code>do</code>/<code>net install</code>/<code>ssc install</code>). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script’s requirements are easy to see.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_lines</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"x &lt;- 1"</span>, <span class="st">"library(tidyr)"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; # A tibble: 2 × 2
 #&gt;   code            line
@@ -755,29 +1007,29 @@ Note
 #&gt; 2 library(tidyr)     3</code></pre>
 </div>
 </div>
-</section><section id="missing-loaded-files-code_file_refs" class="level3" data-number="22.5.6"><h3 data-number="22.5.6" class="anchored" data-anchor-id="missing-loaded-files-code_file_refs">
-<span class="header-section-number">22.5.6</span> Missing loaded files: <code>code_file_refs()</code>
+</section><section id="missing-loaded-files-code_file_refs" class="level3" data-number="22.5.7"><h3 data-number="22.5.7" class="anchored" data-anchor-id="missing-loaded-files-code_file_refs">
+<span class="header-section-number">22.5.7</span> Missing loaded files: <code>code_file_refs()</code>
 </h3>
 <p><code>code_file_refs()</code> extracts the files a script reads or loads — from read/load calls (<code>read.csv</code>, <code>read_csv</code>, <code>fread</code>, <code>readRDS</code>, <code>load</code>, <code>fromJSON</code>, <code>source</code>, and their SAS/SPSS/Stata equivalents like <code>proc import</code>, <code>infile</code>, <code>GET DATA /FILE=</code>, <code>use</code>, <code>import delimited</code>) — by capturing the quoted filename argument. The module compares each referenced file (by basename) against the files actually present in the same repository; anything not found is reported as a <strong>missing loaded file</strong>, so a reader can check whether the input data were shared. There can be valid reasons a file is not shared (e.g.&nbsp;it holds personal data), which the module cannot evaluate, so it always reports rather than judges.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source('functions.R')"</span>, <span class="st">"d &lt;- read.csv('study.csv')"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source('functions.R')"</span>, <span class="st">"d &lt;- read.csv('study.csv')"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "functions.R" "study.csv"</code></pre>
 </div>
 </div>
-</section><section id="packages-loaded-code_library_names" class="level3" data-number="22.5.7"><h3 data-number="22.5.7" class="anchored" data-anchor-id="packages-loaded-code_library_names">
-<span class="header-section-number">22.5.7</span> Packages loaded: <code>code_library_names()</code>
+</section><section id="packages-loaded-code_library_names" class="level3" data-number="22.5.8"><h3 data-number="22.5.8" class="anchored" data-anchor-id="packages-loaded-code_library_names">
+<span class="header-section-number">22.5.8</span> Packages loaded: <code>code_library_names()</code>
 </h3>
 <p><code>code_library_names()</code> extracts the names of the packages/libraries a file loads (R <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code>/<code>::</code>; Python <code>import</code>/<code>from … import</code>). The module unions and de-duplicates these across all of a paper’s code files (<code>code_packages()</code>), giving the full list of dependencies the analysis relies on — with no version information, since that is static analysis of source text, not an installed environment.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;   package  source line
 #&gt; 1   dplyr library    1</code></pre>
 </div>
 </div>
-</section><section id="reproducible-environment-.code_version_pin_check" class="level3" data-number="22.5.8"><h3 data-number="22.5.8" class="anchored" data-anchor-id="reproducible-environment-.code_version_pin_check">
-<span class="header-section-number">22.5.8</span> Reproducible environment: <code>.code_version_pin_check()</code>
+</section><section id="reproducible-environment-.code_version_pin_check" class="level3" data-number="22.5.9"><h3 data-number="22.5.9" class="anchored" data-anchor-id="reproducible-environment-.code_version_pin_check">
+<span class="header-section-number">22.5.9</span> Reproducible environment: <code>.code_version_pin_check()</code>
 </h3>
 <p>Knowing <em>which</em> packages were loaded (above) is not the same as knowing <em>which versions</em>. The module separately checks whether the repository <strong>pins</strong> the exact R/package environment the analysis depended on, via any of:</p>
 <ul>
@@ -787,7 +1039,7 @@ Note
 </ul>
 <p>Without one of these, package versions can silently drift between when the analysis was run and any later reproduction attempt — a script that works today may fail or produce different results a year from now if <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> pulls whatever the CRAN snapshot happens to be at that time.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is also exposed for the forthcoming <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s Docker backend, which will use the declared R version (when found) to pick a matching base image — see <code>docker_use_declared_version</code> in that chapter.</p>
 </section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
@@ -802,7 +1054,7 @@ Note
 <strong>Parse errors</strong> (<code>parse_error == TRUE</code>) — the file is not valid R code.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -816,7 +1068,7 @@ Note
 <tr class="odd">
 <td style="text-align: left;">test_script.R</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
 <tr class="even">
@@ -832,10 +1084,184 @@ Note
 <td style="text-align: left;">FALSE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Code/Study 1.r</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">good-example.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">02.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">03.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">04.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">07.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">08.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">09.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">18.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">21.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">22.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">utils.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">._utils.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
 </table>
@@ -845,7 +1271,7 @@ Note
 <span class="header-section-number">22.7</span> Downloading and options</h2>
 <p><code>code_check</code> downloads the code files it will check (<code>download = TRUE</code>, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass <code>cache = TRUE</code>; otherwise they are discarded when the session ends. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, <code>max_download_size</code> — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># stream files from their URLs instead of downloading</span></span>
@@ -854,7 +1280,7 @@ Note
 <p>See the <a href="../chapters/local-files.html">Local Files</a> chapter for a full walkthrough of checking local code, including cloud-synced folders.</p>
 <p><code>manifest</code> merges the distinct packages loaded across a paper’s code into a metacheck manifest’s <code>code</code> section, alongside whatever <code>data_check</code> already wrote there:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, manifest <span class="op">=</span> <span class="st">"path/to/manifest/dir"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, manifest <span class="op">=</span> <span class="st">"path/to/manifest/dir"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="22.8"><h2 data-number="22.8" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
 <span class="header-section-number">22.8</span> The traffic light and what you get back</h2>
@@ -870,7 +1296,7 @@ Note
 <tbody>
 <tr class="odd">
 <td><strong>green</strong></td>
-<td>at least one file was analysed, no issues were found (missing files, no comments, absolute paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, spread-out libraries, or a parse error), <strong>and</strong> the repository pins its R/package environment</td>
+<td>at least one file was analysed, no issues were found (missing files, no comments, absolute paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls, spread-out libraries, or a parse error), <strong>and</strong> the repository pins its R/package environment</td>
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
@@ -894,15 +1320,15 @@ Note
 <tbody>
 <tr class="odd">
 <td><code>$table</code></td>
-<td>one row per code file, with <code>language</code>, <code>parse_error</code>, <code>code_abs_path</code>, <code>absolute_paths</code>, <code>code_setwd</code>, <code>setwd_calls</code>, <code>percentage_comment</code>, <code>library_max_between</code>, <code>packages</code>, <code>packages_n</code>, <code>loaded_files_missing</code>, and the missing-file names</td>
+<td>one row per code file, with <code>language</code>, <code>parse_error</code>, <code>code_abs_path</code>, <code>absolute_paths</code>, <code>code_setwd</code>, <code>setwd_calls</code>, <code>code_install_packages</code>, <code>install_packages_calls</code>, <code>percentage_comment</code>, <code>library_max_between</code>, <code>packages</code>, <code>packages_n</code>, <code>loaded_files_missing</code>, and the missing-file names</td>
 </tr>
 <tr class="even">
 <td><code>$summary_table</code></td>
-<td>per-paper aggregates (<code>code_n</code>, <code>code_checked</code>, <code>code_abs_path</code>, <code>code_setwd</code>, <code>code_missing_files</code>, <code>code_min_comments</code>, <code>code_parse_errors</code>, <code>code_packages_n</code>, <code>code_version_pinned</code>)</td>
+<td>per-paper aggregates (<code>code_n</code>, <code>code_checked</code>, <code>code_abs_path</code>, <code>code_setwd</code>, <code>code_install_packages</code>, <code>code_missing_files</code>, <code>code_min_comments</code>, <code>code_parse_errors</code>, <code>code_packages_n</code>, <code>code_version_pinned</code>)</td>
 </tr>
 <tr class="odd">
 <td><code>$report</code></td>
-<td>formatted report sections: comments, missing files, absolute paths, working directory, libraries, packages/dependencies, reproducible environment, and parsable code</td>
+<td>formatted report sections: comments, missing files, absolute paths, working directory, package installation, libraries, packages/dependencies, reproducible environment, and parsable code</td>
 </tr>
 <tr class="even">
 <td><code>$summary_text</code></td>

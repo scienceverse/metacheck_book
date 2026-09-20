@@ -11,12 +11,10 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-::: callout-warning
-## Not yet available
+::: callout-note
+## Now in `dev`
 
-This module is still being developed and is in neither the released version of Metacheck nor the `dev` development version. Everything in this chapter — `reproducibility_check` itself and all of the `repro_*` helper functions — describes work that is not yet part of the package, so the code here will not run against either version you can install.
-
-The chapter is published now because the design is settled and worth describing. It will become usable once the module is added to `dev`; until then, treat it as a description of what is coming rather than as instructions you can follow.
+`reproducibility_check` and all of the `repro_*` helper functions described in this chapter are in the `dev` development version of Metacheck — install it with `remotes::install_github("scienceverse/metacheck", ref = "dev")` to run the code below. It is not yet in a released version on CRAN.
 :::
 
 ## What it checks
@@ -231,6 +229,10 @@ repro_docker_available()
 The dependency-install phase under `sandbox = "docker"` runs with the network **on** (it has to, to reach CRAN or GitHub) but is otherwise hardened the same way — non-root, capabilities dropped, no new privileges. Only the per-script *run* phase disables the network entirely, since that is the phase running the paper's own, potentially untrusted, analysis code.
 :::
 
+::: callout-tip
+Working through a whole corpus rather than one paper? [Batch mode](#batch-mode), described later in this chapter, runs several papers' `sandbox = "docker"` checks concurrently instead of one at a time.
+:::
+
 ## The pre-built Docker image, and why it exists
 
 The first time you think through what `sandbox = "docker"` needs to do to run a real paper's code, an obvious problem appears: most papers' scripts `library()` several packages that are not part of base R, and a container starts with nothing installed. Naively, every single `reproducibility_check()` call would need to install a paper's entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (`rstan`, `lme4`, and dozens of others), that can mean minutes of compilation *per paper*.
@@ -280,6 +282,42 @@ scratch rather than using the pre-built image.
 ```
 
 Setting `docker_use_declared_version = TRUE` switches to a bare `rocker/r-ver:<declared version>` image with nothing pre-installed — genuinely slower, since every dependency now installs from source, but it matches the paper's own environment exactly. When a paper declared *no* version at all, this option falls back to bare `rocker/r-ver:latest` rather than silently reusing the pre-built image either — if you explicitly asked for version-matching, getting the fast pre-built image back through the back door when there was nothing to match against would defeat the point of asking.
+
+## Checking many papers at once: batch mode {#batch-mode}
+
+Everything so far runs one paper through `reproducibility_check()` at a time. If you are working through a whole corpus — a `paperlist` of dozens or hundreds of papers — calling it once per paper in a loop means only one Docker container is ever running: paper 2 does not start until paper 1's containers (install, then run) have both finished. For `sandbox = "docker"`, where each paper's own work is a slow, external `docker run` rather than in-memory R computation, that is time left on the table on any machine with more than one CPU core to spare.
+
+Passing a `paperlist` together with `workers > 1` (and `execute = TRUE, sandbox = "docker"`) switches to **batch mode**: up to `workers` papers run their Docker checks at the same time, and the moment one paper finishes, the next paper in the list starts — never fewer than `workers` running while papers remain queued, never more.
+
+```{r}
+#| eval: false
+papers <- papers_load("psychsci", cache = TRUE)[1:20]
+
+mo <- module_run(papers, "reproducibility_check",
+                 execute = TRUE, sandbox = "docker",
+                 workers = 4, timeout = 600,
+                 results_dir = "repro_results")
+```
+
+A few things are worth understanding about how this actually runs, rather than treating it as a black box:
+
+- **Each paper runs in its own background R process** (via the `callr` package — install it if it is not already present), not in your current R session. This is deliberate, not an implementation detail you can ignore: `reproducibility_check()` reads and restores a few process-wide settings during a single-paper call (`llm_use()`, an internal option `data_check`/`code_check` share for API-limit handling), and those are not safe for several papers to set and restore *concurrently* in one shared session. A separate OS process per paper sidesteps the problem entirely — one paper's settings can never be observed by another's.
+- **Every other argument still means exactly what it means for one paper.** `timeout`, `install_missing`, `docker_use_declared_version`, `cache`, and everything else in [Options](#options) apply individually to each paper's own run; `workers` only controls how many of those individual runs are in flight together.
+- **Container resource limits scale with `workers` automatically.** Each container is capped at `1/workers` of the host's CPU and memory (`--cpus`, `--memory`, in addition to the `--pids-limit 512` every container already had) — so four concurrent papers cannot collectively claim more than the whole machine, and one runaway script cannot starve the other three. You do not set this yourself; it is computed from `workers` and the host's own detected CPU count and RAM.
+- **`results_dir` writes each paper's full result to disk as soon as that paper finishes** — one `<paper_id>.rds` file per paper, in the same format `capture_module_tables()` uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with `collect_module_tables("repro_results", "reproducibility_check")`.
+
+```{r}
+#| eval: false
+mo$summary_table[, c("paper_id", "repro_ran_ok", "repro_deps")] |> head()
+mo$summary_text
+#> Ran the reproducibility check on 20 papers (up to 4 at a time): 17 ok, 2 red, 1 error.
+```
+
+The returned object has the same shape as a single-paper call, just with one row per paper in `$table` and `$summary_table` (tagged by `paper_id`, exactly like every other module that accepts a `paperlist`), plus one extra element: `$per_paper`, a named list holding each paper's own complete, untruncated module result — the full `$run_results`, `$install_results`, `$stat_output`, and `$report` you would get from calling `reproducibility_check()` on that paper alone.
+
+::: callout-note
+Batch mode is specific to `sandbox = "docker"`. Passing `workers > 1` with `sandbox = "process"`, with `execute = FALSE`, or with a single paper does nothing different — those paths are already fast enough, or already isolate only at the crash level rather than the process level, that running several at once is not worth the added complexity of a background-process pool. `workers` is simply ignored in those cases rather than raising an error, so a script that loops over papers with mixed settings does not need to branch on it itself.
+:::
 
 ## Running the code: what happens during execution
 
@@ -439,6 +477,8 @@ The static-only red condition is worth stating precisely, since it is easy to ov
 | `cran_install_main` | `FALSE` | (only under `sandbox = "process"`) install CRAN-source dependencies into your real default library instead of a throwaway one, so they persist across papers in a batch run; ignored under `sandbox = "docker"`, where a container never has access to your host library |
 | `timeout` | `600` | per-script timeout in seconds |
 | `keep_sandbox` | `FALSE` | keep the throwaway run directory and return its path as `$sandbox`, to inspect exactly what ran |
+| `workers` | `1` | when `paper` is a paperlist and `sandbox = "docker"`, run this many papers' checks concurrently — see [Batch mode](#batch-mode) |
+| `results_dir` | `NULL` | with `workers > 1`, write each paper's result to `<paper_id>.rds` in this directory as soon as that paper finishes |
 | `local_path`, `local_only` | | run against local files without online repository lookups |
 | `model`, `params` | | passed through to the upstream modules' LLM calls (`data_check`, `psychds_check`), only used when `llm_use(TRUE)` |
 

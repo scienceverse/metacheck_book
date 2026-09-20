@@ -19,6 +19,7 @@ The `code_check` module analyses the **code files** shared with a paper. Buildin
 - whether files contain **comments**;
 - whether they use **absolute file paths** (which break on other machines);
 - whether they call **`setwd()`** (which hardcodes an assumption about the working directory);
+- whether they call **`install.packages()`** (which installs software on whoever runs the script, without asking);
 - whether the files they try to **load** are actually present in the repository;
 - whether **libraries are loaded in multiple places** rather than in a single block near the top of the script; and
 - whether the repository **pins its R/package environment** (`renv.lock`, a `sessionInfo()` dump, or a `groundhog`/`checkpoint` date-pin call), so package versions do not silently drift between the original analysis and any later reproduction attempt.
@@ -35,7 +36,7 @@ The module first labels every file with its language using `code_lang()`, which 
 
 | Language | Extensions | Analysed? |
 |---|---|---|
-| R | `.R`, `.Rmd`, `.qmd` | yes (parsed, commented, paths, `setwd()`, libraries, loaded files) |
+| R | `.R`, `.Rmd`, `.qmd` | yes (parsed, commented, paths, `setwd()`, `install.packages()`, libraries, loaded files) |
 | Python | `.py`, `.ipynb` | yes (except parsing) |
 | SAS | `.sas` | yes (except parsing) |
 | SPSS | `.sps` | yes (except parsing) |
@@ -127,6 +128,14 @@ code_abs_path(c("file <- 'C:/Users/lakens/data.csv'",
 code_setwd(c("setwd('C:/Users/lakens/project')", "d <- read.csv('x.csv')"))
 ```
 
+### Package installation: `code_install_packages()`
+
+`code_install_packages()` finds R `install.packages()` calls (on comment-free code, so a commented-out call is never flagged — only a live one). An `install.packages()` call in analysis code installs software on whoever runs the script, without asking: at minimum disruptive (an unexpected install, network access, a package version the author never tested against), and at worst a security risk if it points at an untrusted repository. Best practice is to document required packages (a README, a `renv.lock`/`DESCRIPTION`) rather than install them from inside the analysis code itself. This check is R-only, since `install.packages()` is an R construct; a namespace-qualified `utils::install.packages()` call is matched too.
+
+```{r}
+code_install_packages(c("install.packages('ggplot2')", "d <- read.csv('x.csv')"))
+```
+
 ### Library placement: `code_library_lines()`
 
 `code_library_lines()` returns the line numbers on which imports/library loads occur, with language-specific patterns (R `library`/`require`/`renv::install`/`p_load`; SAS `%include`/`libname`/`filename`; SPSS `INSERT`/`BEGIN PROGRAM`; Stata `do`/`net install`/`ssc install`). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script's requirements are easy to see.
@@ -207,15 +216,15 @@ module_run(paper, "code_check", manifest = "path/to/manifest/dir")
 
 | Light | Meaning |
 |---|---|
-| **green** | at least one file was analysed, no issues were found (missing files, no comments, absolute paths, `setwd()` calls, spread-out libraries, or a parse error), **and** the repository pins its R/package environment |
+| **green** | at least one file was analysed, no issues were found (missing files, no comments, absolute paths, `setwd()` calls, `install.packages()` calls, spread-out libraries, or a parse error), **and** the repository pins its R/package environment |
 | **yellow** | at least one of the above issues, or no pinned environment was found |
 | **na** | no code files could be analysed (e.g. only JASP/jamovi files were found) |
 
 | Element | What it contains |
 |---|---|
-| `$table` | one row per code file, with `language`, `parse_error`, `code_abs_path`, `absolute_paths`, `code_setwd`, `setwd_calls`, `percentage_comment`, `library_max_between`, `packages`, `packages_n`, `loaded_files_missing`, and the missing-file names |
-| `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_setwd`, `code_missing_files`, `code_min_comments`, `code_parse_errors`, `code_packages_n`, `code_version_pinned`) |
-| `$report` | formatted report sections: comments, missing files, absolute paths, working directory, libraries, packages/dependencies, reproducible environment, and parsable code |
+| `$table` | one row per code file, with `language`, `parse_error`, `code_abs_path`, `absolute_paths`, `code_setwd`, `setwd_calls`, `code_install_packages`, `install_packages_calls`, `percentage_comment`, `library_max_between`, `packages`, `packages_n`, `loaded_files_missing`, and the missing-file names |
+| `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_setwd`, `code_install_packages`, `code_missing_files`, `code_min_comments`, `code_parse_errors`, `code_packages_n`, `code_version_pinned`) |
+| `$report` | formatted report sections: comments, missing files, absolute paths, working directory, package installation, libraries, packages/dependencies, reproducible environment, and parsable code |
 | `$summary_text` | plain-text bulleted summary of each check |
 | `$version_pin` | the raw output of `.code_version_pin_check()` (mechanisms found, declared R version(s), and any `renv.lock` package table) — intended to be used by the forthcoming `reproducibility_check()`'s Docker backend to pick a matching base image |
 

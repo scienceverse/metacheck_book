@@ -13,7 +13,7 @@ library(metacheck)
 
 ## What it checks
 
-The `repo_check` module finds links to **research repositories** in a paper — the Open Science Framework (OSF), GitHub, ResearchBox, PsychArchives, and Zenodo — retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: [code_check](mod-code-check.qmd) and [data_check](mod-data-check.qmd) both build on the file list `repo_check` produces.
+The `repo_check` module finds links to **research repositories** in a paper, retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: [code_check](mod-code-check.qmd) and [data_check](mod-data-check.qmd) both build on the file list `repo_check` produces. See [Repositories it searches](#repositories-it-searches) below for the full list of platforms it recognises.
 
 Beyond listing files, `repo_check` runs a set of checks on what it finds:
 
@@ -59,15 +59,24 @@ mo$summary_table
 
 ## Repositories it searches
 
-`repo_check` looks for links to five repository platforms, each via its own link-finding helper (`osf_links()`, `github_links()`, `rbox_links()`, `psycharchives_links()`, `zenodo_links()`) and its own file-listing call:
+`repo_check` looks for links to the following repository platforms, each via its own link-finding helper and its own file-listing call. Some are a single hosted service (Zenodo, ResearchBox); others are open-source software that many independent organisations each run on their own address, in which case `repo_check` recognises any address on a maintained list rather than one fixed host — see each row's note for how many addresses that currently covers.
 
-| Platform | Link finder | How files are listed |
-|---|---|---|
-| OSF | `osf_links()` | recursive `osf_info()`, including registrations (see below) |
-| GitHub | `github_links()` | `github_tree_files()` — one repo-metadata + one full-tree API call, listing the repository in full |
-| ResearchBox | `rbox_links()` | `rbox_file_download()` (downloads and unzips the box) |
-| PsychArchives | `psycharchives_links()` | `psycharchives_file_download()` (DSpace REST API; lists without downloading) |
-| Zenodo | `zenodo_links()` | `zenodo_info()` |
+| Platform | Link finder | How files are listed | Coverage |
+|---|---|---|---|
+| OSF | `osf_links()` | recursive `osf_info()`, including registrations (see below) | the Open Science Framework (single service) |
+| GitHub | `github_links()` | `github_tree_files()` — one repo-metadata + one full-tree API call, listing the repository in full | github.com (single service) |
+| GitLab | `gitlab_links()` | `gitlab_tree_files()` | gitlab.com (single service) |
+| ResearchBox | `rbox_links()` | `rbox_file_download()` (downloads and unzips the box) | researchbox.org (single service) |
+| DSpace (legacy) | `dspace_links()` | `psycharchives_file_download()` (DSpace's older REST API; lists without downloading) | PsychArchives and 5 other installations still running this API version |
+| DSpace 7 | `dspace7_links()` | `dspace7_file_download()` (DSpace 7's newer REST API; lists without downloading) | 64 installations, including Cornell's eCommons, Georgia Tech's Digital Repository, and ETH Zürich's Research Collection |
+| Zenodo | `zenodo_links()` | `zenodo_info()` | zenodo.org (single service) |
+| Dataverse | `dataverse_links()` | `dataverse_info()` / `dataverse_file_download()` | 121 independent installations, including Harvard Dataverse, DataverseNL, and the DANS Data Stations |
+| Figshare | `figshare_links()` | `figshare_info()` / `figshare_file_download()` | figshare.com (any branded subdomain) plus 16 institutions with their own address on the same service, e.g. the University of Leicester and DTU Data |
+| 4TU.ResearchData | `researchdata4tu_links()` | `researchdata4tu_info()` / `researchdata4tu_file_download()` | data.4tu.nl (single service; runs Djehuty, a documented copy of Figshare's own API) |
+| Dryad | `dryad_links()` | `dryad_info()` | datadryad.org (single service) |
+| ReShare | `reshare_links()` | `reshare_info()` | UK Data Service's self-deposit repository (single service) |
+
+DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.
 
 ### OSF registrations follow their source project
 
@@ -78,7 +87,7 @@ An OSF **registration** is a locked snapshot. Many "Open-Ended Registration" ent
 
 ### GitHub repositories are listed in full
 
-Every GitHub repository is listed in full, whatever its size, exactly as OSF, Zenodo, ResearchBox, PsychArchives and local directories have always been treated. Listing a repository is cheap — it costs two API calls and transfers no file contents — so there is nothing to configure and no size threshold to set.
+Every GitHub repository is listed in full, whatever its size, exactly as OSF, Zenodo, ResearchBox, DSpace and local directories have always been treated. Listing a repository is cheap — it costs two API calls and transfers no file contents — so there is nothing to configure and no size threshold to set.
 
 There remain two reasons a GitHub repository can fail to be listed, and neither is one a setting can fix. Either the repository is invalid or inaccessible (it has been renamed, deleted, or made private), or it exceeds GitHub's own limit of 100,000 items per tree request, in which case GitHub returns a listing it marks as truncated and metacheck reports it as too large to list rather than silently using a partial one. Repositories in either state are recorded in `$gated_repos` (see below) with the reason, so a report can explain *why* a paper produced no GitHub files instead of simply reporting none found.
 
@@ -123,7 +132,7 @@ E-Prime's `.edat`/`.edat2` (and `.emrg`/`.emrg2` merge files) are proprietary bi
 
 ### Restricted-access files
 
-A PsychArchives item flagged `restrictedAccess`/`embargoedAccess` hides its files behind institutional (SSO) login — they cannot be fetched programmatically. `repo_check` flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.
+A DSpace (legacy) item flagged `restrictedAccess`/`embargoedAccess` — most often seen on PsychArchives — hides its files behind institutional (SSO) login — they cannot be fetched programmatically. `repo_check` flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.
 
 ### Archives, and looking inside a `.zip`
 
