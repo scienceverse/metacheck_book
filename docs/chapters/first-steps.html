@@ -448,7 +448,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#step-1-read-in-a-paper" id="toc-step-1-read-in-a-paper" class="nav-link active" data-scroll-target="#step-1-read-in-a-paper"><span class="header-section-number">3.1</span> Step 1: Read in a paper</a></li>
-  <li><a href="#step-2-run-one-check" id="toc-step-2-run-one-check" class="nav-link" data-scroll-target="#step-2-run-one-check"><span class="header-section-number">3.2</span> Step 2: Run one check</a></li>
+  <li>
+<a href="#step-2-run-one-check" id="toc-step-2-run-one-check" class="nav-link" data-scroll-target="#step-2-run-one-check"><span class="header-section-number">3.2</span> Step 2: Run one check</a>
+  <ul class="collapse">
+<li><a href="#getting-specific-pieces-of-information-out" id="toc-getting-specific-pieces-of-information-out" class="nav-link" data-scroll-target="#getting-specific-pieces-of-information-out"><span class="header-section-number">3.2.1</span> Getting specific pieces of information out</a></li>
+  </ul>
+</li>
   <li><a href="#step-3-create-a-full-report" id="toc-step-3-create-a-full-report" class="nav-link" data-scroll-target="#step-3-create-a-full-report"><span class="header-section-number">3.3</span> Step 3: Create a full report</a></li>
   <li><a href="#step-4-check-a-shared-repository" id="toc-step-4-check-a-shared-repository" class="nav-link" data-scroll-target="#step-4-check-a-shared-repository"><span class="header-section-number">3.4</span> Step 4: Check a shared repository</a></li>
   <li><a href="#what-you-have-just-done" id="toc-what-you-have-just-done" class="nav-link" data-scroll-target="#what-you-have-just-done"><span class="header-section-number">3.5</span> What you have just done</a></li>
@@ -509,42 +514,39 @@ Note
 </div>
 </section><section id="step-2-run-one-check" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="step-2-run-one-check">
 <span class="header-section-number">3.2</span> Step 2: Run one check</h2>
-<p>Metacheck organises its checks into <strong>modules</strong>. Each module looks for one specific thing. <code>module_run()</code> runs a single module on a paper object:</p>
+<p>Metacheck organises its checks into <strong>modules</strong>. Each module looks for one specific thing. <code>module_run()</code> runs a single module on a paper object. Just printing the result shows a short report:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Effect Sizes in t-tests and F-tests: All detected t-tests and F-tests had an effect size reported in the same sentence.</p>
+<p><code>stat_effect_size</code> checks whether a reported statistical test (like a <em>t</em>-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module gives a <strong>traffic light</strong> — green (no issues found), yellow (worth a closer look), red (a likely problem), or “na” (nothing for this module to check) — plus a short summary. The good paper reports <em>t</em>(130) = 18.04 together with Cohen’s <em>d<sub>z</sub></em> = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.</p>
+<p>Now download the bad paper’s PDF the same way as in Step 1, and run the same check on it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "green"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "All detected t-tests and F-tests had an effect size reported in the same sentence."</code></pre>
-</div>
-</div>
-<p><code>stat_effect_size</code> checks whether a reported statistical test (like a <em>t</em>-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module returns a <strong>traffic light</strong> — <code>"green"</code> (no issues found), <code>"yellow"</code> (worth a closer look), <code>"red"</code> (a likely problem), or <code>"na"</code> (nothing for this module to check) — plus a plain-language summary.</p>
-<p>The good paper reports <em>t</em>(130) = 18.04 together with Cohen’s <em>d<sub>z</sub></em> = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"https://raw.githubusercontent.com/Lakens/stroop_effect_paper_bad/main/analysis.pdf"</span>,</span>
 <span>  destfile <span class="op">=</span> <span class="st">"bad_paper.pdf"</span>, mode <span class="op">=</span> <span class="st">"wb"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">json_file</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"bad_paper.pdf"</span>, save_path <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span>
-<span><span class="va">bad_paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="va">json_file</span><span class="op">)</span></span>
-<span><span class="va">mo_bad</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">bad_paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
-<span><span class="va">mo_bad</span><span class="op">$</span><span class="va">traffic_light</span></span>
-<span><span class="va">mo_bad</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">bad_paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="va">json_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">bad_paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Effect Sizes in t-tests and F-tests: All effect sizes were reported, but some appear inconsistent with the test statistic. This can be because the effect size is not clearly labeled (e.g., d, instead of d_rm), because the effect sizes is not reported with enough precisions (e.g., 0.3 instead of 0.32), or because the effect size is incorrectly reported.</p>
+<p>This comes back red: it reports the same <em>t</em>-test, <em>t</em>(130) = 18.04, but with a Cohen’s <em>d<sub>z</sub></em> of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.</p>
+<section id="getting-specific-pieces-of-information-out" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="getting-specific-pieces-of-information-out">
+<span class="header-section-number">3.2.1</span> Getting specific pieces of information out</h3>
+<p>Printing the result is useful for reading, but if you want to use a piece of it elsewhere — say, to check many papers automatically — assign the result to a variable first, and then pull out just the part you need with <code>$</code>:</p>
 <div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo_bad</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">bad_paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
+<span><span class="va">mo_bad</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo_bad</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "All effect sizes were reported, but some appear inconsistent with the test statistic. This can be because the effect size is not clearly labeled (e.g., d, instead of d_rm), because the effect sizes is not reported with enough precisions (e.g., 0.3 instead of 0.32), or because the effect size is incorrectly reported."</code></pre>
 </div>
 </div>
-<p>Running the same check on the bad paper comes back red: it reports the same <em>t</em>-test, <em>t</em>(130) = 18.04, but with a Cohen’s <em>d<sub>z</sub></em> of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.</p>
+<p><code>mo_bad$traffic_light</code> gives you just the colour, and <code>mo_bad$summary_text</code> gives you just the plain-language summary — the same two pieces of text that were part of the printed report above. Every module’s result has more than this; see <a href="../chapters/mod-power.html">Running the module</a> in the Modules part of this book for what else is in there.</p>
 <p>You now know the single most important function in Metacheck: <code>module_run(paper, "module_name")</code>. Every module in the <a href="../chapters/mod-power.html">Modules</a> part of this book works exactly this way — only the module name changes.</p>
-</section><section id="step-3-create-a-full-report" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="step-3-create-a-full-report">
+</section></section><section id="step-3-create-a-full-report" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="step-3-create-a-full-report">
 <span class="header-section-number">3.3</span> Step 3: Create a full report</h2>
 <p>Most of the time you will not want to run modules one at a time — you want every relevant check, in one document. <code>report()</code> runs a whole battery of modules and writes the result to an HTML file you can open in a browser:</p>
 <div class="cell">

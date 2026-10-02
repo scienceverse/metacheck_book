@@ -64,17 +64,16 @@ paper <- read(good_paper_file)
 
 ## Step 2: Run one check
 
-Metacheck organises its checks into **modules**. Each module looks for one specific thing. `module_run()` runs a single module on a paper object:
+Metacheck organises its checks into **modules**. Each module looks for one specific thing. `module_run()` runs a single module on a paper object. Just printing the result shows a short report:
 
 ```{r}
-mo <- module_run(paper, "stat_effect_size")
-mo$traffic_light
-mo$summary_text
+#| results: asis
+module_run(paper, "stat_effect_size")
 ```
 
-`stat_effect_size` checks whether a reported statistical test (like a *t*-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module returns a **traffic light** — `"green"` (no issues found), `"yellow"` (worth a closer look), `"red"` (a likely problem), or `"na"` (nothing for this module to check) — plus a plain-language summary.
+`stat_effect_size` checks whether a reported statistical test (like a *t*-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module gives a **traffic light** — green (no issues found), yellow (worth a closer look), red (a likely problem), or "na" (nothing for this module to check) — plus a short summary. The good paper reports *t*(130) = 18.04 together with Cohen's *d~z~* = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.
 
-The good paper reports *t*(130) = 18.04 together with Cohen's *d~z~* = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.
+Now download the bad paper's PDF the same way as in Step 1, and run the same check on it:
 
 ```{r}
 #| eval: false
@@ -84,24 +83,31 @@ download.file(
 )
 json_file <- convert(file_path = "bad_paper.pdf", save_path = ".")
 bad_paper <- read(json_file)
-mo_bad <- module_run(bad_paper, "stat_effect_size")
-mo_bad$traffic_light
-mo_bad$summary_text
 ```
 
 ```{r}
 #| include: false
 bad_paper <- read("../converted/bad_paper.json")
-mo_bad <- module_run(bad_paper, "stat_effect_size")
 ```
 
 ```{r}
-#| echo: false
+#| results: asis
+module_run(bad_paper, "stat_effect_size")
+```
+
+This comes back red: it reports the same *t*-test, *t*(130) = 18.04, but with a Cohen's *d~z~* of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.
+
+### Getting specific pieces of information out
+
+Printing the result is useful for reading, but if you want to use a piece of it elsewhere — say, to check many papers automatically — assign the result to a variable first, and then pull out just the part you need with `$`:
+
+```{r}
+mo_bad <- module_run(bad_paper, "stat_effect_size")
 mo_bad$traffic_light
 mo_bad$summary_text
 ```
 
-Running the same check on the bad paper comes back red: it reports the same *t*-test, *t*(130) = 18.04, but with a Cohen's *d~z~* of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.
+`mo_bad$traffic_light` gives you just the colour, and `mo_bad$summary_text` gives you just the plain-language summary — the same two pieces of text that were part of the printed report above. Every module's result has more than this; see [Running the module](mod-power.qmd) in the Modules part of this book for what else is in there.
 
 You now know the single most important function in Metacheck: `module_run(paper, "module_name")`. Every module in the [Modules](mod-power.qmd) part of this book works exactly this way — only the module name changes.
 
