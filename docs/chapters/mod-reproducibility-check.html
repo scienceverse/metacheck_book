@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>28&nbsp; Reproducibility Check – The Metacheck Manual</title>
+<title>29&nbsp; Reproducibility Check – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-reproducibility-check.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-reproducibility-check.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -166,38 +166,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/first-steps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/text-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,163 +220,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reproducibility-check.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -387,13 +393,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -441,36 +447,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">28.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">28.2</span> Running the module</a></li>
-  <li><a href="#worked-example-building-a-small-reproducible-fixture" id="toc-worked-example-building-a-small-reproducible-fixture" class="nav-link" data-scroll-target="#worked-example-building-a-small-reproducible-fixture"><span class="header-section-number">28.3</span> Worked example: building a small reproducible fixture</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">29.1</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">29.2</span> Running the module</a></li>
+  <li><a href="#worked-example-building-a-small-reproducible-fixture" id="toc-worked-example-building-a-small-reproducible-fixture" class="nav-link" data-scroll-target="#worked-example-building-a-small-reproducible-fixture"><span class="header-section-number">29.3</span> Worked example: building a small reproducible fixture</a></li>
   <li>
-<a href="#the-static-assessments-function-by-function" id="toc-the-static-assessments-function-by-function" class="nav-link" data-scroll-target="#the-static-assessments-function-by-function"><span class="header-section-number">28.4</span> The static assessments, function by function</a>
+<a href="#the-static-assessments-function-by-function" id="toc-the-static-assessments-function-by-function" class="nav-link" data-scroll-target="#the-static-assessments-function-by-function"><span class="header-section-number">29.4</span> The static assessments, function by function</a>
   <ul class="collapse">
-<li><a href="#dependencies-repro_dependencies" id="toc-dependencies-repro_dependencies" class="nav-link" data-scroll-target="#dependencies-repro_dependencies"><span class="header-section-number">28.4.1</span> Dependencies: <code>repro_dependencies()</code></a></li>
-  <li><a href="#paths-repro_rewrite_paths" id="toc-paths-repro_rewrite_paths" class="nav-link" data-scroll-target="#paths-repro_rewrite_paths"><span class="header-section-number">28.4.2</span> Paths: <code>repro_rewrite_paths()</code></a></li>
-  <li><a href="#run-order-repro_file_io-and-repro_run_order" id="toc-run-order-repro_file_io-and-repro_run_order" class="nav-link" data-scroll-target="#run-order-repro_file_io-and-repro_run_order"><span class="header-section-number">28.4.3</span> Run order: <code>repro_file_io()</code> and <code>repro_run_order()</code></a></li>
-  <li><a href="#missing-inputs-repro_missing_inputs" id="toc-missing-inputs-repro_missing_inputs" class="nav-link" data-scroll-target="#missing-inputs-repro_missing_inputs"><span class="header-section-number">28.4.4</span> Missing inputs: <code>repro_missing_inputs()</code></a></li>
-  <li><a href="#two-more-static-helpers-you-may-not-need-directly" id="toc-two-more-static-helpers-you-may-not-need-directly" class="nav-link" data-scroll-target="#two-more-static-helpers-you-may-not-need-directly"><span class="header-section-number">28.4.5</span> Two more static helpers you may not need directly</a></li>
+<li><a href="#dependencies-repro_dependencies" id="toc-dependencies-repro_dependencies" class="nav-link" data-scroll-target="#dependencies-repro_dependencies"><span class="header-section-number">29.4.1</span> Dependencies: <code>repro_dependencies()</code></a></li>
+  <li><a href="#paths-repro_rewrite_paths" id="toc-paths-repro_rewrite_paths" class="nav-link" data-scroll-target="#paths-repro_rewrite_paths"><span class="header-section-number">29.4.2</span> Paths: <code>repro_rewrite_paths()</code></a></li>
+  <li><a href="#run-order-repro_file_io-and-repro_run_order" id="toc-run-order-repro_file_io-and-repro_run_order" class="nav-link" data-scroll-target="#run-order-repro_file_io-and-repro_run_order"><span class="header-section-number">29.4.3</span> Run order: <code>repro_file_io()</code> and <code>repro_run_order()</code></a></li>
+  <li><a href="#missing-inputs-repro_missing_inputs" id="toc-missing-inputs-repro_missing_inputs" class="nav-link" data-scroll-target="#missing-inputs-repro_missing_inputs"><span class="header-section-number">29.4.4</span> Missing inputs: <code>repro_missing_inputs()</code></a></li>
+  <li><a href="#two-more-static-helpers-you-may-not-need-directly" id="toc-two-more-static-helpers-you-may-not-need-directly" class="nav-link" data-scroll-target="#two-more-static-helpers-you-may-not-need-directly"><span class="header-section-number">29.4.5</span> Two more static helpers you may not need directly</a></li>
   </ul>
 </li>
-  <li><a href="#two-ways-to-run-the-code" id="toc-two-ways-to-run-the-code" class="nav-link" data-scroll-target="#two-ways-to-run-the-code"><span class="header-section-number">28.5</span> Two ways to run the code</a></li>
-  <li><a href="#the-pre-built-docker-image-and-why-it-exists" id="toc-the-pre-built-docker-image-and-why-it-exists" class="nav-link" data-scroll-target="#the-pre-built-docker-image-and-why-it-exists"><span class="header-section-number">28.6</span> The pre-built Docker image, and why it exists</a></li>
-  <li><a href="#declared-r-versions-and-why-they-matter-for-docker" id="toc-declared-r-versions-and-why-they-matter-for-docker" class="nav-link" data-scroll-target="#declared-r-versions-and-why-they-matter-for-docker"><span class="header-section-number">28.7</span> Declared R versions, and why they matter for Docker</a></li>
-  <li><a href="#batch-mode" id="toc-batch-mode" class="nav-link" data-scroll-target="#batch-mode"><span class="header-section-number">28.8</span> Checking many papers at once: batch mode</a></li>
-  <li><a href="#running-the-code-what-happens-during-execution" id="toc-running-the-code-what-happens-during-execution" class="nav-link" data-scroll-target="#running-the-code-what-happens-during-execution"><span class="header-section-number">28.9</span> Running the code: what happens during execution</a></li>
-  <li><a href="#what-if-theres-no-r-code-at-all" id="toc-what-if-theres-no-r-code-at-all" class="nav-link" data-scroll-target="#what-if-theres-no-r-code-at-all"><span class="header-section-number">28.10</span> What if there’s no R code at all?</a></li>
-  <li><a href="#extracting-the-statistical-output" id="toc-extracting-the-statistical-output" class="nav-link" data-scroll-target="#extracting-the-statistical-output"><span class="header-section-number">28.11</span> Extracting the statistical output</a></li>
-  <li><a href="#matching-the-reported-results-against-the-output" id="toc-matching-the-reported-results-against-the-output" class="nav-link" data-scroll-target="#matching-the-reported-results-against-the-output"><span class="header-section-number">28.12</span> Matching the reported results against the output</a></li>
-  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">28.13</span> The traffic light and what you get back</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">28.14</span> Options</a></li>
-  <li><a href="#notes-and-limitations" id="toc-notes-and-limitations" class="nav-link" data-scroll-target="#notes-and-limitations"><span class="header-section-number">28.15</span> Notes and limitations</a></li>
+  <li><a href="#two-ways-to-run-the-code" id="toc-two-ways-to-run-the-code" class="nav-link" data-scroll-target="#two-ways-to-run-the-code"><span class="header-section-number">29.5</span> Two ways to run the code</a></li>
+  <li><a href="#the-pre-built-docker-image-and-why-it-exists" id="toc-the-pre-built-docker-image-and-why-it-exists" class="nav-link" data-scroll-target="#the-pre-built-docker-image-and-why-it-exists"><span class="header-section-number">29.6</span> The pre-built Docker image, and why it exists</a></li>
+  <li><a href="#declared-r-versions-and-why-they-matter-for-docker" id="toc-declared-r-versions-and-why-they-matter-for-docker" class="nav-link" data-scroll-target="#declared-r-versions-and-why-they-matter-for-docker"><span class="header-section-number">29.7</span> Declared R versions, and why they matter for Docker</a></li>
+  <li><a href="#batch-mode" id="toc-batch-mode" class="nav-link" data-scroll-target="#batch-mode"><span class="header-section-number">29.8</span> Checking many papers at once: batch mode</a></li>
+  <li><a href="#running-the-code-what-happens-during-execution" id="toc-running-the-code-what-happens-during-execution" class="nav-link" data-scroll-target="#running-the-code-what-happens-during-execution"><span class="header-section-number">29.9</span> Running the code: what happens during execution</a></li>
+  <li><a href="#what-if-theres-no-r-code-at-all" id="toc-what-if-theres-no-r-code-at-all" class="nav-link" data-scroll-target="#what-if-theres-no-r-code-at-all"><span class="header-section-number">29.10</span> What if there’s no R code at all?</a></li>
+  <li><a href="#extracting-the-statistical-output" id="toc-extracting-the-statistical-output" class="nav-link" data-scroll-target="#extracting-the-statistical-output"><span class="header-section-number">29.11</span> Extracting the statistical output</a></li>
+  <li><a href="#matching-the-reported-results-against-the-output" id="toc-matching-the-reported-results-against-the-output" class="nav-link" data-scroll-target="#matching-the-reported-results-against-the-output"><span class="header-section-number">29.12</span> Matching the reported results against the output</a></li>
+  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">29.13</span> The traffic light and what you get back</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">29.14</span> Options</a></li>
+  <li><a href="#notes-and-limitations" id="toc-notes-and-limitations" class="nav-link" data-scroll-target="#notes-and-limitations"><span class="header-section-number">29.15</span> Notes and limitations</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-reproducibility-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-reproducibility-check.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/mod-power.html">Modules</a></li><li class="breadcrumb-item"><a href="../chapters/mod-reproducibility-check.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span>
+<span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span>
 </h1>
 </div>
 
@@ -498,8 +504,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>reproducibility_check</code> and all of the <code>repro_*</code> helper functions described in this chapter are in the <code>dev</code> development version of Metacheck — install it with <code>remotes::install_github("scienceverse/metacheck", ref = "dev")</code> to run the code below. It is not yet in a released version on CRAN.</p>
 </div>
 </div>
-<section id="what-it-checks" class="level2" data-number="28.1"><h2 data-number="28.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">28.1</span> What it checks</h2>
+<section id="what-it-checks" class="level2" data-number="29.1"><h2 data-number="29.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">29.1</span> What it checks</h2>
 <p>Where <a href="../chapters/mod-code-check.html">code_check</a> asks <em>“is this code written well?”</em>, <code>reproducibility_check</code> asks a harder question: <strong>could this code actually be run on this data — and do the numbers it produces match the ones the paper reports?</strong> It is the module that stands closest to the goal of computational reproducibility.</p>
 <p>The module works in two phases, and you choose how far to go:</p>
 <ol type="1">
@@ -532,8 +538,8 @@ Note
 <p>This module builds on <code>code_check</code>, <code>psychds_check</code>, and <code>data_check</code>, and inherits their <strong>live network calls</strong> to retrieve the repository files. You need an internet connection to run the code below.</p>
 </div>
 </div>
-</section><section id="running-the-module" class="level2" data-number="28.2"><h2 data-number="28.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">28.2</span> Running the module</h2>
+</section><section id="running-the-module" class="level2" data-number="29.2"><h2 data-number="29.2" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">29.2</span> Running the module</h2>
 <p>The default is the static phase — it does not run anything. This example reads every repository <code>demopaper()</code> links to, so (like the rest of this chapter) it needs those repositories to be reachable; the output below is shown rather than run live, so the chapter does not depend on every linked repository’s uptime at render time:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -685,8 +691,8 @@ Note
 <span><span class="co">#&gt; [[7]]</span></span>
 <span><span class="co">#&gt; character(0)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="worked-example-building-a-small-reproducible-fixture" class="level2" data-number="28.3"><h2 data-number="28.3" class="anchored" data-anchor-id="worked-example-building-a-small-reproducible-fixture">
-<span class="header-section-number">28.3</span> Worked example: building a small reproducible fixture</h2>
+</section><section id="worked-example-building-a-small-reproducible-fixture" class="level2" data-number="29.3"><h2 data-number="29.3" class="anchored" data-anchor-id="worked-example-building-a-small-reproducible-fixture">
+<span class="header-section-number">29.3</span> Worked example: building a small reproducible fixture</h2>
 <p>To see every static assessment concretely, it helps to build a tiny, self-contained example rather than rely on whatever a real deposit happens to contain. The example below creates two scripts — one that writes an intermediate file, one that reads it back — and a plan that tells the module where a Psych-DS release would put the data.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html">local_tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -705,11 +711,11 @@ Note
 <span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="st">"x,g\n1,a\n2,a\n3,b\n4,b"</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"data.csv"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The rest of the chapter uses these two files, <code>0_prep.R</code> and <code>1_analysis.R</code>, to demonstrate each static assessment on its own terms.</p>
-</section><section id="the-static-assessments-function-by-function" class="level2" data-number="28.4"><h2 data-number="28.4" class="anchored" data-anchor-id="the-static-assessments-function-by-function">
-<span class="header-section-number">28.4</span> The static assessments, function by function</h2>
+</section><section id="the-static-assessments-function-by-function" class="level2" data-number="29.4"><h2 data-number="29.4" class="anchored" data-anchor-id="the-static-assessments-function-by-function">
+<span class="header-section-number">29.4</span> The static assessments, function by function</h2>
 <p>Each static assessment is an exported helper, so you can run it on your own code independently of the module.</p>
-<section id="dependencies-repro_dependencies" class="level3" data-number="28.4.1"><h3 data-number="28.4.1" class="anchored" data-anchor-id="dependencies-repro_dependencies">
-<span class="header-section-number">28.4.1</span> Dependencies: <code>repro_dependencies()</code>
+<section id="dependencies-repro_dependencies" class="level3" data-number="29.4.1"><h3 data-number="29.4.1" class="anchored" data-anchor-id="dependencies-repro_dependencies">
+<span class="header-section-number">29.4.1</span> Dependencies: <code>repro_dependencies()</code>
 </h3>
 <p><code>repro_dependencies()</code> walks the code and returns the distinct packages it loads, tagged with <strong>where each would be installed from</strong> — a distinction <code>code_check</code>’s package list does not make. A <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> call resolves to CRAN by default; a <code>remotes::install_github("user/repo")</code> call is read from the source the code names (with the pinned <code>@ref</code> kept when present); packages that ship with R are tagged <code>base</code>, because a run never needs to install them; and a bundled list of common <strong>Bioconductor</strong> package names (<code>edgeR</code>, <code>DESeq2</code>, and similar) is checked so those are tagged <code>bioc</code> instead of <code>cran</code> — confirmed as the single largest identifiable cause of install failures in a real corpus run, since a Bioconductor-only package is never on CRAN and <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> simply fails for it unless this distinction is made upfront.</p>
 <div class="cell">
@@ -729,8 +735,8 @@ Note
 <p>Note that a namespace-qualified call — <code>stats::sd(...)</code> above — is picked up as a dependency even without an explicit <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> call; the third row shows <code>stats</code> tagged <code>base</code>. <code>repro_dependencies()</code> also accepts a <strong>list</strong> of per-file character vectors and pools them into one result: when the same package is named both bare (<code><a href="https://rdrr.io/r/base/library.html">library(pkg)</a></code>) and via an explicit GitHub source somewhere else in the pooled files, the GitHub row wins, since it carries the real install source.</p>
 <p>The dependency list is deliberately <strong>name-only, not version-pinned</strong>: static analysis cannot recover which version of a package was used. This is not a limitation to apologise for — it is the point. A reproduction runs against the <em>current</em> versions of these packages, and if it breaks under current versions, that break is itself a finding: it argues that the authors should have pinned their versions.</p>
 <p>That said, <code>reproducibility_check</code> does not have to guess blindly at what “current” means. As of the version documented in this chapter, <a href="../chapters/mod-code-check.html">code_check</a> itself checks whether a deposit <strong>declared</strong> its environment at all — see <a href="#declared-r-versions-and-why-they-matter-for-docker">Declared R versions</a> below, which explains how this feeds directly into the Docker execution path.</p>
-</section><section id="paths-repro_rewrite_paths" class="level3" data-number="28.4.2"><h3 data-number="28.4.2" class="anchored" data-anchor-id="paths-repro_rewrite_paths">
-<span class="header-section-number">28.4.2</span> Paths: <code>repro_rewrite_paths()</code>
+</section><section id="paths-repro_rewrite_paths" class="level3" data-number="29.4.2"><h3 data-number="29.4.2" class="anchored" data-anchor-id="paths-repro_rewrite_paths">
+<span class="header-section-number">29.4.2</span> Paths: <code>repro_rewrite_paths()</code>
 </h3>
 <p>A script reads and writes data by relative path — <code>read_csv("raw/x.csv")</code>, <code>saveRDS(m, "../out/model.rds")</code>. When the release is re-laid-out into the Psych-DS structure, with data under <code>data/</code> and per-study <code>study-&lt;group&gt;/data/</code> folders, those paths no longer resolve. <code>repro_rewrite_paths()</code> maps each referenced path to its new location, using the file plan that <a href="../chapters/mod-psychds-check.html">psychds_check</a> produces.</p>
 <p>Matching is by <strong>basename</strong>: a script’s <code>../data/x.csv</code> and the repository’s <code>raw/x.csv</code> are the same file seen from different working directories, so the prefix is ignored. When several files share a basename — a <code>demographics.csv</code> in more than one study — the ambiguity is resolved by <strong>study group</strong>: the candidate whose target path is in the same study as the script wins. Only when that still leaves more than one candidate is the reference left unrewritten and flagged as ambiguous, rather than guessed.</p>
@@ -756,8 +762,8 @@ Note
 <strong>Genuinely identical plan rows are not treated as ambiguous.</strong> If the same physical file is listed more than once in the plan (which happens when a paper links several mirrored repositories), and every candidate row resolves to the <em>same</em> target path, that is not ambiguity — there was only ever one possible answer, and <code>repro_rewrite_paths()</code> recognises this rather than flagging it.</li>
 <li>
 <strong>Mirror duplicates are collapsed by content, not by name</strong>, when you pass <code>structure_df</code> (the <code>data_check</code> structure table). A paper linking an OSF component and its own “Archive of OSF Storage” snapshot can have the <em>same</em> physical file grouped into two different (and mostly wrong) study labels by upstream heuristics; <code>repro_rewrite_paths()</code> hashes each candidate’s actual bytes first, so byte-identical mirrors count as one candidate rather than several conflicting ones.</li>
-</ul></section><section id="run-order-repro_file_io-and-repro_run_order" class="level3" data-number="28.4.3"><h3 data-number="28.4.3" class="anchored" data-anchor-id="run-order-repro_file_io-and-repro_run_order">
-<span class="header-section-number">28.4.3</span> Run order: <code>repro_file_io()</code> and <code>repro_run_order()</code>
+</ul></section><section id="run-order-repro_file_io-and-repro_run_order" class="level3" data-number="29.4.3"><h3 data-number="29.4.3" class="anchored" data-anchor-id="run-order-repro_file_io-and-repro_run_order">
+<span class="header-section-number">29.4.3</span> Run order: <code>repro_file_io()</code> and <code>repro_run_order()</code>
 </h3>
 <p>Scripts in a repository usually depend on each other, and running them in the wrong order fails for reasons that have nothing to do with reproducibility. <code>repro_file_io()</code> first extracts, for every file, the data it <strong>reads</strong>, the data it <strong>writes</strong>, and the scripts it <strong>sources</strong>:</p>
 <div class="cell">
@@ -792,8 +798,8 @@ Note
 </div>
 </div>
 <p><code>0_prep.R</code> runs first even though its own name sorts it that way anyway — but critically, the <code>order_basis</code> column reads <code>"dependency"</code>, not <code>"numeric"</code>, because the <em>real</em> reason is the data dependency: <code>1_analysis.R</code> reads <code>intermediate.csv</code>, which <code>0_prep.R</code> writes. <code>order_basis</code> is recorded on the file that has the <strong>incoming</strong> edge (the dependent file), not the file it depends on — so it is <code>1_analysis.R</code>’s row that carries <code>"dependency"</code> and names <code>0_prep.R</code> in <code>depends_on</code>.</p>
-</section><section id="missing-inputs-repro_missing_inputs" class="level3" data-number="28.4.4"><h3 data-number="28.4.4" class="anchored" data-anchor-id="missing-inputs-repro_missing_inputs">
-<span class="header-section-number">28.4.4</span> Missing inputs: <code>repro_missing_inputs()</code>
+</section><section id="missing-inputs-repro_missing_inputs" class="level3" data-number="29.4.4"><h3 data-number="29.4.4" class="anchored" data-anchor-id="missing-inputs-repro_missing_inputs">
+<span class="header-section-number">29.4.4</span> Missing inputs: <code>repro_missing_inputs()</code>
 </h3>
 <p>When a script reads a file that is not present, the reason matters. <code>repro_missing_inputs()</code> cross-references each unresolved read against the file plan and the download records, and classifies it as one of:</p>
 <ul>
@@ -805,16 +811,16 @@ Note
 <code>absent</code> — not in the repository at all. The script reads a file the authors did not share (or that an earlier, un-captured step was meant to produce).</li>
 </ul>
 <p>This distinction is the reason the static phase is worth running before a manual reproduction attempt: a run that fails because a 3 GB data file was skipped by the size gate is a completely different situation from a run that fails because the input data were never shared, and only the latter is a genuine openness problem.</p>
-</section><section id="two-more-static-helpers-you-may-not-need-directly" class="level3" data-number="28.4.5"><h3 data-number="28.4.5" class="anchored" data-anchor-id="two-more-static-helpers-you-may-not-need-directly">
-<span class="header-section-number">28.4.5</span> Two more static helpers you may not need directly</h3>
+</section><section id="two-more-static-helpers-you-may-not-need-directly" class="level3" data-number="29.4.5"><h3 data-number="29.4.5" class="anchored" data-anchor-id="two-more-static-helpers-you-may-not-need-directly">
+<span class="header-section-number">29.4.5</span> Two more static helpers you may not need directly</h3>
 <p>Two further exported helpers feed the module internally and are rarely called on their own, but are worth knowing about if you are extending the checks:</p>
 <ul>
 <li>
 <strong><code>repro_defined_vars(code_text_list)</code></strong> returns, for each file, the variable names it assigns at its <em>top level</em> (not inside a function). This is what powers the corrective re-run described below: when a script fails with <code>object 'x' not found</code>, the module looks for exactly one other file whose <code>repro_defined_vars()</code> result includes <code>x</code>, and — if there is exactly one — infers that it must run first.</li>
 <li>
 <strong><code>repro_materialize_layout()</code></strong> and <strong><code>repro_write_scripts()</code></strong> build the throwaway Psych-DS-shaped directory the execution phase actually runs against, and write the path-rewritten scripts into it. You will see their effects described below (the <code>data/</code>, <code>output/</code>, and <code>statistical_output/</code> folders), but you would only call them directly if you were building your own execution pipeline on top of metacheck’s static analysis.</li>
-</ul></section></section><section id="two-ways-to-run-the-code" class="level2" data-number="28.5"><h2 data-number="28.5" class="anchored" data-anchor-id="two-ways-to-run-the-code">
-<span class="header-section-number">28.5</span> Two ways to run the code</h2>
+</ul></section></section><section id="two-ways-to-run-the-code" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="two-ways-to-run-the-code">
+<span class="header-section-number">29.5</span> Two ways to run the code</h2>
 <p>Set <code>execute = TRUE</code> to actually run the paper’s code. A second argument, <code>sandbox</code>, decides <strong>where</strong>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># on this machine, in an isolated subprocess (the default)</span></span>
@@ -922,15 +928,15 @@ Tip
 <p>Working through a whole corpus rather than one paper? <a href="#batch-mode">Batch mode</a>, described later in this chapter, runs several papers’ <code>sandbox = "docker"</code> checks concurrently instead of one at a time.</p>
 </div>
 </div>
-</section><section id="the-pre-built-docker-image-and-why-it-exists" class="level2" data-number="28.6"><h2 data-number="28.6" class="anchored" data-anchor-id="the-pre-built-docker-image-and-why-it-exists">
-<span class="header-section-number">28.6</span> The pre-built Docker image, and why it exists</h2>
+</section><section id="the-pre-built-docker-image-and-why-it-exists" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="the-pre-built-docker-image-and-why-it-exists">
+<span class="header-section-number">29.6</span> The pre-built Docker image, and why it exists</h2>
 <p>The first time you think through what <code>sandbox = "docker"</code> needs to do to run a real paper’s code, an obvious problem appears: most papers’ scripts <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> several packages that are not part of base R, and a container starts with nothing installed. Naively, every single <code>reproducibility_check()</code> call would need to install a paper’s entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (<code>rstan</code>, <code>lme4</code>, and dozens of others), that can mean minutes of compilation <em>per paper</em>.</p>
 <p>To avoid that, Docker containers under <code>sandbox = "docker"</code> default to a <strong>pre-built image</strong>, <code>ghcr.io/scienceverse/metacheck_r:latest</code>, rather than a bare R installation. That image already has R, Quarto, and the roughly 750 most common packages a real corpus of psychology-science papers’ code actually uses — found by scanning thousands of real <code>.R</code>/<code>.Rmd</code>/<code>.qmd</code> files for their <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper’s dependencies are already in that list — which, for an ordinary <code>tidyverse</code>-and-<code>lme4</code>-shaped analysis, they usually are — the install phase does almost nothing, because <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace()</a></code> already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install.</p>
 <p>The image, its Dockerfile, the full package list, and detailed notes on how it was built (including some genuinely non-obvious bugs found along the way — a package can report a successful install and still fail to <em>load</em>, because a runtime shared library it needs is missing from a minimal image) are all in a dedicated repository: <a href="https://github.com/scienceverse/metacheck_docker_reproducibility">scienceverse/metacheck_docker_reproducibility</a>. If you want to build your own variant — a smaller image with only the most common packages, or one that adds LaTeX for PDF rendering, or CmdStan for <code>cmdstanr</code>-based Bayesian models — that repository is the starting point, and its README documents exactly which levers actually reduce image size and which ones (surprisingly) do not.</p>
-</section><section id="declared-r-versions-and-why-they-matter-for-docker" class="level2" data-number="28.7"><h2 data-number="28.7" class="anchored" data-anchor-id="declared-r-versions-and-why-they-matter-for-docker">
-<span class="header-section-number">28.7</span> Declared R versions, and why they matter for Docker</h2>
+</section><section id="declared-r-versions-and-why-they-matter-for-docker" class="level2" data-number="29.7"><h2 data-number="29.7" class="anchored" data-anchor-id="declared-r-versions-and-why-they-matter-for-docker">
+<span class="header-section-number">29.7</span> Declared R versions, and why they matter for Docker</h2>
 <p>The pre-built image is fast, but it was built against one specific R version. A paper that deposited an <code>renv.lock</code> file, or a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> text dump, or that pins its environment with <code>groundhog</code>/<code>checkpoint</code>, has told you <em>exactly</em> which R version its authors actually used — and that might not be the version the pre-built image happens to run.</p>
-<p><a href="../chapters/mod-code-check.html">code_check</a> is where this gets detected, as part of its own “Reproducible Environment” check: it looks for an <code>renv.lock</code> file anywhere in the repository (parsing its declared R version and every locked package + version), a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>/<code>session_info()</code> dump (matched by filename — <code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar, or embedded in a README), or an actual <code>groundhog::groundhog.library()</code>/<code>checkpoint::checkpoint()</code> date-pin call in the code — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code> with no pinning call does not count, since loading the package is not evidence anything was actually pinned.</p>
+<p><a href="../chapters/mod-code-check.html">code_check</a> is where this gets detected, as part of its own “Reproducible Environment” check: it looks for an <code>renv.lock</code> file anywhere in the repository (parsing its declared R version and every locked package + version), a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>/<code>session_info()</code> dump (matched by filename — <code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar, or embedded in a README), or an actual <code><a href="https://rdrr.io/pkg/groundhog/man/groundhog.library.html">groundhog::groundhog.library()</a></code>/<code>checkpoint::checkpoint()</code> date-pin call in the code — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code> with no pinning call does not count, since loading the package is not evidence anything was actually pinned.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
 <span><span class="va">cc</span><span class="op">$</span><span class="va">traffic_light</span></span>
@@ -958,8 +964,8 @@ Set docker_use_declared_version = TRUE to match the paper's declared
 version exactly -- slower, since every dependency then installs from
 scratch rather than using the pre-built image.</code></pre>
 <p>Setting <code>docker_use_declared_version = TRUE</code> switches to a bare <code>rocker/r-ver:&lt;declared version&gt;</code> image with nothing pre-installed — genuinely slower, since every dependency now installs from source, but it matches the paper’s own environment exactly. When a paper declared <em>no</em> version at all, this option falls back to bare <code>rocker/r-ver:latest</code> rather than silently reusing the pre-built image either — if you explicitly asked for version-matching, getting the fast pre-built image back through the back door when there was nothing to match against would defeat the point of asking.</p>
-</section><section id="batch-mode" class="level2" data-number="28.8"><h2 data-number="28.8" class="anchored" data-anchor-id="batch-mode">
-<span class="header-section-number">28.8</span> Checking many papers at once: batch mode</h2>
+</section><section id="batch-mode" class="level2" data-number="29.8"><h2 data-number="29.8" class="anchored" data-anchor-id="batch-mode">
+<span class="header-section-number">29.8</span> Checking many papers at once: batch mode</h2>
 <p>Everything so far runs one paper through <code>reproducibility_check()</code> at a time. If you are working through a whole corpus — a <code>paperlist</code> of dozens or hundreds of papers — calling it once per paper in a loop means only one Docker container is ever running: paper 2 does not start until paper 1’s containers (install, then run) have both finished. For <code>sandbox = "docker"</code>, where each paper’s own work is a slow, external <code>docker run</code> rather than in-memory R computation, that is time left on the table on any machine with more than one CPU core to spare.</p>
 <p>Passing a <code>paperlist</code> together with <code>workers &gt; 1</code> (and <code>execute = TRUE, sandbox = "docker"</code>) switches to <strong>batch mode</strong>: up to <code>workers</code> papers run their Docker checks at the same time, and the moment one paper finishes, the next paper in the list starts — never fewer than <code>workers</code> running while papers remain queued, never more.</p>
 <div class="cell">
@@ -1000,8 +1006,8 @@ Note
 <p>Batch mode is specific to <code>sandbox = "docker"</code>. Passing <code>workers &gt; 1</code> with <code>sandbox = "process"</code>, with <code>execute = FALSE</code>, or with a single paper does nothing different — those paths are already fast enough, or already isolate only at the crash level rather than the process level, that running several at once is not worth the added complexity of a background-process pool. <code>workers</code> is simply ignored in those cases rather than raising an error, so a script that loops over papers with mixed settings does not need to branch on it itself.</p>
 </div>
 </div>
-</section><section id="running-the-code-what-happens-during-execution" class="level2" data-number="28.9"><h2 data-number="28.9" class="anchored" data-anchor-id="running-the-code-what-happens-during-execution">
-<span class="header-section-number">28.9</span> Running the code: what happens during execution</h2>
+</section><section id="running-the-code-what-happens-during-execution" class="level2" data-number="29.9"><h2 data-number="29.9" class="anchored" data-anchor-id="running-the-code-what-happens-during-execution">
+<span class="header-section-number">29.9</span> Running the code: what happens during execution</h2>
 <p>Whichever <code>sandbox</code> you choose, the mechanics are the same:</p>
 <ol type="1">
 <li>
@@ -1082,8 +1088,8 @@ Note
 <p>Byte-identical duplicate files are only run once. A paper that links several repository components mirroring the same materials — a “live” OSF component, an “Archive of OSF Storage” snapshot, a view-only anonymised link — would otherwise have <code>code_check</code> list the <em>same</em> script once per mirror, and the module would run it two, four, or more times for no reason. <code>reproducibility_check</code> hashes each resolved script’s actual content and drops exact duplicates before running, naming which kept file each dropped one mirrors in the report.</p>
 </div>
 </div>
-</section><section id="what-if-theres-no-r-code-at-all" class="level2" data-number="28.10"><h2 data-number="28.10" class="anchored" data-anchor-id="what-if-theres-no-r-code-at-all">
-<span class="header-section-number">28.10</span> What if there’s no R code at all?</h2>
+</section><section id="what-if-theres-no-r-code-at-all" class="level2" data-number="29.10"><h2 data-number="29.10" class="anchored" data-anchor-id="what-if-theres-no-r-code-at-all">
+<span class="header-section-number">29.10</span> What if there’s no R code at all?</h2>
 <p>Not every deposit has R code to run, and the module handles several of those cases explicitly rather than falling through to a generic “nothing to check” result:</p>
 <ul>
 <li>
@@ -1106,8 +1112,8 @@ Note
 <span><span class="co">#&gt; - We assessed 1 self-reproducible output file (JASP/jamovi/SPSS-Viewer/Mplus) instead of R code.</span></span>
 <span><span class="co">#&gt; - 47 statistics stored from the extracted output.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="extracting-the-statistical-output" class="level2" data-number="28.11"><h2 data-number="28.11" class="anchored" data-anchor-id="extracting-the-statistical-output">
-<span class="header-section-number">28.11</span> Extracting the statistical output</h2>
+</section><section id="extracting-the-statistical-output" class="level2" data-number="29.11"><h2 data-number="29.11" class="anchored" data-anchor-id="extracting-the-statistical-output">
+<span class="header-section-number">29.11</span> Extracting the statistical output</h2>
 <p>Running the code is only half of reproducibility — the other half is <em>the numbers it produces</em>. Several kinds of deposit already contain, or can be made to produce, a paper’s statistical results, and the module extracts all of them into one common, structured form via <code>read_stat_tables()</code>:</p>
 <ul>
 <li>
@@ -1133,8 +1139,8 @@ Note
 </div>
 <p><code>stat_results_long()</code>’s full output has these columns: <code>paper_id</code>, <code>source_file</code>, <code>test_id</code>, <code>result_id</code>, <code>analysis</code>, <code>table_title</code>, <code>row_label</code>, <code>statistic</code>, <code>stato_label</code>, <code>stato_iri</code>, <code>value</code>, and <code>model_ref</code> (the last linking a captured statistic back to the fitted-model object it came from, when one exists — the same mechanism that makes <code>anova(m)</code> and <code>summary(m)$coefficients</code> findable as describing the same underlying model even though neither call names the other).</p>
 <p>The full set of results for a paper is also written to a <strong>structured JSON document</strong> via <code>stat_output_json()</code> — one per source file, with a <code>schema</code>, <code>schema_version</code>, <code>paper_id</code>, <code>source_file</code>, <code>source_format</code>, and an <code>analyses</code> array of typed results. This is worth being precise about: it is a <strong>metacheck-native schema</strong>, not ISA-JSON. An earlier version of the module modelled this document on the ISA (Investigation/Study/Assay) vocabulary from the life sciences, but that forced statistical results into containers (“a t-test result as a Material”) the vocabulary was never designed to hold — a repurposing metacheck itself invented, not an established convention. The current schema drops that borrowed vocabulary entirely in favour of a flat, self-describing document with a small set of named sections, in the spirit of formats like Psych-DS rather than conforming to an external schema that never quite fit.</p>
-</section><section id="matching-the-reported-results-against-the-output" class="level2" data-number="28.12"><h2 data-number="28.12" class="anchored" data-anchor-id="matching-the-reported-results-against-the-output">
-<span class="header-section-number">28.12</span> Matching the reported results against the output</h2>
+</section><section id="matching-the-reported-results-against-the-output" class="level2" data-number="29.12"><h2 data-number="29.12" class="anchored" data-anchor-id="matching-the-reported-results-against-the-output">
+<span class="header-section-number">29.12</span> Matching the reported results against the output</h2>
 <p>The final question — the one reproducibility is really about — is whether the results <strong>the paper reports</strong> appear in the results <strong>the analysis produces</strong>. <code>match_reported_output()</code> answers it.</p>
 <p>A reported statistical test is not a single number; it is a multi-component statement, for example <em>“M = 1.93, SD = 0.76, W = 183.5, p = .791, rb = -0.16”</em>. Metacheck’s text extractor records each of those numbers in the paper’s <code>$eq</code> table, grouped so that the numbers from one reported test stay together. <code>match_reported_output()</code> <strong>recomposes</strong> each reported test from its components, then checks whether those component values <strong>co-occur in a single analysis of the extracted output</strong>.</p>
 <p>Matching whole tests, rather than lone numbers, is what makes the check trustworthy: any single value will coincidentally appear somewhere in a large enough set of output numbers, but several components of one test agreeing <em>at once</em> is essentially never accidental.</p>
@@ -1158,8 +1164,8 @@ Note
 <p>By default, <code>min_components = 1</code>, so even a <strong>lone</strong> reported statistic — a bare correlation coefficient with no accompanying test statistic — is checked. This is a change from an earlier version of the module, which defaulted to requiring at least two components before treating something as a matchable “test” at all; if you want that stricter behaviour, set <code>min_components = 2</code> explicitly.</p>
 <p><code>plausible_split</code> deserves a word of explanation, since it is easy to misread. Some reported values only match after being separated from the other values they were originally reported alongside — a mean split from its own confidence interval, say. <code>plausible_split</code> marks whether that separation is well-supported: <code>TRUE</code> when the split pieces still trace back to the same underlying variable via the output’s own row labels, <code>FALSE</code> when no such link was found. A <code>FALSE</code> here is not necessarily wrong, but it is worth checking manually against the <code>source_file</code>/<code>analysis</code> columns before treating it as a confirmed match; <code>NA</code> means the value was never split in the first place, so the question does not apply.</p>
 <p>If your extracted paper has any results tables (not just narrative text), pass <code>include_tables = TRUE</code> to also check statistics reported only in a table’s cells against the extracted output.</p>
-</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="28.13"><h2 data-number="28.13" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
-<span class="header-section-number">28.13</span> The traffic light and what you get back</h2>
+</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="29.13"><h2 data-number="29.13" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
+<span class="header-section-number">29.13</span> The traffic light and what you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1246,8 +1252,8 @@ Note
 <td>(only present when <code>keep_sandbox = TRUE</code>) the path to the materialised throwaway directory — see below</td>
 </tr>
 </tbody>
-</table></section><section id="options" class="level2" data-number="28.14"><h2 data-number="28.14" class="anchored" data-anchor-id="options">
-<span class="header-section-number">28.14</span> Options</h2>
+</table></section><section id="options" class="level2" data-number="29.14"><h2 data-number="29.14" class="anchored" data-anchor-id="options">
+<span class="header-section-number">29.14</span> Options</h2>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Argument</th>
@@ -1355,8 +1361,8 @@ Warning
 </div>
 </div>
 <p><code>keep_sandbox = TRUE</code> is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains <code>data/</code> (the materialised Psych-DS layout), <code>output/</code> (anything a script’s write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/<code>.spv</code>/<code>.smcl</code>/<code>.out</code> file — a <code>statistical_output/</code> folder with the structured results documents. This is also what <a href="../chapters/mod-psychds-check.html">convert_psychds()</a> looks for when building an archive: pass <code>keep_sandbox = TRUE</code> if you want its <code>statistical_output/</code> folder included, since <code>convert_psychds()</code> does not run <code>reproducibility_check</code> itself and has no other way to obtain it.</p>
-</section><section id="notes-and-limitations" class="level2" data-number="28.15"><h2 data-number="28.15" class="anchored" data-anchor-id="notes-and-limitations">
-<span class="header-section-number">28.15</span> Notes and limitations</h2>
+</section><section id="notes-and-limitations" class="level2" data-number="29.15"><h2 data-number="29.15" class="anchored" data-anchor-id="notes-and-limitations">
+<span class="header-section-number">29.15</span> Notes and limitations</h2>
 <p>Honest limits worth keeping in mind:</p>
 <ul>
 <li>The static phase cannot always tell that a file a script reads is an <strong>intermediate produced by another script</strong> under a different name, so it may report it as an “absent” input.</li>
@@ -1772,12 +1778,12 @@ Warning
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/importing-exporting.html" class="pagination-link" aria-label="Importing and Exporting JASP, jamovi, and SPSS Viewer Files">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/mod-ref-consistency.html" class="pagination-link" aria-label="Reference Consistency">
-        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

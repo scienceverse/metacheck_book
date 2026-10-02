@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>6&nbsp; Caching and Reuse – The Metacheck Manual</title>
+<title>7&nbsp; Caching and Reuse – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/caching.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/caching.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -166,38 +166,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/first-steps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/text-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,163 +220,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reproducibility-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -387,13 +393,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -441,43 +447,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#where-the-caches-live" id="toc-where-the-caches-live" class="nav-link active" data-scroll-target="#where-the-caches-live"><span class="header-section-number">6.1</span> Where the caches live</a></li>
+<li><a href="#where-the-caches-live" id="toc-where-the-caches-live" class="nav-link active" data-scroll-target="#where-the-caches-live"><span class="header-section-number">7.1</span> Where the caches live</a></li>
   <li>
-<a href="#the-llm-response-cache" id="toc-the-llm-response-cache" class="nav-link" data-scroll-target="#the-llm-response-cache"><span class="header-section-number">6.2</span> The LLM response cache</a>
+<a href="#the-llm-response-cache" id="toc-the-llm-response-cache" class="nav-link" data-scroll-target="#the-llm-response-cache"><span class="header-section-number">7.2</span> The LLM response cache</a>
   <ul class="collapse">
-<li><a href="#why-it-is-safe-to-cache-an-llm-answer" id="toc-why-it-is-safe-to-cache-an-llm-answer" class="nav-link" data-scroll-target="#why-it-is-safe-to-cache-an-llm-answer"><span class="header-section-number">6.2.1</span> Why it is safe to cache an LLM answer</a></li>
-  <li><a href="#what-is-stored-and-how-entries-are-keyed" id="toc-what-is-stored-and-how-entries-are-keyed" class="nav-link" data-scroll-target="#what-is-stored-and-how-entries-are-keyed"><span class="header-section-number">6.2.2</span> What is stored, and how entries are keyed</a></li>
-  <li><a href="#turning-it-on-and-off" id="toc-turning-it-on-and-off" class="nav-link" data-scroll-target="#turning-it-on-and-off"><span class="header-section-number">6.2.3</span> Turning it on and off</a></li>
-  <li><a href="#clearing-it" id="toc-clearing-it" class="nav-link" data-scroll-target="#clearing-it"><span class="header-section-number">6.2.4</span> Clearing it</a></li>
-  <li><a href="#what-this-means-in-practice" id="toc-what-this-means-in-practice" class="nav-link" data-scroll-target="#what-this-means-in-practice"><span class="header-section-number">6.2.5</span> What this means in practice</a></li>
+<li><a href="#why-it-is-safe-to-cache-an-llm-answer" id="toc-why-it-is-safe-to-cache-an-llm-answer" class="nav-link" data-scroll-target="#why-it-is-safe-to-cache-an-llm-answer"><span class="header-section-number">7.2.1</span> Why it is safe to cache an LLM answer</a></li>
+  <li><a href="#what-is-stored-and-how-entries-are-keyed" id="toc-what-is-stored-and-how-entries-are-keyed" class="nav-link" data-scroll-target="#what-is-stored-and-how-entries-are-keyed"><span class="header-section-number">7.2.2</span> What is stored, and how entries are keyed</a></li>
+  <li><a href="#turning-it-on-and-off" id="toc-turning-it-on-and-off" class="nav-link" data-scroll-target="#turning-it-on-and-off"><span class="header-section-number">7.2.3</span> Turning it on and off</a></li>
+  <li><a href="#clearing-it" id="toc-clearing-it" class="nav-link" data-scroll-target="#clearing-it"><span class="header-section-number">7.2.4</span> Clearing it</a></li>
+  <li><a href="#what-this-means-in-practice" id="toc-what-this-means-in-practice" class="nav-link" data-scroll-target="#what-this-means-in-practice"><span class="header-section-number">7.2.5</span> What this means in practice</a></li>
   </ul>
 </li>
   <li>
-<a href="#the-repository-file-download-cache" id="toc-the-repository-file-download-cache" class="nav-link" data-scroll-target="#the-repository-file-download-cache"><span class="header-section-number">6.3</span> The repository-file download cache</a>
+<a href="#the-repository-file-download-cache" id="toc-the-repository-file-download-cache" class="nav-link" data-scroll-target="#the-repository-file-download-cache"><span class="header-section-number">7.3</span> The repository-file download cache</a>
   <ul class="collapse">
-<li><a href="#what-it-does" id="toc-what-it-does" class="nav-link" data-scroll-target="#what-it-does"><span class="header-section-number">6.3.1</span> What it does</a></li>
-  <li><a href="#how-entries-are-keyed" id="toc-how-entries-are-keyed" class="nav-link" data-scroll-target="#how-entries-are-keyed"><span class="header-section-number">6.3.2</span> How entries are keyed</a></li>
-  <li><a href="#turning-it-on" id="toc-turning-it-on" class="nav-link" data-scroll-target="#turning-it-on"><span class="header-section-number">6.3.3</span> Turning it on</a></li>
-  <li><a href="#controlling-what-gets-downloaded" id="toc-controlling-what-gets-downloaded" class="nav-link" data-scroll-target="#controlling-what-gets-downloaded"><span class="header-section-number">6.3.4</span> Controlling what gets downloaded</a></li>
-  <li><a href="#inspecting-and-clearing-it" id="toc-inspecting-and-clearing-it" class="nav-link" data-scroll-target="#inspecting-and-clearing-it"><span class="header-section-number">6.3.5</span> Inspecting and clearing it</a></li>
+<li><a href="#what-it-does" id="toc-what-it-does" class="nav-link" data-scroll-target="#what-it-does"><span class="header-section-number">7.3.1</span> What it does</a></li>
+  <li><a href="#how-entries-are-keyed" id="toc-how-entries-are-keyed" class="nav-link" data-scroll-target="#how-entries-are-keyed"><span class="header-section-number">7.3.2</span> How entries are keyed</a></li>
+  <li><a href="#turning-it-on" id="toc-turning-it-on" class="nav-link" data-scroll-target="#turning-it-on"><span class="header-section-number">7.3.3</span> Turning it on</a></li>
+  <li><a href="#controlling-what-gets-downloaded" id="toc-controlling-what-gets-downloaded" class="nav-link" data-scroll-target="#controlling-what-gets-downloaded"><span class="header-section-number">7.3.4</span> Controlling what gets downloaded</a></li>
+  <li><a href="#inspecting-and-clearing-it" id="toc-inspecting-and-clearing-it" class="nav-link" data-scroll-target="#inspecting-and-clearing-it"><span class="header-section-number">7.3.5</span> Inspecting and clearing it</a></li>
   </ul>
 </li>
-  <li><a href="#the-repository-listing-cache" id="toc-the-repository-listing-cache" class="nav-link" data-scroll-target="#the-repository-listing-cache"><span class="header-section-number">6.4</span> The repository-listing cache</a></li>
+  <li><a href="#the-repository-listing-cache" id="toc-the-repository-listing-cache" class="nav-link" data-scroll-target="#the-repository-listing-cache"><span class="header-section-number">7.4</span> The repository-listing cache</a></li>
   <li>
-<a href="#the-zip-peek-cache" id="toc-the-zip-peek-cache" class="nav-link" data-scroll-target="#the-zip-peek-cache"><span class="header-section-number">6.5</span> The zip-peek cache</a>
+<a href="#the-zip-peek-cache" id="toc-the-zip-peek-cache" class="nav-link" data-scroll-target="#the-zip-peek-cache"><span class="header-section-number">7.5</span> The zip-peek cache</a>
   <ul class="collapse">
-<li><a href="#clearing-the-zip-peek-cache" id="toc-clearing-the-zip-peek-cache" class="nav-link" data-scroll-target="#clearing-the-zip-peek-cache"><span class="header-section-number">6.5.1</span> Clearing the zip-peek cache</a></li>
+<li><a href="#clearing-the-zip-peek-cache" id="toc-clearing-the-zip-peek-cache" class="nav-link" data-scroll-target="#clearing-the-zip-peek-cache"><span class="header-section-number">7.5.1</span> Clearing the zip-peek cache</a></li>
   </ul>
 </li>
-  <li><a href="#how-the-caches-work-together-in-a-full-run" id="toc-how-the-caches-work-together-in-a-full-run" class="nav-link" data-scroll-target="#how-the-caches-work-together-in-a-full-run"><span class="header-section-number">6.6</span> How the caches work together in a full run</a></li>
-  <li><a href="#a-note-on-the-in-memory-synonym-cache" id="toc-a-note-on-the-in-memory-synonym-cache" class="nav-link" data-scroll-target="#a-note-on-the-in-memory-synonym-cache"><span class="header-section-number">6.7</span> A note on the in-memory synonym cache</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.8</span> Summary</a></li>
+  <li><a href="#how-the-caches-work-together-in-a-full-run" id="toc-how-the-caches-work-together-in-a-full-run" class="nav-link" data-scroll-target="#how-the-caches-work-together-in-a-full-run"><span class="header-section-number">7.6</span> How the caches work together in a full run</a></li>
+  <li><a href="#a-note-on-the-in-memory-synonym-cache" id="toc-a-note-on-the-in-memory-synonym-cache" class="nav-link" data-scroll-target="#a-note-on-the-in-memory-synonym-cache"><span class="header-section-number">7.7</span> A note on the in-memory synonym cache</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">7.8</span> Summary</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/caching.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/caching.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/caching.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span>
+<span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span>
 </h1>
 </div>
 
@@ -513,8 +519,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </div>
 </div>
-<section id="where-the-caches-live" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="where-the-caches-live">
-<span class="header-section-number">6.1</span> Where the caches live</h2>
+<section id="where-the-caches-live" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="where-the-caches-live">
+<span class="header-section-number">7.1</span> Where the caches live</h2>
 <p>All four on-disk caches default to a folder in your <strong>current working directory</strong>, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.</p>
 <table class="caption-top table">
 <colgroup>
@@ -561,14 +567,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>metacheck.cache.dir <span class="op">=</span> <span class="st">"~/metacheck_caches"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Each cache also has its own override for finer control: the <code>metacheck.repo_cache.dir</code> option for the repository files, and the <code>METACHECK_LLM_CACHE_DIR</code> environment variable for the LLM responses.</p>
-</section><section id="the-llm-response-cache" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="the-llm-response-cache">
-<span class="header-section-number">6.2</span> The LLM response cache</h2>
-<section id="why-it-is-safe-to-cache-an-llm-answer" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="why-it-is-safe-to-cache-an-llm-answer">
-<span class="header-section-number">6.2.1</span> Why it is safe to cache an LLM answer</h3>
+</section><section id="the-llm-response-cache" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="the-llm-response-cache">
+<span class="header-section-number">7.2</span> The LLM response cache</h2>
+<section id="why-it-is-safe-to-cache-an-llm-answer" class="level3" data-number="7.2.1"><h3 data-number="7.2.1" class="anchored" data-anchor-id="why-it-is-safe-to-cache-an-llm-answer">
+<span class="header-section-number">7.2.1</span> Why it is safe to cache an LLM answer</h3>
 <p>Normally you would not cache a language-model call: ask the same question twice and you can get two different answers. Metacheck sidesteps this by forcing <strong>temperature 0</strong> on every <code>llm()</code> call. At temperature 0 the model is (as close as providers allow) deterministic: the same inputs produce the same output. That makes the answer <em>reproducible</em>, and a reproducible answer is one you can safely store and replay. The cache is therefore not a shortcut that changes results — replaying a cached answer gives you the same thing a fresh call would have.</p>
 <p>This is the same property that makes Metacheck’s LLM use reproducible in the first place: it is documented alongside the LLM workflow in the <a href="../chapters/llms.html">Using Large Language Models</a> chapter.</p>
-</section><section id="what-is-stored-and-how-entries-are-keyed" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="what-is-stored-and-how-entries-are-keyed">
-<span class="header-section-number">6.2.2</span> What is stored, and how entries are keyed</h3>
+</section><section id="what-is-stored-and-how-entries-are-keyed" class="level3" data-number="7.2.2"><h3 data-number="7.2.2" class="anchored" data-anchor-id="what-is-stored-and-how-entries-are-keyed">
+<span class="header-section-number">7.2.2</span> What is stored, and how entries are keyed</h3>
 <p>The cache is <strong>keyed by everything that determines the answer</strong>. When <code>llm()</code> is about to make a call, it builds a key from five inputs:</p>
 <ul>
 <li>the <strong>model</strong> name,</li>
@@ -586,8 +592,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Change <em>any</em> of these five inputs and the key changes, so the cache misses and a real call is made. This is exactly what you want: a different question is a different question.</p>
 <p>Each entry stores not just the parsed answer (the data frame <code>llm()</code> returns) but also the raw provider result and, where the provider exposes it, the model’s reasoning/thinking trace — so nothing is lost by going through the cache.</p>
-</section><section id="turning-it-on-and-off" class="level3" data-number="6.2.3"><h3 data-number="6.2.3" class="anchored" data-anchor-id="turning-it-on-and-off">
-<span class="header-section-number">6.2.3</span> Turning it on and off</h3>
+</section><section id="turning-it-on-and-off" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="turning-it-on-and-off">
+<span class="header-section-number">7.2.3</span> Turning it on and off</h3>
 <p>The cache is <strong>on by default</strong>. Query or set it with <code>llm_cache()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># is the cache on? (TRUE by default)</span></span>
@@ -595,28 +601,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># re-enable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Disabling it is mostly useful when you are deliberately testing provider behaviour or measuring latency, and want to be sure no answer is being replayed.</p>
-</section><section id="clearing-it" class="level3" data-number="6.2.4"><h3 data-number="6.2.4" class="anchored" data-anchor-id="clearing-it">
-<span class="header-section-number">6.2.4</span> Clearing it</h3>
+</section><section id="clearing-it" class="level3" data-number="7.2.4"><h3 data-number="7.2.4" class="anchored" data-anchor-id="clearing-it">
+<span class="header-section-number">7.2.4</span> Clearing it</h3>
 <p>To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use <code>llm_cache_clear()</code>, which deletes all cache entries and returns how many it removed:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># returns the number of entries deleted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You do not normally need to clear the cache to pick up a <em>changed</em> prompt or model: because those are part of the key, a change produces a fresh call automatically. Clearing is for reclaiming space or forcing a clean slate.</p>
-</section><section id="what-this-means-in-practice" class="level3" data-number="6.2.5"><h3 data-number="6.2.5" class="anchored" data-anchor-id="what-this-means-in-practice">
-<span class="header-section-number">6.2.5</span> What this means in practice</h3>
+</section><section id="what-this-means-in-practice" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="what-this-means-in-practice">
+<span class="header-section-number">7.2.5</span> What this means in practice</h3>
 <p>Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module’s <em>non-LLM</em> code, or to regenerate a report, without watching your API bill climb. It also means the <a href="../chapters/llms.html"><code>llm_max_calls()</code></a> cap counts <em>actual</em> provider calls — cached replays do not consume it.</p>
-</section></section><section id="the-repository-file-download-cache" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="the-repository-file-download-cache">
-<span class="header-section-number">6.3</span> The repository-file download cache</h2>
-<section id="what-it-does" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="what-it-does">
-<span class="header-section-number">6.3.1</span> What it does</h3>
+</section></section><section id="the-repository-file-download-cache" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="the-repository-file-download-cache">
+<span class="header-section-number">7.3</span> The repository-file download cache</h2>
+<section id="what-it-does" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="what-it-does">
+<span class="header-section-number">7.3.1</span> What it does</h3>
 <p>Modules that read file <em>contents</em> — <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-code-check.html">code_check</a> — need local copies of the files a repository shares. <code>repo_check</code> only <em>lists</em> the files on OSF, GitHub, Zenodo and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.</p>
 <p>Whether those copies survive the session is up to you, and by default they do not. With <code>cache = TRUE</code>, the files are kept in the cache folder and reused by later sessions as well, which is what makes a long archive-building run cheap to recover from after an interruption: the files already fetched are still on disk, and resuming skips straight past them.</p>
-</section><section id="how-entries-are-keyed" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="how-entries-are-keyed">
-<span class="header-section-number">6.3.2</span> How entries are keyed</h3>
+</section><section id="how-entries-are-keyed" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="how-entries-are-keyed">
+<span class="header-section-number">7.3.2</span> How entries are keyed</h3>
 <p>Each repository gets its own sub-folder, named by a filesystem-safe encoding of its URL (the scheme is stripped and any awkward characters are replaced), so two different repositories never collide and the <em>same</em> repository always resolves to the same folder across sessions. Inside that folder, each file is stored <strong>at its repository-relative path</strong>, not just its basename — so two files both called <code>data.csv</code> in different sub-folders are kept apart rather than overwriting each other.</p>
 <p>Reuse is decided by a simple, robust test: if the target path already exists <strong>and is non-empty</strong>, it is treated as already downloaded and reused. A zero-byte file (the fingerprint of a download that failed partway) is <em>not</em> trusted — it is re-fetched. This means a broken partial download never silently poisons later runs.</p>
-</section><section id="turning-it-on" class="level3" data-number="6.3.3"><h3 data-number="6.3.3" class="anchored" data-anchor-id="turning-it-on">
-<span class="header-section-number">6.3.3</span> Turning it on</h3>
+</section><section id="turning-it-on" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="turning-it-on">
+<span class="header-section-number">7.3.3</span> Turning it on</h3>
 <p>Unlike the LLM cache, which is on by default, the download cache is <strong>off by default</strong>. Both <code>data_check</code> and <code>code_check</code> take a <code>cache</code> argument that is <code>FALSE</code> unless you say otherwise:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the default: files go to a temporary folder, discarded when R exits</span></span>
@@ -628,8 +634,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>With <code>cache = FALSE</code> the files are still downloaded and still read; they are simply written to a session folder that R removes on exit, so nothing accumulates on your disk. Files fetched earlier in the same session are reused either way.</p>
 <p>Turn it on when you are checking the same repositories repeatedly, or building an archive over several runs, and the download is worth keeping. Leave it off for a one-off check of somebody else’s repository, where you would otherwise be left with copies of their files you never asked to keep.</p>
 <p>Reuse of a cached file is safe because a downloaded file is a byte-for-byte copy of the remote one. What you <em>can</em> control separately is how much gets downloaded in the first place, through the arguments described below.</p>
-</section><section id="controlling-what-gets-downloaded" class="level3" data-number="6.3.4"><h3 data-number="6.3.4" class="anchored" data-anchor-id="controlling-what-gets-downloaded">
-<span class="header-section-number">6.3.4</span> Controlling what gets downloaded</h3>
+</section><section id="controlling-what-gets-downloaded" class="level3" data-number="7.3.4"><h3 data-number="7.3.4" class="anchored" data-anchor-id="controlling-what-gets-downloaded">
+<span class="header-section-number">7.3.4</span> Controlling what gets downloaded</h3>
 <p>The download cache stores whatever the modules fetch, and <code>data_check</code> gives you fine control over that:</p>
 <ul>
 <li>
@@ -642,8 +648,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <strong><code>max_file_size</code></strong> / <strong><code>max_download_size</code></strong> — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository’s total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.</li>
 </ul>
 <p>These arguments decide <em>what enters the cache</em>; once a file is in, it stays and is reused. See the <a href="../chapters/mod-data-check.html">data_check</a> chapter for full details and examples.</p>
-</section><section id="inspecting-and-clearing-it" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="inspecting-and-clearing-it">
-<span class="header-section-number">6.3.5</span> Inspecting and clearing it</h3>
+</section><section id="inspecting-and-clearing-it" class="level3" data-number="7.3.5"><h3 data-number="7.3.5" class="anchored" data-anchor-id="inspecting-and-clearing-it">
+<span class="header-section-number">7.3.5</span> Inspecting and clearing it</h3>
 <p>Three functions report on the cache and one clears it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repo_cache_dir</span><span class="op">(</span><span class="op">)</span>     <span class="co"># where it is</span></span>
@@ -658,8 +664,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">repo_cache_clear</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>   <span class="co"># delete everything, without the message</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Because entries are keyed by repository URL and relative path, clearing is always safe: anything still needed is simply downloaded again on the next run.</p>
-</section></section><section id="the-repository-listing-cache" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="the-repository-listing-cache">
-<span class="header-section-number">6.4</span> The repository-listing cache</h2>
+</section></section><section id="the-repository-listing-cache" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="the-repository-listing-cache">
+<span class="header-section-number">7.4</span> The repository-listing cache</h2>
 <p>Downloading a repository’s files is not the only repeated cost: <em>listing</em> what a repository contains — asking Dryad’s or Zenodo’s API “what files does this record have, and what do they weigh” — is a separate API call with its own cost and its own rate limit, paid by <code>repo_check</code> every time it runs, even for a repository whose files are already fully downloaded and cached.</p>
 <p>This matters most when a long run is interrupted and restarted: restarting re-issues every listing call again from scratch, which can exhaust a host’s quota (Dryad, in particular, applies a strict one) far faster than the real workload — listing each repository once — would ever need. The repository-listing cache exists specifically to make a restart free for anything already listed once.</p>
 <p>It is a separate cache from the repository-<em>file</em> cache described above: one caches what a host’s API said a repository contains, the other caches the files themselves once downloaded.</p>
@@ -670,18 +676,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">repo_info_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># delete every cached listing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A cached listing is not refreshed automatically — a published dataset’s metadata rarely changes once public, but if you know a paper’s repository has genuinely been updated, clear it explicitly rather than relying on the cache to notice.</p>
-</section><section id="the-zip-peek-cache" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="the-zip-peek-cache">
-<span class="header-section-number">6.5</span> The zip-peek cache</h2>
+</section><section id="the-zip-peek-cache" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="the-zip-peek-cache">
+<span class="header-section-number">7.5</span> The zip-peek cache</h2>
 <p>Looking inside a <code>.zip</code> without downloading it (the <code>peek_zips</code> behaviour described above) still costs an HTTP range request per zip. Like repository listings, a peeked zip’s contents rarely change once a repository is public, so repeated peeks of the same zip across restarts are also cached on disk, mirroring the repository-listing cache.</p>
 <p>Unlike the other three caches, there is no on/off toggle function — peeking is cached only when you explicitly pass <code>cache = TRUE</code> to the function doing the peeking (<code>zip_peek()</code>, or indirectly through <code>data_check</code>/<code>code_check</code>/<code>repo_check</code>’s own <code>cache</code> argument). To clear it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">zip_peek_cache_clear</span><span class="op">(</span><span class="op">)</span>   <span class="co"># delete every cached zip peek</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="clearing-the-zip-peek-cache" class="level3" data-number="6.5.1"><h3 data-number="6.5.1" class="anchored" data-anchor-id="clearing-the-zip-peek-cache">
-<span class="header-section-number">6.5.1</span> Clearing the zip-peek cache</h3>
+<section id="clearing-the-zip-peek-cache" class="level3" data-number="7.5.1"><h3 data-number="7.5.1" class="anchored" data-anchor-id="clearing-the-zip-peek-cache">
+<span class="header-section-number">7.5.1</span> Clearing the zip-peek cache</h3>
 <p><code>metacheck_cache_info()</code> does not currently report on this cache the way it does the other three — use <code>zip_peek_cache_clear()</code> to clear it, or inspect <code>.metacheck_zip_peek_cache/</code> directly if you want to see its size first.</p>
-</section></section><section id="how-the-caches-work-together-in-a-full-run" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="how-the-caches-work-together-in-a-full-run">
-<span class="header-section-number">6.6</span> How the caches work together in a full run</h2>
+</section></section><section id="how-the-caches-work-together-in-a-full-run" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="how-the-caches-work-together-in-a-full-run">
+<span class="header-section-number">7.6</span> How the caches work together in a full run</h2>
 <p>When you run several modules on a paper — or build an archive across a corpus — the four caches complement each other:</p>
 <ol type="1">
 <li>
@@ -693,11 +699,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the listings, zip peeks, and downloads too if you ran with <code>cache = TRUE</code>; without it, all three are redone, because the previous session’s copies were discarded. This is the main reason to turn caching on for an archive build you expect to resume.</li>
 </ol>
 <p>Modules such as <code>codebook_check</code> do not have a <em>separate</em> results cache of their own — their re-run savings come entirely from these shared caches (the listings, peeks, files, and LLM answers they request). This keeps the caching story simple: there are four on-disk caches, and every module benefits from the ones relevant to it without needing its own.</p>
-</section><section id="a-note-on-the-in-memory-synonym-cache" class="level2" data-number="6.7"><h2 data-number="6.7" class="anchored" data-anchor-id="a-note-on-the-in-memory-synonym-cache">
-<span class="header-section-number">6.7</span> A note on the in-memory synonym cache</h2>
+</section><section id="a-note-on-the-in-memory-synonym-cache" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="a-note-on-the-in-memory-synonym-cache">
+<span class="header-section-number">7.7</span> A note on the in-memory synonym cache</h2>
 <p>One module, <a href="../chapters/mod-funding-check.html">funding_check</a>, builds a list of organisation-name synonyms once and keeps it in memory for the rest of the session (an ordinary in-memory cache, not on disk). It is an implementation detail with no user-facing controls: it simply avoids rebuilding the same lookup repeatedly within a single R session, and disappears when the session ends. You never need to manage it.</p>
-</section><section id="summary" class="level2" data-number="6.8"><h2 data-number="6.8" class="anchored" data-anchor-id="summary">
-<span class="header-section-number">6.8</span> Summary</h2>
+</section><section id="summary" class="level2" data-number="7.8"><h2 data-number="7.8" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">7.8</span> Summary</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -1167,12 +1173,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/llms.html" class="pagination-link" aria-label="Using Large Language Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/papers-databases.html" class="pagination-link" aria-label="Using the Paper Database Corpora">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

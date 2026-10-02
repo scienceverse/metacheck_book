@@ -1,0 +1,465 @@
+{
+  "paper_id": "good_paper",
+  "info": [
+    {
+      "title": "The Stroop Effect: A Reproducible Analysis",
+      "keywords": ["Stroop effect", "reaction time", "reproducibility"],
+      "doi": "10.32614/CRAN.package.pwr",
+      "file_hash": "dbb4d4a655c073ef",
+      "input_format": "grobid 0.9.0",
+      "file_name": "./good_paper.xml",
+      "bibr_version": "10.5",
+      "paper_type": "unknown",
+      "paper_type_confidence": 0,
+      "oecd_l1": null,
+      "oecd_l2": null,
+      "oecd_confidence": null
+    }
+  ],
+  "author": [
+    {
+      "author_id": 1,
+      "given": "Daniël",
+      "family": "Lakens",
+      "affiliation": "Industrial Engineering and Innovation Sciences\n\t\t\t\t\t\t\t\tIndustrial Engineering and Innovation Sciences\n\t\t\t\t\t\t\t\tEindhoven University of Technology\n\t\t\t\t\t\t\t\tEindhoven University of Technology\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tDen Dolech2\n\t\t\t\t\t\t\t\t\t5600 MB\n\t\t\t\t\t\t\t\t\tEindhoven",
+      "email": "d.lakens@tue.nl",
+      "corresponding": false,
+      "orcid": "",
+      "role": []
+    }
+  ],
+  "text": [
+    {
+      "text": "Students in an introductory psychology course completed an online Stroop task, naming the font colors of words in congruent trials (e.g., the word 'red' printed in red) and incongruent trials (e.g., the word 'red' printed in green).",
+      "text_id": 1,
+      "paragraph_id": 1,
+      "section_id": 0,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "We tested whether reaction times differed between the two conditions, as predicted by the Stroop effect.",
+      "text_id": 2,
+      "paragraph_id": 1,
+      "section_id": 0,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "The Stroop effect -the finding that it takes longer to name the font color of a word when that word names a different color (e.g., the word \"red\" printed in green ink) than when the word and its color match -is one of the most robust and widely replicated phenomena in cognitive psychology (MacLeod, 1991).",
+      "text_id": 3,
+      "paragraph_id": 2,
+      "section_id": 1,
+      "page_number": null,
+      "formatted": "The Stroop effect -the finding that it takes longer to name the font color of a word when that word names a different color (e.g., the word \"red\" printed in green ink) than when the word and its color match -is one of the most robust and widely replicated phenomena in cognitive psychology <ref type=\"bibr\" target=\"#b2\">(MacLeod, 1991)<\/ref>."
+    },
+    {
+      "text": "Here, we analyze a simple dataset of a Stroop experiment.",
+      "text_id": 4,
+      "paragraph_id": 2,
+      "section_id": 1,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "Students in an introduction to psychology course completed an online Stroop task (http://faculty.washing-ton.edu/chudler/java/ready.html) and named the colors in congruent trials (e.g., the word 'red' written in a red font) and in incongruent trials (e.g., the word 'red' written in a green font).",
+      "text_id": 5,
+      "paragraph_id": 2,
+      "section_id": 1,
+      "page_number": null,
+      "formatted": "Students in an introduction to psychology course completed an online Stroop task (<ref type=\"url\" target=\"http://faculty.washing-\">http://faculty.washing-<\/ref>ton.edu/chudler/java/ready.html) and named the colors in congruent trials (e.g., the word 'red' written in a red font) and in incongruent trials (e.g., the word 'red' written in a green font)."
+    },
+    {
+      "text": "The time they took to name all words was self-reported in seconds (e.g., 21.3 seconds) for both the congruent and incongruent blocks.",
+      "text_id": 6,
+      "paragraph_id": 2,
+      "section_id": 1,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "In this analysis, we are interested in examining whether there is a Stroop effect.",
+      "text_id": 7,
+      "paragraph_id": 2,
+      "section_id": 1,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "All participants completed the task voluntarily as part of a classroom demonstration of research methods, and no identifying information was collected.",
+      "text_id": 8,
+      "paragraph_id": 3,
+      "section_id": 2,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "Because no personally identifiable information was recorded and the task carried no more than minimal risk, this classroom demonstration was exempt from formal review by the Eindhoven University of Technology Ethics Review Board.",
+      "text_id": 9,
+      "paragraph_id": 3,
+      "section_id": 2,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "The Stroop effect is one of the largest and most consistently replicated effects in cognitive psychology (MacLeod, 1991), so we planned our sample size assuming a conservatively large effect.",
+      "text_id": 10,
+      "paragraph_id": 4,
+      "section_id": 3,
+      "page_number": null,
+      "formatted": "The Stroop effect is one of the largest and most consistently replicated effects in cognitive psychology <ref type=\"bibr\" target=\"#b2\">(MacLeod, 1991)<\/ref>, so we planned our sample size assuming a conservatively large effect."
+    },
+    {
+      "text": "An a priori power analysis for a paired-samples t-test, conducted using the pwr.t.test() function from the pwr package (Champely, 2020), indicated that for a Cohen's dz = 0.8, an alpha level of 0.01, and a desired power of 90%, at least 27 participants would be needed.",
+      "text_id": 11,
+      "paragraph_id": 5,
+      "section_id": 3,
+      "page_number": null,
+      "formatted": "An a priori power analysis for a paired-samples t-test, conducted using the pwr.t.test() function from the pwr package <ref type=\"bibr\" target=\"#b0\">(Champely, 2020)<\/ref>, indicated that for a Cohen's dz = 0.8, an alpha level of 0.01, and a desired power of 90%, at least 27 participants would be needed."
+    },
+    {
+      "text": "We report data from all students who completed the task in a single course offering, exceeding this minimum.",
+      "text_id": 12,
+      "paragraph_id": 5,
+      "section_id": 3,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "The authors have no conflict of interest to declare.",
+      "text_id": 13,
+      "paragraph_id": 6,
+      "section_id": 4,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "This research received no specific grant from any funding agency in the public, commercial, or not-for-profit sectors.",
+      "text_id": 14,
+      "paragraph_id": 6,
+      "section_id": 4,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "When we plot the reaction times, we can visually see that there are no extreme outliers.",
+      "text_id": 15,
+      "paragraph_id": 7,
+      "section_id": 5,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "It is also clear that response times are generally faster for the congruent trials, compared to the incongruent trials.",
+      "text_id": 16,
+      "paragraph_id": 8,
+      "section_id": 5,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "The mean reaction time (in seconds) of participants in the Congruent condition (M = 15.1, SD = 4.1) was lower than the mean of participants in the Incongruent condition (M = 23, SD = 4.78, r = 0.37).",
+      "text_id": 17,
+      "paragraph_id": 9,
+      "section_id": 6,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "A dependent t-test indicated that based on our preregistered alpha level of 0.01 we could reject the null-hypothesis, t(130) = 18.04, p < 0.001, Cohen's dz =1.58 (Lakens, 2013).",
+      "text_id": 18,
+      "paragraph_id": 9,
+      "section_id": 6,
+      "page_number": null,
+      "formatted": "A dependent t-test indicated that based on our preregistered alpha level of 0.01 we could reject the null-hypothesis, t(130) = 18.04, p &lt; 0.001, Cohen's dz =1.58 <ref type=\"bibr\" target=\"#b1\">(Lakens, 2013)<\/ref>."
+    },
+    {
+      "text": "As we can expect from the Stroop effect, the standardized effect size is very large.",
+      "text_id": 19,
+      "paragraph_id": 9,
+      "section_id": 6,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "The congruency effect is very clear when we plot the data from the two groups.",
+      "text_id": 20,
+      "paragraph_id": 9,
+      "section_id": 6,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "The raw data, the processed data, the analysis code, and the code used to generate this manuscript are all openly available in a GitHub repository at https://github.com/Lakens/stroop_ef-fect_paper.",
+      "text_id": 21,
+      "paragraph_id": 10,
+      "section_id": 7,
+      "page_number": null,
+      "formatted": "The raw data, the processed data, the analysis code, and the code used to generate this manuscript are all openly available in a GitHub repository at <ref type=\"url\" target=\"https://github.com/Lakens/stroop_ef-\">https://github.com/Lakens/stroop_ef-<\/ref>fect_paper."
+    },
+    {
+      "text": "No preregistration was filed for this classroom demonstration.",
+      "text_id": 22,
+      "paragraph_id": 10,
+      "section_id": 7,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "Champely, S. (2020). Pwr: Basic functions for power analysis. https://doi.org/10.32614/CRAN. package.pwr",
+      "text_id": 23,
+      "paragraph_id": 11,
+      "section_id": 8,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and ANOVAs. Frontiers in Psychology, 4. https://doi.org/10.3389/fpsyg.2013.00863",
+      "text_id": 24,
+      "paragraph_id": 12,
+      "section_id": 8,
+      "page_number": null,
+      "formatted": null
+    },
+    {
+      "text": "MacLeod, C. M. (1991). Half a century of research on the Stroop effect: An integrative review. Psychological Bulletin, 109(2), 163-203. https://doi.org/10.1037/0033-2909.109.2.163",
+      "text_id": 25,
+      "paragraph_id": 13,
+      "section_id": 8,
+      "page_number": null,
+      "formatted": null
+    }
+  ],
+  "section": [
+    {
+      "section_id": 0,
+      "header": "Abstract",
+      "parent_section_id": null,
+      "section_type": "abstract",
+      "classification_score": null
+    },
+    {
+      "section_id": 1,
+      "header": "The Stroop Effect: A Reproducible Analysis",
+      "parent_section_id": null,
+      "section_type": "intro",
+      "classification_score": null
+    },
+    {
+      "section_id": 2,
+      "header": "Ethical approval",
+      "parent_section_id": null,
+      "section_type": "intro",
+      "classification_score": null
+    },
+    {
+      "section_id": 3,
+      "header": "Power analysis",
+      "parent_section_id": null,
+      "section_type": "intro",
+      "classification_score": null
+    },
+    {
+      "section_id": 4,
+      "header": null,
+      "parent_section_id": null,
+      "section_type": "conflict",
+      "classification_score": null
+    },
+    {
+      "section_id": 5,
+      "header": "Plotting the data",
+      "parent_section_id": null,
+      "section_type": "annex",
+      "classification_score": null
+    },
+    {
+      "section_id": 6,
+      "header": "Results",
+      "parent_section_id": null,
+      "section_type": "annex",
+      "classification_score": null
+    },
+    {
+      "section_id": 7,
+      "header": "Open Practices Statement",
+      "parent_section_id": null,
+      "section_type": "annex",
+      "classification_score": null
+    },
+    {
+      "section_id": 8,
+      "header": "References",
+      "parent_section_id": null,
+      "section_type": "references",
+      "classification_score": null
+    }
+  ],
+  "url": [
+    {
+      "href": "http://faculty.washing-",
+      "link_text": null,
+      "text_id": 5
+    },
+    {
+      "href": "https://github.com/Lakens/stroop_ef-",
+      "link_text": null,
+      "text_id": 21
+    }
+  ],
+  "bib": [
+    {
+      "bib_type": "book",
+      "doi": "10.32614/CRAN.package.pwr",
+      "title": "Pwr: Basic functions for power analysis",
+      "authors": "Champely, S",
+      "editors": "",
+      "publisher": "",
+      "year": 2020,
+      "volume": "",
+      "issue": "",
+      "container": null,
+      "first_page": null,
+      "last_page": null,
+      "bib_id": 0,
+      "year_suffix": "",
+      "text_id": 23
+    },
+    {
+      "bib_type": "article",
+      "doi": "10.3389/fpsyg.2013.00863",
+      "title": "Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and ANOVAs",
+      "authors": "Lakens, D",
+      "editors": "",
+      "publisher": "",
+      "year": 2013,
+      "volume": "4",
+      "issue": "",
+      "container": "Frontiers in Psychology",
+      "first_page": null,
+      "last_page": null,
+      "bib_id": 1,
+      "year_suffix": "",
+      "text_id": 24
+    },
+    {
+      "bib_type": "article",
+      "doi": "10.1037/0033-2909.109.2.163",
+      "title": "Half a century of research on the Stroop effect: An integrative review",
+      "authors": "Macleod, C M",
+      "editors": "",
+      "publisher": "",
+      "year": 1991,
+      "volume": "109",
+      "issue": "2",
+      "container": "Psychological Bulletin",
+      "first_page": "163",
+      "last_page": "203",
+      "bib_id": 2,
+      "year_suffix": "",
+      "text_id": 25
+    }
+  ],
+  "xref": [
+    {
+      "xref_id": 2,
+      "xref_type": "bibr",
+      "contents": "(MacLeod, 1991)",
+      "text_id": 3
+    },
+    {
+      "xref_id": 2,
+      "xref_type": "bibr",
+      "contents": "(MacLeod, 1991)",
+      "text_id": 10
+    },
+    {
+      "xref_id": 0,
+      "xref_type": "bibr",
+      "contents": "(Champely, 2020)",
+      "text_id": 11
+    },
+    {
+      "xref_id": 1,
+      "xref_type": "bibr",
+      "contents": "(Lakens, 2013)",
+      "text_id": 18
+    }
+  ],
+  "figure": [],
+  "table": [],
+  "eq": [
+    {
+      "text_id": 11,
+      "grp_id": 1,
+      "lhs": "Cohen's dz",
+      "df": null,
+      "comp": "=",
+      "rhs": "0.8"
+    },
+    {
+      "text_id": 17,
+      "grp_id": 2,
+      "lhs": "M",
+      "df": null,
+      "comp": "=",
+      "rhs": "15.1"
+    },
+    {
+      "text_id": 17,
+      "grp_id": 2,
+      "lhs": "SD",
+      "df": null,
+      "comp": "=",
+      "rhs": "4.1"
+    },
+    {
+      "text_id": 17,
+      "grp_id": 2,
+      "lhs": "M",
+      "df": null,
+      "comp": "=",
+      "rhs": "23"
+    },
+    {
+      "text_id": 17,
+      "grp_id": 2,
+      "lhs": "SD",
+      "df": null,
+      "comp": "=",
+      "rhs": "4.78"
+    },
+    {
+      "text_id": 17,
+      "grp_id": 2,
+      "lhs": "r",
+      "df": null,
+      "comp": "=",
+      "rhs": "0.37"
+    },
+    {
+      "text_id": 18,
+      "grp_id": 3,
+      "lhs": "t",
+      "df": "(130)",
+      "comp": "=",
+      "rhs": "18.04"
+    },
+    {
+      "text_id": 18,
+      "grp_id": 3,
+      "lhs": "p",
+      "df": null,
+      "comp": "<",
+      "rhs": "0.001"
+    },
+    {
+      "text_id": 18,
+      "grp_id": 3,
+      "lhs": "Cohen's dz",
+      "df": null,
+      "comp": "=",
+      "rhs": "1.58"
+    }
+  ]
+}

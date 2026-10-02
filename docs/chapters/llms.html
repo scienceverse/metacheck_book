@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>5&nbsp; Using Large Language Models – The Metacheck Manual</title>
+<title>6&nbsp; Using Large Language Models – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/llms.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/llms.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -166,38 +166,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/first-steps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/reading-a-paper.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading in a Paper</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/text-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text Search</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/llms.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/caching.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/papers-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Using the Paper Database Corpora</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-modules.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Creating Modules</span></span></a>
   </div>
 </li>
       </ul>
@@ -214,163 +220,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-power.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Power Analysis Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-prereg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reg-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Preregistration Comparison with RegCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ethics-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Ethics Approval Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-funding-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Funding Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-open-practices.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Open Practices</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-coi-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Conflict of Interest Statement</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-marginal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Marginal Significance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">StatCheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-exact.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Exact p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-p-nonsig.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Non-Significant p-Values</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-stat-effect-size.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Effect Sizes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-repo-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Repository Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-code-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Code Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-data-validate.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data Quality Checks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-codebook-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Codebook Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reproducibility-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -387,13 +393,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -441,35 +447,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#turning-llm-support-on-and-off" id="toc-turning-llm-support-on-and-off" class="nav-link active" data-scroll-target="#turning-llm-support-on-and-off"><span class="header-section-number">5.1</span> Turning LLM support on and off</a></li>
+<li><a href="#turning-llm-support-on-and-off" id="toc-turning-llm-support-on-and-off" class="nav-link active" data-scroll-target="#turning-llm-support-on-and-off"><span class="header-section-number">6.1</span> Turning LLM support on and off</a></li>
   <li>
-<a href="#choosing-a-model" id="toc-choosing-a-model" class="nav-link" data-scroll-target="#choosing-a-model"><span class="header-section-number">5.2</span> Choosing a model</a>
+<a href="#choosing-a-model" id="toc-choosing-a-model" class="nav-link" data-scroll-target="#choosing-a-model"><span class="header-section-number">6.2</span> Choosing a model</a>
   <ul class="collapse">
-<li><a href="#listing-available-models" id="toc-listing-available-models" class="nav-link" data-scroll-target="#listing-available-models"><span class="header-section-number">5.2.1</span> Listing available models</a></li>
-  <li><a href="#supported-providers" id="toc-supported-providers" class="nav-link" data-scroll-target="#supported-providers"><span class="header-section-number">5.2.2</span> Supported providers</a></li>
+<li><a href="#listing-available-models" id="toc-listing-available-models" class="nav-link" data-scroll-target="#listing-available-models"><span class="header-section-number">6.2.1</span> Listing available models</a></li>
+  <li><a href="#supported-providers" id="toc-supported-providers" class="nav-link" data-scroll-target="#supported-providers"><span class="header-section-number">6.2.2</span> Supported providers</a></li>
   </ul>
 </li>
-  <li><a href="#option-1-run-a-model-locally-with-ollama-recommended" id="toc-option-1-run-a-model-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#option-1-run-a-model-locally-with-ollama-recommended"><span class="header-section-number">5.3</span> Option 1: Run a model locally with Ollama (recommended)</a></li>
-  <li><a href="#option-2-use-a-cloud-api" id="toc-option-2-use-a-cloud-api" class="nav-link" data-scroll-target="#option-2-use-a-cloud-api"><span class="header-section-number">5.4</span> Option 2: Use a cloud API</a></li>
+  <li><a href="#option-1-run-a-model-locally-with-ollama-recommended" id="toc-option-1-run-a-model-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#option-1-run-a-model-locally-with-ollama-recommended"><span class="header-section-number">6.3</span> Option 1: Run a model locally with Ollama (recommended)</a></li>
+  <li><a href="#option-2-use-a-cloud-api" id="toc-option-2-use-a-cloud-api" class="nav-link" data-scroll-target="#option-2-use-a-cloud-api"><span class="header-section-number">6.4</span> Option 2: Use a cloud API</a></li>
   <li>
-<a href="#querying-papers-directly-with-llm" id="toc-querying-papers-directly-with-llm" class="nav-link" data-scroll-target="#querying-papers-directly-with-llm"><span class="header-section-number">5.5</span> Querying papers directly with <code>llm()</code></a>
+<a href="#querying-papers-directly-with-llm" id="toc-querying-papers-directly-with-llm" class="nav-link" data-scroll-target="#querying-papers-directly-with-llm"><span class="header-section-number">6.5</span> Querying papers directly with <code>llm()</code></a>
   <ul class="collapse">
-<li><a href="#free-text-vs.-structured-output" id="toc-free-text-vs.-structured-output" class="nav-link" data-scroll-target="#free-text-vs.-structured-output"><span class="header-section-number">5.5.1</span> Free text vs.&nbsp;structured output</a></li>
-  <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">5.5.2</span> A worked example: extracting power analyses</a></li>
-  <li><a href="#sending-a-whole-paper" id="toc-sending-a-whole-paper" class="nav-link" data-scroll-target="#sending-a-whole-paper"><span class="header-section-number">5.5.3</span> Sending a whole paper</a></li>
-  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">5.5.4</span> Rate limiting</a></li>
-  <li><a href="#request-timeout" id="toc-request-timeout" class="nav-link" data-scroll-target="#request-timeout"><span class="header-section-number">5.5.5</span> Request timeout</a></li>
-  <li><a href="#response-length" id="toc-response-length" class="nav-link" data-scroll-target="#response-length"><span class="header-section-number">5.5.6</span> Response length</a></li>
-  <li><a href="#reasoning-effort" id="toc-reasoning-effort" class="nav-link" data-scroll-target="#reasoning-effort"><span class="header-section-number">5.5.7</span> Reasoning effort</a></li>
-  <li><a href="#caching-responses" id="toc-caching-responses" class="nav-link" data-scroll-target="#caching-responses"><span class="header-section-number">5.5.8</span> Caching responses</a></li>
+<li><a href="#free-text-vs.-structured-output" id="toc-free-text-vs.-structured-output" class="nav-link" data-scroll-target="#free-text-vs.-structured-output"><span class="header-section-number">6.5.1</span> Free text vs.&nbsp;structured output</a></li>
+  <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">6.5.2</span> A worked example: extracting power analyses</a></li>
+  <li><a href="#sending-a-whole-paper" id="toc-sending-a-whole-paper" class="nav-link" data-scroll-target="#sending-a-whole-paper"><span class="header-section-number">6.5.3</span> Sending a whole paper</a></li>
+  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">6.5.4</span> Rate limiting</a></li>
+  <li><a href="#request-timeout" id="toc-request-timeout" class="nav-link" data-scroll-target="#request-timeout"><span class="header-section-number">6.5.5</span> Request timeout</a></li>
+  <li><a href="#response-length" id="toc-response-length" class="nav-link" data-scroll-target="#response-length"><span class="header-section-number">6.5.6</span> Response length</a></li>
+  <li><a href="#reasoning-effort" id="toc-reasoning-effort" class="nav-link" data-scroll-target="#reasoning-effort"><span class="header-section-number">6.5.7</span> Reasoning effort</a></li>
+  <li><a href="#caching-responses" id="toc-caching-responses" class="nav-link" data-scroll-target="#caching-responses"><span class="header-section-number">6.5.8</span> Caching responses</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/llms.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/llms.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Using Large Language Models</span>
+<span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Using Large Language Models</span>
 </h1>
 </div>
 
@@ -500,8 +506,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Because the code in this chapter needs an LLM to be installed and configured, the examples below are shown but not executed when this book is built. You can run all of them yourself once you have set up either Ollama or a cloud API key, as described below.</p>
-<section id="turning-llm-support-on-and-off" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="turning-llm-support-on-and-off">
-<span class="header-section-number">5.1</span> Turning LLM support on and off</h2>
+<section id="turning-llm-support-on-and-off" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="turning-llm-support-on-and-off">
+<span class="header-section-number">6.1</span> Turning LLM support on and off</h2>
 <p>LLM support is controlled by a single global switch, <code>llm_use()</code>. It is <strong>off by default</strong>. Modules that can use an LLM check this switch and fall back to their regular-expression behaviour when it is off.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="op">)</span>        <span class="co"># check the current setting (FALSE by default)</span></span>
@@ -518,8 +524,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span><span class="op">)</span>   <span class="co"># also extracts structured details with the LLM</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="choosing-a-model" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="choosing-a-model">
-<span class="header-section-number">5.2</span> Choosing a model</h2>
+</section><section id="choosing-a-model" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="choosing-a-model">
+<span class="header-section-number">6.2</span> Choosing a model</h2>
 <p>The model is set with <code>llm_model()</code>. A model is named either as <code>"provider"</code> (use that provider’s default model) or <code>"provider/model"</code> (a specific model).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_model</span><span class="op">(</span><span class="op">)</span>                                 <span class="co"># show the model currently set</span></span>
@@ -528,16 +534,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/llama-3.3-70b-versatile"</span><span class="op">)</span>   <span class="co"># a specific Groq model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>When Metacheck starts, it checks for known API keys (for example <code>GROQ_API_KEY</code>) in your environment and sets a sensible default model automatically.</p>
-<section id="listing-available-models" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="listing-available-models">
-<span class="header-section-number">5.2.1</span> Listing available models</h3>
+<section id="listing-available-models" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="listing-available-models">
+<span class="header-section-number">6.2.1</span> Listing available models</h3>
 <p><code>llm_model_list()</code> returns the models Metacheck can see across all configured providers. Pass a provider name to narrow it down.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_model_list</span><span class="op">(</span><span class="op">)</span>           <span class="co"># all models from all configured providers</span></span>
 <span><span class="fu">llm_model_list</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>     <span class="co"># just Groq models</span></span>
 <span><span class="fu">llm_model_list</span><span class="op">(</span><span class="st">"ollama"</span><span class="op">)</span>   <span class="co"># just the models you have pulled locally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="supported-providers" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="supported-providers">
-<span class="header-section-number">5.2.2</span> Supported providers</h3>
+</section><section id="supported-providers" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="supported-providers">
+<span class="header-section-number">6.2.2</span> Supported providers</h3>
 <p>Metacheck uses <a href="https://ellmer.tidyverse.org/">ellmer</a> under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:</p>
 <table class="caption-top table">
 <colgroup>
@@ -608,8 +614,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Other local-serving options.</td>
 </tr>
 </tbody>
-</table></section></section><section id="option-1-run-a-model-locally-with-ollama-recommended" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="option-1-run-a-model-locally-with-ollama-recommended">
-<span class="header-section-number">5.3</span> Option 1: Run a model locally with Ollama (recommended)</h2>
+</table></section></section><section id="option-1-run-a-model-locally-with-ollama-recommended" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="option-1-run-a-model-locally-with-ollama-recommended">
+<span class="header-section-number">6.3</span> Option 1: Run a model locally with Ollama (recommended)</h2>
 <p><a href="https://ollama.com">Ollama</a> is a free, open-source tool that runs AI models on your own computer. No API key, no account, no usage costs, and no data leaves your machine. The trade-off is speed: your computer does the work, so it is slower than a cloud API — especially the first time a model loads.</p>
 <p><strong>Setup, in brief:</strong></p>
 <ol type="1">
@@ -626,8 +632,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For a full walkthrough — system requirements, verifying the server is running, choosing a model size for your hardware, and troubleshooting — see the dedicated <a href="../chapters/ollama.html">Local AI with Ollama</a> chapter.</p>
-</section><section id="option-2-use-a-cloud-api" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
-<span class="header-section-number">5.4</span> Option 2: Use a cloud API</h2>
+</section><section id="option-2-use-a-cloud-api" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
+<span class="header-section-number">6.4</span> Option 2: Use a cloud API</h2>
 <p>You can use any cloud model ellmer supports. This is faster than running locally but requires an account and API key with the provider, and <strong>sends text to an external service</strong> — keep this in mind for unpublished manuscripts.</p>
 <p>Get an API key from your provider (for example <a href="https://console.groq.com/keys" class="uri">https://console.groq.com/keys</a>) and add it to your <code>.Renviron</code> file (open it with <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">GROQ_API_KEY</span><span class="op">=</span><span class="st">"your-key-here"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -636,8 +642,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>   <span class="co"># or e.g. llm_model("groq/llama-3.3-70b-versatile")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="querying-papers-directly-with-llm" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="querying-papers-directly-with-llm">
-<span class="header-section-number">5.5</span> Querying papers directly with <code>llm()</code>
+</section><section id="querying-papers-directly-with-llm" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="querying-papers-directly-with-llm">
+<span class="header-section-number">6.5</span> Querying papers directly with <code>llm()</code>
 </h2>
 <p>Beyond the modules, you can send any text to an LLM with <code>llm()</code>. Narrow the text down first with <code>text_search()</code> so you only send relevant sentences (this also keeps the number of queries — and any costs — low).</p>
 <p>As an example, suppose we want to know whether a paper states any <strong>constraints on the generalizability</strong> of its findings. A plain text search for “generaliz” finds candidate sentences, but it cannot tell the difference between a sentence about <em>constraints on generality</em> and one that merely mentions a “generalized linear model”. That judgement is exactly the kind of classification an LLM can do. Here we take one paper from <code>psychsci</code>, find every sentence mentioning generalizability, and ask the model a yes/no question about each:</p>
@@ -679,8 +685,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<section id="free-text-vs.-structured-output" class="level3" data-number="5.5.1"><h3 data-number="5.5.1" class="anchored" data-anchor-id="free-text-vs.-structured-output">
-<span class="header-section-number">5.5.1</span> Free text vs.&nbsp;structured output</h3>
+<section id="free-text-vs.-structured-output" class="level3" data-number="6.5.1"><h3 data-number="6.5.1" class="anchored" data-anchor-id="free-text-vs.-structured-output">
+<span class="header-section-number">6.5.1</span> Free text vs.&nbsp;structured output</h3>
 <p>By default <code>llm()</code> returns free-text responses in an <code>answer</code> column. For reliable extraction, pass an ellmer <code>type</code> specification so the provider returns structured fields:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">type_spec</span> <span class="op">&lt;-</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/type_boolean.html">type_object</a></span><span class="op">(</span></span>
@@ -690,8 +696,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">power_sentences</span>, <span class="st">"Extract power analysis details."</span>, type <span class="op">=</span> <span class="va">type_spec</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="a-worked-example-extracting-power-analyses" class="level3" data-number="5.5.2"><h3 data-number="5.5.2" class="anchored" data-anchor-id="a-worked-example-extracting-power-analyses">
-<span class="header-section-number">5.5.2</span> A worked example: extracting power analyses</h3>
+</section><section id="a-worked-example-extracting-power-analyses" class="level3" data-number="6.5.2"><h3 data-number="6.5.2" class="anchored" data-anchor-id="a-worked-example-extracting-power-analyses">
+<span class="header-section-number">6.5.2</span> A worked example: extracting power analyses</h3>
 <p>You can also ask for JSON directly in the prompt. Below we narrow the first ten <code>psychsci</code> papers to sentences that mention “power” and contain a number, then ask the model to return structured details as JSON:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">power</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -879,8 +885,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="sending-a-whole-paper" class="level3" data-number="5.5.3"><h3 data-number="5.5.3" class="anchored" data-anchor-id="sending-a-whole-paper">
-<span class="header-section-number">5.5.3</span> Sending a whole paper</h3>
+</section><section id="sending-a-whole-paper" class="level3" data-number="6.5.3"><h3 data-number="6.5.3" class="anchored" data-anchor-id="sending-a-whole-paper">
+<span class="header-section-number">6.5.3</span> Sending a whole paper</h3>
 <p>So far we have sent individual sentences. You can also send an <strong>entire paper</strong> in one call by collapsing all of its sentences into a single string. For example, to ask about the sample size of the demo paper:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="fu">demofile</span><span class="op">(</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span></span>
@@ -908,31 +914,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Cloud providers like Groq have large context windows and process the prompt on their own fast hardware, so a whole-paper query returns in seconds — at the cost of sending the full manuscript to an external service.</p>
 <p>This is exactly why Metacheck’s design encourages narrowing the text with <code>text_search()</code> first: smaller, targeted queries are faster, fit inside a local model’s context window, and send less data. Reserve whole-paper prompts for short papers or cloud models.</p>
-</section><section id="rate-limiting" class="level3" data-number="5.5.4"><h3 data-number="5.5.4" class="anchored" data-anchor-id="rate-limiting">
-<span class="header-section-number">5.5.4</span> Rate limiting</h3>
+</section><section id="rate-limiting" class="level3" data-number="6.5.4"><h3 data-number="6.5.4" class="anchored" data-anchor-id="rate-limiting">
+<span class="header-section-number">6.5.4</span> Rate limiting</h3>
 <p><code>llm()</code> makes one query per row of text. To guard against runaway costs from a coding mistake, Metacheck caps the number of queries (default 30). Change the cap with <code>llm_max_calls()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="op">)</span>      <span class="co"># check current limit</span></span>
 <span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>   <span class="co"># raise it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See <code>?llm</code> for the full set of arguments and details.</p>
-</section><section id="request-timeout" class="level3" data-number="5.5.5"><h3 data-number="5.5.5" class="anchored" data-anchor-id="request-timeout">
-<span class="header-section-number">5.5.5</span> Request timeout</h3>
+</section><section id="request-timeout" class="level3" data-number="6.5.5"><h3 data-number="6.5.5" class="anchored" data-anchor-id="request-timeout">
+<span class="header-section-number">6.5.5</span> Request timeout</h3>
 <p>Every single request <code>llm()</code> makes is bounded by a wall-clock timeout, set with <code>llm_timeout()</code> (default 180 seconds). Without it, a stuck or overloaded model — most often a local Ollama model under load, or a batch too large for the model to finish — blocks silently, with no log output and no progress, for as long as the underlying HTTP client is willing to wait, which can be hours. The timeout turns that invisible stall into a fast, visible, per-row failure instead, recorded the same way a provider error already is, so a large batch run fails fast rather than hanging.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_timeout</span><span class="op">(</span><span class="op">)</span>        <span class="co"># read the current timeout, in seconds</span></span>
 <span><span class="fu">llm_timeout</span><span class="op">(</span><span class="fl">120</span><span class="op">)</span>      <span class="co"># lower it, so a stuck call fails faster</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="response-length" class="level3" data-number="5.5.6"><h3 data-number="5.5.6" class="anchored" data-anchor-id="response-length">
-<span class="header-section-number">5.5.6</span> Response length</h3>
+</section><section id="response-length" class="level3" data-number="6.5.6"><h3 data-number="6.5.6" class="anchored" data-anchor-id="response-length">
+<span class="header-section-number">6.5.6</span> Response length</h3>
 <p>Every call to <code>llm()</code> needs some limit on how long the answer may be, because a provider that reaches the limit truncates the response without a clear error. Rather than repeating <code>params = list(max_tokens = ...)</code> at every call, set the default once for the session with <code>llm_max_tokens()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_tokens</span><span class="op">(</span><span class="op">)</span>       <span class="co"># read the current default</span></span>
 <span><span class="fu">llm_max_tokens</span><span class="op">(</span><span class="fl">8192</span><span class="op">)</span>   <span class="co"># raise it for the session</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>An explicit <code>max_tokens</code> passed to a single call still takes precedence. The setting matters most when a module asks one question about a great deal of material at once, such as <code>codebook_check</code> or <code>data_check</code> describing many columns in a single pass; that is the case most likely to need more room than the built-in default.</p>
-</section><section id="reasoning-effort" class="level3" data-number="5.5.7"><h3 data-number="5.5.7" class="anchored" data-anchor-id="reasoning-effort">
-<span class="header-section-number">5.5.7</span> Reasoning effort</h3>
+</section><section id="reasoning-effort" class="level3" data-number="6.5.7"><h3 data-number="6.5.7" class="anchored" data-anchor-id="reasoning-effort">
+<span class="header-section-number">6.5.7</span> Reasoning effort</h3>
 <p>Some models spend extra tokens “thinking” before answering. For the work Metacheck asks of a model this is mostly wasted: the questions are ones of reading and pattern-matching over material the prompt already supplies (name this variable’s label, list the scales in these sentences, group these files by study), not arithmetic, multi-step inference, or planning. Those extra tokens also come out of the same budget as the visible answer, which is a confirmed cause of truncated structured responses on <code>gpt-oss</code> models via Groq. Low reasoning effort is therefore the right default for this package rather than a compromise on quality.</p>
 <p>Set it with <code>llm_reasoning()</code>, which accepts <code>"low"</code>, <code>"medium"</code>, <code>"high"</code> or <code>"none"</code>:</p>
 <div class="cell">
@@ -976,8 +982,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>A model with no reasoning setting of any kind is left alone: Metacheck never sends an unsupported parameter, because providers differ in whether they ignore one quietly or reject the whole request.</p>
 <p>If you do want to inspect a model’s reasoning for a structured call (<code>type</code> provided), pass <code>capture_reasoning = TRUE</code> to <code>llm()</code>. This adds a <code>.reasoning</code> column holding the provider’s own chain-of-thought text for each row (or <code>NA</code> when the provider or call returned none). It is off by default, since most callers never look at it and skipping it costs nothing extra — every existing call is unaffected either way.</p>
-</section><section id="caching-responses" class="level3" data-number="5.5.8"><h3 data-number="5.5.8" class="anchored" data-anchor-id="caching-responses">
-<span class="header-section-number">5.5.8</span> Caching responses</h3>
+</section><section id="caching-responses" class="level3" data-number="6.5.8"><h3 data-number="6.5.8" class="anchored" data-anchor-id="caching-responses">
+<span class="header-section-number">6.5.8</span> Caching responses</h3>
 <p>Because <code>llm()</code> runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default and cached replays do not count against <code>llm_max_calls()</code>. The <a href="../chapters/caching.html">Caching and Reuse</a> chapter explains how it works, and how to inspect or clear it (<code>llm_cache()</code>, <code>llm_cache_clear()</code>).</p>
 
 
@@ -1382,12 +1388,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../chapters/text-search.html" class="pagination-link" aria-label="Text Search">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Text Search</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Text Search</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/caching.html" class="pagination-link" aria-label="Caching and Reuse">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Caching and Reuse</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

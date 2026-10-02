@@ -1,0 +1,160 @@
+---
+title: "Your First Check"
+vignette: >
+  %\VignetteIndexEntry{Your First Check}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>"
+)
+library(metacheck)
+```
+
+This chapter does not explain anything about how Metacheck works. It just walks through the four things you will do most often, using two short example papers, so that you have something working before you read about how any of it works. If you have never used R before, that is fine: every line below is explained, and you can copy and paste each code chunk into the R console one at a time.
+
+We will use two small manuscripts, both about the same simple study (whether people are slower to name the ink color of a word when the word itself names a different color — the "Stroop effect"):
+
+- A **good** paper: <https://github.com/Lakens/stroop_effect_paper>, which reports its statistics correctly and shares its data and code openly.
+- A **bad** paper: <https://github.com/Lakens/stroop_effect_paper_bad>, a version of the same study with a number of common mistakes deliberately introduced, so you can see what Metacheck flags when something is wrong.
+
+## Step 1: Read in a paper
+
+Metacheck works with PDF files. The function `convert()` turns a PDF into a structured format Metacheck can read, and `read()` loads that structured format into R as a **paper object** — everything Metacheck does, in every later chapter, starts from a paper object like this one.
+
+Since our example papers live on GitHub, we first download the PDF with `download.file()`, a base R function that needs no extra packages:
+
+```{r}
+#| eval: false
+download.file(
+  "https://raw.githubusercontent.com/Lakens/stroop_effect_paper/main/output/analysis.pdf",
+  destfile = "good_paper.pdf", mode = "wb"
+)
+```
+
+```{r}
+#| include: false
+# a local copy is used here so this chapter does not depend on a live
+# internet connection or an external conversion server when the book is
+# built
+good_paper_file <- "../converted/good_paper.json"
+```
+
+Now convert the PDF and read it in:
+
+```{r}
+#| eval: false
+json_file <- convert(file_path = "good_paper.pdf", save_path = ".")
+paper <- read(json_file)
+```
+
+```{r}
+#| include: false
+paper <- read(good_paper_file)
+```
+
+`convert()` sends the PDF to a free conversion server and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can `read()` the saved file directly, without converting again.
+
+::: callout-note
+`convert()` defaults to a server at Eindhoven University of Technology that does not store your manuscript. See [Reading in a Paper](reading-a-paper.qmd) if you would rather run your own, fully local conversion server.
+:::
+
+## Step 2: Run one check
+
+Metacheck organises its checks into **modules**. Each module looks for one specific thing. `module_run()` runs a single module on a paper object:
+
+```{r}
+mo <- module_run(paper, "stat_effect_size")
+mo$traffic_light
+mo$summary_text
+```
+
+`stat_effect_size` checks whether a reported statistical test (like a *t*-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module returns a **traffic light** — `"green"` (no issues found), `"yellow"` (worth a closer look), `"red"` (a likely problem), or `"na"` (nothing for this module to check) — plus a plain-language summary.
+
+The good paper reports *t*(130) = 18.04 together with Cohen's *d~z~* = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.
+
+```{r}
+#| eval: false
+download.file(
+  "https://raw.githubusercontent.com/Lakens/stroop_effect_paper_bad/main/analysis.pdf",
+  destfile = "bad_paper.pdf", mode = "wb"
+)
+json_file <- convert(file_path = "bad_paper.pdf", save_path = ".")
+bad_paper <- read(json_file)
+mo_bad <- module_run(bad_paper, "stat_effect_size")
+mo_bad$traffic_light
+mo_bad$summary_text
+```
+
+```{r}
+#| include: false
+bad_paper <- read("../converted/bad_paper.json")
+mo_bad <- module_run(bad_paper, "stat_effect_size")
+```
+
+```{r}
+#| echo: false
+mo_bad$traffic_light
+mo_bad$summary_text
+```
+
+Running the same check on the bad paper comes back red: it reports the same *t*-test, *t*(130) = 18.04, but with a Cohen's *d~z~* of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.
+
+You now know the single most important function in Metacheck: `module_run(paper, "module_name")`. Every module in the [Modules](mod-power.qmd) part of this book works exactly this way — only the module name changes.
+
+## Step 3: Create a full report
+
+Most of the time you will not want to run modules one at a time — you want every relevant check, in one document. `report()` runs a whole battery of modules and writes the result to an HTML file you can open in a browser:
+
+```{r}
+#| eval: false
+report(paper, output_file = "good_paper_report.html")
+```
+
+This writes `good_paper_report.html` into your working directory. Open it, and you will see the same traffic lights and summaries from Step 2, but now for every module the report includes — preregistration, funding, conflicts of interest, power, statistical reporting, and more — all in one place, ready to read or share.
+
+Running `report()` on the bad paper's PDF (downloaded the same way as in Step 1, from <https://github.com/Lakens/stroop_effect_paper_bad/blob/main/analysis.pdf>) produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the *process* changes between the two papers — only what the report finds.
+
+## Step 4: Check a shared repository
+
+So far we have checked what a paper *says*. Metacheck can also check what a paper's authors actually *shared* — the data and code repository itself — independently of any manuscript. `repo_check` is the module for this, and it works on a local folder, so you do not need a paper object at all.
+
+Download the bad paper's repository as a zip file (the same "Download ZIP" button you would click on GitHub) and unpack it:
+
+```{r}
+#| eval: false
+download.file(
+  "https://github.com/Lakens/stroop_effect_paper_bad/archive/refs/heads/main.zip",
+  destfile = "bad_repo.zip", mode = "wb"
+)
+unzip("bad_repo.zip", exdir = "bad_repo")
+```
+
+Then point `module_run()` at the unpacked folder. Because there is no manuscript to search for repository links, two extra arguments tell Metacheck to look at this folder directly instead: `local_path` says where, and `local_only = TRUE` says not to look anywhere else.
+
+```{r}
+#| eval: false
+mo <- module_run(test_paper(), "repo_check",
+                 local_path = "bad_repo/stroop_effect_paper_bad-main",
+                 local_only = TRUE)
+mo$traffic_light
+mo$summary_text
+```
+
+`test_paper()` creates an empty, placeholder paper object — repo_check needs *a* paper object to attach its results to, but since we are not reading any manuscript in this step, an empty one is all that is required.
+
+This reports a **yellow** light on the bad repository: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper's repository (<https://github.com/Lakens/stroop_effect_paper>) and compare the result — it is organised into clearly labelled `data/`, `code/`, `output/`, and `documentation/` folders, with a complete codebook, which is exactly what `repo_check` is designed to reward.
+
+## What you have just done
+
+In four short steps, you:
+
+1. Read a PDF into R as a paper object (`convert()` + `read()`).
+2. Ran a single check on it (`module_run()`).
+3. Generated a full, shareable report (`report()`).
+4. Checked a shared repository on its own, with no manuscript involved (`module_run()` with `local_path`/`local_only`).
+
+These four functions cover the large majority of what you will do with Metacheck day to day. Everything else in this book is about the details: which modules exist and what each one checks ([Modules](mod-power.qmd)), how reading in a paper actually works ([Reading in a Paper](reading-a-paper.qmd)), how to search a paper's text yourself ([Text Search](text-search.qmd)), and how to turn on a large language model for the modules that can use one ([Using Large Language Models](llms.qmd)).
