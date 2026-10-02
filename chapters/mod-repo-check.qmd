@@ -187,6 +187,8 @@ module_run(paper, "repo_check", local_path = "path/to/files", local_only = TRUE)
 
 `local_only = TRUE` is useful when you cannot or do not want to contact external services — for example when checking a reviewer submission you downloaded as a zip. See the [Local Files](local-files.qmd) chapter for details.
 
+If you have no manuscript at all — just a folder to check — `report_repository("path/to/folder")` wraps this same `local_path`/`local_only = TRUE` pattern (and the three modules below it) into a one-line report; see [Getting Started](get-started.qmd#starting-from-a-manuscript-or-from-a-folder) and [Creating a Report](creating-a-report.qmd).
+
 `model` and `params` are passed through to `data_group_llm()` for study grouping, and only take effect when `llm_use(TRUE)` and the deterministic grouping rules cannot place a file:
 
 ```{r}

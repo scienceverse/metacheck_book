@@ -491,6 +491,7 @@ div.csl-indent {
 <span class="header-section-number">17.1</span> What it checks</h2>
 <p>The <code>stat_check</code> module runs <a href="https://statcheck.io/">Statcheck</a> on the paper. Statcheck recomputes the p-value from each reported test statistic and degrees of freedom, and flags cases where the reported p-value is <strong>inconsistent</strong> with the statistic — and, more seriously, where the inconsistency changes the significance decision (a <em>decision error</em>).</p>
 <p>Metacheck only returns Statcheck results for <strong>t-tests and F-tests</strong>, the tests for which the approach has been validated <span class="citation" data-cites="nuijten2016">(<a href="#ref-nuijten2016" role="doc-biblioref">Nuijten et al., 2016</a>)</span>. Statcheck only detects statistics written in APA format, which is mostly used in psychology journals.</p>
+<p>This module only checks statistics reported in the <strong>running text</strong> of the manuscript — it cannot (yet) process statistics reported only in a table.</p>
 <p>This module is <strong>fully offline</strong> (Statcheck runs locally).</p>
 </section><section id="running-the-module" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">17.2</span> Running the module</h2>

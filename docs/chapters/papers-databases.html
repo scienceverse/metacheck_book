@@ -481,24 +481,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_available.html">papers_available</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           name                    tag size_mb cached</span></span>
-<span><span class="co">#&gt; 1         ece3        ece3-2026-06-21    55.3  FALSE</span></span>
-<span><span class="co">#&gt; 2        elife       elife-2026-06-21    51.9  FALSE</span></span>
-<span><span class="co">#&gt; 3     openmind    openmind-2026-06-21    12.6  FALSE</span></span>
-<span><span class="co">#&gt; 4    frontiers   frontiers-2026-06-21    35.7  FALSE</span></span>
-<span><span class="co">#&gt; 5          jdm         jdm-2026-06-21    24.9   TRUE</span></span>
-<span><span class="co">#&gt; 6        iperc       iperc-2026-06-21    12.4  FALSE</span></span>
-<span><span class="co">#&gt; 7         scan        scan-2026-06-21    29.1  FALSE</span></span>
-<span><span class="co">#&gt; 8          joc         joc-2026-06-20    15.6  FALSE</span></span>
-<span><span class="co">#&gt; 9      natcomm     natcomm-2026-06-20    39.2  FALSE</span></span>
-<span><span class="co">#&gt; 10 psychsci_oa psychsci_oa-2026-06-20     8.2  FALSE</span></span>
-<span><span class="co">#&gt; 11        jssm        jssm-2026-06-20    25.5  FALSE</span></span>
-<span><span class="co">#&gt; 12     plosone     plosone-2026-06-20    30.3  FALSE</span></span>
-<span><span class="co">#&gt; 13     plosbio     plosbio-2026-06-19    40.5  FALSE</span></span>
-<span><span class="co">#&gt; 14     bmcoral     bmcoral-2026-06-19    21.4  FALSE</span></span>
-<span><span class="co">#&gt; 15        ijos        ijos-2026-06-19    22.0  FALSE</span></span>
-<span><span class="co">#&gt; 16      bmcmed      bmcmed-2026-06-19    30.5  FALSE</span></span>
-<span><span class="co">#&gt; 17     plosmed     plosmed-2026-06-19    30.2   TRUE</span></span>
-<span><span class="co">#&gt; 18    collabra    collabra-2026-06-19    31.7  FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 1     psychsci               psychsci     8.2   TRUE</span></span>
+<span><span class="co">#&gt; 2         ece3        ece3-2026-06-21    55.3   TRUE</span></span>
+<span><span class="co">#&gt; 3        elife       elife-2026-06-21    51.9  FALSE</span></span>
+<span><span class="co">#&gt; 4     openmind    openmind-2026-06-21    12.6  FALSE</span></span>
+<span><span class="co">#&gt; 5    frontiers   frontiers-2026-06-21    35.7   TRUE</span></span>
+<span><span class="co">#&gt; 6          jdm         jdm-2026-06-21    24.9   TRUE</span></span>
+<span><span class="co">#&gt; 7        iperc       iperc-2026-06-21    12.4  FALSE</span></span>
+<span><span class="co">#&gt; 8         scan        scan-2026-06-21    29.1  FALSE</span></span>
+<span><span class="co">#&gt; 9          joc         joc-2026-06-20    15.6  FALSE</span></span>
+<span><span class="co">#&gt; 10     natcomm     natcomm-2026-06-20    39.2  FALSE</span></span>
+<span><span class="co">#&gt; 11 psychsci_oa psychsci_oa-2026-06-20     8.2   TRUE</span></span>
+<span><span class="co">#&gt; 12        jssm        jssm-2026-06-20    25.5  FALSE</span></span>
+<span><span class="co">#&gt; 13     plosone     plosone-2026-06-20    30.3  FALSE</span></span>
+<span><span class="co">#&gt; 14     plosbio     plosbio-2026-06-19    40.5   TRUE</span></span>
+<span><span class="co">#&gt; 15     bmcoral     bmcoral-2026-06-19    21.4  FALSE</span></span>
+<span><span class="co">#&gt; 16        ijos        ijos-2026-06-19    22.0  FALSE</span></span>
+<span><span class="co">#&gt; 17      bmcmed      bmcmed-2026-06-19    30.5  FALSE</span></span>
+<span><span class="co">#&gt; 18     plosmed     plosmed-2026-06-19    30.2   TRUE</span></span>
+<span><span class="co">#&gt; 19    collabra    collabra-2026-06-19    31.7   TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="loading-a-corpus" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="loading-a-corpus">
 <span class="header-section-number">7.2</span> Loading a corpus</h2>
@@ -566,7 +567,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>All three return a list with <code>$traffic_light</code> (“green”, “yellow”, “red”, or “na”), <code>$summary_text</code>, and <code>$table</code> with row-level detail. See <code>vignette("stats", package = "metacheck")</code> for a fuller walkthrough of all five statistical-reporting modules using the bundled <code>psychsci</code> dataset.</p>
+<p>All three return a list with <code>$traffic_light</code> (“green”, “yellow”, “red”, or “na”), <code>$summary_text</code>, and <code>$table</code> with row-level detail. See <code>vignette("stats", package = "metacheck")</code> for a fuller walkthrough of all five statistical-reporting modules using the <code>psychsci</code> corpus loaded above.</p>
 <hr>
 <section id="stat_check-on-jdm" class="level3" data-number="7.4.1"><h3 data-number="7.4.1" class="anchored" data-anchor-id="stat_check-on-jdm">
 <span class="header-section-number">7.4.1</span> <code>stat_check</code> on JDM</h3>
@@ -612,9 +613,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">result_effect_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">plosmed</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result_nonsig</span><span class="op">$</span><span class="va">summary_text</span></span>
-<span><span class="co">#&gt; [1] "We found 2483 non-significant p values that should be checked for appropriate interpretation."</span></span>
+<span><span class="co">#&gt; [1] "We found 2900 non-significant p values that should be checked for appropriate interpretation."</span></span>
 <span><span class="va">result_effect_size</span><span class="op">$</span><span class="va">summary_text</span></span>
-<span><span class="co">#&gt; [1] "We found 51 t-tests and/or F-tests where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; [1] "We found 54 t-tests and/or F-tests where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We see that these modules identify some tests in a medical journal, but medical journals might also rely much more on other analyses than t-tests and F-tests. This highlights how we need to validate modules across domains, and clearly communicate the domain within which modules are validated.</p>
 

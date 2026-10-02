@@ -9,6 +9,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
@@ -19,6 +20,8 @@ The `stat_p_exact` module flags two kinds of problematic p-values:
 - **P-values reported as exactly zero** — for example `p = .000` or `p = 0.00`. A p-value is never exactly zero; `p = .000` is a rounding artifact (the true value is simply smaller than the reported precision) and should be written `p < .001`.
 
 Each detected value carries an `imprecise` flag and a `zero` flag, and either kind turns the traffic light **red**. When a `p = .000` is found, the report includes its own guidance explaining why exactly-zero p-values should be reported as `p < .001`.
+
+Detection is case-insensitive, so an upper-case `P = .04` is found just as reliably as `p = .04`.
 
 Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.
 

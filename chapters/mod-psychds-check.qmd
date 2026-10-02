@@ -13,13 +13,13 @@ llm_use(FALSE)
 ```
 
 ::: callout-warning
-## Not yet available
+## Development paused
 
-This module is still being developed and is in neither the released version of Metacheck nor the `dev` development version. Everything in this chapter — the `psychds_check` module, `convert_psychds()`, `psychds_validate()`, `convert_codebook()` and `convert_behaverse()` — describes work that is not yet part of the package, so the code here will not run against either version you can install.
+Development of this module is paused. Before `psychds_check`, `convert_psychds()`, `psychds_validate()`, `convert_codebook()`, and `convert_behaverse()` can move forward, the project first needs to settle on a metadata scheme to convert to and validate against — that decision isn't made yet, so none of this is part of the package you can install, and the code in this chapter will not run.
 
-The chapter is published now because the design is settled and worth describing. It will become usable once the module is added to `dev`; until then, treat it as a description of what is coming rather than as instructions you can follow.
+The chapter is published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.
 
-What [data_check](mod-data-check.qmd) already does on its own is the groundwork this module builds on: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout. The placement itself, and the conversion, are the parts still to come.
+What [data_check](mod-data-check.qmd) already does on its own is the groundwork this module builds on: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout. The placement itself, and the conversion, are the parts still on hold.
 :::
 
 ## What it checks
@@ -185,7 +185,7 @@ The same machinery scales up from one repository to a **data release** — a bro
 The recipe is: run the data pipeline over each paper with `data_check` set to fetch **all** files, then convert each to Psych-DS. Two `data_check` options (covered in the [Data Check](mod-data-check.qmd) chapter) make this practical for real-world repositories:
 
 - `download = "all"` fetches every file, not just the readable data.
-- `skip_types = "asset"` leaves out stimuli/media (which a release links to rather than hosts), and `peek_zips = TRUE` looks inside zips and only downloads those containing data.
+- `skip_types = "materials"` leaves out stimuli/media (which a release links to rather than hosts), and `peek_zips = TRUE` looks inside zips and only downloads those containing data.
 
 ```{r}
 #| eval: false
@@ -193,7 +193,7 @@ for (paper in papers) {
   chain <- report(paper,
                   c("data_check", "codebook_check", "psychds_check"),
                   args = list(data_check = list(
-                    download = "all", skip_types = "asset", peek_zips = TRUE)))
+                    download = "all", skip_types = "materials", peek_zips = TRUE)))
   convert_psychds(chain,  output_dir = file.path("archive", paper_id(paper), "psychds"))
   convert_codebook(chain, output_dir = file.path("archive", paper_id(paper), "codebook"))
 }

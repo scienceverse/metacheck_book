@@ -9,6 +9,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
@@ -81,3 +82,16 @@ Under the hood, `funding_check` does not match a single keyword. It runs roughly
 Finally, the module applies a few **filters to reduce false positives** — for example removing sentences that merely say information about funding is *not* available, and, when nothing else matches, taking a closer look at the Acknowledgements section (between the acknowledgements heading and the reference list) for funding or project-number mentions that the main patterns missed.
 
 The practical implication is the one noted under [Interpreting the result](#interpreting-the-result): the net is wide, but it is built around the vocabulary of *funding, support, grants, and financial assistance*. A statement that avoids all of that vocabulary — or one mangled by PDF extraction — can still slip through, so a `red` light is best read as "no recognisable funding statement found" rather than a definitive absence.
+
+## An over-inclusive alternative: `funding_check_oi`
+
+The package ships a second, separate version of this check, callable with `module_run(paper, "funding_check_oi")`. It trades precision for recall: instead of roughly three dozen targeted patterns, it looks for any sentence that contains **both** a funding-related word (*funder, funded, funding, financed, support*) **and** a study-related word (a much longer, looser list: *work, study, studies, research, manuscript, collaboration, paper, article, project, program, grant, award, fellowship, scholarship, stipend, none, author, declare, thank, acknowledge*) — favouring sentences from a funding, annex, or acknowledgement section when there is more than one match per paper.
+
+```{r}
+#| results: asis
+module_run(funded, "funding_check_oi")
+```
+
+Because the two versions are shipped as separate files, both happen to define a function with the same name internally (`funding_check()`); only the filename you pass to `module_run()` — `"funding_check"` or `"funding_check_oi"` — decides which one actually runs. `module_list()` shows them as two distinct entries, titled "Funding Check" and "Funding Check (Overinclusive)".
+
+Use the over-inclusive version when missing a real funding statement is more costly than reading through a few false positives — for example when screening a large corpus for subsequent manual review, rather than reporting a single paper's result as final.

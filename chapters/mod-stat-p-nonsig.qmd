@@ -9,11 +9,12 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
 
-The `stat_p_nonsig` module finds every **non-significant p-value** (p ≥ .05) so a reader can check whether the surrounding text interprets it correctly. A common error is to treat a non-significant result as evidence that there is *no effect* ("there was no difference between groups, p = .27"), when a non-significant result is simply inconclusive.
+The `stat_p_nonsig` module finds every **non-significant p-value** so a reader can check whether the surrounding text interprets it correctly. A p-value counts as significant, and is excluded, when it is at most .05 *and* reported with a comparator of `<`, `=`, or `≤` (`<=`/`=<` are also recognised) — so `p = .05` itself is treated as significant, not non-significant, and `p ≤ .01` is treated the same as `p < .01`. Everything else (any larger value, or a `>`/`≥` comparator) is flagged as non-significant. A common error is to treat a non-significant result as evidence that there is *no effect* ("there was no difference between groups, p = .27"), when a non-significant result is simply inconclusive.
 
 The module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.
 

@@ -477,6 +477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <strong>P-values reported as exactly zero</strong> — for example <code>p = .000</code> or <code>p = 0.00</code>. A p-value is never exactly zero; <code>p = .000</code> is a rounding artifact (the true value is simply smaller than the reported precision) and should be written <code>p &lt; .001</code>.</li>
 </ul>
 <p>Each detected value carries an <code>imprecise</code> flag and a <code>zero</code> flag, and either kind turns the traffic light <strong>red</strong>. When a <code>p = .000</code> is found, the report includes its own guidance explaining why exactly-zero p-values should be reported as <code>p &lt; .001</code>.</p>
+<p>Detection is case-insensitive, so an upper-case <code>P = .04</code> is found just as reliably as <code>p = .04</code>.</p>
 <p>Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.</p>
 <p>This module is <strong>fully offline</strong>.</p>
 </section><section id="running-the-module" class="level2" data-number="18.2"><h2 data-number="18.2" class="anchored" data-anchor-id="running-the-module">

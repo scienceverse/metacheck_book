@@ -9,6 +9,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
@@ -41,7 +42,7 @@ This module is **fully offline** — it uses only regular expressions, so all th
 
 ## Running the module
 
-The module only flags a *missing* statement when a paper appears to involve **live data collection** (so re-analyses of existing data are not penalised). We run it across the first ten papers of the built-in `psychsci` dataset.
+The module only flags a *missing* statement when a paper appears to involve **live data collection** (so re-analyses of existing data are not penalised). We run it across the first ten papers of the `psychsci` corpus (see [Using the Paper Database Corpora](papers-databases.qmd)).
 
 ```{r}
 mo <- module_run(psychsci[1:10], "ethics_check")

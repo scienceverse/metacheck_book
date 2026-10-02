@@ -448,6 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">13.5</span> Options</a></li>
   <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">13.6</span> Notes</a></li>
   <li><a href="#what-patterns-it-searches-for" id="toc-what-patterns-it-searches-for" class="nav-link" data-scroll-target="#what-patterns-it-searches-for"><span class="header-section-number">13.7</span> What patterns it searches for</a></li>
+  <li><a href="#an-over-inclusive-alternative-funding_check_oi" id="toc-an-over-inclusive-alternative-funding_check_oi" class="nav-link" data-scroll-target="#an-over-inclusive-alternative-funding_check_oi"><span class="header-section-number">13.8</span> An over-inclusive alternative: <code>funding_check_oi</code></a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-funding-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -504,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th style="text-align: left;">text</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">e554d5cb9925c7</td>
+<td style="text-align: left;">019a0eeaa62efa</td>
 <td style="text-align: left;">This work was supported by the National Science Foundation (grant 1234567).</td>
 </tr></tbody>
 </table>
@@ -572,6 +573,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>“No funding” statements also count.</strong> Because declaring the <em>absence</em> of funding is itself a funding statement, negative forms are matched too: <em>no funding was received</em>, <em>no financial support</em>, <em>no sources of funding</em>, <em>the authors received no funding for this research</em>, and similar.</p>
 <p>Finally, the module applies a few <strong>filters to reduce false positives</strong> — for example removing sentences that merely say information about funding is <em>not</em> available, and, when nothing else matches, taking a closer look at the Acknowledgements section (between the acknowledgements heading and the reference list) for funding or project-number mentions that the main patterns missed.</p>
 <p>The practical implication is the one noted under <a href="#interpreting-the-result">Interpreting the result</a>: the net is wide, but it is built around the vocabulary of <em>funding, support, grants, and financial assistance</em>. A statement that avoids all of that vocabulary — or one mangled by PDF extraction — can still slip through, so a <code>red</code> light is best read as “no recognisable funding statement found” rather than a definitive absence.</p>
+</section><section id="an-over-inclusive-alternative-funding_check_oi" class="level2" data-number="13.8"><h2 data-number="13.8" class="anchored" data-anchor-id="an-over-inclusive-alternative-funding_check_oi">
+<span class="header-section-number">13.8</span> An over-inclusive alternative: <code>funding_check_oi</code>
+</h2>
+<p>The package ships a second, separate version of this check, callable with <code>module_run(paper, "funding_check_oi")</code>. It trades precision for recall: instead of roughly three dozen targeted patterns, it looks for any sentence that contains <strong>both</strong> a funding-related word (<em>funder, funded, funding, financed, support</em>) <strong>and</strong> a study-related word (a much longer, looser list: <em>work, study, studies, research, manuscript, collaboration, paper, article, project, program, grant, award, fellowship, scholarship, stipend, none, author, declare, thank, acknowledge</em>) — favouring sentences from a funding, annex, or acknowledgement section when there is more than one match per paper.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">funded</span>, <span class="st">"funding_check_oi"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Funding Check (Overinclusive): A funding statement was detected.</p>
+<p>Because the two versions are shipped as separate files, both happen to define a function with the same name internally (<code>funding_check()</code>); only the filename you pass to <code>module_run()</code> — <code>"funding_check"</code> or <code>"funding_check_oi"</code> — decides which one actually runs. <code>module_list()</code> shows them as two distinct entries, titled “Funding Check” and “Funding Check (Overinclusive)”.</p>
+<p>Use the over-inclusive version when missing a real funding statement is more costly than reading through a few false positives — for example when screening a large corpus for subsequent manual review, rather than reporting a single paper’s result as final.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

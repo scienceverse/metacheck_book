@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 The first step to using Metacheck is to read in a manuscript. Currently, Metacheck relies on GROBID, which works with PDF files. If you have a manuscript in a different format, save a copy as a PDF. You have two options to convert a PDF to the GROBID .xml format. First, you can use a local version of GROBID. We will explain this below, but it requires more technical knowledge, and sufficient space on your harddrive. Alternatively, you can use an online server. As this is much simpler, and you can use a GROBID server at Eindhoven University of Technology that is GDPRR compliant and does not store any data. This is the approach we will use by default in this manual. Nevertheless, you might prefer not to send your manuscript to an external server, or you might not be allowed to. We have developed Metacheck to always work locally, without an internet connection, to also make it available in these more restrictive situations. 
@@ -207,7 +208,7 @@ paper$bib_match[, c("bib_id", "service", "doi", "title")] |>
 
 ## Working with a list of papers
 
-A *paperlist* is simply a list of paper objects — for example the built-in `psychsci` dataset (250 open-access *Psychological Science* articles). To pull the same component from every paper into one combined table, use `paper_table()`:
+A *paperlist* is simply a list of paper objects — for example the `psychsci` corpus (250 open-access *Psychological Science* articles, loaded with `papers_load("psychsci", cache = TRUE)` — see [Using the Paper Database Corpora](papers-databases.qmd)). To pull the same component from every paper into one combined table, use `paper_table()`:
 
 ```{r}
 paper_table(psychsci[1:5], "info", c("title", "doi")) |>

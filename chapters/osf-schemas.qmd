@@ -19,7 +19,7 @@ This article documents every registration schema currently published by the OSF:
 
 ## Why dispatch on `schema_id`, not name
 
-Each registration links to its schema at `relationships.registration_schema.data.id` — a permanent 24-char hex id. The schema *name* (`attributes.registration_supplement`) is **not** a reliable key: the OSF revises templates under the same name, and different versions use incompatible response-key formats. The current module's `q25`-presence heuristic for telling "OSF Preregistration" versions apart is exactly what fails on the v4 schema (its keys are `344-N`, not `qN`), causing every field to extract as `NULL`.
+Each registration links to its schema at `relationships.registration_schema.data.id` — a permanent 24-char hex id. The schema *name* (`attributes.registration_supplement`) is **not** a reliable key: the OSF revises templates under the same name, and different versions use incompatible response-key formats. An earlier version of the module told "OSF Preregistration" versions apart with a `q25`-presence heuristic, which failed on the v4 schema (its keys are `344-N`, not `qN`), causing every field to extract as `NULL`. Dispatching on `schema_id` instead avoids this entirely, since it identifies the exact schema version directly rather than guessing from which fields happen to be present.
 
 The catalog endpoint returns only the **current** version per name. Superseded versions (still used by older registrations) are not listed but remain resolvable by their own `schema_id` — you only discover those ids from real registrations.
 

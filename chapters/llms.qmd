@@ -88,7 +88,8 @@ Metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it sup
 | `google_gemini` / `google_vertex` | cloud | Needs `GOOGLE_API_KEY`. |
 | `mistral` | cloud | Needs a Mistral key. |
 | `aws_bedrock` | cloud | AWS credentials. |
-| `github` | cloud | GitHub Models. |
+| `deepseek` | cloud | Needs `DEEPSEEK_API_KEY`. |
+| `portkey` | cloud | An AI gateway/router; needs its own credentials. |
 | `lmstudio` / `vllm` | local | Other local-serving options. |
 
 ## Option 1: Run a model locally with Ollama (recommended)
@@ -308,6 +309,16 @@ llm_max_calls(100)   # raise it
 
 See `?llm` for the full set of arguments and details.
 
+### Request timeout
+
+Every single request `llm()` makes is bounded by a wall-clock timeout, set with `llm_timeout()` (default 180 seconds). Without it, a stuck or overloaded model — most often a local Ollama model under load, or a batch too large for the model to finish — blocks silently, with no log output and no progress, for as long as the underlying HTTP client is willing to wait, which can be hours. The timeout turns that invisible stall into a fast, visible, per-row failure instead, recorded the same way a provider error already is, so a large batch run fails fast rather than hanging.
+
+```{r}
+#| eval: false
+llm_timeout()        # read the current timeout, in seconds
+llm_timeout(120)      # lower it, so a stuck call fails faster
+```
+
 ### Response length
 
 Every call to `llm()` needs some limit on how long the answer may be, because a provider that reaches the limit truncates the response without a clear error. Rather than repeating `params = list(max_tokens = ...)` at every call, set the default once for the session with `llm_max_tokens()`:
@@ -342,6 +353,8 @@ There is no single reasoning switch that works across providers, so Metacheck tr
 | Ollama-hosted reasoning models (DeepSeek-R1, Qwen3, and similar) | a simple on/off flag rather than a graded level, so both `"low"` and `"none"` turn thinking off, and there is no equivalent of `"medium"` or `"high"` |
 
 A model with no reasoning setting of any kind is left alone: Metacheck never sends an unsupported parameter, because providers differ in whether they ignore one quietly or reject the whole request.
+
+If you do want to inspect a model's reasoning for a structured call (`type` provided), pass `capture_reasoning = TRUE` to `llm()`. This adds a `.reasoning` column holding the provider's own chain-of-thought text for each row (or `NA` when the provider or call returned none). It is off by default, since most callers never look at it and skipping it costs nothing extra — every existing call is unaffected either way.
 
 ### Caching responses
 

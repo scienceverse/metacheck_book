@@ -29,13 +29,16 @@ It reports, for each column, one of these statuses:
 
 - **labelled** — the column is matched to an entry in a codebook file.
 - **unlabelled** — no documentation was found for the column.
-- **conflicted** — the codebook contains more than one, disagreeing, description.
+- **conflicting_definition** — the codebook contains more than one, disagreeing, description for the column within its own study group.
+- **ambiguous_experiment** — the column only matches codebook entries scoped to a *different* study group than its own, so no applicable description could be chosen.
 - **llm** — the label was inferred by an LLM (only when one is enabled).
+
+There is no single `"conflicted"` value — `conflicting_definition` and `ambiguous_experiment` are the two distinct conflict sub-types, and code that filters on `label_status` should check for both.
 
 It also reports **unused** codebook entries: variables documented in the codebook that do not correspond to any column in the data.
 
 ::: callout-note
-This chapter runs offline against a small folder containing a data file and a codebook.
+This chapter runs offline against a small folder containing a data file and a codebook. If there is no manuscript at all, `report_repository("path/to/folder")` runs `codebook_check` together with `repo_check`, `code_check`, and `data_check` on the folder in one step — see [Getting Started](get-started.qmd#starting-from-a-manuscript-or-from-a-folder).
 :::
 
 ## A worked example
@@ -205,12 +208,13 @@ Each OSD records **where the scale identification came from**, at one of four ho
 
 | `scale_source` | Meaning |
 |---|---|
-| `dictionary` | matched a known instrument in Metacheck's scale dictionary (OpenScales-derived or curated) |
+| `matched` | matched a known instrument in Metacheck's scale dictionary (OpenScales-derived or curated) |
+| `task_matched` | matched a known *task* (rather than a self-report scale) in the same dictionary |
 | `manuscript` | a real instrument named in the paper, but not in the registry |
 | `self_generated` | an LLM-inferred construct label — **not** a recognised named instrument |
 | `unnamed_block` | a coherent same-prefix rating block, detected but not named |
 
-When a scale matches a `dictionary` instrument, Metacheck can also cross-reference the published original — how many items it should have and which are reverse-keyed — via the packaged `scale_meta` / `scale_items` / `scale_scoring` datasets, so a detected block can be compared against the reference instrument.
+When a scale matches a dictionary instrument (`matched` or `task_matched`), Metacheck can also cross-reference the published original — how many items it should have and which are reverse-keyed — via the packaged `scale_meta` / `scale_items` / `scale_scoring` datasets, so a detected block can be compared against the reference instrument.
 
 Data files with embedded scale metadata are handled too: a **JASP** (`.jasp`) or **jamovi** (`.omv`) file carries haven-style value labels just like a `.sav`, so `codebook_check` harvests those labels directly, and their bundled analyses are recovered separately (see the JASP/jamovi handling in [Data Check](mod-data-check.qmd)).
 

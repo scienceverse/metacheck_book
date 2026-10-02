@@ -25,15 +25,15 @@ pak::pkg_install("scienceverse/metacheck@dev")
 
 The `data_check` module is the foundation for all of Metacheck's data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:
 
-1. **Classifies every file** into a semantic type: tabular *data*, *code*, a *codebook*, a *README*, *software*, *output*, *supplemental*, an *asset* (image/audio/video/stimulus), or *other*.
+1. **Classifies every file** into a semantic type: tabular *data*, *code*, *documentation* (README, codebook, supplemental material, licence), *materials* (images/audio/video/stimuli, software), *output*, or *unknown*. Within *documentation*, a separate `doc_role` column distinguishes a README from a codebook from other supplemental material.
 2. **Reads each readable tabular data file** and describes every column along several independent **facets** — how it is stored, its measurement level, what it measures, how it functions, and its unit — together with basic **summary statistics**.
 3. **Runs data-quality checks** on those columns, and on the raw workbook of every spreadsheet, described in [Data Quality Checks](mod-data-validate.qmd). These were formerly two separate modules, `data_validate` and `excel_check`; both are now part of `data_check`.
-4. **Makes the extracted columns and read data frames available** to the other data modules — `codebook_check` builds on `data_check`'s output rather than re-reading the files, and the forthcoming `psychds_check` and `convert_psychds()` will use its classification and study grouping to build a Psych-DS archive.
+4. **Makes the extracted columns and read data frames available** to the other data modules — `codebook_check` builds on `data_check`'s output rather than re-reading the files, and `psychds_check` and `convert_psychds()` are designed to use its classification and study grouping to build a Psych-DS archive once that module's own development resumes (see [Psych-DS Check](mod-psychds-check.qmd)).
 
 On its own, `data_check` gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.
 
 ::: callout-note
-This chapter runs entirely offline. We build small example repositories in a temporary folder and point `data_check` at them with `local_path`. The same calls work against a real downloaded repository — see the [Local Files](local-files.qmd) chapter.
+This chapter runs entirely offline. We build small example repositories in a temporary folder and point `data_check` at them with `local_path`. The same calls work against a real downloaded repository — see the [Local Files](local-files.qmd) chapter. If you have no manuscript at all, `report_repository("path/to/folder")` runs `data_check` together with `repo_check`, `code_check`, and `codebook_check` on the folder in one step — see [Getting Started](get-started.qmd#starting-from-a-manuscript-or-from-a-folder).
 :::
 
 ## A worked example
@@ -76,29 +76,30 @@ mo$structure[, c("file_name", "data_type", "data_format")] |>
   knitr::kable()
 ```
 
-Every file is sorted into one of nine semantic types. The vocabulary is `data`, `codebook`, `code`, `software`, `output`, `supplemental`, `readme`, `asset`, and `other`:
+Every file is sorted into one of six semantic types. The vocabulary is `data`, `code`, `documentation`, `materials`, `output`, and `unknown`:
 
 | Type | Examples |
 |---|---|
 | `data` | `.csv`, `.tsv`, `.xlsx`, `.sav`, `.dta`, `.rds`, `.jasp`, `.omv`, and binary scientific formats (`.h5`, `.parquet`, `.npy`) |
-| `code` | `.R`, `.Rmd`, `.qmd`, `.py`, `.do`, `.sps`, `.sas`, `.ipynb` |
-| `codebook` | files whose name looks like a data dictionary, plus a Qualtrics `.qsf` survey definition |
-| `readme` | `README`, `read me` |
-| `software` | executables and installers (`.exe`, `.dll`, `.sh`), config files |
+| `code` | `.R`, `.Rmd`, `.qmd`, `.py`, `.do`, `.sps`, `.sas`, `.ipynb`, and SPSS/SAS/Stata syntax files |
+| `documentation` | a README, a codebook (including a Qualtrics `.qsf` survey definition), a licence file, and plain supplemental text (preprints, slide decks, Word docs, **and preregistrations**) |
+| `materials` | anything a participant or experimenter interacts with directly rather than an analytic artifact: images, audio, video, fonts (stimuli) **and** executables, installers, and config files (runnable software) |
 | `output` | rendered results (`.spv`, figures) |
-| `supplemental` | documents, slides, web pages, **and preregistrations** |
-| `asset` | images, audio, video, fonts (stimuli/materials) |
-| `other` | anything no rule places (an LLM may reclassify these) |
+| `unknown` | anything no rule places (an LLM may reclassify these); an unopenable archive also falls back here |
+
+`documentation` is deliberately coarse: it answers "is this file documentation of some kind," which is what drives Psych-DS folder placement and report grouping. A separate, orthogonal column, `doc_role`, answers the finer question of *which* documentation artifact a file is — `"readme"`, `"license"`, `"codebook"`, or `"supplemental"` — and is what `codebook_check` uses to decide which files to parse.
 
 ### How the classifier works: `data_classify_files()`
 
-Classification is done by the exported helper `data_classify_files()`, which layers three rule sets. Understanding the order matters because later layers override earlier ones:
+Classification is done by the exported helper `data_classify_files()`, which layers several rule sets in order. Later layers only fire when nothing earlier has already decided a file's type:
 
-1. **Name-based rules** (`file_category()`): filenames matching README or codebook patterns win first, before any extension is consulted. A file literally called `README.txt` is a readme even if it is delimiter-rich.
-2. **An extension crosswalk** built on metacheck's coarse `file_types` table (`.file_type_crosswalk`): maps `code → code`, `stats → code` (SPSS/SAS/Stata syntax), `exec/config → software`, `audio/video/image/3D/font → asset`, `book/slide/text/web → supplemental`, `archive → other`.
-3. **Format-locked extension overrides** (`.fixed_ext_type`, highest priority): a fixed table that corrects any coarser guess. This is where `.qsf` becomes a `codebook` (a Qualtrics survey definition *is* its own codebook), scientific binaries like `.npy`/`.h5`/`.parquet`/`.feather` become `data`, and trial-level task exports (`.iqdat`, `.edat`, `.edat2`) become `data` so they are actually fetched.
+1. **Format rules** (`file_category()`'s hard rules, translated into this vocabulary): a file whose *format* unambiguously says what it is — a README, a codebook, or a fixed extension such as `.qsf` (a Qualtrics survey definition, itself a codebook), `.npy`/`.h5`/`.parquet`/`.feather` (data), or `.iqdat`/`.edat`/`.edat2` (trial-level task exports, data) — is locked in here and nothing downstream can override it.
+2. **Georeferenced rasters**: an image (`.tif`, `.jpg`, `.png`, `.jp2`) with a matching world file or `.aux.xml` sidecar is map data, not a photograph or stimulus.
+3. **JSON/XML name rules**: since `.json`/`.xml` can hold anything, these are classified by name alone — `dataset_description.json`, `.zenodo.json`, `datacite.xml`, and similar are `documentation`; `package.json`/`package-lock.json`/`tsconfig.json` are `code`.
+4. **Category words in the file or folder name**: an explicit word like "codebook", "materials", "pre-reg", or "scripts" in the path is a more deliberate signal than a generic extension, and is checked name-first, then folder, then the folders above it.
+5. **The coarse `file_types` fallback** (`.file_type_crosswalk`): whatever is still unresolved falls back to metacheck's general file-type table (e.g. image → materials, text → documentation).
 
-Two special cases run last. A file named **README** is forced to `readme` as belt-and-braces. A **preregistration** — a name matching `prereg` / `pre-reg` / `preregistration` (as a whole token, so `preregional` does not match) — is reclassified to `supplemental` so it lands in `documentation/` rather than being misfiled as a data CSV or as code. A genuine analysis *script* named after the prereg keeps its `code` type.
+A `ro-crate-metadata.json` is always `documentation` (with `doc_role == "readme"`, since it is collection-level like a README), whatever any earlier rule said.
 
 ```{r}
 #| eval: false
@@ -107,8 +108,8 @@ data_classify_files(c("data.csv", "analysis.R", "README.md",
 ```
 
 ```
-[1] "data"         "code"         "readme"       "codebook"
-[5] "codebook"     "supplemental"
+[1] "data"          "code"          "documentation" "documentation"
+[5] "documentation" "documentation"
 ```
 
 ### Tabular vs raw: `data_format()`
@@ -241,7 +242,7 @@ Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved re
 
 | Element | What it contains |
 |---|---|
-| `$traffic_light` | `"green"` when data files were read; `"yellow"` when tabular files exist but some had no local copy; `"na"` when there is nothing to check |
+| `$traffic_light` | the worse of two separately computed lights: whether files were actually read (`"green"`/`"yellow"` when some tabular files had no local copy/`"na"` when there is nothing to check), and the data-quality checks on the columns that *were* read (`"green"` with no issues, `"yellow"` below 25% of columns flagged — or any careless-responding/spreadsheet-formatting finding at all — `"red"` at 25% or more). A clean extraction never hides a real data-quality problem, and a quality problem on the columns that loaded never gets hidden by an otherwise-successful read |
 | `$summary_text` | plain-text bulleted summary: files classified, columns extracted, study groups, and any held-back files |
 | `$summary_table` | per-paper counts (`data_file_n`, `column_n`, `empty_col_n`, plus wide per-representation counts) |
 | `$table` | one row per column, with the facets, `sample_values`, `utf8_repaired`, and summary statistics |
@@ -250,7 +251,7 @@ Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved re
 | `$gated_repos` | repositories found but not listable (size-gated GitHub, private OSF) |
 | `$manifest_path` | path to a written JSON manifest, when one was requested |
 
-The `$structure` and `$previews` elements are what the downstream modules consume, which is why you rarely need to run `data_check` on its own beforehand — running `codebook_check` triggers it automatically and reuses the result, as the forthcoming `psychds_check` and `convert_psychds()` will.
+The `$structure` and `$previews` elements are what the downstream modules consume, which is why you rarely need to run `data_check` on its own beforehand — running `codebook_check` triggers it automatically and reuses the result, and `psychds_check` and `convert_psychds()` are designed to do the same once that module's own development resumes.
 
 ## Downloading files
 
@@ -294,14 +295,14 @@ module_run(paper, "data_check", download = "all",
 
 When building an archive you often want the *data* but not the stimuli or media — those are usually better linked to than mirrored. Two options handle this:
 
-- **`skip_types`** — a vector of `data_type`s never to download, even under `download = "all"`. Most usefully `skip_types = "asset"` leaves out stimuli/media. Skipped files are still listed (with the reason) in the manifest.
-- **`peek_zips = TRUE`** — before downloading a `.zip`, look inside it via an HTTP range request (fetching only the zip's tail, not the whole file — `zip_peek()` / `zip_decision()`) and only download zips that actually contain data or a codebook. Downloaded data-zips are unpacked (`.expand_zip()`) and their inner data files added to the archive, with the zip itself demoted to a container; inner assets are dropped.
+- **`skip_types`** — a vector of `data_type`s never to download, even under `download = "all"`. Most usefully `skip_types = "materials"` leaves out stimuli/media and other non-analytic files. When left at its default (`NULL`), `data_check` behaves as if you had passed `c("materials", "unknown")`, so some filtering always happens unless you explicitly pass `skip_types = character(0)`. Skipped files are still listed (with the reason) in the manifest.
+- **`peek_zips = TRUE`** (the default) — before downloading a `.zip`, look inside it via an HTTP range request (fetching only the zip's tail, not the whole file — `zip_peek()` / `zip_decision()`) and only download zips that actually contain data or a codebook. Downloaded data-zips are unpacked (`.expand_zip()`) and their inner data files added to the archive, with the zip itself demoted to a container; inner materials are dropped.
 
 ```{r}
 #| eval: false
 # archive-building recipe: everything except media, peeking inside zips
 module_run(paper, "data_check", download = "all",
-           skip_types = "asset", peek_zips = TRUE)
+           skip_types = "materials", peek_zips = TRUE)
 ```
 
 ### A file manifest

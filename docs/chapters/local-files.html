@@ -501,12 +501,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong><code>repo_check</code></strong> lists all files in a repository and checks for basic organisational quality: is there a README? Are there unextracted zip files? How many code, data, and other files are there?</p></li>
 <li><p><strong><code>code_check</code></strong> reads the actual code files and checks them for four best-practice issues: comments, absolute file paths, grouped library loading, and missing data files.</p></li>
 </ul>
-<p>Normally both modules fetch files automatically from online repositories (OSF, GitHub, ResearchBox, Zenodo) by following links found in a paper. This vignette shows how to point them at a <strong>local folder</strong> instead — useful when:</p>
+<p>Normally both modules fetch files automatically from online repositories (OSF, GitHub, GitLab, ResearchBox, Zenodo, Dataverse, Figshare, Dryad, and several others — see <a href="../chapters/mod-repo-check.html">Repository Check</a> for the full list) by following links found in a paper. This vignette shows how to point them at a <strong>local folder</strong> instead — useful when:</p>
 <ul>
 <li>you want to check your own code before sharing it</li>
 <li>you are reviewing a paper whose files were sent as a zip attachment</li>
-<li>the authors used a repository service that Metacheck does not yet support automatically (GitLab, Figshare, Dataverse, and others)</li>
+<li>you downloaded a repository’s files yourself, or the authors used a repository service Metacheck does not support automatically</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you just want a report on a folder — no manuscript involved — <code><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository()</a></code> wraps the pattern this chapter walks through by hand: give it a path, and it runs <code>repo_check</code>, <code>code_check</code>, <code>data_check</code>, and <code>codebook_check</code> on it and writes a report named after the folder. See <a href="#downloading-osf-files-to-check-locally">Downloading OSF files to check locally</a> below for an example, and <a href="../chapters/creating-a-report.html">Creating a Report</a> for the full function reference.</p>
+</div>
+</div>
 <hr></section><section id="before-you-start" class="level2" data-number="36.2"><h2 data-number="36.2" class="anchored" data-anchor-id="before-you-start">
 <span class="header-section-number">36.2</span> Before you start</h2>
 <p>Load the package and note the path format for your operating system:</p>
@@ -844,10 +857,11 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span class="header-section-number">36.8</span> Downloading OSF files to check locally</h2>
 <p>Often the files you want to check live in an OSF project rather than on your own disk. You can download them first, then point <code>repo_check</code> / <code>code_check</code> at the downloaded folder using the local-file options above.</p>
 <p>OSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.</p>
-<p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than <code>max_file_size</code> (defaults to 10 MB) up to a total size of <code>max_download_size</code> (defaults to 100 MB).</p>
+<p>The function <code><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download()</a></code> does all of this for you, recreating a folder structure based on the component names. By default (<code>mode = "all"</code>) it fetches every component’s files as a single compressed archive per component, with no size filtering — <code>max_file_size</code> and <code>max_download_size</code> are both <code>NULL</code> (no limit) by default, and neither one applies in this mode, because there is no file list to filter against. To filter by size instead, pass <code>mode = "select"</code>, which lists every file individually through the OSF API before downloading, and only then applies <code>max_file_size</code>/<code>max_download_size</code> (in megabytes). See the <a href="../chapters/archiving-osf.html">Archiving OSF Files</a> appendix for the full comparison between the two modes, and for <code><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository()</a></code>, which can take over from here once the files are on disk.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/osf_file_download.html">osf_file_download</a></span><span class="op">(</span>osf_id <span class="op">=</span> <span class="st">"pngda"</span>,</span>
 <span>                  download_to <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>                  mode <span class="op">=</span> <span class="st">"select"</span>,</span>
 <span>                  max_file_size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                  max_download_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -886,6 +900,10 @@ Downloading files [=====================] 24/24 00:00:35</code></pre>
 <p>Once downloaded, you can run the checks on that folder exactly as shown earlier:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"pngda"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Or, since there is no manuscript involved at this point, skip the manual <code><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper()</a></code>/<code><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run()</a></code> steps and call <code><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository()</a></code> instead, which runs <code>repo_check</code>, <code>code_check</code>, <code>data_check</code>, and <code>codebook_check</code> on the folder in one step and writes a report named after it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository</a></span><span class="op">(</span><span class="st">"pngda"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 

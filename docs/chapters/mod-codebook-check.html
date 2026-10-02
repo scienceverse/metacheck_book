@@ -502,10 +502,13 @@ Warning
 <li>
 <strong>unlabelled</strong> — no documentation was found for the column.</li>
 <li>
-<strong>conflicted</strong> — the codebook contains more than one, disagreeing, description.</li>
+<strong>conflicting_definition</strong> — the codebook contains more than one, disagreeing, description for the column within its own study group.</li>
+<li>
+<strong>ambiguous_experiment</strong> — the column only matches codebook entries scoped to a <em>different</em> study group than its own, so no applicable description could be chosen.</li>
 <li>
 <strong>llm</strong> — the label was inferred by an LLM (only when one is enabled).</li>
 </ul>
+<p>There is no single <code>"conflicted"</code> value — <code>conflicting_definition</code> and <code>ambiguous_experiment</code> are the two distinct conflict sub-types, and code that filters on <code>label_status</code> should check for both.</p>
 <p>It also reports <strong>unused</strong> codebook entries: variables documented in the codebook that do not correspond to any column in the data.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -517,7 +520,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This chapter runs offline against a small folder containing a data file and a codebook.</p>
+<p>This chapter runs offline against a small folder containing a data file and a codebook. If there is no manuscript at all, <code>report_repository("path/to/folder")</code> runs <code>codebook_check</code> together with <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code> on the folder in one step — see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a>.</p>
 </div>
 </div>
 </section><section id="a-worked-example" class="level2" data-number="25.2"><h2 data-number="25.2" class="anchored" data-anchor-id="a-worked-example">
@@ -729,7 +732,7 @@ Note
 <th style="text-align: right;">task_paper_only_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">94f2af8ffb544d</td>
+<td style="text-align: left;">f2cb5933286bf7</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
@@ -870,24 +873,28 @@ Note
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>dictionary</code></td>
+<td><code>matched</code></td>
 <td>matched a known instrument in Metacheck’s scale dictionary (OpenScales-derived or curated)</td>
 </tr>
 <tr class="even">
+<td><code>task_matched</code></td>
+<td>matched a known <em>task</em> (rather than a self-report scale) in the same dictionary</td>
+</tr>
+<tr class="odd">
 <td><code>manuscript</code></td>
 <td>a real instrument named in the paper, but not in the registry</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>self_generated</code></td>
 <td>an LLM-inferred construct label — <strong>not</strong> a recognised named instrument</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>unnamed_block</code></td>
 <td>a coherent same-prefix rating block, detected but not named</td>
 </tr>
 </tbody>
 </table>
-<p>When a scale matches a <code>dictionary</code> instrument, Metacheck can also cross-reference the published original — how many items it should have and which are reverse-keyed — via the packaged <code>scale_meta</code> / <code>scale_items</code> / <code>scale_scoring</code> datasets, so a detected block can be compared against the reference instrument.</p>
+<p>When a scale matches a dictionary instrument (<code>matched</code> or <code>task_matched</code>), Metacheck can also cross-reference the published original — how many items it should have and which are reverse-keyed — via the packaged <code>scale_meta</code> / <code>scale_items</code> / <code>scale_scoring</code> datasets, so a detected block can be compared against the reference instrument.</p>
 <p>Data files with embedded scale metadata are handled too: a <strong>JASP</strong> (<code>.jasp</code>) or <strong>jamovi</strong> (<code>.omv</code>) file carries haven-style value labels just like a <code>.sav</code>, so <code>codebook_check</code> harvests those labels directly, and their bundled analyses are recovered separately (see the JASP/jamovi handling in <a href="../chapters/mod-data-check.html">Data Check</a>).</p>
 </section></section><section id="what-you-get-back" class="level2" data-number="25.9"><h2 data-number="25.9" class="anchored" data-anchor-id="what-you-get-back">
 <span class="header-section-number">25.9</span> What you get back</h2>

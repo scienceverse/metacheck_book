@@ -13,11 +13,12 @@ knitr::opts_chunk$set(
 )
 library(metacheck)
 library(dplyr)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 Most Metacheck modules are built on top of one core operation: searching the text of a paper for sentences that match a pattern. The `text_search()` function gives you direct access to that operation, so you can explore a paper, prototype a new check, or build a corpus of sentences to code by hand.
 
-We use a single paper from the built-in `psychsci` dataset for the small examples, and the whole dataset of 250 papers for the corpus-scale examples.
+We use a single paper for the small examples, and the `psychsci` corpus of 250 *Psychological Science* articles (loaded with `papers_load("psychsci", cache = TRUE)` — see [Using the Paper Database Corpora](papers-databases.qmd)) for the corpus-scale examples.
 
 ```{r}
 paper <- read(demofile("json"))
@@ -48,9 +49,16 @@ text <- text_search(paper, pattern = "metacheck")
 knitr::kable(text)
 ```
 
+### What gets searched
+
+Two arguments control what counts as searchable text, beyond the sentence itself:
+
+- **`search_header`** — by default the pattern is only matched against each sentence's own text, not the header of the section it is in. Set `search_header = TRUE` to also match against headers, which is useful when the information you want is signalled by the heading itself (e.g. a section literally titled "Data Availability") rather than spelled out again in a sentence.
+- **`include_refs`** — the reference list is excluded from every search by default, since it is rarely the target of a text search and can otherwise produce a lot of noise (citation strings containing numbers, years, and incidental keyword matches). Set `include_refs = TRUE` if you specifically want to search the references section too.
+
 ## Return
 
-Set `return` to one of "sentence", "paragraph", "section", or "match" to control what gets returned.
+Set `return` to one of "sentence", "paragraph", "section", "header", "match", or "paper_id" to control what gets returned.
 
 ```{r}
 text <- text_search(paper, "GitHub",
@@ -60,6 +68,8 @@ text <- text_search(paper, "GitHub",
 ```{r, echo = FALSE}
 knitr::kable(text)
 ```
+
+`return = "header"` returns the matching sentence(s) together with the header of the section they are in, and `return = "paper_id"` collapses all matches for a paper into a single row holding that paper's entire body text — useful when you want to hand a whole paper to an LLM at once rather than searching sentence by sentence.
 
 ### Regex matches
 

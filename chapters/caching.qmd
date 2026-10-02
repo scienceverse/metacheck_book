@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-The two slowest and most expensive parts of a Metacheck run are **querying a language model** and **downloading files from an online repository**. Both are re-encountered constantly: you re-run a report after tweaking a module, you process the same paper in several modules, or you build an archive from hundreds of repositories overnight and it stops halfway. To avoid paying for the same work twice, Metacheck keeps two on-disk caches — one for LLM responses, one for downloaded repository files — plus a small in-memory cache used by a single module.
+The two slowest and most expensive parts of a Metacheck run are **querying a language model** and **talking to an online repository** — both listing what it contains and downloading its files. Both are re-encountered constantly: you re-run a report after tweaking a module, you process the same paper in several modules, or you build an archive from hundreds of repositories overnight and it stops halfway. To avoid paying for the same work twice, Metacheck keeps four on-disk caches — LLM responses, downloaded repository files, repository *listings*, and peeked-inside zip archives — plus a small in-memory cache used by a single module.
 
 This chapter explains what each cache stores, where it lives, how entries are keyed (i.e. what counts as "the same" request), when it is reused, and how to inspect or clear it.
 
@@ -22,20 +22,22 @@ This chapter explains what each cache stores, where it lives, how entries are ke
 ## The short version
 
 - **LLM responses** are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with `llm_cache()`; wipe with `llm_cache_clear()`.
-- **Downloaded repository files** are *not* cached by default. `data_check` and `code_check` download into a temporary folder that is discarded when the R session ends. Pass `cache = TRUE` to keep the files instead, and clear them with `repo_cache_clear()`.
-- Both caches live in the current working directory, so a project's cache sits with the project. See where they are with `metacheck_cache_info()`.
+- **Downloaded repository files**, **repository listings**, and **peeked zip archives** are *not* cached by default. `data_check`, `code_check`, and `repo_check` otherwise redo this work every run. Pass `cache = TRUE` (and, for listings, turn on `repo_info_cache()`) to keep it instead.
+- All four caches live in the current working directory, so a project's cache sits with the project. See where most of them are with `metacheck_cache_info()`.
 :::
 
 ## Where the caches live
 
-Both on-disk caches default to a folder in your **current working directory**, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.
+All four on-disk caches default to a folder in your **current working directory**, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.
 
 | Cache | Folder (in the working directory) | Contents |
 |---|---|---|
 | LLM responses | `.metacheck_llm_cache/` | one `.rds` per distinct LLM call |
 | Repository files | `.metacheck_repo_cache/` | one sub-folder per repository, mirroring its files |
+| Repository listings | `.metacheck_repo_info_cache/` | one `.rds` per repository, caching what the host's API said it contains |
+| Peeked zip archives | `.metacheck_zip_peek_cache/` | one `.rds` per zip URL, caching what a range-request peek found inside it |
 
-You never need to create these directories by hand; Metacheck creates them on first use. To see where they are and how much space they take, use `metacheck_cache_info()`, which returns the location and size of both:
+You never need to create these directories by hand; Metacheck creates them on first use. To see where they are and how much space they take, use `metacheck_cache_info()`, which returns the location and size of the LLM, repository-file, and repository-listing caches at once (the zip-peek cache is not currently included in this summary — see [Clearing it](#clearing-the-zip-peek-cache) below for how to inspect or clear that one on its own):
 
 ```{r}
 #| eval: false
@@ -151,7 +153,7 @@ The download cache stores whatever the modules fetch, and `data_check` gives you
 
 - **`download`** — `"data"` (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); `"all"` fetches every file in the repository, which is the right choice when building a complete archive; `FALSE`/`"none"` downloads nothing and classifies files by name only.
 - **`skip_types`** — a vector of file *types* never to download even under `download = "all"`. When left as `NULL`, the default, `"materials"` and `"unknown"` are skipped: stimuli and software, and the classifier's collection of manuscripts, logs and unrecognised content, which would only inflate an archive. Pass an explicit vector to override this, or `character(0)` to download every type. The six types are `"data"`, `"code"`, `"documentation"`, `"materials"`, `"output"` and `"unknown"`. Skipped files still appear in the manifest, with the reason.
-- **`peek_zips`** — look *inside* each `.zip` using an HTTP range request, without downloading the whole archive, and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead. It is `FALSE` by default in `data_check`. Note that `repo_check` has an argument of the same name that does something related but distinct: there it is `TRUE` by default, and it lists each archive's contents in place of the archive itself, without downloading anything.
+- **`peek_zips`** — look *inside* each `.zip` using an HTTP range request, without downloading the whole archive, and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead. It defaults to `TRUE` in both `data_check` and `repo_check`. In `repo_check` the peek is used slightly differently: it lists each archive's contents in place of the archive itself, without downloading anything. Peeking itself has its own cache — see [below](#the-zip-peek-cache).
 - **`max_file_size`** / **`max_download_size`** — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository's total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.
 
 These arguments decide *what enters the cache*; once a file is in, it stays and is reused. See the [data_check](mod-data-check.qmd) chapter for full details and examples.
@@ -164,30 +166,66 @@ Three functions report on the cache and one clears it:
 #| eval: false
 repo_cache_dir()     # where it is
 repo_cache_size()    # how large it is, in bytes
-metacheck_cache_info()  # location and size of both caches at once
+metacheck_cache_info()  # location and size of the LLM, repo-file, and repo-info caches at once
 
 repo_cache_clear()   # delete everything in it
 ```
 
-`repo_cache_clear()` also takes a single repository URL, so you can discard one repository's files while keeping the rest — useful when a repository has changed on the server and you want its files fetched afresh:
+`repo_cache_clear()` also takes a single repository URL, so you can discard one repository's files while keeping the rest — useful when a repository has changed on the server and you want its files fetched afresh. A `quiet` argument (default `FALSE`) suppresses its usual message about what was removed:
 
 ```{r}
 #| eval: false
 repo_cache_clear("https://osf.io/abc123")
+repo_cache_clear(quiet = TRUE)   # delete everything, without the message
 ```
 
 Because entries are keyed by repository URL and relative path, clearing is always safe: anything still needed is simply downloaded again on the next run.
 
+## The repository-listing cache
+
+Downloading a repository's files is not the only repeated cost: *listing* what a repository contains — asking Dryad's or Zenodo's API "what files does this record have, and what do they weigh" — is a separate API call with its own cost and its own rate limit, paid by `repo_check` every time it runs, even for a repository whose files are already fully downloaded and cached.
+
+This matters most when a long run is interrupted and restarted: restarting re-issues every listing call again from scratch, which can exhaust a host's quota (Dryad, in particular, applies a strict one) far faster than the real workload — listing each repository once — would ever need. The repository-listing cache exists specifically to make a restart free for anything already listed once.
+
+It is a separate cache from the repository-*file* cache described above: one caches what a host's API said a repository contains, the other caches the files themselves once downloaded.
+
+Off by default, like the file-download cache. Turn it on with `repo_info_cache()`, and clear it with `repo_info_cache_clear()`:
+
+```{r}
+#| eval: false
+repo_info_cache()          # is the cache on? (FALSE by default)
+repo_info_cache(TRUE)      # reuse listings across restarts
+repo_info_cache_clear()    # delete every cached listing
+```
+
+A cached listing is not refreshed automatically — a published dataset's metadata rarely changes once public, but if you know a paper's repository has genuinely been updated, clear it explicitly rather than relying on the cache to notice.
+
+## The zip-peek cache {#the-zip-peek-cache}
+
+Looking inside a `.zip` without downloading it (the `peek_zips` behaviour described above) still costs an HTTP range request per zip. Like repository listings, a peeked zip's contents rarely change once a repository is public, so repeated peeks of the same zip across restarts are also cached on disk, mirroring the repository-listing cache.
+
+Unlike the other three caches, there is no on/off toggle function — peeking is cached only when you explicitly pass `cache = TRUE` to the function doing the peeking (`zip_peek()`, or indirectly through `data_check`/`code_check`/`repo_check`'s own `cache` argument). To clear it:
+
+```{r}
+#| eval: false
+zip_peek_cache_clear()   # delete every cached zip peek
+```
+
+### Clearing the zip-peek cache {#clearing-the-zip-peek-cache}
+
+`metacheck_cache_info()` does not currently report on this cache the way it does the other three — use `zip_peek_cache_clear()` to clear it, or inspect `.metacheck_zip_peek_cache/` directly if you want to see its size first.
+
 ## How the caches work together in a full run
 
-When you run several modules on a paper — or build an archive across a corpus — the two caches complement each other:
+When you run several modules on a paper — or build an archive across a corpus — the four caches complement each other:
 
-1. `repo_check` lists the repository's files (no download).
-2. `data_check` / `code_check` download the files they need; a second module reading the same file in the same run reuses that copy. With `cache = TRUE` the copies are kept for later sessions as well.
-3. When an LLM is enabled, `data_check`, `codebook_check`, and other LLM-using modules send text to `llm()`, whose answers are stored in the **LLM response cache**.
-4. Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the downloads too if you ran with `cache = TRUE`; without it, the files are fetched again, because the previous session's copies were discarded. This is the main reason to turn the download cache on for an archive build you expect to resume.
+1. `repo_check` lists the repository's files. With the repository-listing cache on, a restart reuses that listing instead of re-querying the host.
+2. If `repo_check` needs to look inside a `.zip` (`peek_zips = TRUE`, the default), that peek is itself cached when `cache = TRUE` is passed through.
+3. `data_check` / `code_check` download the files they need; a second module reading the same file in the same run reuses that copy. With `cache = TRUE` the copies are kept for later sessions as well.
+4. When an LLM is enabled, `data_check`, `codebook_check`, and other LLM-using modules send text to `llm()`, whose answers are stored in the **LLM response cache**.
+5. Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the listings, zip peeks, and downloads too if you ran with `cache = TRUE`; without it, all three are redone, because the previous session's copies were discarded. This is the main reason to turn caching on for an archive build you expect to resume.
 
-Modules such as `codebook_check` do not have a *separate* results cache of their own — their re-run savings come entirely from these two shared caches (the files they read and the LLM answers they request). This keeps the caching story simple: there are two on-disk caches, and every module benefits from them without needing its own.
+Modules such as `codebook_check` do not have a *separate* results cache of their own — their re-run savings come entirely from these shared caches (the listings, peeks, files, and LLM answers they request). This keeps the caching story simple: there are four on-disk caches, and every module benefits from the ones relevant to it without needing its own.
 
 ## A note on the in-memory synonym cache
 
@@ -199,6 +237,8 @@ One module, [funding_check](mod-funding-check.qmd), builds a list of organisatio
 |---|---|---|---|---|---|
 | LLM responses | on disk, cross-session | yes | model + prompt + text + type + params | `llm_cache()` | `llm_cache_clear()` |
 | Repository files | on disk, cross-session | **no** (`cache = TRUE` to enable) | repo URL + relative path | `cache` argument of `data_check` / `code_check` | `repo_cache_clear()` |
+| Repository listings | on disk, cross-session | **no** | host + repository id | `repo_info_cache()` | `repo_info_cache_clear()` |
+| Peeked zip archives | on disk, cross-session | **no** (`cache = TRUE` to enable) | zip URL | `cache` argument of the peeking function | `zip_peek_cache_clear()` |
 | Funding synonyms | in memory, per session | yes | — | — | ends with the session |
 
-The guiding principle is the same for both on-disk caches: **cache only what is reproducible, and key it on everything that could change the result.** LLM answers are cached because temperature 0 makes them reproducible; downloaded files are cached because a byte-for-byte copy of a remote file is trivially reproducible. In both cases, changing the thing that matters — a prompt, a model, a repository — produces a fresh result automatically, so the caches speed you up without ever giving you a stale answer.
+The guiding principle is the same for all four on-disk caches: **cache only what is reproducible, and key it on everything that could change the result.** LLM answers are cached because temperature 0 makes them reproducible; downloaded files, repository listings, and zip peeks are cached because each is a faithful copy of something that rarely changes once a repository is public. In every case, changing the thing that matters — a prompt, a model, a repository — produces a fresh result automatically, so the caches speed you up without ever giving you a stale answer.

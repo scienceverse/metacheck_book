@@ -36,30 +36,90 @@ This module builds on `code_check`, `psychds_check`, and `data_check`, and inher
 
 ## Running the module
 
-The default is the static phase — it does not run anything:
+The default is the static phase — it does not run anything. This example reads every repository `demopaper()` links to, so (like the rest of this chapter) it needs those repositories to be reachable; the output below is shown rather than run live, so the chapter does not depend on every linked repository's uptime at render time:
 
 ```{r}
+#| eval: false
 paper <- demopaper()
 mo <- module_run(paper, "reproducibility_check")
 mo$traffic_light
+#> [1] "yellow"
 cat(mo$summary_text)
+#>
+#> -  We assessed 7 R code files for reproducibility (static analysis; no code was run).
+#> -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).
+#> -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
+#> -  2 referenced inputs unavailable (0 withheld due to size).
+#> -  6 installable dependencies detected.
 ```
 
 The `table` has one row per R code file, carrying the static assessments as columns:
 
 ```{r}
+#| eval: false
 mo$table[, c("file_name", "parses", "run_order", "order_basis",
              "paths_rewritten", "runnable")] |>
   knitr::kable()
 ```
+
+|               |file_name      |parses | run_order|order_basis | paths_rewritten|runnable |
+|:--------------|:--------------|:------|---------:|:-----------|---------------:|:--------|
+|test_script.R  |test_script.R  |TRUE   |         6|none        |               0|FALSE    |
+|bad.R          |bad.R          |TRUE   |         3|none        |               0|FALSE    |
+|bad.Rmd        |bad.Rmd        |TRUE   |         4|none        |               1|FALSE    |
+|good-example.R |good-example.R |TRUE   |         5|none        |               1|TRUE     |
+|01.R           |01.R           |TRUE   |         1|numeric     |               0|TRUE     |
+|utils.R        |utils.R        |TRUE   |         7|none        |               0|TRUE     |
+|._utils.R      |._utils.R      |FALSE  |         2|none        |               0|FALSE    |
 
 A file is marked `runnable` only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a *static* check: `runnable = FALSE` does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place. When it *is* `FALSE`, the column `not_runnable_reason` names exactly why — one of `parse_error`, `unplaceable`, or `missing_input`, checked in that priority order — and `unresolved_inputs` names the specific file(s) that could not be resolved.
 
 Two further list-columns, `reads` and `writes`, carry the basenames each script reads and writes (as `repro_file_io()` extracted them) directly on the table — useful if you want the code↔data provenance for a file without recomputing it yourself:
 
 ```{r}
+#| eval: false
 mo$table$reads
+#> [[1]]
+#> [1] "file.csv"
+#>
+#> [[2]]
+#> [1] "example.csv"
+#>
+#> [[3]]
+#> [1] "example.csv"  "example2.csv"
+#>
+#> [[4]]
+#> [1] "file.txt"
+#>
+#> [[5]]
+#> character(0)
+#>
+#> [[6]]
+#> character(0)
+#>
+#> [[7]]
+#> character(0)
 mo$table$writes
+#> [[1]]
+#> character(0)
+#>
+#> [[2]]
+#> character(0)
+#>
+#> [[3]]
+#> character(0)
+#>
+#> [[4]]
+#> character(0)
+#>
+#> [[5]]
+#> character(0)
+#>
+#> [[6]]
+#> character(0)
+#>
+#> [[7]]
+#> character(0)
 ```
 
 ## Worked example: building a small reproducible fixture
@@ -91,7 +151,7 @@ Each static assessment is an exported helper, so you can run it on your own code
 
 ### Dependencies: `repro_dependencies()`
 
-`repro_dependencies()` walks the code and returns the distinct packages it loads, tagged with **where each would be installed from** — a distinction `code_check`'s package list does not make. A `library()` call resolves to CRAN; a `remotes::install_github("user/repo")` call is read from the source the code names (with the pinned `@ref` kept when present); and packages that ship with R are tagged `base`, because a run never needs to install them.
+`repro_dependencies()` walks the code and returns the distinct packages it loads, tagged with **where each would be installed from** — a distinction `code_check`'s package list does not make. A `library()` call resolves to CRAN by default; a `remotes::install_github("user/repo")` call is read from the source the code names (with the pinned `@ref` kept when present); packages that ship with R are tagged `base`, because a run never needs to install them; and a bundled list of common **Bioconductor** package names (`edgeR`, `DESeq2`, and similar) is checked so those are tagged `bioc` instead of `cran` — confirmed as the single largest identifiable cause of install failures in a real corpus run, since a Bioconductor-only package is never on CRAN and `install.packages()` simply fails for it unless this distinction is made upfront.
 
 ```{r}
 code_text <- c(
@@ -237,7 +297,7 @@ Working through a whole corpus rather than one paper? [Batch mode](#batch-mode),
 
 The first time you think through what `sandbox = "docker"` needs to do to run a real paper's code, an obvious problem appears: most papers' scripts `library()` several packages that are not part of base R, and a container starts with nothing installed. Naively, every single `reproducibility_check()` call would need to install a paper's entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (`rstan`, `lme4`, and dozens of others), that can mean minutes of compilation *per paper*.
 
-To avoid that, Docker containers under `sandbox = "docker"` default to a **pre-built image**, `ghcr.io/scienceverse/metacheck_r:latest`, rather than a bare R installation. That image already has R, Quarto, and the roughly 650 most common packages a real corpus of psychology-science papers' code actually uses — found by scanning thousands of real `.R`/`.Rmd`/`.qmd` files for their `library()`/`require()` calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper's dependencies are already in that list — which, for an ordinary `tidyverse`-and-`lme4`-shaped analysis, they usually are — the install phase does almost nothing, because `requireNamespace()` already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install.
+To avoid that, Docker containers under `sandbox = "docker"` default to a **pre-built image**, `ghcr.io/scienceverse/metacheck_r:latest`, rather than a bare R installation. That image already has R, Quarto, and the roughly 750 most common packages a real corpus of psychology-science papers' code actually uses — found by scanning thousands of real `.R`/`.Rmd`/`.qmd` files for their `library()`/`require()` calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper's dependencies are already in that list — which, for an ordinary `tidyverse`-and-`lme4`-shaped analysis, they usually are — the install phase does almost nothing, because `requireNamespace()` already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install.
 
 The image, its Dockerfile, the full package list, and detailed notes on how it was built (including some genuinely non-obvious bugs found along the way — a package can report a successful install and still fail to *load*, because a runtime shared library it needs is missing from a minimal image) are all in a dedicated repository: [scienceverse/metacheck_docker_reproducibility](https://github.com/scienceverse/metacheck_docker_reproducibility). If you want to build your own variant — a smaller image with only the most common packages, or one that adds LaTeX for PDF rendering, or CmdStan for `cmdstanr`-based Bayesian models — that repository is the starting point, and its README documents exactly which levers actually reduce image size and which ones (surprisingly) do not.
 
@@ -248,8 +308,10 @@ The pre-built image is fast, but it was built against one specific R version. A 
 [code_check](mod-code-check.qmd) is where this gets detected, as part of its own "Reproducible Environment" check: it looks for an `renv.lock` file anywhere in the repository (parsing its declared R version and every locked package + version), a `sessionInfo()`/`session_info()` dump (matched by filename — `sessionInfo.txt`, `session_info.txt`, and similar, or embedded in a README), or an actual `groundhog::groundhog.library()`/`checkpoint::checkpoint()` date-pin call in the code — a bare `library(groundhog)` with no pinning call does not count, since loading the package is not evidence anything was actually pinned.
 
 ```{r}
+#| eval: false
 cc <- module_run(paper, "code_check")
 cc$traffic_light
+#> [1] "yellow"
 ```
 
 When nothing was declared, `code_check`'s own report explicitly says so and recommends depositing one — this is itself a piece of reproducibility hygiene worth checking regardless of whether you ever run the code.
@@ -304,7 +366,7 @@ A few things are worth understanding about how this actually runs, rather than t
 - **Each paper runs in its own background R process** (via the `callr` package — install it if it is not already present), not in your current R session. This is deliberate, not an implementation detail you can ignore: `reproducibility_check()` reads and restores a few process-wide settings during a single-paper call (`llm_use()`, an internal option `data_check`/`code_check` share for API-limit handling), and those are not safe for several papers to set and restore *concurrently* in one shared session. A separate OS process per paper sidesteps the problem entirely — one paper's settings can never be observed by another's.
 - **Every other argument still means exactly what it means for one paper.** `timeout`, `install_missing`, `docker_use_declared_version`, `cache`, and everything else in [Options](#options) apply individually to each paper's own run; `workers` only controls how many of those individual runs are in flight together.
 - **Container resource limits scale with `workers` automatically.** Each container is capped at `1/workers` of the host's CPU and memory (`--cpus`, `--memory`, in addition to the `--pids-limit 512` every container already had) — so four concurrent papers cannot collectively claim more than the whole machine, and one runaway script cannot starve the other three. You do not set this yourself; it is computed from `workers` and the host's own detected CPU count and RAM.
-- **`results_dir` writes each paper's full result to disk as soon as that paper finishes** — one `<paper_id>.rds` file per paper, in the same format `capture_module_tables()` uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with `collect_module_tables("repro_results", "reproducibility_check")`.
+- **`results_dir` writes each paper's full result to disk as soon as that paper finishes** — one `<paper_id>.rds` file per paper, in the same format `capture_module_tables()` uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with `metacheck:::collect_module_tables("repro_results", "reproducibility_check")` — both `capture_module_tables()` and `collect_module_tables()` are internal helpers, not exported, so they need the `metacheck:::` prefix rather than a plain call.
 
 ```{r}
 #| eval: false
@@ -462,6 +524,7 @@ The static-only red condition is worth stating precisely, since it is easy to ov
 | `$install_results` | per-dependency install record: `package`, `source`, `installed`, `message`, `via_archive` |
 | `$stat_output` | per-file extracted statistical output: the structured JSON document and the flattened result rows |
 | `$match_table` | the full `match_reported_output()` result, when there was output to match against |
+| `$modifications` | per-file modification detail: `file_name`, `change_type`, `detail` — path rewrites, `setwd()` removal, font substitution, and `library()` injection. Empty when `execute = FALSE` or nothing needed modifying |
 | `$report` | formatted report sections, including per-script output and the self-reproducible JASP/jamovi results |
 | `$summary_text` | plain-text bulleted summary |
 | `$sandbox` | (only present when `keep_sandbox = TRUE`) the path to the materialised throwaway directory — see below |
@@ -481,6 +544,14 @@ The static-only red condition is worth stating precisely, since it is easy to ov
 | `results_dir` | `NULL` | with `workers > 1`, write each paper's result to `<paper_id>.rds` in this directory as soon as that paper finishes |
 | `local_path`, `local_only` | | run against local files without online repository lookups |
 | `model`, `params` | | passed through to the upstream modules' LLM calls (`data_check`, `psychds_check`), only used when `llm_use(TRUE)` |
+| `cache` | `FALSE` | forwarded to the internal `data_check`/`code_check` runs: keep downloaded files in the persistent on-disk cache and reuse them on later runs |
+| `download`, `skip_types`, `peek_zips`, `max_file_size`, `max_download_size` | (same as `data_check`'s own defaults) | forwarded to the internal `data_check` run — see the [Data Check](mod-data-check.qmd) chapter for what each one controls |
+| `skip_on_api_limit` | `FALSE` | give up immediately on a confirmed API rate limit instead of waiting, forwarded to the internal repository/data/code checks |
+| `tables_dir` | `NULL` | a directory of per-paper `.rds` files from a prior full corpus build (written by the internal `capture_module_tables()`); when set, a reproducibility-only re-run reads that paper's already-computed `data_check`/`code_check`/`psychds_check` results from disk instead of re-running them |
+
+::: callout-warning
+`download`, `skip_types`, and `peek_zips` are also part of the key the LLM response cache uses for `data_check`'s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.
+:::
 
 `keep_sandbox = TRUE` is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains `data/` (the materialised Psych-DS layout), `output/` (anything a script's write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/`.spv`/`.smcl`/`.out` file — a `statistical_output/` folder with the structured results documents. This is also what [convert_psychds()](mod-psychds-check.qmd) looks for when building an archive: pass `keep_sandbox = TRUE` if you want its `statistical_output/` folder included, since `convert_psychds()` does not run `reproducibility_check` itself and has no other way to obtain it.
 

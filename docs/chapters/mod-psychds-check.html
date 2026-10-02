@@ -498,13 +498,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+<span class="screen-reader-only">Warning</span>Development paused
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module is under development and is not yet in either the released version of Metacheck or the <code>dev</code> development version. It currently lives on its own branch, so installing it means building from source, which needs a compiler (Rtools on Windows, the Xcode command-line tools on macOS, the standard development tools on Linux):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@data_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Everything in this chapter, including <code>convert_psychds()</code> and <code>psychds_validate()</code>, requires that branch.</p>
+<p>Development of this module is paused. Before <code>psychds_check</code>, <code>convert_psychds()</code>, <code>psychds_validate()</code>, <code>convert_codebook()</code>, and <code>convert_behaverse()</code> can move forward, the project first needs to settle on a metadata scheme to convert to and validate against — that decision isn’t made yet, so none of this is part of the package you can install, and the code in this chapter will not run.</p>
+<p>The chapter is published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.</p>
+<p>What <a href="../chapters/mod-data-check.html">data_check</a> already does on its own is the groundwork this module builds on: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout. The placement itself, and the conversion, are the parts still on hold.</p>
 </div>
 </div>
 <section id="what-it-checks" class="level2" data-number="26.1"><h2 data-number="26.1" class="anchored" data-anchor-id="what-it-checks">
@@ -533,7 +533,7 @@ Note
 </section><section id="a-worked-example" class="level2" data-number="26.2"><h2 data-number="26.2" class="anchored" data-anchor-id="a-worked-example">
 <span class="header-section-number">26.2</span> A worked example</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"psychds_check_demo"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"psychds_check_demo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">repo</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># a flat repo: data and code sitting at the top level, no metadata</span></span>
@@ -543,14 +543,14 @@ Note
 <span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="st">"A short readme."</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"README.md"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"psychds_check"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"psychds_check"</span>,</span>
 <span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  2 of 3 required Psych-DS items present; 1 missing.
@@ -562,16 +562,16 @@ Note
 <span class="header-section-number">26.3</span> The compliance table</h2>
 <p>The <code>table</code> lists each file with its current path and the Psych-DS target path, plus a <code>status</code> saying what needs to happen:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"data_type"</span>, <span class="st">"current_path"</span>, <span class="st">"target_path"</span>, <span class="st">"status"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"data_type"</span>, <span class="st">"current_path"</span>, <span class="st">"target_path"</span>, <span class="st">"status"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 18%">
-<col style="width: 12%">
+<col style="width: 17%">
 <col style="width: 18%">
-<col style="width: 39%">
-<col style="width: 10%">
+<col style="width: 36%">
+<col style="width: 9%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">file_name</th>
@@ -590,7 +590,7 @@ Note
 </tr>
 <tr class="even">
 <td style="text-align: left;">README.md</td>
-<td style="text-align: left;">readme</td>
+<td style="text-align: left;">documentation</td>
 <td style="text-align: left;">README.md</td>
 <td style="text-align: left;">README.md</td>
 <td style="text-align: left;">present</td>
@@ -599,7 +599,7 @@ Note
 <td style="text-align: left;">study_data.csv</td>
 <td style="text-align: left;">data</td>
 <td style="text-align: left;">study_data.csv</td>
-<td style="text-align: left;">data/source-studydata_data.csv</td>
+<td style="text-align: left;">data/study-studydata_data.csv</td>
 <td style="text-align: left;">move</td>
 </tr>
 </tbody>
@@ -620,12 +620,12 @@ Note
 <strong>plain files</strong> are already in the right place.</li>
 </ul>
 <p>The tree is emitted as HTML in the module’s report. Here it is for our example repository:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tree_html</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"&lt;pre"</span>, <span class="va">mo</span><span class="op">$</span><span class="va">report</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tree_html</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"&lt;pre"</span>, <span class="va">mo</span><span class="op">$</span><span class="va">report</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">tree_html</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre style="line-height:1.4">├── analysis/
 │   └── analysis.R <span style="color:#b9770e">(move from analysis.R)</span>
 ├── data/
-│   └── source-studydata_data.csv <span style="color:#b9770e">(move from study_data.csv)</span>
+│   └── study-studydata_data.csv <span style="color:#b9770e">(move from study_data.csv)</span>
 ├── <span style="color:#c0392b">CHANGES  ← missing</span>
 ├── <span style="color:#c0392b">dataset_description.json  ← missing</span>
 └── README.md
@@ -634,7 +634,7 @@ Note
 </section><section id="the-summary-counts" class="level2" data-number="26.5"><h2 data-number="26.5" class="anchored" data-anchor-id="the-summary-counts">
 <span class="header-section-number">26.5</span> The summary counts</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -655,7 +655,7 @@ Note
 <th style="text-align: right;">misplaced_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">0881f97c2c89ac</td>
+<td style="text-align: left;">99f18f02c01609</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -726,7 +726,7 @@ Note
 </h2>
 <p><code>psychds_check</code> tells you <em>what</em> is missing; the companion function <code>convert_psychds()</code> acts on it. Given the same repository, it writes out a Psych-DS-compliant copy — moving files into <code>data/</code>, <code>analysis/</code>, and so on, and generating the <code>dataset_description.json</code> metadata from the columns <code>data_check</code> extracted:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data_check"</span>, <span class="st">"codebook_check"</span>, <span class="st">"psychds_check"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data_check"</span>, <span class="st">"codebook_check"</span>, <span class="st">"psychds_check"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">convert_psychds</span><span class="op">(</span><span class="va">res</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>convert_psychds()</code> can take either a paper object (it runs the checks as needed) or a <strong>captured result</strong> of <code>report(paper, ...)</code> — when the capture already contains <code>data_check</code> / <code>codebook_check</code> / <code>psychds_check</code>, those outputs are reused rather than re-run, and the OSF listing is not re-queried (<code>refresh_osf = FALSE</code> by default). This is why the recommended pattern is to run the checks once and hand the result to the converter. The output goes to <code>output_dir</code> (default <code>psychds/&lt;paper_id&gt;</code>); an existing directory is skipped unless <code>overwrite = TRUE</code>.</p>
@@ -860,14 +860,14 @@ Note
 <li>
 <code>download = "all"</code> fetches every file, not just the readable data.</li>
 <li>
-<code>skip_types = "asset"</code> leaves out stimuli/media (which a release links to rather than hosts), and <code>peek_zips = TRUE</code> looks inside zips and only downloads those containing data.</li>
+<code>skip_types = "materials"</code> leaves out stimuli/media (which a release links to rather than hosts), and <code>peek_zips = TRUE</code> looks inside zips and only downloads those containing data.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">paper</span> <span class="kw">in</span> <span class="va">papers</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">paper</span> <span class="kw">in</span> <span class="va">papers</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu">report</span><span class="op">(</span><span class="va">paper</span>,</span>
 <span>                  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data_check"</span>, <span class="st">"codebook_check"</span>, <span class="st">"psychds_check"</span><span class="op">)</span>,</span>
 <span>                  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data_check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>                    download <span class="op">=</span> <span class="st">"all"</span>, skip_types <span class="op">=</span> <span class="st">"asset"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                    download <span class="op">=</span> <span class="st">"all"</span>, skip_types <span class="op">=</span> <span class="st">"materials"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu">convert_psychds</span><span class="op">(</span><span class="va">chain</span>,  output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"archive"</span>, <span class="fu">paper_id</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span>, <span class="st">"psychds"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu">convert_codebook</span><span class="op">(</span><span class="va">chain</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"archive"</span>, <span class="fu">paper_id</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span>, <span class="st">"codebook"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -884,7 +884,7 @@ Note
 <span class="header-section-number">26.9.2</span> An archive-level catalogue</h3>
 <p>A release of many datasets needs a top-level description tying them together. <strong><code>data_catalog()</code></strong> scans a built archive directory and writes a <code>catalog.json</code> — a schema.org <a href="https://schema.org/DataCatalog"><code>DataCatalog</code></a> listing every dataset with its title, authors, DOI, and file count — plus a <code>catalog.csv</code> for quick inspection. This is the object that makes the release a single discoverable archive (and is harvested by Google Dataset Search), rather than a set of unconnected folders.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_catalog</span><span class="op">(</span><span class="st">"archive"</span>, papers <span class="op">=</span> <span class="va">papers</span>, name <span class="op">=</span> <span class="st">"My data release"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_catalog</span><span class="op">(</span><span class="st">"archive"</span>, papers <span class="op">=</span> <span class="va">papers</span>, name <span class="op">=</span> <span class="st">"My data release"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">

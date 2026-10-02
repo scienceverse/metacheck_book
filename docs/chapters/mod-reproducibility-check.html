@@ -534,31 +534,27 @@ Note
 </div>
 </section><section id="running-the-module" class="level2" data-number="28.2"><h2 data-number="28.2" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">28.2</span> Running the module</h2>
-<p>The default is the static phase — it does not run anything:</p>
+<p>The default is the static phase — it does not run anything. This example reads every repository <code>demopaper()</code> links to, so (like the rest of this chapter) it needs those repositories to be reachable; the output below is shown rather than run live, so the chapter does not depend on every linked repository’s uptime at render time:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "yellow"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; 
-#&gt; -  We assessed 7 R code files for reproducibility (static analysis; no code was run).
-#&gt; -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).
-#&gt; -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
-#&gt; -  2 referenced inputs unavailable (0 withheld due to size).
-#&gt; -  6 installable dependencies detected.</code></pre>
-</div>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span>
+<span><span class="co">#&gt; [1] "yellow"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; -  We assessed 7 R code files for reproducibility (static analysis; no code was run).</span></span>
+<span><span class="co">#&gt; -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).</span></span>
+<span><span class="co">#&gt; -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).</span></span>
+<span><span class="co">#&gt; -  2 referenced inputs unavailable (0 withheld due to size).</span></span>
+<span><span class="co">#&gt; -  6 installable dependencies detected.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>table</code> has one row per R code file, carrying the static assessments as columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"parses"</span>, <span class="st">"run_order"</span>, <span class="st">"order_basis"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"parses"</span>, <span class="st">"run_order"</span>, <span class="st">"order_basis"</span>,</span>
 <span>             <span class="st">"paths_rewritten"</span>, <span class="st">"runnable"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+</div>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 17%">
 <col style="width: 17%">
@@ -643,63 +639,57 @@ Note
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <p>A file is marked <code>runnable</code> only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a <em>static</em> check: <code>runnable = FALSE</code> does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place. When it <em>is</em> <code>FALSE</code>, the column <code>not_runnable_reason</code> names exactly why — one of <code>parse_error</code>, <code>unplaceable</code>, or <code>missing_input</code>, checked in that priority order — and <code>unresolved_inputs</code> names the specific file(s) that could not be resolved.</p>
 <p>Two further list-columns, <code>reads</code> and <code>writes</code>, carry the basenames each script reads and writes (as <code>repro_file_io()</code> extracted them) directly on the table — useful if you want the code↔︎data provenance for a file without recomputing it yourself:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">reads</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [[1]]
-#&gt; [1] "file.csv"
-#&gt; 
-#&gt; [[2]]
-#&gt; [1] "example.csv"
-#&gt; 
-#&gt; [[3]]
-#&gt; [1] "example.csv"  "example2.csv"
-#&gt; 
-#&gt; [[4]]
-#&gt; [1] "file.txt"
-#&gt; 
-#&gt; [[5]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[6]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[7]]
-#&gt; character(0)</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">writes</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [[1]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[2]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[3]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[4]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[5]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[6]]
-#&gt; character(0)
-#&gt; 
-#&gt; [[7]]
-#&gt; character(0)</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">reads</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "file.csv"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [1] "example.csv"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; [1] "example.csv"  "example2.csv"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; [1] "file.txt"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[5]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[6]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[7]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">writes</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[5]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[6]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[7]]</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="worked-example-building-a-small-reproducible-fixture" class="level2" data-number="28.3"><h2 data-number="28.3" class="anchored" data-anchor-id="worked-example-building-a-small-reproducible-fixture">
 <span class="header-section-number">28.3</span> Worked example: building a small reproducible fixture</h2>
 <p>To see every static assessment concretely, it helps to build a tiny, self-contained example rather than rely on whatever a real deposit happens to contain. The example below creates two scripts — one that writes an intermediate file, one that reads it back — and a plan that tells the module where a Psych-DS release would put the data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html">local_tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html">local_tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">'dat &lt;- read.csv("data.csv")'</span>,</span>
@@ -721,9 +711,9 @@ Note
 <section id="dependencies-repro_dependencies" class="level3" data-number="28.4.1"><h3 data-number="28.4.1" class="anchored" data-anchor-id="dependencies-repro_dependencies">
 <span class="header-section-number">28.4.1</span> Dependencies: <code>repro_dependencies()</code>
 </h3>
-<p><code>repro_dependencies()</code> walks the code and returns the distinct packages it loads, tagged with <strong>where each would be installed from</strong> — a distinction <code>code_check</code>’s package list does not make. A <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> call resolves to CRAN; a <code>remotes::install_github("user/repo")</code> call is read from the source the code names (with the pinned <code>@ref</code> kept when present); and packages that ship with R are tagged <code>base</code>, because a run never needs to install them.</p>
+<p><code>repro_dependencies()</code> walks the code and returns the distinct packages it loads, tagged with <strong>where each would be installed from</strong> — a distinction <code>code_check</code>’s package list does not make. A <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> call resolves to CRAN by default; a <code>remotes::install_github("user/repo")</code> call is read from the source the code names (with the pinned <code>@ref</code> kept when present); packages that ship with R are tagged <code>base</code>, because a run never needs to install them; and a bundled list of common <strong>Bioconductor</strong> package names (<code>edgeR</code>, <code>DESeq2</code>, and similar) is checked so those are tagged <code>bioc</code> instead of <code>cran</code> — confirmed as the single largest identifiable cause of install failures in a real corpus run, since a Bioconductor-only package is never on CRAN and <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> simply fails for it unless this distinction is made upfront.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"library(dplyr)"</span>,</span>
 <span>  <span class="st">"remotes::install_github('tidyverse/ggplot2@v3.4.0')"</span>,</span>
 <span>  <span class="st">"x &lt;- stats::sd(1:10)"</span></span>
@@ -745,7 +735,7 @@ Note
 <p>A script reads and writes data by relative path — <code>read_csv("raw/x.csv")</code>, <code>saveRDS(m, "../out/model.rds")</code>. When the release is re-laid-out into the Psych-DS structure, with data under <code>data/</code> and per-study <code>study-&lt;group&gt;/data/</code> folders, those paths no longer resolve. <code>repro_rewrite_paths()</code> maps each referenced path to its new location, using the file plan that <a href="../chapters/mod-psychds-check.html">psychds_check</a> produces.</p>
 <p>Matching is by <strong>basename</strong>: a script’s <code>../data/x.csv</code> and the repository’s <code>raw/x.csv</code> are the same file seen from different working directories, so the prefix is ignored. When several files share a basename — a <code>demographics.csv</code> in more than one study — the ambiguity is resolved by <strong>study group</strong>: the candidate whose target path is in the same study as the script wins. Only when that still leaves more than one candidate is the reference left unrewritten and flagged as ambiguous, rather than guessed.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"demographics.csv"</span>, <span class="st">"scores.csv"</span><span class="op">)</span>,</span>
 <span>  target_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"study-ex1/data/source-demographics_data.csv"</span>,</span>
 <span>                  <span class="st">"study-ex1/data/source-scores_data.csv"</span><span class="op">)</span>,</span>
@@ -771,7 +761,7 @@ Note
 </h3>
 <p>Scripts in a repository usually depend on each other, and running them in the wrong order fails for reasons that have nothing to do with reproducibility. <code>repro_file_io()</code> first extracts, for every file, the data it <strong>reads</strong>, the data it <strong>writes</strong>, and the scripts it <strong>sources</strong>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  <span class="st">"0_prep.R"</span>    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"0_prep.R"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="st">"1_analysis.R"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"1_analysis.R"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -794,7 +784,7 @@ Note
 </ol>
 <p>The scripts are then topologically sorted. A dependency <strong>cycle</strong> (A reads a file B writes, and vice versa) cannot be ordered and is reported; so is an <strong>ambiguous</strong> ordering, where nothing — no dependency and no numbering — distinguishes the order of two or more files.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repro_run_order</span><span class="op">(</span><span class="va">io</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repro_run_order</span><span class="op">(</span><span class="va">io</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;      file_name order depends_on order_basis
 #&gt; 1     0_prep.R     1                numeric
@@ -827,7 +817,7 @@ Note
 <span class="header-section-number">28.5</span> Two ways to run the code</h2>
 <p>Set <code>execute = TRUE</code> to actually run the paper’s code. A second argument, <code>sandbox</code>, decides <strong>where</strong>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># on this machine, in an isolated subprocess (the default)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># on this machine, in an isolated subprocess (the default)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
 <span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, sandbox <span class="op">=</span> <span class="st">"process"</span>,</span>
 <span>                 install_missing <span class="op">=</span> <span class="cn">TRUE</span>, timeout <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
@@ -900,7 +890,7 @@ Note
 -v &lt;sandbox&gt;:/sandbox -v &lt;library&gt;:/rlib:ro</code></pre>
 <p>Network is fully disabled, the filesystem is read-only outside the mounted sandbox (with only <code>/tmp</code> and the sandbox itself writable), the container runs as a fixed non-root user, all Linux capabilities are dropped, privilege escalation is blocked, and the number of processes the container can spawn is capped. Before checking any of this, call <code>repro_docker_available()</code> to confirm Docker is installed and its daemon is actually running — <code>reproducibility_check()</code> calls this for you and stops with a clear message if it is not, rather than failing partway through a batch of papers with a cryptic error.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repro_docker_available</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repro_docker_available</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $ok</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="co">#&gt; $msg</span></span>
@@ -935,23 +925,21 @@ Tip
 </section><section id="the-pre-built-docker-image-and-why-it-exists" class="level2" data-number="28.6"><h2 data-number="28.6" class="anchored" data-anchor-id="the-pre-built-docker-image-and-why-it-exists">
 <span class="header-section-number">28.6</span> The pre-built Docker image, and why it exists</h2>
 <p>The first time you think through what <code>sandbox = "docker"</code> needs to do to run a real paper’s code, an obvious problem appears: most papers’ scripts <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> several packages that are not part of base R, and a container starts with nothing installed. Naively, every single <code>reproducibility_check()</code> call would need to install a paper’s entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (<code>rstan</code>, <code>lme4</code>, and dozens of others), that can mean minutes of compilation <em>per paper</em>.</p>
-<p>To avoid that, Docker containers under <code>sandbox = "docker"</code> default to a <strong>pre-built image</strong>, <code>ghcr.io/scienceverse/metacheck_r:latest</code>, rather than a bare R installation. That image already has R, Quarto, and the roughly 650 most common packages a real corpus of psychology-science papers’ code actually uses — found by scanning thousands of real <code>.R</code>/<code>.Rmd</code>/<code>.qmd</code> files for their <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper’s dependencies are already in that list — which, for an ordinary <code>tidyverse</code>-and-<code>lme4</code>-shaped analysis, they usually are — the install phase does almost nothing, because <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace()</a></code> already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install.</p>
+<p>To avoid that, Docker containers under <code>sandbox = "docker"</code> default to a <strong>pre-built image</strong>, <code>ghcr.io/scienceverse/metacheck_r:latest</code>, rather than a bare R installation. That image already has R, Quarto, and the roughly 750 most common packages a real corpus of psychology-science papers’ code actually uses — found by scanning thousands of real <code>.R</code>/<code>.Rmd</code>/<code>.qmd</code> files for their <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper’s dependencies are already in that list — which, for an ordinary <code>tidyverse</code>-and-<code>lme4</code>-shaped analysis, they usually are — the install phase does almost nothing, because <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace()</a></code> already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install.</p>
 <p>The image, its Dockerfile, the full package list, and detailed notes on how it was built (including some genuinely non-obvious bugs found along the way — a package can report a successful install and still fail to <em>load</em>, because a runtime shared library it needs is missing from a minimal image) are all in a dedicated repository: <a href="https://github.com/scienceverse/metacheck_docker_reproducibility">scienceverse/metacheck_docker_reproducibility</a>. If you want to build your own variant — a smaller image with only the most common packages, or one that adds LaTeX for PDF rendering, or CmdStan for <code>cmdstanr</code>-based Bayesian models — that repository is the starting point, and its README documents exactly which levers actually reduce image size and which ones (surprisingly) do not.</p>
 </section><section id="declared-r-versions-and-why-they-matter-for-docker" class="level2" data-number="28.7"><h2 data-number="28.7" class="anchored" data-anchor-id="declared-r-versions-and-why-they-matter-for-docker">
 <span class="header-section-number">28.7</span> Declared R versions, and why they matter for Docker</h2>
 <p>The pre-built image is fast, but it was built against one specific R version. A paper that deposited an <code>renv.lock</code> file, or a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> text dump, or that pins its environment with <code>groundhog</code>/<code>checkpoint</code>, has told you <em>exactly</em> which R version its authors actually used — and that might not be the version the pre-built image happens to run.</p>
 <p><a href="../chapters/mod-code-check.html">code_check</a> is where this gets detected, as part of its own “Reproducible Environment” check: it looks for an <code>renv.lock</code> file anywhere in the repository (parsing its declared R version and every locked package + version), a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>/<code>session_info()</code> dump (matched by filename — <code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar, or embedded in a README), or an actual <code>groundhog::groundhog.library()</code>/<code>checkpoint::checkpoint()</code> date-pin call in the code — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code> with no pinning call does not count, since loading the package is not evidence anything was actually pinned.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
-<span><span class="va">cc</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "yellow"</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
+<span><span class="va">cc</span><span class="op">$</span><span class="va">traffic_light</span></span>
+<span><span class="co">#&gt; [1] "yellow"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>When nothing was declared, <code>code_check</code>’s own report explicitly says so and recommends depositing one — this is itself a piece of reproducibility hygiene worth checking regardless of whether you ever run the code.</p>
 <p><code>reproducibility_check()</code> has a parameter, <code>docker_use_declared_version</code>, that decides what to do with this information:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># default: always use the fast pre-built image, regardless of what the</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># default: always use the fast pre-built image, regardless of what the</span></span>
 <span><span class="co"># paper declared</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
 <span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, sandbox <span class="op">=</span> <span class="st">"docker"</span><span class="op">)</span></span>
@@ -975,7 +963,7 @@ scratch rather than using the pre-built image.</code></pre>
 <p>Everything so far runs one paper through <code>reproducibility_check()</code> at a time. If you are working through a whole corpus — a <code>paperlist</code> of dozens or hundreds of papers — calling it once per paper in a loop means only one Docker container is ever running: paper 2 does not start until paper 1’s containers (install, then run) have both finished. For <code>sandbox = "docker"</code>, where each paper’s own work is a slow, external <code>docker run</code> rather than in-memory R computation, that is time left on the table on any machine with more than one CPU core to spare.</p>
 <p>Passing a <code>paperlist</code> together with <code>workers &gt; 1</code> (and <code>execute = TRUE, sandbox = "docker"</code>) switches to <strong>batch mode</strong>: up to <code>workers</code> papers run their Docker checks at the same time, and the moment one paper finishes, the next paper in the list starts — never fewer than <code>workers</code> running while papers remain queued, never more.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">papers</span>, <span class="st">"reproducibility_check"</span>,</span>
 <span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, sandbox <span class="op">=</span> <span class="st">"docker"</span>,</span>
@@ -991,10 +979,10 @@ scratch rather than using the pre-built image.</code></pre>
 <li>
 <strong>Container resource limits scale with <code>workers</code> automatically.</strong> Each container is capped at <code>1/workers</code> of the host’s CPU and memory (<code>--cpus</code>, <code>--memory</code>, in addition to the <code>--pids-limit 512</code> every container already had) — so four concurrent papers cannot collectively claim more than the whole machine, and one runaway script cannot starve the other three. You do not set this yourself; it is computed from <code>workers</code> and the host’s own detected CPU count and RAM.</li>
 <li>
-<strong><code>results_dir</code> writes each paper’s full result to disk as soon as that paper finishes</strong> — one <code>&lt;paper_id&gt;.rds</code> file per paper, in the same format <code>capture_module_tables()</code> uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with <code>collect_module_tables("repro_results", "reproducibility_check")</code>.</li>
+<strong><code>results_dir</code> writes each paper’s full result to disk as soon as that paper finishes</strong> — one <code>&lt;paper_id&gt;.rds</code> file per paper, in the same format <code>capture_module_tables()</code> uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with <code>metacheck:::collect_module_tables("repro_results", "reproducibility_check")</code> — both <code>capture_module_tables()</code> and <code>collect_module_tables()</code> are internal helpers, not exported, so they need the <code>metacheck:::</code> prefix rather than a plain call.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"repro_ran_ok"</span>, <span class="st">"repro_deps"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"repro_ran_ok"</span>, <span class="st">"repro_deps"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span>
 <span><span class="co">#&gt; Ran the reproducibility check on 20 papers (up to 4 at a time): 17 ok, 2 red, 1 error.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1025,7 +1013,7 @@ Note
 <strong>runs each script in run order</strong>, each in its own subprocess or container with a per-script <code>timeout</code>, capturing the outcome and the console output.</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
 <span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, install_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                 timeout <span class="op">=</span> <span class="fl">600</span>, keep_sandbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1110,7 +1098,7 @@ Note
 <strong>Genuinely nothing at all</strong> — no R code, no self-contained output, no other-language code either — is the only case that returns <code>na</code>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># a paper whose only "code" is a jamovi file</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># a paper whose only "code" is a jamovi file</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">jamovi_only_paper</span>, <span class="st">"reproducibility_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span>
 <span><span class="co">#&gt; [1] "yellow"</span></span>
@@ -1137,7 +1125,7 @@ Note
 </ul>
 <p>Every extracted statistic is typed with the <strong>STATO</strong> ontology (the <em>Statistical Methods Ontology</em>), so a <code>t</code>-value carries the accession for “t-statistic”, a <code>p</code>-value the accession for “p-value”, and so on; a statistic with no STATO class keeps its own column header as a plain label, so nothing is dropped.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read the result tables out of a jamovi or JASP file directly</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read the result tables out of a jamovi or JASP file directly</span></span>
 <span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu">read_stat_tables</span><span class="op">(</span><span class="st">"analysis.omv"</span><span class="op">)</span></span>
 <span><span class="va">long</span>   <span class="op">&lt;-</span> <span class="fu">stat_results_long</span><span class="op">(</span><span class="va">tables</span>, paper_id <span class="op">=</span> <span class="st">"example"</span>,</span>
 <span>                            source_file <span class="op">=</span> <span class="st">"analysis.omv"</span><span class="op">)</span></span>
@@ -1151,7 +1139,7 @@ Note
 <p>A reported statistical test is not a single number; it is a multi-component statement, for example <em>“M = 1.93, SD = 0.76, W = 183.5, p = .791, rb = -0.16”</em>. Metacheck’s text extractor records each of those numbers in the paper’s <code>$eq</code> table, grouped so that the numbers from one reported test stay together. <code>match_reported_output()</code> <strong>recomposes</strong> each reported test from its components, then checks whether those component values <strong>co-occur in a single analysis of the extracted output</strong>.</p>
 <p>Matching whole tests, rather than lone numbers, is what makes the check trustworthy: any single value will coincidentally appear somewhere in a large enough set of output numbers, but several components of one test agreeing <em>at once</em> is essentially never accidental.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">match_reported_output</span><span class="op">(</span><span class="va">paper</span>, <span class="va">mo</span><span class="op">$</span><span class="va">stat_output</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">match_reported_output</span><span class="op">(</span><span class="va">paper</span>, <span class="va">mo</span><span class="op">$</span><span class="va">stat_output</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">m</span>, <span class="st">"summary"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $n_tests   19</span></span>
 <span><span class="co">#&gt; $n_found   14</span></span>
@@ -1161,7 +1149,7 @@ Note
 </div>
 <p>Each row of the result is one recomposed reported test, with <strong>where it was found</strong>. The full column set is <code>text_id</code>, <code>grp_id</code>, <code>reported</code>, <code>n_components</code>, <code>n_matched</code>, <code>found</code> (logical), <code>match_values</code>, <code>not_matched</code>, <code>source_file</code>, <code>analysis</code>, <code>confidence</code> (<code>"full"</code>, <code>"partial"</code>, or <code>"none"</code>), and <code>plausible_split</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span><span class="op">[</span><span class="va">m</span><span class="op">$</span><span class="va">found</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"reported"</span>, <span class="st">"n_matched"</span>, <span class="st">"confidence"</span>, <span class="st">"source_file"</span>, <span class="st">"analysis"</span><span class="op">)</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span><span class="op">[</span><span class="va">m</span><span class="op">$</span><span class="va">found</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"reported"</span>, <span class="st">"n_matched"</span>, <span class="st">"confidence"</span>, <span class="st">"source_file"</span>, <span class="st">"analysis"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                      reported n_matched confidence          source_file                 analysis</span></span>
 <span><span class="co">#&gt;  M=1.93 SD=0.76 W=183.5 ...           5       full  experiment_1.omv   One Sample T-Test</span></span>
 <span><span class="co">#&gt;  p=0.001 d=0.46                       2       full  across_all.omv     Paired Samples ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1242,14 +1230,18 @@ Note
 <td>the full <code>match_reported_output()</code> result, when there was output to match against</td>
 </tr>
 <tr class="odd">
+<td><code>$modifications</code></td>
+<td>per-file modification detail: <code>file_name</code>, <code>change_type</code>, <code>detail</code> — path rewrites, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> removal, font substitution, and <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> injection. Empty when <code>execute = FALSE</code> or nothing needed modifying</td>
+</tr>
+<tr class="even">
 <td><code>$report</code></td>
 <td>formatted report sections, including per-script output and the self-reproducible JASP/jamovi results</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>$summary_text</code></td>
 <td>plain-text bulleted summary</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>$sandbox</code></td>
 <td>(only present when <code>keep_sandbox = TRUE</code>) the path to the materialised throwaway directory — see below</td>
 </tr>
@@ -1325,8 +1317,43 @@ Note
 <td>passed through to the upstream modules’ LLM calls (<code>data_check</code>, <code>psychds_check</code>), only used when <code>llm_use(TRUE)</code>
 </td>
 </tr>
+<tr class="even">
+<td><code>cache</code></td>
+<td><code>FALSE</code></td>
+<td>forwarded to the internal <code>data_check</code>/<code>code_check</code> runs: keep downloaded files in the persistent on-disk cache and reuse them on later runs</td>
+</tr>
+<tr class="odd">
+<td>
+<code>download</code>, <code>skip_types</code>, <code>peek_zips</code>, <code>max_file_size</code>, <code>max_download_size</code>
+</td>
+<td>(same as <code>data_check</code>’s own defaults)</td>
+<td>forwarded to the internal <code>data_check</code> run — see the <a href="../chapters/mod-data-check.html">Data Check</a> chapter for what each one controls</td>
+</tr>
+<tr class="even">
+<td><code>skip_on_api_limit</code></td>
+<td><code>FALSE</code></td>
+<td>give up immediately on a confirmed API rate limit instead of waiting, forwarded to the internal repository/data/code checks</td>
+</tr>
+<tr class="odd">
+<td><code>tables_dir</code></td>
+<td><code>NULL</code></td>
+<td>a directory of per-paper <code>.rds</code> files from a prior full corpus build (written by the internal <code>capture_module_tables()</code>); when set, a reproducibility-only re-run reads that paper’s already-computed <code>data_check</code>/<code>code_check</code>/<code>psychds_check</code> results from disk instead of re-running them</td>
+</tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>download</code>, <code>skip_types</code>, and <code>peek_zips</code> are also part of the key the LLM response cache uses for <code>data_check</code>’s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.</p>
+</div>
+</div>
 <p><code>keep_sandbox = TRUE</code> is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains <code>data/</code> (the materialised Psych-DS layout), <code>output/</code> (anything a script’s write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/<code>.spv</code>/<code>.smcl</code>/<code>.out</code> file — a <code>statistical_output/</code> folder with the structured results documents. This is also what <a href="../chapters/mod-psychds-check.html">convert_psychds()</a> looks for when building an archive: pass <code>keep_sandbox = TRUE</code> if you want its <code>statistical_output/</code> folder included, since <code>convert_psychds()</code> does not run <code>reproducibility_check</code> itself and has no other way to obtain it.</p>
 </section><section id="notes-and-limitations" class="level2" data-number="28.15"><h2 data-number="28.15" class="anchored" data-anchor-id="notes-and-limitations">
 <span class="header-section-number">28.15</span> Notes and limitations</h2>

@@ -522,11 +522,11 @@ Note
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_accuracy"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "green"</code></pre>
+<pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "We checked 2 references that supplied a DOI and found 0 incoherent references. A further 1 reference were matched to a DOI via CrossRef (0 incoherent, tentative). 2 references had no DOI and could not be checked."</code></pre>
+<pre><code>#&gt; [1] "We checked the 4 references that supplied a DOI against the record that DOI points to, and found 2 incoherent references to check for parsing errors or mistakes. 0 references had no DOI and could not be checked. Incoherent references are mostly PDF parsing errors (we are working on improving reference parsing)."</code></pre>
 </div>
 </div>
 <p>The <code>summary_table</code> reports, per paper, how many references were checked (had their own DOI), how many were flagged as incoherent, and how many had no DOI and so could not be checked:</p>
@@ -535,28 +535,16 @@ Note
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 12%">
-<col style="width: 15%">
-<col style="width: 17%">
-</colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">paper_id</th>
-<th style="text-align: right;">refs_provided_doi</th>
-<th style="text-align: right;">refs_crossref_doi</th>
-<th style="text-align: right;">not_checked</th>
-<th style="text-align: right;">incoherent_doi</th>
-<th style="text-align: right;">incoherent_match</th>
+<th style="text-align: right;">refs_checked</th>
+<th style="text-align: right;">incoherent</th>
+<th style="text-align: right;">no_doi</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
+<td style="text-align: right;">4</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 </tr></tbody>
 </table>
@@ -573,8 +561,8 @@ Note
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 7%">
-<col style="width: 9%">
-<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 11%">
 <col style="width: 16%">
 <col style="width: 17%">
 <col style="width: 20%">
@@ -591,6 +579,15 @@ Note
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">unresolved</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;">provided</td>
 <td style="text-align: left;">FALSE</td>
@@ -599,7 +596,7 @@ Note
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;">provided</td>
 <td style="text-align: left;">FALSE</td>
@@ -608,7 +605,7 @@ Note
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">crossref</td>
 <td style="text-align: left;">FALSE</td>
@@ -617,23 +614,14 @@ Note
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
-<tr class="even">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">none</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
 <tr class="odd">
 <td style="text-align: right;">4</td>
-<td style="text-align: left;">none</td>
+<td style="text-align: left;">unresolved</td>
+<td style="text-align: left;">TRUE</td>
 <td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">FALSE</td>
 </tr>
 </tbody>
 </table>

@@ -256,10 +256,14 @@ For the metascience workflow, it is useful to create a table with a row for each
 
 ```{r, eval = FALSE}
   ## summary_table ----
-  # must have id column as the id of each paper, one row per paper
+  # must have a paper_id column as the id of each paper, one row per paper
   # and further columns to be added to a master summary table
-  summary_table <- dplyr::count(table, id, name = "n_significant")
+  summary_table <- dplyr::count(table, paper_id, name = "n_significant")
 ```
+
+::: callout-important
+The grouping column must be named exactly `paper_id`. `module_run()` only merges a module's `summary_table` into the pipeline's master summary table when it finds a column with that exact name (see `R/module.R`); any other name — including `id` — is accepted silently and simply never merged, with no error to tell you it didn't work.
+:::
 
 Your summary table might omit some papers from the whole list because no relevant text was found. You don't have to add them into your table, as the `module_run()` function will do that automatically for you. However, you may want the values of your summary variables to be something other than `NA` for these missing papers. You can set the value of `na_replace` in the return list (below) to this default value. For example, if you are returning a summary of the count of sentences with the word "significant", you can replace `NA`s with 0. 
 

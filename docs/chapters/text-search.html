@@ -442,7 +442,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#searching-a-paper" id="toc-searching-a-paper" class="nav-link active" data-scroll-target="#searching-a-paper"><span class="header-section-number">4.1</span> Searching a paper</a></li>
-  <li><a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">4.2</span> Pattern</a></li>
+  <li>
+<a href="#pattern" id="toc-pattern" class="nav-link" data-scroll-target="#pattern"><span class="header-section-number">4.2</span> Pattern</a>
+  <ul class="collapse">
+<li><a href="#what-gets-searched" id="toc-what-gets-searched" class="nav-link" data-scroll-target="#what-gets-searched"><span class="header-section-number">4.2.1</span> What gets searched</a></li>
+  </ul>
+</li>
   <li>
 <a href="#return" id="toc-return" class="nav-link" data-scroll-target="#return"><span class="header-section-number">4.3</span> Return</a>
   <ul class="collapse">
@@ -482,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><p>Most Metacheck modules are built on top of one core operation: searching the text of a paper for sentences that match a pattern. The <code>text_search()</code> function gives you direct access to that operation, so you can explore a paper, prototype a new check, or build a corpus of sentences to code by hand.</p>
-<p>We use a single paper from the built-in <code>psychsci</code> dataset for the small examples, and the whole dataset of 250 papers for the corpus-scale examples.</p>
+<p>We use a single paper for the small examples, and the <code>psychsci</code> corpus of 250 <em>Psychological Science</em> articles (loaded with <code>papers_load("psychsci", cache = TRUE)</code> — see <a href="../chapters/papers-databases.html">Using the Paper Database Corpora</a>) for the corpus-scale examples.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="fu">demofile</span><span class="op">(</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -646,9 +651,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="return" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="return">
+<section id="what-gets-searched" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="what-gets-searched">
+<span class="header-section-number">4.2.1</span> What gets searched</h3>
+<p>Two arguments control what counts as searchable text, beyond the sentence itself:</p>
+<ul>
+<li>
+<strong><code>search_header</code></strong> — by default the pattern is only matched against each sentence’s own text, not the header of the section it is in. Set <code>search_header = TRUE</code> to also match against headers, which is useful when the information you want is signalled by the heading itself (e.g.&nbsp;a section literally titled “Data Availability”) rather than spelled out again in a sentence.</li>
+<li>
+<strong><code>include_refs</code></strong> — the reference list is excluded from every search by default, since it is rarely the target of a text search and can otherwise produce a lot of noise (citation strings containing numbers, years, and incidental keyword matches). Set <code>include_refs = TRUE</code> if you specifically want to search the references section too.</li>
+</ul></section></section><section id="return" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="return">
 <span class="header-section-number">4.3</span> Return</h2>
-<p>Set <code>return</code> to one of “sentence”, “paragraph”, “section”, or “match” to control what gets returned.</p>
+<p>Set <code>return</code> to one of “sentence”, “paragraph”, “section”, “header”, “match”, or “paper_id” to control what gets returned.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">text_search</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"GitHub"</span>,</span>
 <span>                    return <span class="op">=</span> <span class="st">"paragraph"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -705,6 +718,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p><code>return = "header"</code> returns the matching sentence(s) together with the header of the section they are in, and <code>return = "paper_id"</code> collapses all matches for a paper into a single row holding that paper’s entire body text — useful when you want to hand a whole paper to an LLM at once rather than searching sentence by sentence.</p>
 <section id="regex-matches" class="level3" data-number="4.3.1"><h3 data-number="4.3.1" class="anchored" data-anchor-id="regex-matches">
 <span class="header-section-number">4.3.1</span> Regex matches</h3>
 <p>You can also return just the matched text from a regex search by setting <code>return = "match"</code>. The extra <code>...</code> arguments in <code>text_search()</code> are passed to <code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, so <code>perl = TRUE</code> allows you to use more complex regex, like below.</p>

@@ -9,6 +9,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
@@ -27,7 +28,7 @@ paper <- demopaper()
 module_run(paper, "power")
 ```
 
-Printing the result renders the module's report. To work with the underlying data, use the returned list. The `table` has one row per detected power statement, with a `power_type` classification and a `complete` flag:
+Printing the result renders the module's report. To work with the underlying data, use the returned list. The `table` has one row per detected power statement, with a `power_type` classification and a `complete` column. Without an LLM enabled — the default, and what runs below — `complete` is always `NA`: it only becomes a real flag once [LLM support](#options-using-an-llm) is turned on, which is covered later in this chapter.
 
 ```{r}
 mo <- module_run(paper, "power")
@@ -39,7 +40,7 @@ mo$table[, c("text", "power_type", "complete")] |>
 
 ## Running on many papers
 
-Pass a `paperlist` such as the built-in `psychsci` (250 open-access *Psychological Science* articles) to run across a corpus. Here we run on the first 20 papers and summarise how many power statements were found per paper.
+Pass a `paperlist` such as the `psychsci` corpus (250 open-access *Psychological Science* articles, loaded with `papers_load("psychsci", cache = TRUE)` — see [Using the Paper Database Corpora](papers-databases.qmd)) to run across a corpus. Here we run on the first 20 papers and summarise how many power statements were found per paper.
 
 ```{r}
 mo <- module_run(psychsci[1:20], "power")
@@ -57,7 +58,7 @@ A paper that reports an a priori power analysis with all the needed details is t
 module_run(demopaper(), "power")
 ```
 
-The `power_type` column tells you which statements are a priori (worth keeping) versus post-hoc (usually a red flag), and `complete` flags a priori analyses that are missing required information.
+The `power_type` column tells you which statements are a priori (worth keeping) versus post-hoc (usually a red flag). `complete` flags a priori analyses that are missing required information, but — as noted above — only once an LLM is enabled; without one it stays `NA` for every row, as in the example above.
 
 ## Options: using an LLM
 

@@ -123,7 +123,8 @@ llm_use(TRUE)
 llm_model("ollama/qwen2.5:3b")
 llm_max_calls(5000)
 
-# Load a single paper from the built-in psychsci dataset
+# Load the psychsci corpus and take a single paper from it
+psychsci <- papers_load("psychsci", cache = TRUE)
 paper <- psychsci[[84]]
 
 # Find all paragraphs in the paper that mention participants
@@ -157,7 +158,8 @@ llm_use(TRUE)
 llm_model("ollama/qwen2.5:3b")
 llm_max_calls(5000)
 
-# Load a single paper (this uses paper number 84 from the built-in psychsci dataset)
+# Load the psychsci corpus and take paper number 84 from it
+psychsci <- papers_load("psychsci", cache = TRUE)
 paper <- psychsci[[84]]
 
 # Run the power module
@@ -180,6 +182,7 @@ llm_use(TRUE)
 llm_model("ollama/qwen2.5:3b")
 llm_max_calls(5000)
 
+psychsci <- papers_load("psychsci", cache = TRUE)
 paper <- psychsci
 result <- module_run(paper, "power")
 ```
@@ -245,6 +248,7 @@ See the [RegCheck module chapter](mod-reg-check.qmd) for what the comparison ret
 
 - This is normal on the first query while the model loads. Wait at least 60 seconds before concluding something has gone wrong
 - Larger models take longer; try `qwen2.5:3b` if you just want to check if your setup is working, as it is faster than the larger models.
+- Every call to `llm()` is bounded by `llm_timeout()` (180 seconds by default), so a genuinely stuck or overloaded local model fails with a clear, visible error rather than hanging indefinitely. If you are deliberately running a slow model and want more room before that happens, raise it: `llm_timeout(300)`. If you would rather fail faster while testing your setup, lower it instead.
 
 ### "Model not found" error
 
@@ -274,3 +278,9 @@ llm_max_calls(5000)
 paper <- demopaper()
 result <- module_run(paper, "power")
 ```
+
+A few other settings are worth knowing about when running locally (see [Using Large Language Models](llms.qmd) for the full explanation of each):
+
+- **`llm_timeout()`** bounds how long any single call may run before it is treated as stuck (default 180 seconds) — the mechanism behind the freezing/slowness advice above.
+- **`llm_reasoning()`** has Ollama-specific behaviour: for an Ollama-hosted reasoning model (DeepSeek-R1, Qwen3, and similar), it maps to that model's native `think` on/off flag rather than a graded level, so both `"low"` and `"none"` turn thinking off, and there is no equivalent of `"medium"` or `"high"`.
+- **`llm_max_tokens()`** sets a session-wide default response-length cap, useful if a module's answer is coming back truncated.

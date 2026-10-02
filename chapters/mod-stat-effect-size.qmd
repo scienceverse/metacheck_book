@@ -9,6 +9,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
@@ -21,7 +22,7 @@ This module is **fully offline**.
 
 ## How the coherence check works (and its limits)
 
-A test statistic does not always pin down a single effect size. For a *t*-test, the value of Cohen's *d* you recover depends on the **design**: a paired *t*-test, an independent-samples *t*-test with equal group sizes, and one with unequal group sizes all imply different effect sizes from the same *t* and *df*. The reporting style rarely says which design was used, so the module computes *d* under several plausible assumptions — paired (*d~z~*), independent with equal *n*, and a range for independent with unequal *n* — and asks whether the reported value matches **any** of them. That is what the `d_coherence` value `match_under_assumptions` means.
+A test statistic does not always pin down a single effect size. For a *t*-test, the value of Cohen's *d* you recover depends on the **design**: a paired *t*-test, an independent-samples *t*-test with equal group sizes, and one with unequal group sizes all imply different effect sizes from the same *t* and *df*. The reporting style rarely says which design was used, so the module computes *d* under several plausible assumptions — paired (*d~z~*), independent with equal *n*, and a range for independent with unequal *n* — and asks whether the reported value matches **any** of them. That is what the `d_coherence` value `match_under_assumptions` means. (`mo$table` also carries a fourth candidate, `d_implied_paired_drm_r05` — a repeated-measures *d* computed under an assumed correlation of .5 between measurements — but it does not currently feed into the `d_coherence` verdict itself.)
 
 This is the crucial caveat: **a match under assumptions is not proof the effect size is correct.** The check only establishes that the reported value is *possible* for some design consistent with the test statistic. If the authors ran a paired test but the reported *d* happens to coincide with the equal-*n* independent-samples value, the module will report a match even though the reported effect size is wrong for the design that was actually used. A match means "not obviously contradictory"; it does not mean "verified".
 

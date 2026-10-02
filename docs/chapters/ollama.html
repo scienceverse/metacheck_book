@@ -575,7 +575,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_model.html">llm_model</a></span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_max_calls.html">llm_max_calls</a></span><span class="op">(</span><span class="fl">5000</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load a single paper from the built-in psychsci dataset</span></span>
+<span><span class="co"># Load the psychsci corpus and take a single paper from it</span></span>
+<span><span class="va">psychsci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="fl">84</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Find all paragraphs in the paper that mention participants</span></span>
@@ -605,7 +606,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_model.html">llm_model</a></span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_max_calls.html">llm_max_calls</a></span><span class="op">(</span><span class="fl">5000</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load a single paper (this uses paper number 84 from the built-in psychsci dataset)</span></span>
+<span><span class="co"># Load the psychsci corpus and take paper number 84 from it</span></span>
+<span><span class="va">psychsci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="fl">84</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Run the power module</span></span>
@@ -626,6 +628,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_model.html">llm_model</a></span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/llm_max_calls.html">llm_max_calls</a></span><span class="op">(</span><span class="fl">5000</span><span class="op">)</span></span>
 <span></span>
+<span><span class="va">psychsci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -670,6 +673,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>This is normal on the first query while the model loads. Wait at least 60 seconds before concluding something has gone wrong</li>
 <li>Larger models take longer; try <code>qwen2.5:3b</code> if you just want to check if your setup is working, as it is faster than the larger models.</li>
+<li>Every call to <code><a href="https://scienceverse.github.io/metacheck/reference/llm.html">llm()</a></code> is bounded by <code>llm_timeout()</code> (180 seconds by default), so a genuinely stuck or overloaded local model fails with a clear, visible error rather than hanging indefinitely. If you are deliberately running a slow model and want more room before that happens, raise it: <code>llm_timeout(300)</code>. If you would rather fail faster while testing your setup, lower it instead.</li>
 </ul></section><section id="model-not-found-error" class="level3" data-number="37.5.3"><h3 data-number="37.5.3" class="anchored" data-anchor-id="model-not-found-error">
 <span class="header-section-number">37.5.3</span> “Model not found” error</h3>
 <ul>
@@ -699,6 +703,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/demopaper.html">demopaper</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>A few other settings are worth knowing about when running locally (see <a href="../chapters/llms.html">Using Large Language Models</a> for the full explanation of each):</p>
+<ul>
+<li>
+<strong><code>llm_timeout()</code></strong> bounds how long any single call may run before it is treated as stuck (default 180 seconds) — the mechanism behind the freezing/slowness advice above.</li>
+<li>
+<strong><code><a href="https://scienceverse.github.io/metacheck/reference/llm_reasoning.html">llm_reasoning()</a></code></strong> has Ollama-specific behaviour: for an Ollama-hosted reasoning model (DeepSeek-R1, Qwen3, and similar), it maps to that model’s native <code>think</code> on/off flag rather than a graded level, so both <code>"low"</code> and <code>"none"</code> turn thinking off, and there is no equivalent of <code>"medium"</code> or <code>"high"</code>.</li>
+<li>
+<strong><code><a href="https://scienceverse.github.io/metacheck/reference/llm_max_tokens.html">llm_max_tokens()</a></code></strong> sets a session-wide default response-length cap, useful if a module’s answer is coming back truncated.</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

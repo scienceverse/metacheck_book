@@ -516,13 +516,13 @@ Warning
 <p>The <code>data_check</code> module is the foundation for all of Metacheck’s data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:</p>
 <ol type="1">
 <li>
-<strong>Classifies every file</strong> into a semantic type: tabular <em>data</em>, <em>code</em>, a <em>codebook</em>, a <em>README</em>, <em>software</em>, <em>output</em>, <em>supplemental</em>, an <em>asset</em> (image/audio/video/stimulus), or <em>other</em>.</li>
+<strong>Classifies every file</strong> into a semantic type: tabular <em>data</em>, <em>code</em>, <em>documentation</em> (README, codebook, supplemental material, licence), <em>materials</em> (images/audio/video/stimuli, software), <em>output</em>, or <em>unknown</em>. Within <em>documentation</em>, a separate <code>doc_role</code> column distinguishes a README from a codebook from other supplemental material.</li>
 <li>
 <strong>Reads each readable tabular data file</strong> and describes every column along several independent <strong>facets</strong> — how it is stored, its measurement level, what it measures, how it functions, and its unit — together with basic <strong>summary statistics</strong>.</li>
 <li>
 <strong>Runs data-quality checks</strong> on those columns, and on the raw workbook of every spreadsheet, described in <a href="../chapters/mod-data-validate.html">Data Quality Checks</a>. These were formerly two separate modules, <code>data_validate</code> and <code>excel_check</code>; both are now part of <code>data_check</code>.</li>
 <li>
-<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>codebook_check</code> builds on <code>data_check</code>’s output rather than re-reading the files, and the forthcoming <code>psychds_check</code> and <code>convert_psychds()</code> will use its classification and study grouping to build a Psych-DS archive.</li>
+<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>codebook_check</code> builds on <code>data_check</code>’s output rather than re-reading the files, and <code>psychds_check</code> and <code>convert_psychds()</code> are designed to use its classification and study grouping to build a Psych-DS archive once that module’s own development resumes (see <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>).</li>
 </ol>
 <p>On its own, <code>data_check</code> gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -535,7 +535,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This chapter runs entirely offline. We build small example repositories in a temporary folder and point <code>data_check</code> at them with <code>local_path</code>. The same calls work against a real downloaded repository — see the <a href="../chapters/local-files.html">Local Files</a> chapter.</p>
+<p>This chapter runs entirely offline. We build small example repositories in a temporary folder and point <code>data_check</code> at them with <code>local_path</code>. The same calls work against a real downloaded repository — see the <a href="../chapters/local-files.html">Local Files</a> chapter. If you have no manuscript at all, <code>report_repository("path/to/folder")</code> runs <code>data_check</code> together with <code>repo_check</code>, <code>code_check</code>, and <code>codebook_check</code> on the folder in one step — see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a>.</p>
 </div>
 </div>
 </section><section id="a-worked-example" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="a-worked-example">
@@ -603,7 +603,7 @@ Note
 </table>
 </div>
 </div>
-<p>Every file is sorted into one of nine semantic types. The vocabulary is <code>data</code>, <code>codebook</code>, <code>code</code>, <code>software</code>, <code>output</code>, <code>supplemental</code>, <code>readme</code>, <code>asset</code>, and <code>other</code>:</p>
+<p>Every file is sorted into one of six semantic types. The vocabulary is <code>data</code>, <code>code</code>, <code>documentation</code>, <code>materials</code>, <code>output</code>, and <code>unknown</code>:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -622,61 +622,50 @@ Note
 <tr class="even">
 <td><code>code</code></td>
 <td>
-<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>, <code>.py</code>, <code>.do</code>, <code>.sps</code>, <code>.sas</code>, <code>.ipynb</code>
-</td>
+<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>, <code>.py</code>, <code>.do</code>, <code>.sps</code>, <code>.sas</code>, <code>.ipynb</code>, and SPSS/SAS/Stata syntax files</td>
 </tr>
 <tr class="odd">
-<td><code>codebook</code></td>
-<td>files whose name looks like a data dictionary, plus a Qualtrics <code>.qsf</code> survey definition</td>
+<td><code>documentation</code></td>
+<td>a README, a codebook (including a Qualtrics <code>.qsf</code> survey definition), a licence file, and plain supplemental text (preprints, slide decks, Word docs, <strong>and preregistrations</strong>)</td>
 </tr>
 <tr class="even">
-<td><code>readme</code></td>
-<td>
-<code>README</code>, <code>read me</code>
-</td>
+<td><code>materials</code></td>
+<td>anything a participant or experimenter interacts with directly rather than an analytic artifact: images, audio, video, fonts (stimuli) <strong>and</strong> executables, installers, and config files (runnable software)</td>
 </tr>
 <tr class="odd">
-<td><code>software</code></td>
-<td>executables and installers (<code>.exe</code>, <code>.dll</code>, <code>.sh</code>), config files</td>
-</tr>
-<tr class="even">
 <td><code>output</code></td>
 <td>rendered results (<code>.spv</code>, figures)</td>
 </tr>
-<tr class="odd">
-<td><code>supplemental</code></td>
-<td>documents, slides, web pages, <strong>and preregistrations</strong>
-</td>
-</tr>
 <tr class="even">
-<td><code>asset</code></td>
-<td>images, audio, video, fonts (stimuli/materials)</td>
-</tr>
-<tr class="odd">
-<td><code>other</code></td>
-<td>anything no rule places (an LLM may reclassify these)</td>
+<td><code>unknown</code></td>
+<td>anything no rule places (an LLM may reclassify these); an unopenable archive also falls back here</td>
 </tr>
 </tbody>
 </table>
+<p><code>documentation</code> is deliberately coarse: it answers “is this file documentation of some kind,” which is what drives Psych-DS folder placement and report grouping. A separate, orthogonal column, <code>doc_role</code>, answers the finer question of <em>which</em> documentation artifact a file is — <code>"readme"</code>, <code>"license"</code>, <code>"codebook"</code>, or <code>"supplemental"</code> — and is what <code>codebook_check</code> uses to decide which files to parse.</p>
 <section id="how-the-classifier-works-data_classify_files" class="level3" data-number="23.3.1"><h3 data-number="23.3.1" class="anchored" data-anchor-id="how-the-classifier-works-data_classify_files">
 <span class="header-section-number">23.3.1</span> How the classifier works: <code>data_classify_files()</code>
 </h3>
-<p>Classification is done by the exported helper <code>data_classify_files()</code>, which layers three rule sets. Understanding the order matters because later layers override earlier ones:</p>
+<p>Classification is done by the exported helper <code>data_classify_files()</code>, which layers several rule sets in order. Later layers only fire when nothing earlier has already decided a file’s type:</p>
 <ol type="1">
 <li>
-<strong>Name-based rules</strong> (<code>file_category()</code>): filenames matching README or codebook patterns win first, before any extension is consulted. A file literally called <code>README.txt</code> is a readme even if it is delimiter-rich.</li>
+<strong>Format rules</strong> (<code>file_category()</code>’s hard rules, translated into this vocabulary): a file whose <em>format</em> unambiguously says what it is — a README, a codebook, or a fixed extension such as <code>.qsf</code> (a Qualtrics survey definition, itself a codebook), <code>.npy</code>/<code>.h5</code>/<code>.parquet</code>/<code>.feather</code> (data), or <code>.iqdat</code>/<code>.edat</code>/<code>.edat2</code> (trial-level task exports, data) — is locked in here and nothing downstream can override it.</li>
 <li>
-<strong>An extension crosswalk</strong> built on metacheck’s coarse <code>file_types</code> table (<code>.file_type_crosswalk</code>): maps <code>code → code</code>, <code>stats → code</code> (SPSS/SAS/Stata syntax), <code>exec/config → software</code>, <code>audio/video/image/3D/font → asset</code>, <code>book/slide/text/web → supplemental</code>, <code>archive → other</code>.</li>
+<strong>Georeferenced rasters</strong>: an image (<code>.tif</code>, <code>.jpg</code>, <code>.png</code>, <code>.jp2</code>) with a matching world file or <code>.aux.xml</code> sidecar is map data, not a photograph or stimulus.</li>
 <li>
-<strong>Format-locked extension overrides</strong> (<code>.fixed_ext_type</code>, highest priority): a fixed table that corrects any coarser guess. This is where <code>.qsf</code> becomes a <code>codebook</code> (a Qualtrics survey definition <em>is</em> its own codebook), scientific binaries like <code>.npy</code>/<code>.h5</code>/<code>.parquet</code>/<code>.feather</code> become <code>data</code>, and trial-level task exports (<code>.iqdat</code>, <code>.edat</code>, <code>.edat2</code>) become <code>data</code> so they are actually fetched.</li>
+<strong>JSON/XML name rules</strong>: since <code>.json</code>/<code>.xml</code> can hold anything, these are classified by name alone — <code>dataset_description.json</code>, <code>.zenodo.json</code>, <code>datacite.xml</code>, and similar are <code>documentation</code>; <code>package.json</code>/<code>package-lock.json</code>/<code>tsconfig.json</code> are <code>code</code>.</li>
+<li>
+<strong>Category words in the file or folder name</strong>: an explicit word like “codebook”, “materials”, “pre-reg”, or “scripts” in the path is a more deliberate signal than a generic extension, and is checked name-first, then folder, then the folders above it.</li>
+<li>
+<strong>The coarse <code>file_types</code> fallback</strong> (<code>.file_type_crosswalk</code>): whatever is still unresolved falls back to metacheck’s general file-type table (e.g.&nbsp;image → materials, text → documentation).</li>
 </ol>
-<p>Two special cases run last. A file named <strong>README</strong> is forced to <code>readme</code> as belt-and-braces. A <strong>preregistration</strong> — a name matching <code>prereg</code> / <code>pre-reg</code> / <code>preregistration</code> (as a whole token, so <code>preregional</code> does not match) — is reclassified to <code>supplemental</code> so it lands in <code>documentation/</code> rather than being misfiled as a data CSV or as code. A genuine analysis <em>script</em> named after the prereg keeps its <code>code</code> type.</p>
+<p>A <code>ro-crate-metadata.json</code> is always <code>documentation</code> (with <code>doc_role == "readme"</code>, since it is collection-level like a README), whatever any earlier rule said.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_classify_files</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"data.csv"</span>, <span class="st">"analysis.R"</span>, <span class="st">"README.md"</span>,</span>
 <span>                      <span class="st">"codebook.xlsx"</span>, <span class="st">"survey.qsf"</span>, <span class="st">"preregistration.pdf"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<pre><code>[1] "data"         "code"         "readme"       "codebook"
-[5] "codebook"     "supplemental"</code></pre>
+<pre><code>[1] "data"          "code"          "documentation" "documentation"
+[5] "documentation" "documentation"</code></pre>
 </section><section id="tabular-vs-raw-data_format" class="level3" data-number="23.3.2"><h3 data-number="23.3.2" class="anchored" data-anchor-id="tabular-vs-raw-data_format">
 <span class="header-section-number">23.3.2</span> Tabular vs raw: <code>data_format()</code>
 </h3>
@@ -697,10 +686,10 @@ Note
 #&gt; └── analysis.R     💻 code ex1
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(15L, 2L, 20L, 2L, 20L, 20L), Mean = c(37.95, 
-#&gt;     NA, NA, NA, 611.2, 50.86), SD = c(15.34, NA, NA, NA, 169.426, 
-#&gt;     9.935), Min = c(18, NA, NA, NA, 310, 30.5), Max = c(63, NA, 
-#&gt;     NA, NA, 849, 77.3)), row.names = c("age", "condition", "participant_id",</code></pre>
+#&gt;     0), "N Unique" = c(17L, 2L, 20L, 2L, 20L, 20L), Mean = c(36.6, 
+#&gt;     NA, NA, NA, 583.05, 52.89), SD = c(13.644, NA, NA, NA, 161.409, 
+#&gt;     10.206), Min = c(19, NA, NA, NA, 306, 32.5), Max = c(59, 
+#&gt;     NA, NA, NA, 891, 69.5)), row.names = c("age", "condition",</code></pre>
 </div>
 </div>
 <p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
@@ -957,8 +946,7 @@ Note
 <tbody>
 <tr class="odd">
 <td><code>$traffic_light</code></td>
-<td>
-<code>"green"</code> when data files were read; <code>"yellow"</code> when tabular files exist but some had no local copy; <code>"na"</code> when there is nothing to check</td>
+<td>the worse of two separately computed lights: whether files were actually read (<code>"green"</code>/<code>"yellow"</code> when some tabular files had no local copy/<code>"na"</code> when there is nothing to check), and the data-quality checks on the columns that <em>were</em> read (<code>"green"</code> with no issues, <code>"yellow"</code> below 25% of columns flagged — or any careless-responding/spreadsheet-formatting finding at all — <code>"red"</code> at 25% or more). A clean extraction never hides a real data-quality problem, and a quality problem on the columns that loaded never gets hidden by an otherwise-successful read</td>
 </tr>
 <tr class="even">
 <td><code>$summary_text</code></td>
@@ -991,7 +979,7 @@ Note
 </tr>
 </tbody>
 </table>
-<p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> on its own beforehand — running <code>codebook_check</code> triggers it automatically and reuses the result, as the forthcoming <code>psychds_check</code> and <code>convert_psychds()</code> will.</p>
+<p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> on its own beforehand — running <code>codebook_check</code> triggers it automatically and reuses the result, and <code>psychds_check</code> and <code>convert_psychds()</code> are designed to do the same once that module’s own development resumes.</p>
 </section><section id="downloading-files" class="level2" data-number="23.12"><h2 data-number="23.12" class="anchored" data-anchor-id="downloading-files">
 <span class="header-section-number">23.12</span> Downloading files</h2>
 <p>When a paper links to an online repository, <code>data_check</code> downloads the files it needs into a shared on-disk cache (reused across runs and across modules, so a file is never fetched twice — see <a href="../chapters/caching.html">Caching and Reuse</a>). The <code>download</code> argument controls <strong>what</strong> is fetched:</p>
@@ -1033,14 +1021,14 @@ Note
 <p>When building an archive you often want the <em>data</em> but not the stimuli or media — those are usually better linked to than mirrored. Two options handle this:</p>
 <ul>
 <li>
-<strong><code>skip_types</code></strong> — a vector of <code>data_type</code>s never to download, even under <code>download = "all"</code>. Most usefully <code>skip_types = "asset"</code> leaves out stimuli/media. Skipped files are still listed (with the reason) in the manifest.</li>
+<strong><code>skip_types</code></strong> — a vector of <code>data_type</code>s never to download, even under <code>download = "all"</code>. Most usefully <code>skip_types = "materials"</code> leaves out stimuli/media and other non-analytic files. When left at its default (<code>NULL</code>), <code>data_check</code> behaves as if you had passed <code>c("materials", "unknown")</code>, so some filtering always happens unless you explicitly pass <code>skip_types = character(0)</code>. Skipped files are still listed (with the reason) in the manifest.</li>
 <li>
-<strong><code>peek_zips = TRUE</code></strong> — before downloading a <code>.zip</code>, look inside it via an HTTP range request (fetching only the zip’s tail, not the whole file — <code>zip_peek()</code> / <code>zip_decision()</code>) and only download zips that actually contain data or a codebook. Downloaded data-zips are unpacked (<code>.expand_zip()</code>) and their inner data files added to the archive, with the zip itself demoted to a container; inner assets are dropped.</li>
+<strong><code>peek_zips = TRUE</code></strong> (the default) — before downloading a <code>.zip</code>, look inside it via an HTTP range request (fetching only the zip’s tail, not the whole file — <code>zip_peek()</code> / <code>zip_decision()</code>) and only download zips that actually contain data or a codebook. Downloaded data-zips are unpacked (<code>.expand_zip()</code>) and their inner data files added to the archive, with the zip itself demoted to a container; inner materials are dropped.</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># archive-building recipe: everything except media, peeking inside zips</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span>, download <span class="op">=</span> <span class="st">"all"</span>,</span>
-<span>           skip_types <span class="op">=</span> <span class="st">"asset"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>           skip_types <span class="op">=</span> <span class="st">"materials"</span>, peek_zips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="a-file-manifest" class="level3" data-number="23.12.4"><h3 data-number="23.12.4" class="anchored" data-anchor-id="a-file-manifest">
 <span class="header-section-number">23.12.4</span> A file manifest</h3>

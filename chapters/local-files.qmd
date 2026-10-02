@@ -31,13 +31,19 @@ Metacheck has two modules that work together to check research code:
   and missing data files.
 
 Normally both modules fetch files automatically from online repositories (OSF,
-GitHub, ResearchBox, Zenodo) by following links found in a paper. This vignette
-shows how to point them at a **local folder** instead — useful when:
+GitHub, GitLab, ResearchBox, Zenodo, Dataverse, Figshare, Dryad, and several
+others — see [Repository Check](mod-repo-check.qmd) for the full list) by
+following links found in a paper. This vignette shows how to point them at a
+**local folder** instead — useful when:
 
 - you want to check your own code before sharing it
 - you are reviewing a paper whose files were sent as a zip attachment
-- the authors used a repository service that Metacheck does not yet support
-  automatically (GitLab, Figshare, Dataverse, and others)
+- you downloaded a repository's files yourself, or the authors used a
+  repository service Metacheck does not support automatically
+
+::: callout-tip
+If you just want a report on a folder — no manuscript involved — `report_repository()` wraps the pattern this chapter walks through by hand: give it a path, and it runs `repo_check`, `code_check`, `data_check`, and `codebook_check` on it and writes a report named after the folder. See [Downloading OSF files to check locally](#downloading-osf-files-to-check-locally) below for an example, and [Creating a Report](creating-a-report.qmd) for the full function reference.
+:::
 
 ---
 
@@ -360,12 +366,13 @@ Often the files you want to check live in an OSF project rather than on your own
 
 OSF projects let you organise information into nested components, and files within those components. To retrieve all of the files associated with a project by hand, you may need to navigate to several components, download a zip for each, then reorganise and rename the downloaded folders.
 
-The function `osf_file_download()` does all of this for you, recreating a folder structure based on the component names and downloading all files smaller than `max_file_size` (defaults to 10 MB) up to a total size of `max_download_size` (defaults to 100 MB).
+The function `osf_file_download()` does all of this for you, recreating a folder structure based on the component names. By default (`mode = "all"`) it fetches every component's files as a single compressed archive per component, with no size filtering — `max_file_size` and `max_download_size` are both `NULL` (no limit) by default, and neither one applies in this mode, because there is no file list to filter against. To filter by size instead, pass `mode = "select"`, which lists every file individually through the OSF API before downloading, and only then applies `max_file_size`/`max_download_size` (in megabytes). See the [Archiving OSF Files](archiving-osf.qmd) appendix for the full comparison between the two modes, and for `report_repository()`, which can take over from here once the files are on disk.
 
 ```{r}
 #| eval: false
 osf_file_download(osf_id = "pngda",
                   download_to = ".",
+                  mode = "select",
                   max_file_size = 1,
                   max_download_size = 10)
 ```
@@ -420,4 +427,11 @@ Once downloaded, you can run the checks on that folder exactly as shown earlier:
 ```{r}
 #| eval: false
 module_run(test_paper(), "code_check", local_path = "pngda", local_only = TRUE)
+```
+
+Or, since there is no manuscript involved at this point, skip the manual `test_paper()`/`module_run()` steps and call `report_repository()` instead, which runs `repo_check`, `code_check`, `data_check`, and `codebook_check` on the folder in one step and writes a report named after it:
+
+```{r}
+#| eval: false
+report_repository("pngda")
 ```

@@ -77,11 +77,21 @@ In the Shiny app you can upload a local file, and the app will automatically gen
 
 ![Summary in the Metacheck report](../images/summary_report.png){fig-alt="Screenshot of the Metacheck report summary"}
 
-Following the summary, you can browse each module. Modules are discussed in more detail in later chapters. Each module provides a summary, a dropdown field with detailed feedback, a section that can be expanded explaining how the module works, and information about how the module was validated. An example of this overview in the report for the power module is in the screenshot below: 
+Following the summary, you can browse each module. Modules are discussed in more detail in later chapters. Each module provides a summary, a dropdown field with detailed feedback, a section that can be expanded explaining how the module works, and information about how the module was validated. An example of this overview in the report for the power module is in the screenshot below:
 
 
 ![Example of power module reprt](../images/power_example_report.png){fig-alt="Screenshot of the power module in the report"}
 
+### Starting from a manuscript, or from a folder
+
+`report_app()` and `report()` (its code-based equivalent, see [Creating a Report](creating-a-report.qmd)) both start from a manuscript: you upload or read a paper, and the modules follow the repository links it contains. Sometimes there is no manuscript at all — you just have a folder of files, downloaded from a repository yourself or sent to you directly for review. For that case, use `report_repository()` instead: give it a path, and it runs the repository-oriented modules (`repo_check`, `code_check`, `data_check`, `codebook_check`) directly on the folder and writes a report named after it.
+
+```{r}
+#| eval: false
+report_repository("path/to/folder")
+```
+
+See [Checking Local Files](local-files.qmd) for worked examples, including downloading a repository's files yourself before running this.
 
 ### Running locally for privacy
 

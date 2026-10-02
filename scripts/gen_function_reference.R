@@ -174,19 +174,27 @@ families <- list(
     "researchdata4tu_file_download", "researchdata4tu_pat",
     "psycharchives_links", "psycharchives_info",
     "psycharchives_file_download",
+    "gitlab_links", "gitlab_pat", "gitlab_repo", "gitlab_tree_files",
+    "dspace_links", "dspace7_links", "dspace7_file_download",
+    "dataone_links", "dataone_info",
+    "mendeley_links", "mendeley_info",
+    "fsd_links", "fsd_info",
+    "dryad_auth",
     "local_files", "download_repo_files",
-    "repo_cache_clear", "repo_cache_dir", "repo_cache_size"
+    "repo_cache_clear", "repo_cache_dir", "repo_cache_size",
+    "repo_info_cache", "repo_info_cache_clear"
   ),
   "Asking a large language model" = c(
     "llm", "llm_use", "llm_model", "llm_model_list", "llm_max_calls",
-    "llm_max_tokens", "llm_reasoning", "llm_cache", "llm_cache_clear",
-    "metacheck_cache_info"
+    "llm_max_tokens", "llm_reasoning", "llm_timeout", "llm_cache",
+    "llm_cache_clear", "metacheck_cache_info"
   ),
   "Checking shared code" = c(
     "code_read", "code_parse_r", "code_remove_comments", "code_abs_path",
     "code_extract_py", "code_extract_qmd_py", "code_extract_r",
-    "code_file_refs", "code_lang", "code_library_lines",
-    "code_library_names", "code_line_stats", "code_packages", "code_setwd"
+    "code_file_refs", "code_install_packages", "code_lang",
+    "code_library_lines", "code_library_names", "code_line_stats",
+    "code_packages", "code_setwd"
   ),
   "Checking shared data" = c(
     "data_check_case_issues", "data_check_colname",
@@ -202,8 +210,15 @@ families <- list(
     "data_check_whitespace", "data_classify_files", "data_col_concept",
     "data_col_facets", "data_col_stats", "data_col_type", "data_format",
     "data_group_llm", "data_is_manifest", "data_promote_header_row",
-    "data_strip_qualtrics_header", "data_study_roster", "parse_codebook",
-    "parse_qsf", "manifest_merge", "match_column_labels"
+    "data_read_head", "data_strip_qualtrics_header", "data_study_roster",
+    "parse_codebook", "parse_qsf", "manifest_merge", "match_column_labels"
+  ),
+  "Checking whether shared code reproduces the paper's results" = c(
+    "repro_dependencies", "repro_defined_vars", "repro_docker_available",
+    "repro_file_io", "repro_install_deps", "repro_install_deps_docker",
+    "repro_materialize_layout", "repro_missing_inputs",
+    "repro_rewrite_paths", "repro_run_order", "repro_run_scripts",
+    "repro_run_scripts_docker", "repro_write_scripts"
   ),
   "Importing and exporting statistical output" = c(
     "import_jasp", "import_omv", "import_mplus_output",
@@ -211,21 +226,21 @@ families <- list(
     "export_omv_html", "export_mplus_html", "export_stata_smcl_html",
     "export_spv_html", "read_stat_tables", "read_r_output",
     "stat_output_json", "stat_output_validate", "stat_output_write",
-    "stato_type_column", "match_reported_output"
+    "stat_results_long", "stato_type_column", "match_reported_output"
   ),
   "ORCID and contributor info" = c(
     "check_orcid", "get_orcid", "orcid_person", "credit_roles"
   ),
   "File types" = c(
     "filetype", "file_category", "txt_classify_content",
-    "check_file_naming", "zip_peek", "zip_decision"
+    "check_file_naming", "zip_peek", "zip_decision", "zip_peek_cache_clear"
   ),
   "Validation utilities" = c(
     "validate", "accuracy", "cap_gate_count"
   ),
   "General utilities" = c(
     "email", "online", "verbose", "pb", "rep_if", "path_sanitize",
-    "message", "logger", "logpath", "lastlog"
+    "message", "logger", "logpath", "lastlog", "%empty_or%"
   )
 )
 

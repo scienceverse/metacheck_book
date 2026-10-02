@@ -9,6 +9,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
+psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
 ## What it checks
@@ -16,6 +17,8 @@ library(metacheck)
 The `stat_check` module runs [Statcheck](https://statcheck.io/) on the paper. Statcheck recomputes the p-value from each reported test statistic and degrees of freedom, and flags cases where the reported p-value is **inconsistent** with the statistic — and, more seriously, where the inconsistency changes the significance decision (a *decision error*).
 
 Metacheck only returns Statcheck results for **t-tests and F-tests**, the tests for which the approach has been validated [@nuijten2016]. Statcheck only detects statistics written in APA format, which is mostly used in psychology journals.
+
+This module only checks statistics reported in the **running text** of the manuscript — it cannot (yet) process statistics reported only in a table.
 
 This module is **fully offline** (Statcheck runs locally).
 

@@ -16,11 +16,16 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-devtools::load_all("C:/Users/dlakens/OneDrive - TU Eindhoven/git_repos/metacheck")
+library(metacheck)
 ```
 
-::: callout-important
-This chapter needs the **data_check branch** of metacheck, since `import_jasp()`, `import_omv()`, `import_spv()`, and the three `export_*_html()` functions are recent, not-yet-released additions. These functions will eventually make it to main.
+::: callout-warning
+This chapter needs the **development version** of metacheck, since `import_jasp()`, `import_omv()`, `import_spv()`, and the three `export_*_html()` functions are recent, not-yet-released additions. Install it from GitHub (see [Setting up Metacheck](get-started.qmd)):
+
+```r
+install.packages("pak")
+pak::pkg_install("scienceverse/metacheck@dev")
+```
 :::
 
 ## Overview
@@ -29,7 +34,7 @@ Metacheck is an R based tool, but it would be useful to load data, code, and out
 
 Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types. 
 
-Each format is a single archive that bundles the **data**, its **variable metadata** (measurement level, value labels), and the **analyses** that were run against it — which is exactly why the forthcoming [reproducibility_check](mod-reproducibility-check.qmd) will treat a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself. The importers described in this chapter are available now, independently of that module.
+Each format is a single archive that bundles the **data**, its **variable metadata** (measurement level, value labels), and the **analyses** that were run against it — which is exactly why [reproducibility_check](mod-reproducibility-check.qmd) treats a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself. The importers described in this chapter are available now, independently of that module.
 
 There is exactly **one import function per format**:
 
