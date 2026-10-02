@@ -133,7 +133,7 @@ This produces the same kind of report, but with several more red and yellow ligh
 
 ## Step 4: Check a shared repository
 
-So far we have checked what a paper *says*. Metacheck can also check what a paper's authors actually *shared* — the data and code repository itself — independently of any manuscript. `repo_check` is the module for this, and it works on a local folder, so you do not need a paper object at all.
+So far we have checked what a paper *says*. Metacheck can also check what a paper's authors actually *shared* — the data and code repository itself — independently of any manuscript. `report_repository()` is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way `report()` did in Step 3.
 
 Download the bad paper's repository as a zip file (the same "Download ZIP" button you would click on GitHub) and unpack it:
 
@@ -146,20 +146,15 @@ download.file(
 unzip("bad_repo.zip", exdir = "bad_repo")
 ```
 
-Then point `module_run()` at the unpacked folder. Because there is no manuscript to search for repository links, two extra arguments tell Metacheck to look at this folder directly instead: `local_path` says where, and `local_only = TRUE` says not to look anywhere else.
+Then point `report_repository()` at the unpacked folder — there is no manuscript involved in this step, so there is no paper object to read in first:
 
 ```{r}
 #| eval: false
-mo <- module_run(test_paper(), "repo_check",
-                 local_path = "bad_repo/stroop_effect_paper_bad-main",
-                 local_only = TRUE)
-mo$traffic_light
-mo$summary_text
+report_repository("bad_repo/stroop_effect_paper_bad-main",
+                  output_file = "bad_repo_report.html")
 ```
 
-`test_paper()` creates an empty, placeholder paper object — repo_check needs *a* paper object to attach its results to, but since we are not reading any manuscript in this step, an empty one is all that is required.
-
-This reports a **yellow** light on the bad repository: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper's repository (<https://github.com/Lakens/stroop_effect_paper>) and compare the result — it is organised into clearly labelled `data/`, `code/`, `output/`, and `documentation/` folders, with a complete codebook, which is exactly what `repo_check` is designed to reward.
+Open `bad_repo_report.html`, and you will see a **yellow** light on the repository's overall organisation: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper's repository (<https://github.com/Lakens/stroop_effect_paper>) and compare the result — it is organised into clearly labelled `data/`, `code/`, `output/`, and `documentation/` folders, with a complete codebook, which is exactly what this check is designed to reward.
 
 ## What you have just done
 
@@ -167,7 +162,7 @@ In four short steps, you:
 
 1. Read a PDF into R as a paper object (`convert()` + `read()`).
 2. Ran a single check on it (`module_run()`).
-3. Generated a full, shareable report (`report()`).
-4. Checked a shared repository on its own, with no manuscript involved (`module_run()` with `local_path`/`local_only`).
+3. Generated a full, shareable report from a paper (`report()`).
+4. Generated a full, shareable report from a shared repository, with no manuscript involved (`report_repository()`).
 
 These four functions cover the large majority of what you will do with Metacheck day to day. Everything else in this book is about the details: which modules exist and what each one checks ([Modules](mod-power.qmd)), how reading in a paper actually works ([Reading in a Paper](reading-a-paper.qmd)), how to search a paper's text yourself ([Text Search](text-search.qmd)), and how to turn on a large language model for the modules that can use one ([Using Large Language Models](llms.qmd)).

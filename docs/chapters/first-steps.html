@@ -560,7 +560,7 @@ Note
 <p>This produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the <em>process</em> changes between the two papers — only what the report finds.</p>
 </section><section id="step-4-check-a-shared-repository" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="step-4-check-a-shared-repository">
 <span class="header-section-number">3.4</span> Step 4: Check a shared repository</h2>
-<p>So far we have checked what a paper <em>says</em>. Metacheck can also check what a paper’s authors actually <em>shared</em> — the data and code repository itself — independently of any manuscript. <code>repo_check</code> is the module for this, and it works on a local folder, so you do not need a paper object at all.</p>
+<p>So far we have checked what a paper <em>says</em>. Metacheck can also check what a paper’s authors actually <em>shared</em> — the data and code repository itself — independently of any manuscript. <code>report_repository()</code> is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way <code>report()</code> did in Step 3.</p>
 <p>Download the bad paper’s repository as a zip file (the same “Download ZIP” button you would click on GitHub) and unpack it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
@@ -569,24 +569,20 @@ Note
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html">unzip</a></span><span class="op">(</span><span class="st">"bad_repo.zip"</span>, exdir <span class="op">=</span> <span class="st">"bad_repo"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Then point <code>module_run()</code> at the unpacked folder. Because there is no manuscript to search for repository links, two extra arguments tell Metacheck to look at this folder directly instead: <code>local_path</code> says where, and <code>local_only = TRUE</code> says not to look anywhere else.</p>
+<p>Then point <code>report_repository()</code> at the unpacked folder — there is no manuscript involved in this step, so there is no paper object to read in first:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"repo_check"</span>,</span>
-<span>                 local_path <span class="op">=</span> <span class="st">"bad_repo/stroop_effect_paper_bad-main"</span>,</span>
-<span>                 local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"bad_repo/stroop_effect_paper_bad-main"</span>,</span>
+<span>                  output_file <span class="op">=</span> <span class="st">"bad_repo_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>test_paper()</code> creates an empty, placeholder paper object — repo_check needs <em>a</em> paper object to attach its results to, but since we are not reading any manuscript in this step, an empty one is all that is required.</p>
-<p>This reports a <strong>yellow</strong> light on the bad repository: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper’s repository (<a href="https://github.com/Lakens/stroop_effect_paper" class="uri">https://github.com/Lakens/stroop_effect_paper</a>) and compare the result — it is organised into clearly labelled <code>data/</code>, <code>code/</code>, <code>output/</code>, and <code>documentation/</code> folders, with a complete codebook, which is exactly what <code>repo_check</code> is designed to reward.</p>
+<p>Open <code>bad_repo_report.html</code>, and you will see a <strong>yellow</strong> light on the repository’s overall organisation: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper’s repository (<a href="https://github.com/Lakens/stroop_effect_paper" class="uri">https://github.com/Lakens/stroop_effect_paper</a>) and compare the result — it is organised into clearly labelled <code>data/</code>, <code>code/</code>, <code>output/</code>, and <code>documentation/</code> folders, with a complete codebook, which is exactly what this check is designed to reward.</p>
 </section><section id="what-you-have-just-done" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="what-you-have-just-done">
 <span class="header-section-number">3.5</span> What you have just done</h2>
 <p>In four short steps, you:</p>
 <ol type="1">
 <li>Read a PDF into R as a paper object (<code>convert()</code> + <code>read()</code>).</li>
 <li>Ran a single check on it (<code>module_run()</code>).</li>
-<li>Generated a full, shareable report (<code>report()</code>).</li>
-<li>Checked a shared repository on its own, with no manuscript involved (<code>module_run()</code> with <code>local_path</code>/<code>local_only</code>).</li>
+<li>Generated a full, shareable report from a paper (<code>report()</code>).</li>
+<li>Generated a full, shareable report from a shared repository, with no manuscript involved (<code>report_repository()</code>).</li>
 </ol>
 <p>These four functions cover the large majority of what you will do with Metacheck day to day. Everything else in this book is about the details: which modules exist and what each one checks (<a href="../chapters/mod-power.html">Modules</a>), how reading in a paper actually works (<a href="../chapters/reading-a-paper.html">Reading in a Paper</a>), how to search a paper’s text yourself (<a href="../chapters/text-search.html">Text Search</a>), and how to turn on a large language model for the modules that can use one (<a href="../chapters/llms.html">Using Large Language Models</a>).</p>
 
