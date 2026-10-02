@@ -122,7 +122,14 @@ report(paper, output_file = "good_paper_report.html")
 
 This writes `good_paper_report.html` into your working directory. Open it, and you will see the same traffic lights and summaries from Step 2, but now for every module the report includes — preregistration, funding, conflicts of interest, power, statistical reporting, and more — all in one place, ready to read or share.
 
-Running `report()` on the bad paper's PDF (downloaded the same way as in Step 1, from <https://github.com/Lakens/stroop_effect_paper_bad/blob/main/analysis.pdf>) produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the *process* changes between the two papers — only what the report finds.
+You already have the bad paper read in from Step 2 as `bad_paper`, so running the same check on it just means replacing `paper` with `bad_paper`:
+
+```{r}
+#| eval: false
+report(bad_paper, output_file = "bad_paper_report.html")
+```
+
+This produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the *process* changes between the two papers — only what the report finds.
 
 ## Step 4: Check a shared repository
 

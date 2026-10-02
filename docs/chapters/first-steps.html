@@ -553,13 +553,17 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, output_file <span class="op">=</span> <span class="st">"good_paper_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This writes <code>good_paper_report.html</code> into your working directory. Open it, and you will see the same traffic lights and summaries from Step 2, but now for every module the report includes — preregistration, funding, conflicts of interest, power, statistical reporting, and more — all in one place, ready to read or share.</p>
-<p>Running <code>report()</code> on the bad paper’s PDF (downloaded the same way as in Step 1, from <a href="https://github.com/Lakens/stroop_effect_paper_bad/blob/main/analysis.pdf" class="uri">https://github.com/Lakens/stroop_effect_paper_bad/blob/main/analysis.pdf</a>) produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the <em>process</em> changes between the two papers — only what the report finds.</p>
+<p>You already have the bad paper read in from Step 2 as <code>bad_paper</code>, so running the same check on it just means replacing <code>paper</code> with <code>bad_paper</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">bad_paper</span>, output_file <span class="op">=</span> <span class="st">"bad_paper_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the <em>process</em> changes between the two papers — only what the report finds.</p>
 </section><section id="step-4-check-a-shared-repository" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="step-4-check-a-shared-repository">
 <span class="header-section-number">3.4</span> Step 4: Check a shared repository</h2>
 <p>So far we have checked what a paper <em>says</em>. Metacheck can also check what a paper’s authors actually <em>shared</em> — the data and code repository itself — independently of any manuscript. <code>repo_check</code> is the module for this, and it works on a local folder, so you do not need a paper object at all.</p>
 <p>Download the bad paper’s repository as a zip file (the same “Download ZIP” button you would click on GitHub) and unpack it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"https://github.com/Lakens/stroop_effect_paper_bad/archive/refs/heads/main.zip"</span>,</span>
 <span>  destfile <span class="op">=</span> <span class="st">"bad_repo.zip"</span>, mode <span class="op">=</span> <span class="st">"wb"</span></span>
 <span><span class="op">)</span></span>
@@ -567,7 +571,7 @@ Note
 </div>
 <p>Then point <code>module_run()</code> at the unpacked folder. Because there is no manuscript to search for repository links, two extra arguments tell Metacheck to look at this folder directly instead: <code>local_path</code> says where, and <code>local_only = TRUE</code> says not to look anywhere else.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"repo_check"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"repo_check"</span>,</span>
 <span>                 local_path <span class="op">=</span> <span class="st">"bad_repo/stroop_effect_paper_bad-main"</span>,</span>
 <span>                 local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span>
