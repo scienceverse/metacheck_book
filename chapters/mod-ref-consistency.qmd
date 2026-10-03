@@ -11,30 +11,6 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-## The basics
-
-Every paper has a reference list (the bibliography) and in-text citations (the short mentions like "(Smith, 2020)" scattered through the text) that are supposed to point to it. `ref_consistency` checks whether the two sides match up: references that are never cited, and citations that do not point to any reference in the list.
-
-Here is the module running on a demo paper:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "ref_consistency")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "ref_consistency")
-mo$table[, c("bib_id", "reference", "contents")] |>
-  knitr::kable()
-```
-
-`mo$table` has one row per flagged discrepancy. Before trusting any flag here, read the important note below: because this module depends on automatic extraction of the bibliography from the PDF, and that extraction is currently unreliable, most flags turn out to reflect extraction mistakes rather than real problems with the paper. Treat a flag as a reason to look at the original PDF yourself, not as evidence of an actual inconsistency.
-
 ::: callout-important
 This module is **not currently useful**. It depends on the cross-references and bibliography that [GROBID](https://github.com/kermitt2/grobid) extracts from the PDF, and that extraction is too low in quality for the check to be reliable: GROBID frequently fails to link in-text citations to their reference, and mis-parses parts of the reference list into spurious entries. In practice the overwhelming majority of the discrepancies this module reports are artefacts of that extraction rather than real inconsistencies in the paper.
 

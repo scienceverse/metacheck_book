@@ -479,52 +479,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="the-basics" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="the-basics">
 <span class="header-section-number">21.1</span> The basics</h2>
 <p>An <strong>effect size</strong> is a number that says how big a result is, not just whether it is “statistically significant”. <code>stat_effect_size</code> looks at every <em>t</em>-test and <em>F</em>-test (two common statistical tests) it finds in a paper and checks whether the effect size reported alongside the test makes mathematical sense given the test statistic.</p>
-<p>Here is the module running on a demo paper:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Effect Sizes in t-tests and F-tests: We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes</p>
-<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary.</p>
-<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"test_text"</span>, <span class="st">"es"</span>, <span class="st">"d_coherence"</span>, <span class="st">"d_coherence_note"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 4%">
-<col style="width: 11%">
-<col style="width: 6%">
-<col style="width: 9%">
-<col style="width: 67%">
-</colgroup>
-<thead><tr class="header">
-<th style="text-align: left;">test</th>
-<th style="text-align: left;">test_text</th>
-<th style="text-align: left;">es</th>
-<th style="text-align: left;">d_coherence</th>
-<th style="text-align: left;">d_coherence_note</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">t-test</td>
-<td style="text-align: left;">t(97.7) = 2.9</td>
-<td style="text-align: left;">d = 0.59</td>
-<td style="text-align: left;">indeterminate</td>
-<td style="text-align: left;">Non-integer df indicates Welch’s t-test (unequal variances); sample sizes cannot be determined.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">t-test</td>
-<td style="text-align: left;">t(97.2) = -1.96</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">indeterminate</td>
-<td style="text-align: left;">No parseable d effect size found.</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><code>mo$table</code> has one row per test the module found, showing any reported effect size (<code>es</code>) and a coherence verdict. A <code>no_match</code> verdict is worth checking carefully — it means the reported effect size does not fit the test statistic under any assumption, which can be a genuine error. A <code>match_under_assumptions</code> verdict only means the value is <em>possible</em>, not that it is <em>correct</em> — the check cannot prove an effect size is right, only rule out that it is impossible. Either way, read the original sentence before drawing a conclusion.</p>
 </section><section id="what-it-checks" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">21.2</span> What it checks</h2>
 <p>The <code>stat_effect_size</code> module checks whether <strong>effect sizes are reported</strong> for <em>t</em>-tests and <em>F</em>-tests, and whether the reported effect size is <strong>coherent</strong> with the test statistic and degrees of freedom. Reporting a standardized effect size alongside a test is an APA Journal Article Reporting Standard, and it is what makes a result usable in a meta-analysis.</p>
@@ -546,21 +500,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>F</em>-tests are a partial exception. When the numerator degrees of freedom is 1 (<code>df1 = 1</code>), partial η² is fixed by a single assumption-free formula, η²<sub>p</sub> = <em>F</em> / (<em>F</em> + <em>df2</em>), so a <code>no_match</code> there is an unambiguous arithmetic inconsistency rather than a design ambiguity.</p>
 </section><section id="running-the-module" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">21.4</span> Running the module</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Effect Sizes in t-tests and F-tests: We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes</p>
 <p>The <code>table</code> has one row per detected test. The columns most worth reading are the test text, any reported effect size, and the coherence verdict:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"test_text"</span>, <span class="st">"es"</span>, <span class="st">"d_coherence"</span>, <span class="st">"d_coherence_note"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"test_text"</span>, <span class="st">"es"</span>, <span class="st">"d_coherence"</span>, <span class="st">"d_coherence_note"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -601,7 +555,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="running-on-many-papers" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="running-on-many-papers">
 <span class="header-section-number">21.5</span> Running on many papers</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -675,18 +629,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Both have one numerator degree of freedom, so the partial η² is fixed exactly by η²<sub>p</sub> = <em>F</em> / (<em>F</em> + <em>df2</em>) — no assumptions, no ambiguity:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">3.59</span> <span class="op">/</span> <span class="op">(</span><span class="fl">3.59</span> <span class="op">+</span> <span class="fl">361</span><span class="op">)</span>   <span class="co"># implied for the reported eta-squared of .02</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">3.59</span> <span class="op">/</span> <span class="op">(</span><span class="fl">3.59</span> <span class="op">+</span> <span class="fl">361</span><span class="op">)</span>   <span class="co"># implied for the reported eta-squared of .02</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] 0.009846677</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">5.89</span> <span class="op">/</span> <span class="op">(</span><span class="fl">5.89</span> <span class="op">+</span> <span class="fl">361</span><span class="op">)</span>   <span class="co"># implied for the reported eta-squared of .03</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">5.89</span> <span class="op">/</span> <span class="op">(</span><span class="fl">5.89</span> <span class="op">+</span> <span class="fl">361</span><span class="op">)</span>   <span class="co"># implied for the reported eta-squared of .03</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] 0.01605386</code></pre>
 </div>
 </div>
 <p>The implied values are <strong>.010</strong> and <strong>.016</strong>, but the paper reports <strong>.02</strong> and <strong>.03</strong> — each roughly double the correct value. The module flags both as <code>no_match</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="st">"0956797616636631"</span><span class="op">]</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="st">"0956797616636631"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">eta_coherence</span> <span class="op">==</span> <span class="st">"no_match"</span><span class="op">)</span> <span class="op">|&gt;</span></span>

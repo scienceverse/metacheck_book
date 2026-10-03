@@ -13,30 +13,6 @@ library(dplyr)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
-## The basics
-
-A conflict of interest (COI) statement is a short section in a paper where the authors say whether anything — money, a personal relationship, a job — might have influenced how they did the research. `coi_check` looks through a paper's text for a sentence like this.
-
-Here is the module running on a demo paper:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "coi_check")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "coi_check")
-mo$table |>
-  knitr::kable()
-```
-
-`mo$table` contains the exact sentence(s) the module found. Always read that sentence yourself. A green light only means a statement is *present* — it does not mean the statement is complete, honest, or correctly filled in. A red light means no statement was found, which could mean there really is none, or it could mean the paper phrased it in a way the module does not recognise. Either way, `coi_check` is a starting point for checking a paper by hand, not a replacement for it.
-
 ## What it checks
 
 The `coi_check` module looks for a **conflict of interest (COI) statement** — a disclosure of any financial or personal interests that could have influenced the research (or a declaration that there are none). Like the [funding statement](mod-funding-check.qmd), a COI declaration is expected by most journals and reporting guidelines.

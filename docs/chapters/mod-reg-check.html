@@ -476,85 +476,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="the-basics" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="the-basics">
 <span class="header-section-number">12.1</span> The basics</h2>
 <p>A preregistration is a document researchers write and file <em>before</em> they collect their data, stating what they plan to do (for example, how many people they will test and which statistical test they will use). <code>reg_check</code> compares what a paper actually reports against what was preregistered, and points out where the two disagree. It needs a paper that links to a preregistration to have anything to compare — without one, there is nothing for the module to check.</p>
-<p>The comparison is made by a large language model (an AI system that reads text and answers questions about it), run through a tool called RegCheck, and it can take several minutes to finish. Here is the module running on the demo paper, which links to two preregistrations:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reg_check"</span>, client <span class="op">=</span> <span class="st">"groq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. Here the result is saved to a variable (<code>mo</code>) rather than printed directly, because the comparison is slow and uses an external service; the rest of this chapter shows what that saved result looks like.</p>
-<p>If you want to work with the result instead of just reading a printed report, look inside the saved variable:</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "info"</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "RegCheck compared the paper with 2 preregistrations on 20 dimensions, and flagged 10 potential deviations (6 dimensions not specified in the preregistration)."</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead><tr class="header">
-<th style="text-align: left;">dimension</th>
-<th style="text-align: left;">deviation_judgement</th>
-<th style="text-align: left;">prereg_id</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Sample size</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Data source</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Inclusion criteria</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Exclusion criteria</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Incomplete and missing data</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hypotheses</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Manipulated variables</td>
-<td style="text-align: left;">no</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Measured variables</td>
-<td style="text-align: left;">no</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Transformations</td>
-<td style="text-align: left;">missing</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Statistical models</td>
-<td style="text-align: left;">yes</td>
-<td style="text-align: left;">48ncu</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><code>mo$table</code> (table here just means a data table, with rows and columns, like a small spreadsheet) has one row per thing being compared (called a dimension, such as the planned sample size or the planned statistical model), with the model’s judgement on whether the paper deviates from the plan. Because the judgements come from a language model rather than an exact rule, they are <strong>pointers for you to check by hand, never automated conclusions</strong> — a “deviation” is not automatically a problem, and a preregistered study can deviate for good, clearly explained reasons. Always read the supporting detail behind a flagged dimension before drawing a conclusion.</p>
+<p>The comparison is made by a large language model (an AI system that reads text and answers questions about it), run through a tool called RegCheck, and it can take several minutes to finish. Because the judgements come from a language model rather than an exact rule, they are <strong>pointers for you to check by hand, never automated conclusions</strong> — a “deviation” is not automatically a problem, and a preregistered study can deviate for good, clearly explained reasons. Always read the supporting detail behind a flagged dimension before drawing a conclusion.</p>
 </section><section id="what-it-checks" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">12.2</span> What it checks</h2>
 <p>The <code>reg_check</code> module compares a paper against its <strong>preregistration</strong> using <a href="https://github.com/JamieCummins/regcheck">RegCheck</a>, an LLM-based tool that judges, dimension by dimension, whether the paper is consistent with what was preregistered. Where the <a href="../chapters/mod-prereg-check.html">prereg_check</a> module simply <em>retrieves</em> the preregistration, <code>reg_check</code> goes a step further and <em>compares</em> the two documents.</p>
@@ -584,13 +506,13 @@ Note
 <span class="header-section-number">12.3</span> Running the module</h2>
 <p><code>reg_check</code> builds on <code>prereg_check</code>: it needs the preregistration(s) for a paper. If you run it on its own it calls <code>prereg_check</code> for you first; you can also chain them so the preregistrations are retrieved only once:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">module_run</span><span class="op">(</span><span class="st">"prereg_check"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">module_run</span><span class="op">(</span><span class="st">"reg_check"</span>, client <span class="op">=</span> <span class="st">"groq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Here we run it on <code>demopaper()</code>, which links to two preregistrations (an OSF registration and an AsPredicted), using the hosted app via Groq. (The comparison was run once and its result is loaded here, since each run takes several minutes and sends text to an external service.)</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"reg_check"</span>, client <span class="op">=</span> <span class="st">"groq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"reg_check"</span>, client <span class="op">=</span> <span class="st">"groq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -723,7 +645,7 @@ Note
 <p>By default (<code>client = "ollama"</code>) <code>reg_check</code> uses a RegCheck server running <strong>on your own machine</strong> with Ollama, so no paper or preregistration text is sent to an external service. This requires a one-time setup of the local RegCheck server (via Docker or Python) and a local Ollama model.</p>
 <p>The setup and the helper functions for this — <code>regcheck_setup_local()</code>, <code>regcheck_start_local()</code>, and <code>regcheck_stop_local()</code> — are described in the <a href="../chapters/ollama.html">Local AI with Ollama</a> chapter. Once a local server is running, the only change to the code above is dropping the <code>client</code> argument (or setting <code>client = "ollama"</code>):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"reg_check"</span><span class="op">)</span>   <span class="co"># client = "ollama" by default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"reg_check"</span><span class="op">)</span>   <span class="co"># client = "ollama" by default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 

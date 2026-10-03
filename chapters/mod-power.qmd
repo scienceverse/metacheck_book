@@ -16,26 +16,6 @@ psychsci <- papers_load("psychsci", cache = TRUE)
 
 A **power analysis** is a calculation researchers do, usually before collecting data, to work out how many participants they need to have a good chance of detecting an effect if it is really there. `power` searches a paper's text for sentences that describe a power analysis.
 
-Here is the module running on a demo paper:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "power")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "power")
-mo$table[, c("text", "power_type", "complete")] |>
-  knitr::kable()
-```
-
-`mo$table` has one row per power statement the module found, with a `power_type` telling you whether it is *a priori* (planned in advance, the useful kind) or *post-hoc* (calculated after the fact, rarely informative). In this default mode — without an extra AI add-on turned on, which is covered later in this chapter — the `complete` column is always empty (`NA`); ignore it unless you have turned that add-on on. A green or yellow light tells you a power statement was found; it does not tell you the power analysis was done correctly, so always read the actual sentence yourself.
-
 ## What it checks
 
 The `power` module uses regular expressions to find sentences that describe a statistical **power analysis**, and classifies each as *a priori*, *sensitivity*, or *post-hoc*. When [LLM support](llms.qmd) is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.

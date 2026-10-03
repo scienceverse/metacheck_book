@@ -447,13 +447,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">19.1</span> The basics</a></li>
-  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">19.2</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">19.3</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">19.4</span> Running on many papers</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">19.5</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">19.6</span> Options</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">19.7</span> Validation</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">19.1</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">19.2</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">19.3</span> Running on many papers</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">19.4</span> A clean example and one with problems</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">19.5</span> Options</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">19.6</span> Validation</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-p-exact.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -474,57 +473,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="the-basics" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="the-basics">
-<span class="header-section-number">19.1</span> The basics</h2>
-<p>A p-value is a number researchers report alongside a statistical test, and it should normally be written out exactly (for example <code>p = .031</code>), not rounded away to something vague like <code>p &lt; .05</code> or written as if it were exactly zero (<code>p = .000</code>, which is never actually possible). <code>stat_p_exact</code> looks through a paper’s text for p-values that are reported imprecisely or as exactly zero.</p>
-<p>Here is the module running on a demo paper:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
-<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.</p>
-<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"imprecise"</span>, <span class="st">"zero"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead><tr class="header">
-<th style="text-align: left;">text</th>
-<th style="text-align: left;">p_comp</th>
-<th style="text-align: right;">p_value</th>
-<th style="text-align: left;">imprecise</th>
-<th style="text-align: left;">zero</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">p = 0.005</td>
-<td style="text-align: left;">=</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">p =0.152</td>
-<td style="text-align: left;">=</td>
-<td style="text-align: right;">0.152</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">p &gt; .05</td>
-<td style="text-align: left;">&gt;</td>
-<td style="text-align: right;">0.050</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><code>mo$table</code> lists every p-value the module found, with an <code>imprecise</code> flag (for a vague value like <code>p &lt; .05</code>) and a <code>zero</code> flag (for a p-value reported as exactly zero). A red light means at least one problem value was found — always look at the matching sentence yourself to see exactly what was reported. Reporting exact p-values matters because it lets other researchers reuse your results, for example to check for inconsistencies or combine results across studies.</p>
-</section><section id="what-it-checks" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">19.2</span> What it checks</h2>
+</header><section id="what-it-checks" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">19.1</span> What it checks</h2>
 <p>The <code>stat_p_exact</code> module flags two kinds of problematic p-values:</p>
 <ul>
 <li>
@@ -536,23 +486,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Detection is case-insensitive, so an upper-case <code>P = .04</code> is found just as reliably as <code>p = .04</code>.</p>
 <p>Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.</p>
 <p>This module is <strong>fully offline</strong>.</p>
-</section><section id="running-the-module" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">19.3</span> Running the module</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+</section><section id="running-the-module" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">19.2</span> Running the module</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
 <p>The <code>table</code> lists every detected p-value, with <code>imprecise</code> and <code>zero</code> flags:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "We found 1 imprecise *p* value out of 3 detected *p* values."</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"imprecise"</span>, <span class="st">"zero"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"imprecise"</span>, <span class="st">"zero"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -591,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>To see only the problematic ones:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">imprecise</span> <span class="op">|</span> <span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">zero</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"expanded"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">imprecise</span> <span class="op">|</span> <span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">zero</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"expanded"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -610,11 +560,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">19.4</span> Running on many papers</h2>
+</section><section id="running-on-many-papers" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">19.3</span> Running on many papers</h2>
 <p>The <code>summary_table</code> reports a per-paper count for each problem type: <code>n_imprecise</code> (imprecise p-values) and <code>n_zero</code> (p-values reported as exactly zero).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -659,22 +609,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">19.5</span> A clean example and one with problems</h2>
+</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">19.4</span> A clean example and one with problems</h2>
 <p>A known paper that reports imprecise p-values:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797614560771`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797614560771`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 4 detected <em>p</em> values.</p>
 <p>A paper that reports a p-value as exactly zero (<code>p = .000</code>). This is flagged separately from imprecise values, with its own guidance that exactly-zero p-values should be reported as <code>p &lt; .001</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797615603702`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797615603702`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found 1 <em>p</em> value reported as exactly zero out of 8 detected <em>p</em> values.</p>
 <p>A paper that reports all p-values exactly returns green:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797616665351`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797616665351`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found no imprecise <em>p</em> values or <em>p</em>-values of exactly zero out of 8 detected.</p>
-</section><section id="options" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="options">
-<span class="header-section-number">19.6</span> Options</h2>
+</section><section id="options" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="options">
+<span class="header-section-number">19.5</span> Options</h2>
 <p><code>stat_p_exact</code> takes only the <code>paper</code> argument.</p>
-</section><section id="validation" class="level2" data-number="19.7"><h2 data-number="19.7" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">19.7</span> Validation</h2>
+</section><section id="validation" class="level2" data-number="19.6"><h2 data-number="19.6" class="anchored" data-anchor-id="validation">
+<span class="header-section-number">19.6</span> Validation</h2>
 <blockquote class="blockquote">
 <p>In a sample of 225 papers containing 405 instances of non-exact p-values, the module correctly detected 269 cases (true positives) and incorrectly identified 78 (false positives). It missed 136 instances (false negatives) and correctly identified 4557 cases of precisely reported p-values (true negatives). 78% of positive detections were correct (positive predictive value).</p>
 </blockquote>

@@ -12,30 +12,6 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
-## The basics
-
-A statistical test (like a t-test) produces a test statistic and a p-value, a number that tells you how surprising the result would be if there were really no effect. `stat_check` recalculates the p-value from the test statistic reported in a paper and checks whether it matches the p-value the authors actually reported.
-
-Here is the module running on a demo paper:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "stat_check")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "stat_check")
-mo$table[, c("test_type", "reported_p", "computed_p", "error", "decision_error")] |>
-  knitr::kable()
-```
-
-`mo$table` has one row per statistical test the module found, comparing the p-value the paper reported (`reported_p`) with the one the module recomputed (`computed_p`). `error` marks a mismatch between the two; `decision_error` marks the more serious case where the mismatch flips the result from significant to non-significant (or the reverse). A flagged row is not automatically a mistake worth reporting — always read the original sentence, since the module only checks t-tests and F-tests reported in APA format in the running text, and can misflag things like one-sided tests.
-
 ## What it checks
 
 The `stat_check` module runs [Statcheck](https://statcheck.io/) on the paper. Statcheck recomputes the p-value from each reported test statistic and degrees of freedom, and flags cases where the reported p-value is **inconsistent** with the statistic — and, more seriously, where the inconsistency changes the significance decision (a *decision error*).

@@ -12,29 +12,6 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
-## The basics
-
-Ethics approval is a formal sign-off, usually from a university or hospital committee, confirming that a study involving human or animal participants meets ethical standards before it is run. `ethics_check` looks through a paper's text for a sentence saying that this approval was obtained (or that it was not needed).
-
-A single demo paper does not show this well, because the module first has to decide whether a paper needed ethics approval at all, and the demo paper does not appear to involve live data collection. So here it is running on ten real papers instead:
-
-```{r}
-#| results: asis
-module_run(psychsci[1:10], "ethics_check")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary — here, several of the ten papers appeared to collect data but did not report an ethics approval statement.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(psychsci[1:10], "ethics_check")
-mo$summary_table[, c("paper_id", "ethics_approved")] |>
-  knitr::kable()
-```
-
-`ethics_approved` tells you whether a statement was found for each paper. A `TRUE` only means a statement is *present*, not that approval was properly obtained. A paper with `FALSE` is not necessarily a problem either — the module may have decided (via a separate `needs_ethics` flag) that the paper did not need one, or the statement may simply be phrased in a way the module does not recognise. Either way, treat a red light as a prompt to check the paper by hand, not a final verdict.
-
 ## What it checks
 
 The `ethics_check` module searches a paper for a statement that the research received **ethics approval** — for example from an Institutional Review Board (IRB), a Research Ethics Committee, or an animal-care committee — or that it was explicitly exempted or waived. Reporting ethics approval is expected for studies involving human or animal participants.

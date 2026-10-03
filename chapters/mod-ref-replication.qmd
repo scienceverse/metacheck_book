@@ -11,30 +11,6 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-## The basics
-
-When a paper cites an earlier ("original") study, it is useful to know whether anyone has since tried to redo that study to see if the same result shows up again — this is called a replication. `ref_replication` looks at the studies a paper cites and checks whether any of them have a known replication attempt on record, using an online database of replications called [FLoRA](https://forrt.org/).
-
-Here is the module running on a demo paper, which cites an original study that has a recorded replication. Because this module needs an internet connection to look up the database, running it can take a moment:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "ref_replication")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "ref_replication")
-mo$table[, c("doi", "replication_doi", "replication_url")] |>
-  knitr::kable()
-```
-
-`mo$table` matches each cited original study to its replication(s), identified by their DOI (a permanent identifier for a published paper). A match only means a replication exists in the database — it does not tell you whether that replication succeeded or failed; for that you need the `show_outcomes` option described later in this chapter. Either way, treat a match as an invitation to go look at the replication yourself, not as a final verdict on the original study.
-
 ## What it checks
 
 The `ref_replication` module cross-references the paper's **cited references** against the [FLoRA](https://forrt.org/) replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication's outcome.

@@ -11,30 +11,6 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-## The basics
-
-A preregistration is a document, written and time-stamped before a study is run, that states what the researchers plan to do — their hypotheses, sample size, and analysis plan. `prereg_check` looks for links to preregistrations hosted on the OSF (Open Science Framework) or AsPredicted, two websites researchers commonly use for this, and reads out their contents.
-
-Here is the module running on a demo paper, which links to two preregistrations:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "prereg_check")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "prereg_check")
-mo$table[, c("template_name", "title", "id", "sample_size")] |>
-  knitr::kable()
-```
-
-`mo$table` has one row per preregistration found, with its contents organised into columns such as the sample-size plan shown above. A green light only means the module found a preregistration and could read its contents — it does not mean the study was actually run the way the preregistration describes. Always read the preregistration's own fields yourself and compare them to what the manuscript reports.
-
 ## What it checks
 
 The `prereg_check` module finds links to **preregistrations** on the OSF and AsPredicted in the manuscript, retrieves the preregistration text, and organises its contents into a single standardised template. This makes it much easier for a reviewer to compare what was preregistered against what the manuscript reports.

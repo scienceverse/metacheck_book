@@ -11,30 +11,6 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-## The basics
-
-[PubPeer](https://pubpeer.com/) is a website where researchers can leave public comments on published papers, usually to raise questions or concerns about the work. `ref_pubpeer` checks whether any of the papers a manuscript cites have comments on PubPeer, so you know a discussion exists before you rely on that citation.
-
-Here is the module running on a demo paper, which cites a reference with PubPeer comments:
-
-```{r}
-#| results: asis
-paper <- demopaper()
-module_run(paper, "ref_pubpeer")
-```
-
-Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
-
-If you want to work with the result instead of just reading it, save it to a variable and look inside it:
-
-```{r}
-mo <- module_run(paper, "ref_pubpeer")
-mo$table[, c("doi", "total_comments", "url")] |>
-  knitr::kable()
-```
-
-`mo$table` lists each cited reference that has PubPeer comments, how many, and a `url` to the discussion. A flagged result does not mean the citation is bad — it only means there is a discussion worth reading. Follow the `url`, read the comments yourself, and decide whether they matter for how the citation is used.
-
 ## What it checks
 
 The `ref_pubpeer` module cross-references the paper's **cited references** against [PubPeer](https://pubpeer.com/), a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.

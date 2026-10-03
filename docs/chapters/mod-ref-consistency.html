@@ -447,13 +447,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">30.1</span> The basics</a></li>
-  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">30.2</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">30.3</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">30.4</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">30.5</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">30.6</span> Options</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">30.7</span> Notes</a></li>
+<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">30.1</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">30.2</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">30.3</span> Running on many papers</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">30.4</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">30.5</span> Options</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">30.6</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-consistency.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -474,58 +473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="the-basics" class="level2" data-number="30.1"><h2 data-number="30.1" class="anchored" data-anchor-id="the-basics">
-<span class="header-section-number">30.1</span> The basics</h2>
-<p>Every paper has a reference list (the bibliography) and in-text citations (the short mentions like “(Smith, 2020)” scattered through the text) that are supposed to point to it. <code>ref_consistency</code> checks whether the two sides match up: references that are never cited, and citations that do not point to any reference in the list.</p>
-<p>Here is the module running on a demo paper:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_consistency"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Reference Consistency: There are cross-references that are not in the bibliography and/or bibliography entries not cross-referenced in the text</p>
-<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary.</p>
-<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_consistency"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"reference"</span>, <span class="st">"contents"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 3%">
-<col style="width: 93%">
-<col style="width: 3%">
-</colgroup>
-<thead><tr class="header">
-<th style="text-align: right;">bib_id</th>
-<th style="text-align: left;">reference</th>
-<th style="text-align: left;">contents</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">DeBruine, Lisa. 2025. Faux: Simulation for Factorial Designs. Zenodo. https: //doi.org/10.5281/10.5281/zenodo.2669586.</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Eagly, Alice H., and Wendy Wood. 1999. “The Origins of Sex Differences in Human Behavior: Evolved Dispositions Versus Social Roles.” American Psychologist 54 (6): 408-23. https://doi.org/10.1037/0003-066x.54.6.408.</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Lakens, Daniël. 2018. “Equivalence Testing for Psychological Research.” Ad- vances in Methods and Practices in Psychological Science 1: 259-70.</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">Smith, F. 2021. “Human Error Is a Symptom of a Poor Design.” Journal of Journals. https://doi.org/10.0000/0123456789.</td>
-<td style="text-align: left;">NA</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><code>mo$table</code> has one row per flagged discrepancy. Before trusting any flag here, read the important note below: because this module depends on automatic extraction of the bibliography from the PDF, and that extraction is currently unreliable, most flags turn out to reflect extraction mistakes rather than real problems with the paper. Treat a flag as a reason to look at the original PDF yourself, not as evidence of an actual inconsistency.</p>
-<div class="callout callout-style-default callout-important callout-titled">
+</header><div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -539,8 +487,8 @@ Important
 <p>We are building a more accurate tool to convert PDFs to text, which should make this check dependable. Until then, treat its output as a measure of extraction quality rather than as a list of problems with the paper.</p>
 </div>
 </div>
-</section><section id="what-it-checks" class="level2" data-number="30.2"><h2 data-number="30.2" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">30.2</span> What it checks</h2>
+<section id="what-it-checks" class="level2" data-number="30.1"><h2 data-number="30.1" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">30.1</span> What it checks</h2>
 <p>The <code>ref_consistency</code> module checks the bibliography and the in-text citations against each other, in both directions:</p>
 <ul>
 <li>
@@ -549,23 +497,23 @@ Important
 <strong>Missing references</strong> — in-text citations that do not point to any entry in the reference list.</li>
 </ul>
 <p>A paper where every reference is cited and every citation resolves to a reference is internally consistent; anything else is flagged.</p>
-</section><section id="running-the-module" class="level2" data-number="30.3"><h2 data-number="30.3" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">30.3</span> Running the module</h2>
+</section><section id="running-the-module" class="level2" data-number="30.2"><h2 data-number="30.2" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">30.2</span> Running the module</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_consistency"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "There are cross-references that are not in the bibliography and/or bibliography entries not cross-referenced in the text"</code></pre>
 </div>
 </div>
 <p>The <code>summary_table</code> gives per-paper counts: the number of bibliography entries (<code>n_bib</code>), the number of in-text cross-references (<code>n_xrefs</code>), and how many were flagged as <code>n_extra</code> (uncited references) or <code>n_missing</code> (citations with no matching reference):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -586,7 +534,7 @@ Important
 </div>
 <p>The <code>table</code> has one row per flagged discrepancy. A row with <code>contents = NA</code> is an <strong>extra</strong> reference (a bibliography entry with no matching citation); a row with a citation in <code>contents</code> but no <code>reference</code> is a <strong>missing</strong> reference:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"reference"</span>, <span class="st">"contents"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"bib_id"</span>, <span class="st">"reference"</span>, <span class="st">"contents"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -625,14 +573,14 @@ Important
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="30.4"><h2 data-number="30.4" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">30.4</span> Running on many papers</h2>
+</section><section id="running-on-many-papers" class="level2" data-number="30.3"><h2 data-number="30.3" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">30.3</span> Running on many papers</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_consistency"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_consistency"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="interpreting-the-result" class="level2" data-number="30.5"><h2 data-number="30.5" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">30.5</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="30.4"><h2 data-number="30.4" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">30.4</span> Interpreting the result</h2>
 <p>As the callout above warns, a flag here is much more likely to reflect imperfect PDF extraction than a real problem with the paper. The two most common failure modes are:</p>
 <ul>
 <li>
@@ -641,11 +589,11 @@ Important
 <strong>Mis-parsed references.</strong> GROBID splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography “entry”. These appear as <em>extra</em> references that were never really in the paper.</li>
 </ul>
 <p>A genuinely uncited reference, or a citation to a work that is truly absent from the reference list, does occur — but it is the exception, and you can only confirm it by looking at the original PDF. Once the more accurate extraction tool is in place, this section will be revisited.</p>
-</section><section id="options" class="level2" data-number="30.6"><h2 data-number="30.6" class="anchored" data-anchor-id="options">
-<span class="header-section-number">30.6</span> Options</h2>
+</section><section id="options" class="level2" data-number="30.5"><h2 data-number="30.5" class="anchored" data-anchor-id="options">
+<span class="header-section-number">30.5</span> Options</h2>
 <p><code>ref_consistency</code> takes only the <code>paper</code> argument.</p>
-</section><section id="notes" class="level2" data-number="30.7"><h2 data-number="30.7" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">30.7</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="30.6"><h2 data-number="30.6" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">30.6</span> Notes</h2>
 <p>This module sits alongside the other reference-section checks: <a href="../chapters/mod-ref-accuracy.html">accuracy</a>, <a href="../chapters/mod-ref-pubpeer.html">PubPeer</a>, <a href="../chapters/mod-ref-retraction.html">retraction</a>, and <a href="../chapters/mod-ref-replication.html">replication</a>, with the <a href="../chapters/mod-ref-summary.html">reference summary</a> collecting several of them into a single table.</p>
 
 
