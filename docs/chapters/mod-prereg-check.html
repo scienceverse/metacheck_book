@@ -447,11 +447,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">11.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">11.2</span> Running the module</a></li>
-  <li><a href="#reading-a-single-preregistrations-contents" id="toc-reading-a-single-preregistrations-contents" class="nav-link" data-scroll-target="#reading-a-single-preregistrations-contents"><span class="header-section-number">11.3</span> Reading a single preregistration’s contents</a></li>
-  <li><a href="#options-and-limitations" id="toc-options-and-limitations" class="nav-link" data-scroll-target="#options-and-limitations"><span class="header-section-number">11.4</span> Options and limitations</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">11.5</span> Notes</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">11.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">11.2</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">11.3</span> Running the module</a></li>
+  <li><a href="#reading-a-single-preregistrations-contents" id="toc-reading-a-single-preregistrations-contents" class="nav-link" data-scroll-target="#reading-a-single-preregistrations-contents"><span class="header-section-number">11.4</span> Reading a single preregistration’s contents</a></li>
+  <li><a href="#options-and-limitations" id="toc-options-and-limitations" class="nav-link" data-scroll-target="#options-and-limitations"><span class="header-section-number">11.5</span> Options and limitations</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">11.6</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-prereg-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -472,8 +473,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">11.1</span> What it checks</h2>
+</header><section id="the-basics" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">11.1</span> The basics</h2>
+<p>A preregistration is a document, written and time-stamped before a study is run, that states what the researchers plan to do — their hypotheses, sample size, and analysis plan. <code>prereg_check</code> looks for links to preregistrations hosted on the OSF (Open Science Framework) or AsPredicted, two websites researchers commonly use for this, and reads out their contents.</p>
+<p>Here is the module running on a demo paper, which links to two preregistrations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"prereg_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Preregistration Check: We found 2 preregistrations.</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"prereg_check"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"template_name"</span>, <span class="st">"title"</span>, <span class="st">"id"</span>, <span class="st">"sample_size"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 79%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">template_name</th>
+<th style="text-align: left;">title</th>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">sample_size</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">OSF Preregistration</td>
+<td style="text-align: left;">Papercheck Test</td>
+<td style="text-align: left;">48ncu</td>
+<td style="text-align: left;">We randomly assigned 50 scientists to a condition where their manuscript was automatically checked for errors, and 50 scientists to a control condition with a checklist.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AsPredicted</td>
+<td style="text-align: left;">To err is human</td>
+<td style="text-align: left;">by8i8v</td>
+<td style="text-align: left;">We randomly assigned 50 scientists to a condition where their manuscript was automatically checked for errors, and 50 scientists to a control condition with a checklist.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>mo$table</code> has one row per preregistration found, with its contents organised into columns such as the sample-size plan shown above. A green light only means the module found a preregistration and could read its contents — it does not mean the study was actually run the way the preregistration describes. Always read the preregistration’s own fields yourself and compare them to what the manuscript reports.</p>
+</section><section id="what-it-checks" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">11.2</span> What it checks</h2>
 <p>The <code>prereg_check</code> module finds links to <strong>preregistrations</strong> on the OSF and AsPredicted in the manuscript, retrieves the preregistration text, and organises its contents into a single standardised template. This makes it much easier for a reviewer to compare what was preregistered against what the manuscript reports.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -488,24 +534,24 @@ Note
 <p>This module makes <strong>live network calls</strong> to the OSF and AsPredicted to retrieve preregistration content. You need an internet connection to run the code below. (When this book is built, these calls run against the live services.)</p>
 </div>
 </div>
-</section><section id="running-the-module" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">11.2</span> Running the module</h2>
+</section><section id="running-the-module" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">11.3</span> Running the module</h2>
 <p><code>demopaper()</code> links to two preregistrations, so it is a good example.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"prereg_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "info"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "We found 2 preregistrations."</code></pre>
 </div>
 </div>
 <p>The <code>table</code> has one row per preregistration, with the template fields organised into columns. Here are a few of them:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"template_name"</span>, <span class="st">"title"</span>, <span class="st">"id"</span>, <span class="st">"sample_size"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"template_name"</span>, <span class="st">"title"</span>, <span class="st">"id"</span>, <span class="st">"sample_size"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -540,30 +586,31 @@ Note
 </div>
 <p>The full set of fields the module standardises includes the study design, hypotheses, sample-size rationale, stopping rule, variables, statistical tests, inference criteria, and exclusion criteria:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;  [1] "template_name"                "title"                       
-#&gt;  [3] "id"                           "link"                        
-#&gt;  [5] "date_created"                 "date_modified"               
-#&gt;  [7] "date_registered"              "embargo_end_date"            
-#&gt;  [9] "ia_url"                       "description"                 
-#&gt; [11] "study_type"                   "blinding"                    
-#&gt; [13] "study_design_overview"        "data_collection_started"     
-#&gt; [15] "existing_data_explanation"    "data_collection_procedures"  
-#&gt; [17] "sample_size"                  "sample_size_rationale"       
-#&gt; [19] "stopping_rule"                "design_independent_variables"
-#&gt; [21] "design_dependent_variables"   "indices"                     
-#&gt; [23] "statistical_tests"            "inference_criteria"          
-#&gt; [25] "data_exclusion_criteria"      "outliers_and_exclusions"     
-#&gt; [27] "exploratory_analyses"         "additional_comments"         
-#&gt; [29] "research_questions"           "paper_id"</code></pre>
+<pre><code>#&gt;  [1] "template_name"              "title"                     
+#&gt;  [3] "id"                         "link"                      
+#&gt;  [5] "date_created"               "date_modified"             
+#&gt;  [7] "date_registered"            "embargo_end_date"          
+#&gt;  [9] "ia_url"                     "research_questions"        
+#&gt; [11] "study_type"                 "blinding"                  
+#&gt; [13] "study_design_overview"      "randomization"             
+#&gt; [15] "existing_data"              "data_collection_procedures"
+#&gt; [17] "sample_size"                "sample_size_rationale"     
+#&gt; [19] "stopping_rule"              "manipulated_variables"     
+#&gt; [21] "measured_variables"         "statistical_tests"         
+#&gt; [23] "inference_criteria"         "data_exclusion_criteria"   
+#&gt; [25] "missing_data_handling"      "exploratory_analyses"      
+#&gt; [27] "existing_data_explanation"  "design_dependent_variables"
+#&gt; [29] "outliers_and_exclusions"    "additional_comments"       
+#&gt; [31] "paper_id"</code></pre>
 </div>
 </div>
-</section><section id="reading-a-single-preregistrations-contents" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="reading-a-single-preregistrations-contents">
-<span class="header-section-number">11.3</span> Reading a single preregistration’s contents</h2>
+</section><section id="reading-a-single-preregistrations-contents" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="reading-a-single-preregistrations-contents">
+<span class="header-section-number">11.4</span> Reading a single preregistration’s contents</h2>
 <p>Because each preregistration becomes a row, you can inspect one in detail by transposing it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prereg</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"template_name"</span>, <span class="st">"sample_size"</span>, <span class="st">"statistical_tests"</span>, <span class="st">"data_exclusion_criteria"</span><span class="op">)</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prereg</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"template_name"</span>, <span class="st">"sample_size"</span>, <span class="st">"statistical_tests"</span>, <span class="st">"data_exclusion_criteria"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">prereg</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -593,16 +640,16 @@ Note
 </table>
 </div>
 </div>
-</section><section id="options-and-limitations" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="options-and-limitations">
-<span class="header-section-number">11.4</span> Options and limitations</h2>
+</section><section id="options-and-limitations" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="options-and-limitations">
+<span class="header-section-number">11.5</span> Options and limitations</h2>
 <p><code>prereg_check</code> takes only the <code>paper</code> argument. It <strong>cannot</strong> extract information from:</p>
 <ul>
 <li>unstructured preregistration templates (where everything is in one free-text field), or</li>
 <li>preregistrations stored as uploaded text documents on the OSF rather than in the structured form.</li>
 </ul>
 <p>For the details of which OSF registration templates exist and how they are identified, see the <a href="../chapters/osf-schemas.html">OSF Registration Schemas</a> chapter.</p>
-</section><section id="notes" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">11.5</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="11.6"><h2 data-number="11.6" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">11.6</span> Notes</h2>
 <p>If you want Metacheck to support additional preregistration platforms, reach out to the development team.</p>
 
 

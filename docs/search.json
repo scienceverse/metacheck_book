@@ -761,7 +761,7 @@
     "href": "chapters/mod-ethics-check.html",
     "title": "\n13  Ethics Approval Check\n",
     "section": "",
-    "text": "13.1 What it checks\nThe ethics_check module searches a paper for a statement that the research received ethics approval — for example from an Institutional Review Board (IRB), a Research Ethics Committee, or an animal-care committee — or that it was explicitly exempted or waived. Reporting ethics approval is expected for studies involving human or animal participants.\nThe module recognises a wide range of committee names and approval phrasing across several languages and conventions, including:",
+    "text": "13.1 The basics\nEthics approval is a formal sign-off, usually from a university or hospital committee, confirming that a study involving human or animal participants meets ethical standards before it is run. ethics_check looks through a paper’s text for a sentence saying that this approval was obtained (or that it was not needed).\nA single demo paper does not show this well, because the module first has to decide whether a paper needed ethics approval at all, and the demo paper does not appear to involve live data collection. So here it is running on ten real papers instead:\nEthics Approval Check: 3 of 10 papers appeared to involve live data collection and lacked an ethics approval statement.\nRunning a module always works the same way: module_run(paper, \"module_name\"). The printed result above is a short report: a coloured light and a one-line summary — here, several of the ten papers appeared to collect data but did not report an ethics approval statement.\nIf you want to work with the result instead of just reading it, save it to a variable and look inside it:\nmo &lt;- module_run(psychsci[1:10], \"ethics_check\")\nmo$summary_table[, c(\"paper_id\", \"ethics_approved\")] |&gt;\n  knitr::kable()\n\n\n\npaper_id\nethics_approved\n\n\n\n0956797613520608\nTRUE\n\n\n0956797614522816\nFALSE\n\n\n0956797614527830\nTRUE\n\n\n0956797614557697\nTRUE\n\n\n0956797614560771\nFALSE\n\n\n0956797614566469\nFALSE\n\n\n0956797615569001\nFALSE\n\n\n0956797615569889\nTRUE\n\n\n0956797615583071\nTRUE\n\n\n0956797615588467\nTRUE\nethics_approved tells you whether a statement was found for each paper. A TRUE only means a statement is present, not that approval was properly obtained. A paper with FALSE is not necessarily a problem either — the module may have decided (via a separate needs_ethics flag) that the paper did not need one, or the statement may simply be phrased in a way the module does not recognise. Either way, treat a red light as a prompt to check the paper by hand, not a final verdict.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
@@ -771,8 +771,8 @@
     "objectID": "chapters/mod-ethics-check.html#what-it-checks",
     "href": "chapters/mod-ethics-check.html#what-it-checks",
     "title": "\n13  Ethics Approval Check\n",
-    "section": "",
-    "text": "Human research committees — Institutional Review Board (IRB), Independent Ethics Committee (IEC), Research/Medical Ethics Committee, and abbreviations such as REC, REB, ERB, METC, DEC.\n\nAnimal research committees — IACUC, Animal Welfare Ethical Review Body (AWERB), and language variants.\n\nApproval phrasing — “approved by the … ethics committee”, “ethically approved”, “approved under protocol …”.\n\nWaivers and exemptions — “ethics waiver”, “deemed exempt”, “IRB exemption”.\n\nDeclaration of Helsinki statements.\n\n\n13.1.1 How it decides whether ethics approval is needed\nNot every paper needs an ethics statement — theoretical work, simulations, reviews, meta-analyses, and secondary analyses of existing data usually do not. So the module does not simply flag every paper that lacks an approval statement. Instead it first judges whether the paper appears to involve live data collection from human or animal participants, and only flags a missing statement for those papers.\nThis judgment is made by an internal helper that searches the text for sentences signalling that data were collected directly from participants — for example:\n\n\nparticipant actions — “participants were recruited / randomly assigned / debriefed”, “subjects gave informed consent”;\n\nresearcher actions — “we recruited / enrolled / ran participants”, “we conducted the study / survey / clinical trial”;\n\nconsent and recruitment — “informed consent was obtained”, a “participant pool” or “research participation scheme”;\n\nsample descriptions — “our participants”, student samples, or participant/patient inclusion and exclusion criteria;\n\nanimal data collection — equivalent phrasing for animal subjects.\n\nThe patterns are deliberately conservative: they require explicit participant- or recruitment-language rather than generic words like “sample”, so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the needs_ethics column of the summary table, and the traffic light only turns red for papers where needs_ethics is TRUE and no approval statement was found.\nThis module is fully offline — it uses only regular expressions, so all the code below runs with just the Metacheck package.",
+    "section": "\n13.2 What it checks",
+    "text": "13.2 What it checks\nThe ethics_check module searches a paper for a statement that the research received ethics approval — for example from an Institutional Review Board (IRB), a Research Ethics Committee, or an animal-care committee — or that it was explicitly exempted or waived. Reporting ethics approval is expected for studies involving human or animal participants.\nThe module recognises a wide range of committee names and approval phrasing across several languages and conventions, including:\n\n\nHuman research committees — Institutional Review Board (IRB), Independent Ethics Committee (IEC), Research/Medical Ethics Committee, and abbreviations such as REC, REB, ERB, METC, DEC.\n\nAnimal research committees — IACUC, Animal Welfare Ethical Review Body (AWERB), and language variants.\n\nApproval phrasing — “approved by the … ethics committee”, “ethically approved”, “approved under protocol …”.\n\nWaivers and exemptions — “ethics waiver”, “deemed exempt”, “IRB exemption”.\n\nDeclaration of Helsinki statements.\n\n\n13.2.1 How it decides whether ethics approval is needed\nNot every paper needs an ethics statement — theoretical work, simulations, reviews, meta-analyses, and secondary analyses of existing data usually do not. So the module does not simply flag every paper that lacks an approval statement. Instead it first judges whether the paper appears to involve live data collection from human or animal participants, and only flags a missing statement for those papers.\nThis judgment is made by an internal helper that searches the text for sentences signalling that data were collected directly from participants — for example:\n\n\nparticipant actions — “participants were recruited / randomly assigned / debriefed”, “subjects gave informed consent”;\n\nresearcher actions — “we recruited / enrolled / ran participants”, “we conducted the study / survey / clinical trial”;\n\nconsent and recruitment — “informed consent was obtained”, a “participant pool” or “research participation scheme”;\n\nsample descriptions — “our participants”, student samples, or participant/patient inclusion and exclusion criteria;\n\nanimal data collection — equivalent phrasing for animal subjects.\n\nThe patterns are deliberately conservative: they require explicit participant- or recruitment-language rather than generic words like “sample”, so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the needs_ethics column of the summary table, and the traffic light only turns red for papers where needs_ethics is TRUE and no approval statement was found.\nThis module is fully offline — it uses only regular expressions, so all the code below runs with just the Metacheck package.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
@@ -782,8 +782,8 @@
     "objectID": "chapters/mod-ethics-check.html#running-the-module",
     "href": "chapters/mod-ethics-check.html#running-the-module",
     "title": "\n13  Ethics Approval Check\n",
-    "section": "\n13.2 Running the module",
-    "text": "13.2 Running the module\nThe module only flags a missing statement when a paper appears to involve live data collection (so re-analyses of existing data are not penalised). We run it across the first ten papers of the psychsci corpus (see Using the Paper Database Corpora).\n\nmo &lt;- module_run(psychsci[1:10], \"ethics_check\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"3 of 10 papers appeared to involve live data collection and lacked an ethics approval statement.\"\n\n\nThe summary_table has one row per paper, with an ethics_approved flag and the matched statement(s):\n\nmo$summary_table[, c(\"paper_id\", \"ethics_approved\")] |&gt;\n  knitr::kable()\n\n\n\npaper_id\nethics_approved\n\n\n\n0956797613520608\nTRUE\n\n\n0956797614522816\nFALSE\n\n\n0956797614527830\nTRUE\n\n\n0956797614557697\nTRUE\n\n\n0956797614560771\nFALSE\n\n\n0956797614566469\nFALSE\n\n\n0956797615569001\nFALSE\n\n\n0956797615569889\nTRUE\n\n\n0956797615583071\nTRUE\n\n\n0956797615588467\nTRUE",
+    "section": "\n13.3 Running the module",
+    "text": "13.3 Running the module\nThe module only flags a missing statement when a paper appears to involve live data collection (so re-analyses of existing data are not penalised). We run it across the first ten papers of the psychsci corpus (see Using the Paper Database Corpora).\n\nmo &lt;- module_run(psychsci[1:10], \"ethics_check\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"3 of 10 papers appeared to involve live data collection and lacked an ethics approval statement.\"\n\n\nThe summary_table has one row per paper, with an ethics_approved flag and the matched statement(s):\n\nmo$summary_table[, c(\"paper_id\", \"ethics_approved\")] |&gt;\n  knitr::kable()\n\n\n\npaper_id\nethics_approved\n\n\n\n0956797613520608\nTRUE\n\n\n0956797614522816\nFALSE\n\n\n0956797614527830\nTRUE\n\n\n0956797614557697\nTRUE\n\n\n0956797614560771\nFALSE\n\n\n0956797614566469\nFALSE\n\n\n0956797615569001\nFALSE\n\n\n0956797615569889\nTRUE\n\n\n0956797615583071\nTRUE\n\n\n0956797615588467\nTRUE",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
@@ -793,8 +793,8 @@
     "objectID": "chapters/mod-ethics-check.html#a-clean-example-and-one-with-problems",
     "href": "chapters/mod-ethics-check.html#a-clean-example-and-one-with-problems",
     "title": "\n13  Ethics Approval Check\n",
-    "section": "\n13.3 A clean example and one with problems",
-    "text": "13.3 A clean example and one with problems\nPapers that report approval show the exact sentence the module matched — useful for confirming it found a genuine statement:\n\napproved &lt;- mo$summary_table[mo$summary_table$ethics_approved %in% TRUE, ]\napproved$ethics_statements[[1]]\n\n#&gt; [1] \"The ethics committee for the region of Midtjylland, Denmark, approved the experiment.\"\n\n\nPapers that appear to collect data but contain no approval statement are the ones to check. These are what turn the traffic light red:\n\nmo$summary_table[mo$summary_table$needs_ethics %in% TRUE &\n                 mo$summary_table$ethics_approved %in% FALSE, \"paper_id\"]\n\n#&gt; [1] \"0956797614522816\" \"0956797614560771\" \"0956797615569001\"\n\n\nA missing statement is not proof that approval was never obtained — many authors simply omit it — but it flags papers where a reviewer should confirm the ethics reporting.",
+    "section": "\n13.4 A clean example and one with problems",
+    "text": "13.4 A clean example and one with problems\nPapers that report approval show the exact sentence the module matched — useful for confirming it found a genuine statement:\n\napproved &lt;- mo$summary_table[mo$summary_table$ethics_approved %in% TRUE, ]\napproved$ethics_statements[[1]]\n\n#&gt; [1] \"The ethics committee for the region of Midtjylland, Denmark, approved the experiment.\"\n\n\nPapers that appear to collect data but contain no approval statement are the ones to check. These are what turn the traffic light red:\n\nmo$summary_table[mo$summary_table$needs_ethics %in% TRUE &\n                 mo$summary_table$ethics_approved %in% FALSE, \"paper_id\"]\n\n#&gt; [1] \"0956797614522816\" \"0956797614560771\" \"0956797615569001\"\n\n\nA missing statement is not proof that approval was never obtained — many authors simply omit it — but it flags papers where a reviewer should confirm the ethics reporting.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
@@ -804,8 +804,8 @@
     "objectID": "chapters/mod-ethics-check.html#options",
     "href": "chapters/mod-ethics-check.html#options",
     "title": "\n13  Ethics Approval Check\n",
-    "section": "\n13.4 Options",
-    "text": "13.4 Options\nethics_check takes only the paper argument.",
+    "section": "\n13.5 Options",
+    "text": "13.5 Options\nethics_check takes only the paper argument.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
@@ -815,8 +815,8 @@
     "objectID": "chapters/mod-ethics-check.html#notes",
     "href": "chapters/mod-ethics-check.html#notes",
     "title": "\n13  Ethics Approval Check\n",
-    "section": "\n13.5 Notes",
-    "text": "13.5 Notes\nBecause the module matches committee names and approval phrasing with regular expressions, it can miss unusually worded statements, and may occasionally match a sentence that mentions ethics for another reason. As with every module, treat the output as a prompt for human judgement rather than a verdict.",
+    "section": "\n13.6 Notes",
+    "text": "13.6 Notes\nBecause the module matches committee names and approval phrasing with regular expressions, it can miss unusually worded statements, and may occasionally match a sentence that mentions ethics for another reason. As with every module, treat the output as a prompt for human judgement rather than a verdict.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
@@ -1179,7 +1179,7 @@
     "href": "chapters/mod-stat-check.html",
     "title": "\n18  StatCheck\n",
     "section": "",
-    "text": "18.1 What it checks\nThe stat_check module runs Statcheck on the paper. Statcheck recomputes the p-value from each reported test statistic and degrees of freedom, and flags cases where the reported p-value is inconsistent with the statistic — and, more seriously, where the inconsistency changes the significance decision (a decision error).\nMetacheck only returns Statcheck results for t-tests and F-tests, the tests for which the approach has been validated (Nuijten et al., 2016). Statcheck only detects statistics written in APA format, which is mostly used in psychology journals.\nThis module only checks statistics reported in the running text of the manuscript — it cannot (yet) process statistics reported only in a table.\nThis module is fully offline (Statcheck runs locally).",
+    "text": "18.1 The basics\nA statistical test (like a t-test) produces a test statistic and a p-value, a number that tells you how surprising the result would be if there were really no effect. stat_check recalculates the p-value from the test statistic reported in a paper and checks whether it matches the p-value the authors actually reported.\nHere is the module running on a demo paper:\nStatCheck: 1 possible error in t-tests or F-tests\nRunning a module always works the same way: module_run(paper, \"module_name\"). The printed result above is a short report: a coloured light and a one-line summary.\nIf you want to work with the result instead of just reading it, save it to a variable and look inside it:\nmo &lt;- module_run(paper, \"stat_check\")\nmo$table[, c(\"test_type\", \"reported_p\", \"computed_p\", \"error\", \"decision_error\")] |&gt;\n  knitr::kable()\n\n\n\ntest_type\nreported_p\ncomputed_p\nerror\ndecision_error\n\n\n\nt\n0.005\n0.0046094\nFALSE\nFALSE\n\n\nt\n0.152\n0.0528594\nTRUE\nFALSE\nmo$table has one row per statistical test the module found, comparing the p-value the paper reported (reported_p) with the one the module recomputed (computed_p). error marks a mismatch between the two; decision_error marks the more serious case where the mismatch flips the result from significant to non-significant (or the reverse). A flagged row is not automatically a mistake worth reporting — always read the original sentence, since the module only checks t-tests and F-tests reported in APA format in the running text, and can misflag things like one-sided tests.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
@@ -1189,8 +1189,8 @@
     "objectID": "chapters/mod-stat-check.html#running-the-module",
     "href": "chapters/mod-stat-check.html#running-the-module",
     "title": "\n18  StatCheck\n",
-    "section": "\n18.2 Running the module",
-    "text": "18.2 Running the module\npaper &lt;- demopaper()\nmodule_run(paper, \"stat_check\")\nStatCheck: 1 possible error in t-tests or F-tests\nThe table has one row per detected test, comparing reported_p to computed_p, with error and decision_error flags:\n\nmo &lt;- module_run(paper, \"stat_check\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"1 possible error in t-tests or F-tests\"\n\nmo$table[, c(\"test_type\", \"reported_p\", \"computed_p\", \"error\", \"decision_error\")] |&gt;\n  knitr::kable()\n\n\n\ntest_type\nreported_p\ncomputed_p\nerror\ndecision_error\n\n\n\nt\n0.005\n0.0046094\nFALSE\nFALSE\n\n\nt\n0.152\n0.0528594\nTRUE\nFALSE",
+    "section": "\n18.3 Running the module",
+    "text": "18.3 Running the module\npaper &lt;- demopaper()\nmodule_run(paper, \"stat_check\")\nStatCheck: 1 possible error in t-tests or F-tests\nThe table has one row per detected test, comparing reported_p to computed_p, with error and decision_error flags:\n\nmo &lt;- module_run(paper, \"stat_check\")\nmo$traffic_light\n\n#&gt; [1] \"red\"\n\nmo$summary_text\n\n#&gt; [1] \"1 possible error in t-tests or F-tests\"\n\nmo$table[, c(\"test_type\", \"reported_p\", \"computed_p\", \"error\", \"decision_error\")] |&gt;\n  knitr::kable()\n\n\n\ntest_type\nreported_p\ncomputed_p\nerror\ndecision_error\n\n\n\nt\n0.005\n0.0046094\nFALSE\nFALSE\n\n\nt\n0.152\n0.0528594\nTRUE\nFALSE",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
@@ -1200,8 +1200,8 @@
     "objectID": "chapters/mod-stat-check.html#running-on-many-papers",
     "href": "chapters/mod-stat-check.html#running-on-many-papers",
     "title": "\n18  StatCheck\n",
-    "section": "\n18.3 Running on many papers",
-    "text": "18.3 Running on many papers\nStatcheck on a large corpus can take a while (the full psychsci set has more than 27,000 sentences with numbers). Here we run on a small subset:\n\nmo &lt;- module_run(psychsci[1:20], \"stat_check\")\nhead(mo$summary_table) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\npaper_id\nstatcheck_found\nstatcheck_errors\nstatcheck_decision_errors\n\n\n\n0956797613520608\n6\n0\n0\n\n\n0956797614522816\n39\n0\n0\n\n\n0956797614527830\n0\n0\n0\n\n\n0956797614557697\n7\n0\n0\n\n\n0956797614560771\n4\n0\n0\n\n\n0956797614566469\n0\n0\n0",
+    "section": "\n18.4 Running on many papers",
+    "text": "18.4 Running on many papers\nStatcheck on a large corpus can take a while (the full psychsci set has more than 27,000 sentences with numbers). Here we run on a small subset:\n\nmo &lt;- module_run(psychsci[1:20], \"stat_check\")\nhead(mo$summary_table) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\npaper_id\nstatcheck_found\nstatcheck_errors\nstatcheck_decision_errors\n\n\n\n0956797613520608\n6\n0\n0\n\n\n0956797614522816\n39\n0\n0\n\n\n0956797614527830\n0\n0\n0\n\n\n0956797614557697\n7\n0\n0\n\n\n0956797614560771\n4\n0\n0\n\n\n0956797614566469\n0\n0\n0",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
@@ -1211,8 +1211,8 @@
     "objectID": "chapters/mod-stat-check.html#a-clean-example-and-one-with-problems",
     "href": "chapters/mod-stat-check.html#a-clean-example-and-one-with-problems",
     "title": "\n18  StatCheck\n",
-    "section": "\n18.4 A clean example and one with problems",
-    "text": "18.4 A clean example and one with problems\nThe flagged rows are the ones to inspect — especially decision_error == TRUE, where the reported and recomputed p-values fall on opposite sides of .05:\n\nmo &lt;- module_run(psychsci[1:20], \"stat_check\")\nerr &lt;- mo$table[mo$table$error %in% TRUE, c(\"raw\", \"reported_p\", \"computed_p\", \"decision_error\")]\nhead(err) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\nraw\nreported_p\ncomputed_p\ndecision_error\n\n\n\n106\nt(48) = 2.43, p = .020\n0.020\n0.0188882\nFALSE\n\n\n160\nF(1, 21) = 11.94, p &lt; .001\n0.001\n0.0023684\nFALSE\n\n\n235\nt(237) = 2.21, p = .014\n0.014\n0.0280615\nFALSE\n\n\n236\nF(1, 361) = 3.59, p = .029\n0.029\n0.0589271\nTRUE\n\n\n237\nF(1, 361) = 5.89, p &lt; .01\n0.010\n0.0157159\nFALSE",
+    "section": "\n18.5 A clean example and one with problems",
+    "text": "18.5 A clean example and one with problems\nThe flagged rows are the ones to inspect — especially decision_error == TRUE, where the reported and recomputed p-values fall on opposite sides of .05:\n\nmo &lt;- module_run(psychsci[1:20], \"stat_check\")\nerr &lt;- mo$table[mo$table$error %in% TRUE, c(\"raw\", \"reported_p\", \"computed_p\", \"decision_error\")]\nhead(err) |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\n\n\n\nraw\nreported_p\ncomputed_p\ndecision_error\n\n\n\n106\nt(48) = 2.43, p = .020\n0.020\n0.0188882\nFALSE\n\n\n160\nF(1, 21) = 11.94, p &lt; .001\n0.001\n0.0023684\nFALSE\n\n\n235\nt(237) = 2.21, p = .014\n0.014\n0.0280615\nFALSE\n\n\n236\nF(1, 361) = 3.59, p = .029\n0.029\n0.0589271\nTRUE\n\n\n237\nF(1, 361) = 5.89, p &lt; .01\n0.010\n0.0157159\nFALSE",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
@@ -1222,8 +1222,8 @@
     "objectID": "chapters/mod-stat-check.html#options",
     "href": "chapters/mod-stat-check.html#options",
     "title": "\n18  StatCheck\n",
-    "section": "\n18.5 Options",
-    "text": "18.5 Options\nstat_check takes only the paper argument.\n\n\n\n\n\n\nNote\n\n\n\nStatcheck treats p = .000 as an error (you should report p &lt; .001), and may misflag one-sided tests, since it assumes two-sided p-values. Always read the flagged sentence before concluding there is a real error.",
+    "section": "\n18.6 Options",
+    "text": "18.6 Options\nstat_check takes only the paper argument.\n\n\n\n\n\n\nNote\n\n\n\nStatcheck treats p = .000 as an error (you should report p &lt; .001), and may misflag one-sided tests, since it assumes two-sided p-values. Always read the flagged sentence before concluding there is a real error.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
@@ -1233,8 +1233,8 @@
     "objectID": "chapters/mod-stat-check.html#validation",
     "href": "chapters/mod-stat-check.html#validation",
     "title": "\n18  StatCheck\n",
-    "section": "\n18.6 Validation",
-    "text": "18.6 Validation\n\nIn a sample of 685 tests with 34 instances of inconsistent reporting, Statcheck correctly detected all 34 and incorrectly identified 26. So 0% of true instances were missed, and 43% of detections were false positives. See https://osf.io/preprints/psyarxiv/tcxaj_v1/ for the full validation.\n\nStatcheck was developed by Michèle Nuijten and Sascha Epskamp.\n\n\n\n\nNuijten, M. B., Hartgerink, C. H. J., Assen, M. A. L. M. van, Epskamp, S., & Wicherts, J. M. (2016). The prevalence of statistical reporting errors in psychology (1985–2013). Behavior Research Methods, 48(4), 1205–1226. https://doi.org/10.3758/s13428-015-0664-2",
+    "section": "\n18.7 Validation",
+    "text": "18.7 Validation\n\nIn a sample of 685 tests with 34 instances of inconsistent reporting, Statcheck correctly detected all 34 and incorrectly identified 26. So 0% of true instances were missed, and 43% of detections were false positives. See https://osf.io/preprints/psyarxiv/tcxaj_v1/ for the full validation.\n\nStatcheck was developed by Michèle Nuijten and Sascha Epskamp.\n\n\n\n\nNuijten, M. B., Hartgerink, C. H. J., Assen, M. A. L. M. van, Epskamp, S., & Wicherts, J. M. (2016). The prevalence of statistical reporting errors in psychology (1985–2013). Behavior Research Methods, 48(4), 1205–1226. https://doi.org/10.3758/s13428-015-0664-2",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
@@ -1322,7 +1322,7 @@
     "href": "chapters/mod-stat-p-nonsig.html",
     "title": "\n20  Non-Significant p-Values\n",
     "section": "",
-    "text": "20.1 What it checks\nThe stat_p_nonsig module finds every non-significant p-value so a reader can check whether the surrounding text interprets it correctly. A p-value counts as significant, and is excluded, when it is at most .05 and reported with a comparator of &lt;, =, or ≤ (&lt;=/=&lt; are also recognised) — so p = .05 itself is treated as significant, not non-significant, and p ≤ .01 is treated the same as p &lt; .01. Everything else (any larger value, or a &gt;/≥ comparator) is flagged as non-significant. A common error is to treat a non-significant result as evidence that there is no effect (“there was no difference between groups, p = .27”), when a non-significant result is simply inconclusive.\nThe module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.\nThis module is fully offline.",
+    "text": "20.1 The basics\nA p-value is non-significant when it is larger than .05 (or reported with a &gt; or ≥ sign) — conventionally, this means the result does not give clear evidence of an effect. stat_p_nonsig finds every non-significant p-value in a paper so you can check whether the surrounding sentence describes it correctly, since it is a common mistake to describe a non-significant result as proof that there is no effect.\nHere is the module running on a demo paper:\nNon-Significant P Value Check: We found 2 non-significant p values that should be checked for appropriate interpretation.\nRunning a module always works the same way: module_run(paper, \"module_name\"). The printed result above is a short report: a coloured light and a one-line summary.\nIf you want to work with the result instead of just reading it, save it to a variable and look inside it:\nmo &lt;- module_run(paper, \"stat_p_nonsig\")\nmo$table[, c(\"text\", \"p_comp\", \"p_value\", \"significance\")] |&gt;\n  knitr::kable()\n\n\n\ntext\np_comp\np_value\nsignificance\n\n\n\np =0.152\n=\n0.152\nnonsignificant\n\n\np &gt; .05\n&gt;\n0.050\nnonsignificant\nmo$table lists the exact sentence (text) containing each non-significant p-value. The module makes no judgement of its own — a flagged sentence is not automatically wrong. Always read the sentence yourself: a non-significant result correctly described as inconclusive is fine, while one described as showing “no effect” or “no difference” is the kind of claim worth questioning.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
@@ -1332,8 +1332,8 @@
     "objectID": "chapters/mod-stat-p-nonsig.html#running-the-module",
     "href": "chapters/mod-stat-p-nonsig.html#running-the-module",
     "title": "\n20  Non-Significant p-Values\n",
-    "section": "\n20.2 Running the module",
-    "text": "20.2 Running the module\npaper &lt;- demopaper()\nmodule_run(paper, \"stat_p_nonsig\")\nNon-Significant P Value Check: We found 2 non-significant p values that should be checked for appropriate interpretation.\nThe table lists each non-significant p-value with its comparison and value:\n\nmo &lt;- module_run(paper, \"stat_p_nonsig\")\nmo$traffic_light\n\n#&gt; [1] \"yellow\"\n\nmo$summary_text\n\n#&gt; [1] \"We found 2 non-significant p values that should be checked for appropriate interpretation.\"\n\nmo$table[, c(\"text\", \"p_comp\", \"p_value\", \"significance\")] |&gt;\n  knitr::kable()\n\n\n\ntext\np_comp\np_value\nsignificance\n\n\n\np =0.152\n=\n0.152\nnonsignificant\n\n\np &gt; .05\n&gt;\n0.050\nnonsignificant",
+    "section": "\n20.3 Running the module",
+    "text": "20.3 Running the module\npaper &lt;- demopaper()\nmodule_run(paper, \"stat_p_nonsig\")\nNon-Significant P Value Check: We found 2 non-significant p values that should be checked for appropriate interpretation.\nThe table lists each non-significant p-value with its comparison and value:\n\nmo &lt;- module_run(paper, \"stat_p_nonsig\")\nmo$traffic_light\n\n#&gt; [1] \"yellow\"\n\nmo$summary_text\n\n#&gt; [1] \"We found 2 non-significant p values that should be checked for appropriate interpretation.\"\n\nmo$table[, c(\"text\", \"p_comp\", \"p_value\", \"significance\")] |&gt;\n  knitr::kable()\n\n\n\ntext\np_comp\np_value\nsignificance\n\n\n\np =0.152\n=\n0.152\nnonsignificant\n\n\np &gt; .05\n&gt;\n0.050\nnonsignificant",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
@@ -1343,8 +1343,8 @@
     "objectID": "chapters/mod-stat-p-nonsig.html#running-on-many-papers",
     "href": "chapters/mod-stat-p-nonsig.html#running-on-many-papers",
     "title": "\n20  Non-Significant p-Values\n",
-    "section": "\n20.3 Running on many papers",
-    "text": "20.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:20], \"stat_p_nonsig\")\nhead(mo$summary_table) |&gt;\n  knitr::kable()\n\n\n\npaper_id\nn_nonsignificant\n\n\n\n0956797613520608\n0\n\n\n0956797614522816\n17\n\n\n0956797614527830\n0\n\n\n0956797614557697\n12\n\n\n0956797614560771\n0\n\n\n0956797614566469\n0",
+    "section": "\n20.4 Running on many papers",
+    "text": "20.4 Running on many papers\n\nmo &lt;- module_run(psychsci[1:20], \"stat_p_nonsig\")\nhead(mo$summary_table) |&gt;\n  knitr::kable()\n\n\n\npaper_id\nn_nonsignificant\n\n\n\n0956797613520608\n0\n\n\n0956797614522816\n17\n\n\n0956797614527830\n0\n\n\n0956797614557697\n12\n\n\n0956797614560771\n0\n\n\n0956797614566469\n0",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
@@ -1354,8 +1354,8 @@
     "objectID": "chapters/mod-stat-p-nonsig.html#a-clean-example-and-one-with-problems",
     "href": "chapters/mod-stat-p-nonsig.html#a-clean-example-and-one-with-problems",
     "title": "\n20  Non-Significant p-Values\n",
-    "section": "\n20.4 A clean example and one with problems",
-    "text": "20.4 A clean example and one with problems\nA result that is correctly described as inconclusive is fine; one that claims “no effect” from a non-significant test is the kind of thing to check. The module flags both, and you read the sentence:\n\nflagged &lt;- test_paper(\"There was no difference between the groups, t(40) = 1.10, p = .28.\")\nmo &lt;- module_run(flagged, \"stat_p_nonsig\")\nmo$table[, c(\"text\", \"p_value\")] |&gt;\n  knitr::kable()\n\n\n\ntext\np_value\n\n\np = .28\n0.28\n\n\n\n\nA paper reporting only significant results returns nothing to check:\n\nclean &lt;- test_paper(\"The effect was significant, t(28) = 2.40, p = .02.\")\nmodule_run(clean, \"stat_p_nonsig\")$traffic_light\n\n#&gt; [1] \"green\"",
+    "section": "\n20.5 A clean example and one with problems",
+    "text": "20.5 A clean example and one with problems\nA result that is correctly described as inconclusive is fine; one that claims “no effect” from a non-significant test is the kind of thing to check. The module flags both, and you read the sentence:\n\nflagged &lt;- test_paper(\"There was no difference between the groups, t(40) = 1.10, p = .28.\")\nmo &lt;- module_run(flagged, \"stat_p_nonsig\")\nmo$table[, c(\"text\", \"p_value\")] |&gt;\n  knitr::kable()\n\n\n\ntext\np_value\n\n\np = .28\n0.28\n\n\n\n\nA paper reporting only significant results returns nothing to check:\n\nclean &lt;- test_paper(\"The effect was significant, t(28) = 2.40, p = .02.\")\nmodule_run(clean, \"stat_p_nonsig\")$traffic_light\n\n#&gt; [1] \"green\"",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
@@ -1365,8 +1365,8 @@
     "objectID": "chapters/mod-stat-p-nonsig.html#options",
     "href": "chapters/mod-stat-p-nonsig.html#options",
     "title": "\n20  Non-Significant p-Values\n",
-    "section": "\n20.5 Options",
-    "text": "20.5 Options\nstat_p_nonsig takes only the paper argument.",
+    "section": "\n20.6 Options",
+    "text": "20.6 Options\nstat_p_nonsig takes only the paper argument.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
@@ -1376,8 +1376,8 @@
     "objectID": "chapters/mod-stat-p-nonsig.html#validation",
     "href": "chapters/mod-stat-p-nonsig.html#validation",
     "title": "\n20  Non-Significant p-Values\n",
-    "section": "\n20.6 Validation",
-    "text": "20.6 Validation\n\nIn a sample of 194 papers with 1602 instances of non-significant p-values, this module correctly detected 1486 of them and incorrectly identified 153. 91% of detections were true instances (positive predictive value).",
+    "section": "\n20.7 Validation",
+    "text": "20.7 Validation\n\nIn a sample of 194 papers with 1602 instances of non-significant p-values, this module correctly detected 1486 of them and incorrectly identified 153. 91% of detections were true instances (positive predictive value).",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
@@ -2708,7 +2708,7 @@
     "href": "chapters/mod-ref-pubpeer.html",
     "title": "\n31  PubPeer Comments\n",
     "section": "",
-    "text": "31.1 What it checks\nThe ref_pubpeer module cross-references the paper’s cited references against PubPeer, a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.\nThe module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.\nStatcheck comments on PubPeer are ignored. Statcheck automatically posted comments on tens of thousands of psychology articles, so including them would flag almost every cited paper and drown out substantive human comments.",
+    "text": "31.1 The basics\nPubPeer is a website where researchers can leave public comments on published papers, usually to raise questions or concerns about the work. ref_pubpeer checks whether any of the papers a manuscript cites have comments on PubPeer, so you know a discussion exists before you rely on that citation.\nHere is the module running on a demo paper, which cites a reference with PubPeer comments:\nPubPeer Comments: You cited 1 reference with comments in PubPeer.\nRunning a module always works the same way: module_run(paper, \"module_name\"). The printed result above is a short report: a coloured light and a one-line summary.\nIf you want to work with the result instead of just reading it, save it to a variable and look inside it:\nmo &lt;- module_run(paper, \"ref_pubpeer\")\nmo$table[, c(\"doi\", \"total_comments\", \"url\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\ndoi\ntotal_comments\nurl\n\n\n10.1177/0956797614520714\n3\nhttps://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56\nmo$table lists each cited reference that has PubPeer comments, how many, and a url to the discussion. A flagged result does not mean the citation is bad — it only means there is a discussion worth reading. Follow the url, read the comments yourself, and decide whether they matter for how the citation is used.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2718,8 +2718,8 @@
     "objectID": "chapters/mod-ref-pubpeer.html#what-it-checks",
     "href": "chapters/mod-ref-pubpeer.html#what-it-checks",
     "title": "\n31  PubPeer Comments\n",
-    "section": "",
-    "text": "Note\n\n\n\nThis module makes live network calls to PubPeer (matching references by DOI). You need an internet connection to run the code below.",
+    "section": "\n31.2 What it checks",
+    "text": "31.2 What it checks\nThe ref_pubpeer module cross-references the paper’s cited references against PubPeer, a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.\nThe module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.\nStatcheck comments on PubPeer are ignored. Statcheck automatically posted comments on tens of thousands of psychology articles, so including them would flag almost every cited paper and drown out substantive human comments.\n\n\n\n\n\n\nNote\n\n\n\nThis module makes live network calls to PubPeer (matching references by DOI). You need an internet connection to run the code below.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2729,8 +2729,8 @@
     "objectID": "chapters/mod-ref-pubpeer.html#running-the-module",
     "href": "chapters/mod-ref-pubpeer.html#running-the-module",
     "title": "\n31  PubPeer Comments\n",
-    "section": "\n31.2 Running the module",
-    "text": "31.2 Running the module\ndemopaper() cites a reference that has PubPeer comments.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_pubpeer\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 reference with comments in PubPeer.\"\n\n\nThe table lists each matched reference, the number of comments, and a link:\n\nmo$table[, c(\"doi\", \"total_comments\", \"url\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\ndoi\ntotal_comments\nurl\n\n\n10.1177/0956797614520714\n3\nhttps://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56",
+    "section": "\n31.3 Running the module",
+    "text": "31.3 Running the module\ndemopaper() cites a reference that has PubPeer comments.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_pubpeer\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 reference with comments in PubPeer.\"\n\n\nThe table lists each matched reference, the number of comments, and a link:\n\nmo$table[, c(\"doi\", \"total_comments\", \"url\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\n\ndoi\ntotal_comments\nurl\n\n\n10.1177/0956797614520714\n3\nhttps://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2740,8 +2740,8 @@
     "objectID": "chapters/mod-ref-pubpeer.html#running-on-many-papers",
     "href": "chapters/mod-ref-pubpeer.html#running-on-many-papers",
     "title": "\n31  PubPeer Comments\n",
-    "section": "\n31.3 Running on many papers",
-    "text": "31.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_pubpeer\")\nmo$summary_table",
+    "section": "\n31.4 Running on many papers",
+    "text": "31.4 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_pubpeer\")\nmo$summary_table",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2751,8 +2751,8 @@
     "objectID": "chapters/mod-ref-pubpeer.html#interpreting-the-result",
     "href": "chapters/mod-ref-pubpeer.html#interpreting-the-result",
     "title": "\n31  PubPeer Comments\n",
-    "section": "\n31.4 Interpreting the result",
-    "text": "31.4 Interpreting the result\nA green/empty result means none of the cited references had PubPeer comments. A flagged result does not mean a citation is bad — it means there is a discussion you may want to read. Follow the url to the PubPeer thread and judge the comments in context.",
+    "section": "\n31.5 Interpreting the result",
+    "text": "31.5 Interpreting the result\nA green/empty result means none of the cited references had PubPeer comments. A flagged result does not mean a citation is bad — it means there is a discussion you may want to read. Follow the url to the PubPeer thread and judge the comments in context.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2762,8 +2762,8 @@
     "objectID": "chapters/mod-ref-pubpeer.html#options",
     "href": "chapters/mod-ref-pubpeer.html#options",
     "title": "\n31  PubPeer Comments\n",
-    "section": "\n31.5 Options",
-    "text": "31.5 Options\nref_pubpeer takes only the paper argument.",
+    "section": "\n31.6 Options",
+    "text": "31.6 Options\nref_pubpeer takes only the paper argument.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2773,8 +2773,8 @@
     "objectID": "chapters/mod-ref-pubpeer.html#notes",
     "href": "chapters/mod-ref-pubpeer.html#notes",
     "title": "\n31  PubPeer Comments\n",
-    "section": "\n31.6 Notes",
-    "text": "31.6 Notes\nIn the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.",
+    "section": "\n31.7 Notes",
+    "text": "31.7 Notes\nIn the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
@@ -2785,7 +2785,7 @@
     "href": "chapters/mod-ref-retraction.html",
     "title": "\n32  Retraction Watch\n",
     "section": "",
-    "text": "32.1 What it checks\nThe ref_retraction module cross-references the paper’s cited references against the Retraction Watch database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.",
+    "text": "32.1 The basics\nA retraction is a formal notice from a journal withdrawing a published paper, usually because of a serious error or misconduct. ref_retraction checks whether any of the papers a manuscript cites have been retracted, using the Retraction Watch database, so you can catch an unintentional citation to retracted work.\nHere is the module running on a demo paper, which cites a reference that is in the Retraction Watch database:\nRetractionWatch: You cited 1 article in the RetractionWatch database.\nRunning a module always works the same way: module_run(paper, \"module_name\"). The printed result above is a short report: a coloured light and a one-line summary.\nIf you want to work with the result instead of just reading it, save it to a variable and look inside it:\nmo &lt;- module_run(paper, \"ref_retraction\")\nmo$table[, c(\"doi\", \"text\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\ndoi\ntext\n\n\n10.1177/0956797614520714\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.\nmo$table lists each cited reference that was found in the Retraction Watch database. A flagged reference is not automatically a mistake — retractions happen for many reasons, and a paper is sometimes cited deliberately to discuss the retraction itself. The module’s job is to make you aware of the retraction; follow up each flagged DOI yourself before deciding what to do about it.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2795,8 +2795,8 @@
     "objectID": "chapters/mod-ref-retraction.html#what-it-checks",
     "href": "chapters/mod-ref-retraction.html#what-it-checks",
     "title": "\n32  Retraction Watch\n",
-    "section": "",
-    "text": "Note\n\n\n\nThis module makes live network calls (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.",
+    "section": "\n32.2 What it checks",
+    "text": "32.2 What it checks\nThe ref_retraction module cross-references the paper’s cited references against the Retraction Watch database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.\n\n\n\n\n\n\nNote\n\n\n\nThis module makes live network calls (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2806,8 +2806,8 @@
     "objectID": "chapters/mod-ref-retraction.html#running-the-module",
     "href": "chapters/mod-ref-retraction.html#running-the-module",
     "title": "\n32  Retraction Watch\n",
-    "section": "\n32.2 Running the module",
-    "text": "32.2 Running the module\ndemopaper() cites a reference that is in the Retraction Watch database.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_retraction\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 article in the RetractionWatch database.\"\n\n\nThe table lists each cited reference found in the database:\n\nmo$table[, c(\"doi\", \"text\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\ndoi\ntext\n\n\n10.1177/0956797614520714\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.",
+    "section": "\n32.3 Running the module",
+    "text": "32.3 Running the module\ndemopaper() cites a reference that is in the Retraction Watch database.\n\npaper &lt;- demopaper()\nmo &lt;- module_run(paper, \"ref_retraction\")\nmo$traffic_light\n\n#&gt; [1] \"info\"\n\nmo$summary_text\n\n#&gt; [1] \"You cited 1 article in the RetractionWatch database.\"\n\n\nThe table lists each cited reference found in the database:\n\nmo$table[, c(\"doi\", \"text\")] |&gt;\n  knitr::kable()\n\n\n\n\n\n\n\ndoi\ntext\n\n\n10.1177/0956797614520714\nGino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2817,8 +2817,8 @@
     "objectID": "chapters/mod-ref-retraction.html#running-on-many-papers",
     "href": "chapters/mod-ref-retraction.html#running-on-many-papers",
     "title": "\n32  Retraction Watch\n",
-    "section": "\n32.3 Running on many papers",
-    "text": "32.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_retraction\")\nmo$summary_table",
+    "section": "\n32.4 Running on many papers",
+    "text": "32.4 Running on many papers\n\nmo &lt;- module_run(psychsci[1:10], \"ref_retraction\")\nmo$summary_table",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2828,8 +2828,8 @@
     "objectID": "chapters/mod-ref-retraction.html#interpreting-the-result",
     "href": "chapters/mod-ref-retraction.html#interpreting-the-result",
     "title": "\n32  Retraction Watch\n",
-    "section": "\n32.4 Interpreting the result",
-    "text": "32.4 Interpreting the result\nA flagged reference is not automatically a mistake — retractions happen for many reasons, and a retracted paper is sometimes cited deliberately (for example, to discuss the retraction itself). The module’s job is to make sure you are aware, so you can decide. Follow up each flagged DOI before acting.",
+    "section": "\n32.5 Interpreting the result",
+    "text": "32.5 Interpreting the result\nA flagged reference is not automatically a mistake — retractions happen for many reasons, and a retracted paper is sometimes cited deliberately (for example, to discuss the retraction itself). The module’s job is to make sure you are aware, so you can decide. Follow up each flagged DOI before acting.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2839,8 +2839,8 @@
     "objectID": "chapters/mod-ref-retraction.html#options",
     "href": "chapters/mod-ref-retraction.html#options",
     "title": "\n32  Retraction Watch\n",
-    "section": "\n32.5 Options",
-    "text": "32.5 Options\nref_retraction takes only the paper argument.",
+    "section": "\n32.6 Options",
+    "text": "32.6 Options\nref_retraction takes only the paper argument.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2850,8 +2850,8 @@
     "objectID": "chapters/mod-ref-retraction.html#updating-the-database",
     "href": "chapters/mod-ref-retraction.html#updating-the-database",
     "title": "\n32  Retraction Watch\n",
-    "section": "\n32.6 Updating the database",
-    "text": "32.6 Updating the database\nThe module matches references against a data frame called retractionwatch that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:\n\nrw_date()     # the date the bundled database was last updated\nrw_update()   # download the newest version from Retraction Watch\n\nrw_update() downloads the latest Retraction Watch data (&gt;50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.",
+    "section": "\n32.7 Updating the database",
+    "text": "32.7 Updating the database\nThe module matches references against a data frame called retractionwatch that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:\n\nrw_date()     # the date the bundled database was last updated\nrw_update()   # download the newest version from Retraction Watch\n\nrw_update() downloads the latest Retraction Watch data (&gt;50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -2861,8 +2861,8 @@
     "objectID": "chapters/mod-ref-retraction.html#notes",
     "href": "chapters/mod-ref-retraction.html#notes",
     "title": "\n32  Retraction Watch\n",
-    "section": "\n32.7 Notes",
-    "text": "32.7 Notes\nThis is the same kind of check that reference managers such as Zotero perform, brought into the Metacheck workflow so it can run alongside the other reference checks.",
+    "section": "\n32.8 Notes",
+    "text": "32.8 Notes\nThis is the same kind of check that reference managers such as Zotero perform, brought into the Metacheck workflow so it can run alongside the other reference checks.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
@@ -3878,6 +3878,83 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>D</span>  <span class='chapter-title'>Function reference</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ethics-check.html#the-basics",
+    "href": "chapters/mod-ethics-check.html#the-basics",
+    "title": "\n13  Ethics Approval Check\n",
+    "section": "",
+    "text": "module_run(psychsci[1:10], \"ethics_check\")",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Ethics Approval Check</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-stat-check.html#the-basics",
+    "href": "chapters/mod-stat-check.html#the-basics",
+    "title": "\n18  StatCheck\n",
+    "section": "",
+    "text": "paper &lt;- demopaper()\nmodule_run(paper, \"stat_check\")",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-stat-check.html#what-it-checks",
+    "href": "chapters/mod-stat-check.html#what-it-checks",
+    "title": "\n18  StatCheck\n",
+    "section": "\n18.2 What it checks",
+    "text": "18.2 What it checks\nThe stat_check module runs Statcheck on the paper. Statcheck recomputes the p-value from each reported test statistic and degrees of freedom, and flags cases where the reported p-value is inconsistent with the statistic — and, more seriously, where the inconsistency changes the significance decision (a decision error).\nMetacheck only returns Statcheck results for t-tests and F-tests, the tests for which the approach has been validated (Nuijten et al., 2016). Statcheck only detects statistics written in APA format, which is mostly used in psychology journals.\nThis module only checks statistics reported in the running text of the manuscript — it cannot (yet) process statistics reported only in a table.\nThis module is fully offline (Statcheck runs locally).",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>StatCheck</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-stat-p-nonsig.html#the-basics",
+    "href": "chapters/mod-stat-p-nonsig.html#the-basics",
+    "title": "\n20  Non-Significant p-Values\n",
+    "section": "",
+    "text": "paper &lt;- demopaper()\nmodule_run(paper, \"stat_p_nonsig\")",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-stat-p-nonsig.html#what-it-checks",
+    "href": "chapters/mod-stat-p-nonsig.html#what-it-checks",
+    "title": "\n20  Non-Significant p-Values\n",
+    "section": "\n20.2 What it checks",
+    "text": "20.2 What it checks\nThe stat_p_nonsig module finds every non-significant p-value so a reader can check whether the surrounding text interprets it correctly. A p-value counts as significant, and is excluded, when it is at most .05 and reported with a comparator of &lt;, =, or ≤ (&lt;=/=&lt; are also recognised) — so p = .05 itself is treated as significant, not non-significant, and p ≤ .01 is treated the same as p &lt; .01. Everything else (any larger value, or a &gt;/≥ comparator) is flagged as non-significant. A common error is to treat a non-significant result as evidence that there is no effect (“there was no difference between groups, p = .27”), when a non-significant result is simply inconclusive.\nThe module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.\nThis module is fully offline.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>Non-Significant p-Values</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-pubpeer.html#the-basics",
+    "href": "chapters/mod-ref-pubpeer.html#the-basics",
+    "title": "\n31  PubPeer Comments\n",
+    "section": "",
+    "text": "paper &lt;- demopaper()\nmodule_run(paper, \"ref_pubpeer\")",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>31</span>  <span class='chapter-title'>PubPeer Comments</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-ref-retraction.html#the-basics",
+    "href": "chapters/mod-ref-retraction.html#the-basics",
+    "title": "\n32  Retraction Watch\n",
+    "section": "",
+    "text": "paper &lt;- demopaper()\nmodule_run(paper, \"ref_retraction\")",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>32</span>  <span class='chapter-title'>Retraction Watch</span>"
     ]
   }
 ]

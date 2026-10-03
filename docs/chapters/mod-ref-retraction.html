@@ -447,13 +447,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">32.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">32.2</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">32.3</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">32.4</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">32.5</span> Options</a></li>
-  <li><a href="#updating-the-database" id="toc-updating-the-database" class="nav-link" data-scroll-target="#updating-the-database"><span class="header-section-number">32.6</span> Updating the database</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">32.7</span> Notes</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">32.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">32.2</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">32.3</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">32.4</span> Running on many papers</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">32.5</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">32.6</span> Options</a></li>
+  <li><a href="#updating-the-database" id="toc-updating-the-database" class="nav-link" data-scroll-target="#updating-the-database"><span class="header-section-number">32.7</span> Updating the database</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">32.8</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-retraction.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -474,40 +475,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="32.1"><h2 data-number="32.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">32.1</span> What it checks</h2>
-<p>The <code>ref_retraction</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://retractionwatch.com/">Retraction Watch</a> database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This module makes <strong>live network calls</strong> (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.</p>
-</div>
-</div>
-</section><section id="running-the-module" class="level2" data-number="32.2"><h2 data-number="32.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">32.2</span> Running the module</h2>
-<p><code>demopaper()</code> cites a reference that is in the Retraction Watch database.</p>
-<div class="cell">
+</header><section id="the-basics" class="level2" data-number="32.1"><h2 data-number="32.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">32.1</span> The basics</h2>
+<p>A retraction is a formal notice from a journal withdrawing a published paper, usually because of a serious error or misconduct. <code>ref_retraction</code> checks whether any of the papers a manuscript cites have been retracted, using the <a href="https://retractionwatch.com/">Retraction Watch</a> database, so you can catch an unintentional citation to retracted work.</p>
+<p>Here is the module running on a demo paper, which cites a reference that is in the Retraction Watch database:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_retraction"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "info"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "You cited 1 article in the RetractionWatch database."</code></pre>
-</div>
-</div>
-<p>The <code>table</code> lists each cited reference found in the database:</p>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_retraction"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>RetractionWatch: You cited 1 article in the RetractionWatch database.</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"text"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_retraction"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"text"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -526,28 +505,81 @@ Note
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="32.3"><h2 data-number="32.3" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">32.3</span> Running on many papers</h2>
+<p><code>mo$table</code> lists each cited reference that was found in the Retraction Watch database. A flagged reference is not automatically a mistake — retractions happen for many reasons, and a paper is sometimes cited deliberately to discuss the retraction itself. The module’s job is to make you aware of the retraction; follow up each flagged DOI yourself before deciding what to do about it.</p>
+</section><section id="what-it-checks" class="level2" data-number="32.2"><h2 data-number="32.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">32.2</span> What it checks</h2>
+<p>The <code>ref_retraction</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://retractionwatch.com/">Retraction Watch</a> database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module makes <strong>live network calls</strong> (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.</p>
+</div>
+</div>
+</section><section id="running-the-module" class="level2" data-number="32.3"><h2 data-number="32.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">32.3</span> Running the module</h2>
+<p><code>demopaper()</code> cites a reference that is in the Retraction Watch database.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_retraction"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_retraction"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "info"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "You cited 1 article in the RetractionWatch database."</code></pre>
+</div>
+</div>
+<p>The <code>table</code> lists each cited reference found in the database:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"text"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 88%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">doi</th>
+<th style="text-align: left;">text</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">10.1177/0956797614520714</td>
+<td style="text-align: left;">Gino, Francesca, and Scott S. Wiltermuth. 2014. “Evil Genius? How Dishonesty Can Lead to Greater Creativity.” Psychological Science 25 (4): 973-81. https://doi.org/10.1177/0956797614520714.</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</section><section id="running-on-many-papers" class="level2" data-number="32.4"><h2 data-number="32.4" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">32.4</span> Running on many papers</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_retraction"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="interpreting-the-result" class="level2" data-number="32.4"><h2 data-number="32.4" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">32.4</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="32.5"><h2 data-number="32.5" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">32.5</span> Interpreting the result</h2>
 <p>A flagged reference is not automatically a mistake — retractions happen for many reasons, and a retracted paper is sometimes cited deliberately (for example, to discuss the retraction itself). The module’s job is to make sure you are <em>aware</em>, so you can decide. Follow up each flagged DOI before acting.</p>
-</section><section id="options" class="level2" data-number="32.5"><h2 data-number="32.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">32.5</span> Options</h2>
+</section><section id="options" class="level2" data-number="32.6"><h2 data-number="32.6" class="anchored" data-anchor-id="options">
+<span class="header-section-number">32.6</span> Options</h2>
 <p><code>ref_retraction</code> takes only the <code>paper</code> argument.</p>
-</section><section id="updating-the-database" class="level2" data-number="32.6"><h2 data-number="32.6" class="anchored" data-anchor-id="updating-the-database">
-<span class="header-section-number">32.6</span> Updating the database</h2>
+</section><section id="updating-the-database" class="level2" data-number="32.7"><h2 data-number="32.7" class="anchored" data-anchor-id="updating-the-database">
+<span class="header-section-number">32.7</span> Updating the database</h2>
 <p>The module matches references against a data frame called <code>retractionwatch</code> that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rw_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rw_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
 <span><span class="fu">rw_update</span><span class="op">(</span><span class="op">)</span>   <span class="co"># download the newest version from Retraction Watch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>rw_update()</code> downloads the latest Retraction Watch data (&gt;50 MB), summarises it into a compact form (~0.5 MB), deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally — or before an important check — to make sure you are not missing recent retractions.</p>
-</section><section id="notes" class="level2" data-number="32.7"><h2 data-number="32.7" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">32.7</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="32.8"><h2 data-number="32.8" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">32.8</span> Notes</h2>
 <p>This is the same kind of check that reference managers such as <a href="https://www.zotero.org/blog/retracted-item-notifications/">Zotero</a> perform, brought into the Metacheck workflow so it can run alongside the other reference checks.</p>
 
 

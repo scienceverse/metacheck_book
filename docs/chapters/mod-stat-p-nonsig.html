@@ -447,12 +447,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">20.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">20.2</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">20.3</span> Running on many papers</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">20.4</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">20.5</span> Options</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">20.6</span> Validation</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">20.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">20.2</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">20.3</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">20.4</span> Running on many papers</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">20.5</span> A clean example and one with problems</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">20.6</span> Options</a></li>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">20.7</span> Validation</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-p-nonsig.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -473,28 +474,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">20.1</span> What it checks</h2>
-<p>The <code>stat_p_nonsig</code> module finds every <strong>non-significant p-value</strong> so a reader can check whether the surrounding text interprets it correctly. A p-value counts as significant, and is excluded, when it is at most .05 <em>and</em> reported with a comparator of <code>&lt;</code>, <code>=</code>, or <code>≤</code> (<code>&lt;=</code>/<code>=&lt;</code> are also recognised) — so <code>p = .05</code> itself is treated as significant, not non-significant, and <code>p ≤ .01</code> is treated the same as <code>p &lt; .01</code>. Everything else (any larger value, or a <code>&gt;</code>/<code>≥</code> comparator) is flagged as non-significant. A common error is to treat a non-significant result as evidence that there is <em>no effect</em> (“there was no difference between groups, p = .27”), when a non-significant result is simply inconclusive.</p>
-<p>The module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.</p>
-<p>This module is <strong>fully offline</strong>.</p>
-</section><section id="running-the-module" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">20.2</span> Running the module</h2>
+</header><section id="the-basics" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">20.1</span> The basics</h2>
+<p>A p-value is non-significant when it is larger than .05 (or reported with a <code>&gt;</code> or <code>≥</code> sign) — conventionally, this means the result does not give clear evidence of an effect. <code>stat_p_nonsig</code> finds every non-significant p-value in a paper so you can check whether the surrounding sentence describes it correctly, since it is a common mistake to describe a non-significant result as proof that there is <em>no</em> effect.</p>
+<p>Here is the module running on a demo paper:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Non-Significant P Value Check: We found 2 non-significant p values that should be checked for appropriate interpretation.</p>
-<p>The <code>table</code> lists each non-significant p-value with its comparison and value:</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "yellow"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "We found 2 non-significant p values that should be checked for appropriate interpretation."</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"significance"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"significance"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -521,10 +512,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">20.3</span> Running on many papers</h2>
+<p><code>mo$table</code> lists the exact sentence (<code>text</code>) containing each non-significant p-value. The module makes no judgement of its own — a flagged sentence is not automatically wrong. Always read the sentence yourself: a non-significant result correctly described as inconclusive is fine, while one described as showing “no effect” or “no difference” is the kind of claim worth questioning.</p>
+</section><section id="what-it-checks" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">20.2</span> What it checks</h2>
+<p>The <code>stat_p_nonsig</code> module finds every <strong>non-significant p-value</strong> so a reader can check whether the surrounding text interprets it correctly. A p-value counts as significant, and is excluded, when it is at most .05 <em>and</em> reported with a comparator of <code>&lt;</code>, <code>=</code>, or <code>≤</code> (<code>&lt;=</code>/<code>=&lt;</code> are also recognised) — so <code>p = .05</code> itself is treated as significant, not non-significant, and <code>p ≤ .01</code> is treated the same as <code>p &lt; .01</code>. Everything else (any larger value, or a <code>&gt;</code>/<code>≥</code> comparator) is flagged as non-significant. A common error is to treat a non-significant result as evidence that there is <em>no effect</em> (“there was no difference between groups, p = .27”), when a non-significant result is simply inconclusive.</p>
+<p>The module makes no judgement itself — it only surfaces the sentences so you can read how each result is described.</p>
+<p>This module is <strong>fully offline</strong>.</p>
+</section><section id="running-the-module" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">20.3</span> Running the module</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Non-Significant P Value Check: We found 2 non-significant p values that should be checked for appropriate interpretation.</p>
+<p>The <code>table</code> lists each non-significant p-value with its comparison and value:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "yellow"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "We found 2 non-significant p values that should be checked for appropriate interpretation."</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"significance"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">text</th>
+<th style="text-align: left;">p_comp</th>
+<th style="text-align: right;">p_value</th>
+<th style="text-align: left;">significance</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">p =0.152</td>
+<td style="text-align: left;">=</td>
+<td style="text-align: right;">0.152</td>
+<td style="text-align: left;">nonsignificant</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p &gt; .05</td>
+<td style="text-align: left;">&gt;</td>
+<td style="text-align: right;">0.050</td>
+<td style="text-align: left;">nonsignificant</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="running-on-many-papers" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">20.4</span> Running on many papers</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -562,11 +602,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">20.4</span> A clean example and one with problems</h2>
+</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">20.5</span> A clean example and one with problems</h2>
 <p>A result that is correctly described as inconclusive is fine; one that claims “no effect” from a non-significant test is the kind of thing to check. The module flags both, and you read the sentence:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flagged</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"There was no difference between the groups, t(40) = 1.10, p = .28."</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flagged</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"There was no difference between the groups, t(40) = 1.10, p = .28."</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">flagged</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_value"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -585,17 +625,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>A paper reporting only significant results returns nothing to check:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clean</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"The effect was significant, t(28) = 2.40, p = .02."</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clean</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"The effect was significant, t(28) = 2.40, p = .02."</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">clean</span>, <span class="st">"stat_p_nonsig"</span><span class="op">)</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "green"</code></pre>
 </div>
 </div>
-</section><section id="options" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">20.5</span> Options</h2>
+</section><section id="options" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="options">
+<span class="header-section-number">20.6</span> Options</h2>
 <p><code>stat_p_nonsig</code> takes only the <code>paper</code> argument.</p>
-</section><section id="validation" class="level2" data-number="20.6"><h2 data-number="20.6" class="anchored" data-anchor-id="validation">
-<span class="header-section-number">20.6</span> Validation</h2>
+</section><section id="validation" class="level2" data-number="20.7"><h2 data-number="20.7" class="anchored" data-anchor-id="validation">
+<span class="header-section-number">20.7</span> Validation</h2>
 <blockquote class="blockquote">
 <p>In a sample of 194 papers with 1602 instances of non-significant p-values, this module correctly detected 1486 of them and incorrectly identified 153. 91% of detections were true instances (positive predictive value).</p>
 </blockquote>
