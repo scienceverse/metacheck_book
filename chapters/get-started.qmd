@@ -112,3 +112,9 @@ See the [Reading in a Paper](reading-a-paper.qmd) chapter for the full details o
 ## Large language models
 
 A few modules (notably [power](mod-power.qmd) and [prereg_check](mod-prereg-check.qmd)) can use a large language model to extract structured information from text. LLM use is **entirely optional and opt-in**, and the vast majority of modules work without any LLM. For how to turn LLM support on, choose a model, run one locally with Ollama, or use a cloud API, see [Using Large Language Models](llms.qmd).
+
+## API keys and tokens for online repositories
+
+The [repo_check](mod-repo-check.qmd) module and related functions can read files directly from repositories such as OSF, Zenodo, Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab. For most of these an access token is optional and only raises how many requests you may make per hour, or gives you access to your own private material — the one exception is Dryad, where a token is required even to download files from a fully public dataset.
+
+Each service issues its own token, which you store once in a file called `.Renviron` so R finds it automatically every time it starts. Step-by-step instructions, with screenshots, exist for [OSF](archiving-osf.qmd) and [Zenodo](uploading-to-zenodo.qmd); for Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab, see [Getting API Tokens for Other Repositories](repository-tokens.qmd). LLM provider API keys (OpenAI, Anthropic, Groq, and so on) are a separate matter, covered in [Using Large Language Models](llms.qmd).

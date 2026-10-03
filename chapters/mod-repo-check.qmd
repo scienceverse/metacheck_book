@@ -101,6 +101,8 @@ mo$summary_table
 
 DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.
 
+Several of these platforms need an access token before Metacheck can download their files — Dryad requires one even for a fully public dataset. See [Getting API Tokens for Other Repositories](repository-tokens.qmd), or [Downloading an OSF Account](archiving-osf.qmd) for OSF specifically.
+
 ### OSF registrations follow their source project
 
 An OSF **registration** is a locked snapshot. Many "Open-Ended Registration" entries (common in older schemas) only *describe* what was shared, with the real files living in the project the registration was made from (`registered_from`). Since the manuscript usually links only the registration, `repo_check` follows `registered_from` automatically:
