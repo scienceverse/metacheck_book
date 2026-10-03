@@ -11,6 +11,29 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
+## The basics
+
+Many papers share their data, code, or materials in an online **repository** — a separate web page, hosted on a site like OSF or GitHub, that holds a folder of files. `repo_check` finds the links to these repositories in a paper and looks at what is actually inside them.
+
+Here is the module running on a demo paper (this needs an internet connection, because the module has to visit the repository online to see what it contains):
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "repo_check")
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. Saving the result to a variable, here called `mo`, lets you look at specific pieces of it instead of only the printed summary. `mo$table` is a **table** — rows and columns, like a spreadsheet — listing every file found across all the repositories the paper links to:
+
+```{r}
+mo$table[, c("repo_name", "file_name", "file_type", "file_size")] |>
+  head(10) |>
+  knitr::kable()
+```
+
+The traffic light here is about file *organisation*, not about the data or code itself. A green light means every linked repository has a README (a short text file explaining what is in the folder), no files are hidden inside a zipped archive, and every file has a recognisable name. A yellow light means something about that organisation could be improved — for example a missing README or an archive file — which is worth a look but is not necessarily a sign anything is wrong with the actual research. Always check `mo$summary_text` to see exactly what was flagged before deciding whether it matters.
+
 ## What it checks
 
 The `repo_check` module finds links to **research repositories** in a paper, retrieves the list of files in each, and reports what is shared. It is the foundation for every other module that reads repository files: [code_check](mod-code-check.qmd) and [data_check](mod-data-check.qmd) both build on the file list `repo_check` produces. See [Repositories it searches](#repositories-it-searches) below for the full list of platforms it recognises.

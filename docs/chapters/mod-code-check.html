@@ -447,28 +447,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">23.1</span> What it checks</a></li>
-  <li><a href="#languages-code_lang" id="toc-languages-code_lang" class="nav-link" data-scroll-target="#languages-code_lang"><span class="header-section-number">23.2</span> Languages: <code>code_lang()</code></a></li>
-  <li><a href="#reading-code-code_read-and-code_extract_r" id="toc-reading-code-code_read-and-code_extract_r" class="nav-link" data-scroll-target="#reading-code-code_read-and-code_extract_r"><span class="header-section-number">23.3</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code></a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">23.4</span> Running the module</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">23.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">23.2</span> What it checks</a></li>
+  <li><a href="#languages-code_lang" id="toc-languages-code_lang" class="nav-link" data-scroll-target="#languages-code_lang"><span class="header-section-number">23.3</span> Languages: <code>code_lang()</code></a></li>
+  <li><a href="#reading-code-code_read-and-code_extract_r" id="toc-reading-code-code_read-and-code_extract_r" class="nav-link" data-scroll-target="#reading-code-code_read-and-code_extract_r"><span class="header-section-number">23.4</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code></a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">23.5</span> Running the module</a></li>
   <li>
-<a href="#the-checks-function-by-function" id="toc-the-checks-function-by-function" class="nav-link" data-scroll-target="#the-checks-function-by-function"><span class="header-section-number">23.5</span> The checks, function by function</a>
+<a href="#the-checks-function-by-function" id="toc-the-checks-function-by-function" class="nav-link" data-scroll-target="#the-checks-function-by-function"><span class="header-section-number">23.6</span> The checks, function by function</a>
   <ul class="collapse">
-<li><a href="#parsing-code_parse_r" id="toc-parsing-code_parse_r" class="nav-link" data-scroll-target="#parsing-code_parse_r"><span class="header-section-number">23.5.1</span> Parsing: <code>code_parse_r()</code></a></li>
-  <li><a href="#comments-code_remove_comments-and-code_line_stats" id="toc-comments-code_remove_comments-and-code_line_stats" class="nav-link" data-scroll-target="#comments-code_remove_comments-and-code_line_stats"><span class="header-section-number">23.5.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code></a></li>
-  <li><a href="#absolute-paths-code_abs_path" id="toc-absolute-paths-code_abs_path" class="nav-link" data-scroll-target="#absolute-paths-code_abs_path"><span class="header-section-number">23.5.3</span> Absolute paths: <code>code_abs_path()</code></a></li>
-  <li><a href="#working-directory-code_setwd" id="toc-working-directory-code_setwd" class="nav-link" data-scroll-target="#working-directory-code_setwd"><span class="header-section-number">23.5.4</span> Working directory: <code>code_setwd()</code></a></li>
-  <li><a href="#package-installation-code_install_packages" id="toc-package-installation-code_install_packages" class="nav-link" data-scroll-target="#package-installation-code_install_packages"><span class="header-section-number">23.5.5</span> Package installation: <code>code_install_packages()</code></a></li>
-  <li><a href="#library-placement-code_library_lines" id="toc-library-placement-code_library_lines" class="nav-link" data-scroll-target="#library-placement-code_library_lines"><span class="header-section-number">23.5.6</span> Library placement: <code>code_library_lines()</code></a></li>
-  <li><a href="#missing-loaded-files-code_file_refs" id="toc-missing-loaded-files-code_file_refs" class="nav-link" data-scroll-target="#missing-loaded-files-code_file_refs"><span class="header-section-number">23.5.7</span> Missing loaded files: <code>code_file_refs()</code></a></li>
-  <li><a href="#packages-loaded-code_library_names" id="toc-packages-loaded-code_library_names" class="nav-link" data-scroll-target="#packages-loaded-code_library_names"><span class="header-section-number">23.5.8</span> Packages loaded: <code>code_library_names()</code></a></li>
-  <li><a href="#reproducible-environment-.code_version_pin_check" id="toc-reproducible-environment-.code_version_pin_check" class="nav-link" data-scroll-target="#reproducible-environment-.code_version_pin_check"><span class="header-section-number">23.5.9</span> Reproducible environment: <code>.code_version_pin_check()</code></a></li>
+<li><a href="#parsing-code_parse_r" id="toc-parsing-code_parse_r" class="nav-link" data-scroll-target="#parsing-code_parse_r"><span class="header-section-number">23.6.1</span> Parsing: <code>code_parse_r()</code></a></li>
+  <li><a href="#comments-code_remove_comments-and-code_line_stats" id="toc-comments-code_remove_comments-and-code_line_stats" class="nav-link" data-scroll-target="#comments-code_remove_comments-and-code_line_stats"><span class="header-section-number">23.6.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code></a></li>
+  <li><a href="#absolute-paths-code_abs_path" id="toc-absolute-paths-code_abs_path" class="nav-link" data-scroll-target="#absolute-paths-code_abs_path"><span class="header-section-number">23.6.3</span> Absolute paths: <code>code_abs_path()</code></a></li>
+  <li><a href="#working-directory-code_setwd" id="toc-working-directory-code_setwd" class="nav-link" data-scroll-target="#working-directory-code_setwd"><span class="header-section-number">23.6.4</span> Working directory: <code>code_setwd()</code></a></li>
+  <li><a href="#package-installation-code_install_packages" id="toc-package-installation-code_install_packages" class="nav-link" data-scroll-target="#package-installation-code_install_packages"><span class="header-section-number">23.6.5</span> Package installation: <code>code_install_packages()</code></a></li>
+  <li><a href="#library-placement-code_library_lines" id="toc-library-placement-code_library_lines" class="nav-link" data-scroll-target="#library-placement-code_library_lines"><span class="header-section-number">23.6.6</span> Library placement: <code>code_library_lines()</code></a></li>
+  <li><a href="#missing-loaded-files-code_file_refs" id="toc-missing-loaded-files-code_file_refs" class="nav-link" data-scroll-target="#missing-loaded-files-code_file_refs"><span class="header-section-number">23.6.7</span> Missing loaded files: <code>code_file_refs()</code></a></li>
+  <li><a href="#packages-loaded-code_library_names" id="toc-packages-loaded-code_library_names" class="nav-link" data-scroll-target="#packages-loaded-code_library_names"><span class="header-section-number">23.6.8</span> Packages loaded: <code>code_library_names()</code></a></li>
+  <li><a href="#reproducible-environment-.code_version_pin_check" id="toc-reproducible-environment-.code_version_pin_check" class="nav-link" data-scroll-target="#reproducible-environment-.code_version_pin_check"><span class="header-section-number">23.6.9</span> Reproducible environment: <code>.code_version_pin_check()</code></a></li>
   </ul>
 </li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">23.6</span> A clean example and one with problems</a></li>
-  <li><a href="#downloading-and-options" id="toc-downloading-and-options" class="nav-link" data-scroll-target="#downloading-and-options"><span class="header-section-number">23.7</span> Downloading and options</a></li>
-  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">23.8</span> The traffic light and what you get back</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">23.9</span> Notes</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">23.7</span> A clean example and one with problems</a></li>
+  <li><a href="#downloading-and-options" id="toc-downloading-and-options" class="nav-link" data-scroll-target="#downloading-and-options"><span class="header-section-number">23.8</span> Downloading and options</a></li>
+  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">23.9</span> The traffic light and what you get back</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">23.10</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-code-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -489,128 +490,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">23.1</span> What it checks</h2>
-<p>The <code>code_check</code> module analyses the <strong>code files</strong> shared with a paper. Building on the file list from <a href="../chapters/mod-repo-check.html">repo_check</a>, it identifies code files, then checks each for signs of reproducibility problems:</p>
-<ul>
-<li>whether R-type files <strong>parse</strong> without errors;</li>
-<li>whether files contain <strong>comments</strong>;</li>
-<li>whether they use <strong>absolute file paths</strong> (which break on other machines);</li>
-<li>whether they call <strong><code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code></strong> (which hardcodes an assumption about the working directory);</li>
-<li>whether they call <strong><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code></strong> (which installs software on whoever runs the script, without asking);</li>
-<li>whether the files they try to <strong>load</strong> are actually present in the repository;</li>
-<li>whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script; and</li>
-<li>whether the repository <strong>pins its R/package environment</strong> (<code>renv.lock</code>, a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> dump, or a <code>groundhog</code>/<code>checkpoint</code> date-pin call), so package versions do not silently drift between the original analysis and any later reproduction attempt.</li>
-</ul>
-<p>The module reports on <em>potential</em> problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in <em>Psychological Science</em>.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This module makes <strong>live network calls</strong> to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.</p>
-</div>
-</div>
-</section><section id="languages-code_lang" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="languages-code_lang">
-<span class="header-section-number">23.2</span> Languages: <code>code_lang()</code>
-</h2>
-<p>The module first labels every file with its language using <code>code_lang()</code>, which is name-based (by extension):</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead><tr class="header">
-<th>Language</th>
-<th>Extensions</th>
-<th>Analysed?</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>R</td>
-<td>
-<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>
-</td>
-<td>yes (parsed, commented, paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code>, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, libraries, loaded files)</td>
-</tr>
-<tr class="even">
-<td>Python</td>
-<td>
-<code>.py</code>, <code>.ipynb</code>
-</td>
-<td>yes (except parsing)</td>
-</tr>
-<tr class="odd">
-<td>SAS</td>
-<td><code>.sas</code></td>
-<td>yes (except parsing)</td>
-</tr>
-<tr class="even">
-<td>SPSS</td>
-<td><code>.sps</code></td>
-<td>yes (except parsing)</td>
-</tr>
-<tr class="odd">
-<td>Stata</td>
-<td>
-<code>.do</code>, <code>.ado</code>
-</td>
-<td>yes (except parsing)</td>
-</tr>
-<tr class="even">
-<td>Mplus</td>
-<td><code>.inp</code></td>
-<td>yes (except parsing)</td>
-</tr>
-<tr class="odd">
-<td>MATLAB</td>
-<td><code>.m</code></td>
-<td>yes (except parsing)</td>
-</tr>
-<tr class="even">
-<td>JASP</td>
-<td><code>.jasp</code></td>
-<td><strong>listed only</strong></td>
-</tr>
-<tr class="odd">
-<td>jamovi</td>
-<td><code>.omv</code></td>
-<td><strong>listed only</strong></td>
-</tr>
-</tbody>
-</table>
-<p>A <code>.ipynb</code> notebook is JSON, not a plain script: its code cells are extracted from the <code>source</code> array of each cell (the same way <code>.Rmd</code>/<code>.qmd</code> are purled to R code below) before any text-based check runs. <code>.py</code> and <code>.m</code> are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but <em>running</em> the code stays out of scope (that is <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s job, and it is R-only).</p>
-<p>Some file types are never code themselves but <em>contain</em> the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS <code>.spv</code> (rendered output) has its syntax recovered as a <code>.sps</code> file, a Stata <code>.smcl</code> log has its echoed commands recovered as a <code>.do</code> file, an Mplus <code>.out</code> file has its “INPUT INSTRUCTIONS” section recovered as an <code>.inp</code> file, and an <code>.html</code> file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page.</p>
+</header><section id="the-basics" class="level2" data-number="23.1"><h2 data-number="23.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">23.1</span> The basics</h2>
+<p>When a paper shares its analysis code, that code should ideally run on someone else’s computer, not just the author’s own. <code>code_check</code> looks at the code files a paper links to and checks for common signs that a script will not run elsewhere — things like a missing comment explaining a step, a hardcoded file path from the author’s own computer, or a call to load a package that was never actually loaded.</p>
+<p>Here is the module running on a demo paper (this needs an internet connection, because the module has to fetch the code files from the linked repository):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_lang</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis.R"</span>, <span class="st">"clean.do"</span>, <span class="st">"model.sas"</span>, <span class="st">"survey.sps"</span>, <span class="st">"study.jasp"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<pre><code>analysis.R   clean.do  model.sas survey.sps study.jasp
-       "R"    "Stata"      "SAS"     "SPSS"     "JASP"</code></pre>
-<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>import_jasp()</code> / <code>import_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
-</section><section id="reading-code-code_read-and-code_extract_r" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="reading-code-code_read-and-code_extract_r">
-<span class="header-section-number">23.3</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code>
-</h2>
-<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module detects an Rmd/qmd file by its leading <code>---</code> YAML fence and routes it through <code>code_extract_r()</code> automatically.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu">demofile</span><span class="op">(</span><span class="st">"qmd"</span><span class="op">)</span></span>
-<span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu">code_extract_r</span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span>   <span class="co"># R code only, prose stripped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section><section id="running-the-module" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">23.4</span> Running the module</h2>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 33 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
@@ -625,9 +516,9 @@ Note
 #&gt; -  Parsing issues of R-type files were found.</code></pre>
 </div>
 </div>
-<p>The <code>table</code> has one row per code file, with the reproducibility checks as columns:</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. Saving the result to a variable, here called <code>mo</code>, lets you look at specific pieces of it instead of only the printed summary. <code>mo$table</code> is a <strong>table</strong> — rows and columns, like a spreadsheet — with one row per code file, showing exactly which problems were found in each one:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"language"</span>, <span class="st">"parse_error"</span>, <span class="st">"code_abs_path"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"language"</span>, <span class="st">"parse_error"</span>, <span class="st">"code_abs_path"</span>,</span>
 <span>             <span class="st">"percentage_comment"</span>, <span class="st">"loaded_files_missing"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -917,15 +808,444 @@ Note
 </table>
 </div>
 </div>
-</section><section id="the-checks-function-by-function" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="the-checks-function-by-function">
-<span class="header-section-number">23.5</span> The checks, function by function</h2>
+<p>A green light means every code file was checked with no issues found, and the repository records which package versions were used. A yellow light does not mean the code is wrong — it means something was found that is usually worth fixing, such as a file path that only exists on the author’s computer (<code>code_abs_path</code>), a file the script tries to read that was not shared (<code>loaded_files_missing</code>), or code with no comments at all. These checks look at the text of the code, not at whether it actually runs, so always read the flagged lines yourself before deciding whether a problem is serious.</p>
+</section><section id="what-it-checks" class="level2" data-number="23.2"><h2 data-number="23.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">23.2</span> What it checks</h2>
+<p>The <code>code_check</code> module analyses the <strong>code files</strong> shared with a paper. Building on the file list from <a href="../chapters/mod-repo-check.html">repo_check</a>, it identifies code files, then checks each for signs of reproducibility problems:</p>
+<ul>
+<li>whether R-type files <strong>parse</strong> without errors;</li>
+<li>whether files contain <strong>comments</strong>;</li>
+<li>whether they use <strong>absolute file paths</strong> (which break on other machines);</li>
+<li>whether they call <strong><code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code></strong> (which hardcodes an assumption about the working directory);</li>
+<li>whether they call <strong><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code></strong> (which installs software on whoever runs the script, without asking);</li>
+<li>whether the files they try to <strong>load</strong> are actually present in the repository;</li>
+<li>whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script; and</li>
+<li>whether the repository <strong>pins its R/package environment</strong> (<code>renv.lock</code>, a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> dump, or a <code>groundhog</code>/<code>checkpoint</code> date-pin call), so package versions do not silently drift between the original analysis and any later reproduction attempt.</li>
+</ul>
+<p>The module reports on <em>potential</em> problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in <em>Psychological Science</em>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module makes <strong>live network calls</strong> to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.</p>
+</div>
+</div>
+</section><section id="languages-code_lang" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="languages-code_lang">
+<span class="header-section-number">23.3</span> Languages: <code>code_lang()</code>
+</h2>
+<p>The module first labels every file with its language using <code>code_lang()</code>, which is name-based (by extension):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Language</th>
+<th>Extensions</th>
+<th>Analysed?</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>R</td>
+<td>
+<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>
+</td>
+<td>yes (parsed, commented, paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code>, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, libraries, loaded files)</td>
+</tr>
+<tr class="even">
+<td>Python</td>
+<td>
+<code>.py</code>, <code>.ipynb</code>
+</td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="odd">
+<td>SAS</td>
+<td><code>.sas</code></td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="even">
+<td>SPSS</td>
+<td><code>.sps</code></td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="odd">
+<td>Stata</td>
+<td>
+<code>.do</code>, <code>.ado</code>
+</td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="even">
+<td>Mplus</td>
+<td><code>.inp</code></td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="odd">
+<td>MATLAB</td>
+<td><code>.m</code></td>
+<td>yes (except parsing)</td>
+</tr>
+<tr class="even">
+<td>JASP</td>
+<td><code>.jasp</code></td>
+<td><strong>listed only</strong></td>
+</tr>
+<tr class="odd">
+<td>jamovi</td>
+<td><code>.omv</code></td>
+<td><strong>listed only</strong></td>
+</tr>
+</tbody>
+</table>
+<p>A <code>.ipynb</code> notebook is JSON, not a plain script: its code cells are extracted from the <code>source</code> array of each cell (the same way <code>.Rmd</code>/<code>.qmd</code> are purled to R code below) before any text-based check runs. <code>.py</code> and <code>.m</code> are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but <em>running</em> the code stays out of scope (that is <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s job, and it is R-only).</p>
+<p>Some file types are never code themselves but <em>contain</em> the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS <code>.spv</code> (rendered output) has its syntax recovered as a <code>.sps</code> file, a Stata <code>.smcl</code> log has its echoed commands recovered as a <code>.do</code> file, an Mplus <code>.out</code> file has its “INPUT INSTRUCTIONS” section recovered as an <code>.inp</code> file, and an <code>.html</code> file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_lang</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis.R"</span>, <span class="st">"clean.do"</span>, <span class="st">"model.sas"</span>, <span class="st">"survey.sps"</span>, <span class="st">"study.jasp"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>analysis.R   clean.do  model.sas survey.sps study.jasp
+       "R"    "Stata"      "SAS"     "SPSS"     "JASP"</code></pre>
+<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>import_jasp()</code> / <code>import_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
+</section><section id="reading-code-code_read-and-code_extract_r" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="reading-code-code_read-and-code_extract_r">
+<span class="header-section-number">23.4</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code>
+</h2>
+<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module detects an Rmd/qmd file by its leading <code>---</code> YAML fence and routes it through <code>code_extract_r()</code> automatically.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu">demofile</span><span class="op">(</span><span class="st">"qmd"</span><span class="op">)</span></span>
+<span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu">code_extract_r</span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span>   <span class="co"># R code only, prose stripped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="running-the-module" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">23.5</span> Running the module</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "yellow"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; -  We found 33 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  1 code file had no comments.
+#&gt; -  10 files loaded in the code were missing in the repository.
+#&gt; -  Absolute file paths were found.
+#&gt; -  No setwd() calls were found.
+#&gt; -  No install.packages() calls were found.
+#&gt; -  Libraries/imports were loaded in multiple places.
+#&gt; -  The code loaded 7 distinct packages.
+#&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found.
+#&gt; -  Parsing issues of R-type files were found.</code></pre>
+</div>
+</div>
+<p>The <code>table</code> has one row per code file, with the reproducibility checks as columns:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"language"</span>, <span class="st">"parse_error"</span>, <span class="st">"code_abs_path"</span>,</span>
+<span>             <span class="st">"percentage_comment"</span>, <span class="st">"loaded_files_missing"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 23%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">file_name</th>
+<th style="text-align: left;">language</th>
+<th style="text-align: left;">parse_error</th>
+<th style="text-align: right;">code_abs_path</th>
+<th style="text-align: right;">percentage_comment</th>
+<th style="text-align: right;">loaded_files_missing</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bad.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0714286</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">bad.Rmd</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">good-example.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4000000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">01.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">02.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">03.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">04.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">07.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">08.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">09.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">11.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">12.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">13.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">14.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">15.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">17.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">18.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">20.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">21.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">22.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">23.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">24.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3333333</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">utils.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.5372549</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">._utils.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="the-checks-function-by-function" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="the-checks-function-by-function">
+<span class="header-section-number">23.6</span> The checks, function by function</h2>
 <p>Each check is a small exported helper, so you can run it on your own code independently of the module.</p>
-<section id="parsing-code_parse_r" class="level3" data-number="23.5.1"><h3 data-number="23.5.1" class="anchored" data-anchor-id="parsing-code_parse_r">
-<span class="header-section-number">23.5.1</span> Parsing: <code>code_parse_r()</code>
+<section id="parsing-code_parse_r" class="level3" data-number="23.6.1"><h3 data-number="23.6.1" class="anchored" data-anchor-id="parsing-code_parse_r">
+<span class="header-section-number">23.6.1</span> Parsing: <code>code_parse_r()</code>
 </h3>
 <p>For R-type files, <code>code_parse_r()</code> attempts to <code><a href="https://rdrr.io/r/base/parse.html">parse()</a></code> the code and captures any syntax error (rewriting <code>&lt;text&gt;</code> in the message to <code>line</code> for readability). Only R is parsed; other languages report <code>NA</code> (not assessed). A parse error means the file is not valid R and would not run at all.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_parse_r</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x &lt;- 1"</span>, <span class="st">"y &lt;- "</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_parse_r</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x &lt;- 1"</span>, <span class="st">"y &lt;- "</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; tibble [1 × 3] (S3: tbl_df/tbl/data.frame)
 #&gt;  $ file_path: chr ""
@@ -933,12 +1253,12 @@ Note
 #&gt;  $ msg      : chr "line:3:0: unexpected end of input\n1: x &lt;- 1\n2: y &lt;- \n  ^"</code></pre>
 </div>
 </div>
-</section><section id="comments-code_remove_comments-and-code_line_stats" class="level3" data-number="23.5.2"><h3 data-number="23.5.2" class="anchored" data-anchor-id="comments-code_remove_comments-and-code_line_stats">
-<span class="header-section-number">23.5.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code>
+</section><section id="comments-code_remove_comments-and-code_line_stats" class="level3" data-number="23.6.2"><h3 data-number="23.6.2" class="anchored" data-anchor-id="comments-code_remove_comments-and-code_line_stats">
+<span class="header-section-number">23.6.2</span> Comments: <code>code_remove_comments()</code> and <code>code_line_stats()</code>
 </h3>
 <p><code>code_remove_comments()</code> strips comments per language — line comments and block comments in each of R, SAS, SPSS, and Stata (e.g.&nbsp;SAS <code>/* … */</code> blocks and <code>*…;</code> line comments; Stata <code>//</code> end-of-line and <code>/* */</code> blocks). <code>code_line_stats()</code> then reports the total lines, blank lines, code lines, comment lines, and the <strong>percentage of comment lines</strong>. A file with no comments (<code>percentage_comment == 0</code>) is flagged, because comments are what let a future reader (including the author) understand and reuse the code.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">""</span>, <span class="st">"# clean the data"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">""</span>, <span class="st">"# clean the data"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span></span>
 <span><span class="fu">code_line_stats</span><span class="op">(</span><span class="va">code_text</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; $total_lines
@@ -957,12 +1277,12 @@ Note
 #&gt; [1] NA</code></pre>
 </div>
 </div>
-</section><section id="absolute-paths-code_abs_path" class="level3" data-number="23.5.3"><h3 data-number="23.5.3" class="anchored" data-anchor-id="absolute-paths-code_abs_path">
-<span class="header-section-number">23.5.3</span> Absolute paths: <code>code_abs_path()</code>
+</section><section id="absolute-paths-code_abs_path" class="level3" data-number="23.6.3"><h3 data-number="23.6.3" class="anchored" data-anchor-id="absolute-paths-code_abs_path">
+<span class="header-section-number">23.6.3</span> Absolute paths: <code>code_abs_path()</code>
 </h3>
 <p><code>code_abs_path()</code> searches the (comment-free) code for quoted strings that are absolute filesystem paths: a Windows drive path (<code>C:/…</code>, <code>D:\…</code>), a Unix root path (<code>/Users/…</code>), a home path (<code>~/…</code>), or a UNC network path (<code>\\host\share\…</code>). These break on anyone else’s computer. The UNC branch is deliberately strict — it requires the real <code>\\host\share</code> shape — because a bare backslash string is far more often a regex escape (<code>"\\d+"</code>) than a network path. The module notes these are potential false positives in code like <code>paste0(dir, "/file.csv")</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_abs_path</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file &lt;- 'C:/Users/lakens/data.csv'"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_abs_path</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file &lt;- 'C:/Users/lakens/data.csv'"</span>,</span>
 <span>                <span class="st">"tmp  &lt;- '/home/lakens/out.html'"</span>,</span>
 <span>                <span class="st">"rel  &lt;- './clean.csv'"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -973,12 +1293,12 @@ Note
 #&gt; 2 /home/lakens/out.html        2</code></pre>
 </div>
 </div>
-</section><section id="working-directory-code_setwd" class="level3" data-number="23.5.4"><h3 data-number="23.5.4" class="anchored" data-anchor-id="working-directory-code_setwd">
-<span class="header-section-number">23.5.4</span> Working directory: <code>code_setwd()</code>
+</section><section id="working-directory-code_setwd" class="level3" data-number="23.6.4"><h3 data-number="23.6.4" class="anchored" data-anchor-id="working-directory-code_setwd">
+<span class="header-section-number">23.6.4</span> Working directory: <code>code_setwd()</code>
 </h3>
 <p><code>code_setwd()</code> finds R <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls (on comment-free code). <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> hardcodes an assumption about the working directory — often an absolute path on the author’s own machine — so the script breaks when run anywhere else. This check is R-only, since <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> is an R construct.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_setwd</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"setwd('C:/Users/lakens/project')"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_setwd</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"setwd('C:/Users/lakens/project')"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; # A tibble: 1 × 2
 #&gt;   setwd_call                        line
@@ -986,12 +1306,12 @@ Note
 #&gt; 1 setwd('C:/Users/lakens/project')     1</code></pre>
 </div>
 </div>
-</section><section id="package-installation-code_install_packages" class="level3" data-number="23.5.5"><h3 data-number="23.5.5" class="anchored" data-anchor-id="package-installation-code_install_packages">
-<span class="header-section-number">23.5.5</span> Package installation: <code>code_install_packages()</code>
+</section><section id="package-installation-code_install_packages" class="level3" data-number="23.6.5"><h3 data-number="23.6.5" class="anchored" data-anchor-id="package-installation-code_install_packages">
+<span class="header-section-number">23.6.5</span> Package installation: <code>code_install_packages()</code>
 </h3>
 <p><code>code_install_packages()</code> finds R <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls (on comment-free code, so a commented-out call is never flagged — only a live one). An <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> call in analysis code installs software on whoever runs the script, without asking: at minimum disruptive (an unexpected install, network access, a package version the author never tested against), and at worst a security risk if it points at an untrusted repository. Best practice is to document required packages (a README, a <code>renv.lock</code>/<code>DESCRIPTION</code>) rather than install them from inside the analysis code itself. This check is R-only, since <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> is an R construct; a namespace-qualified <code><a href="https://rdrr.io/r/utils/install.packages.html">utils::install.packages()</a></code> call is matched too.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_install_packages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"install.packages('ggplot2')"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_install_packages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"install.packages('ggplot2')"</span>, <span class="st">"d &lt;- read.csv('x.csv')"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; # A tibble: 1 × 2
 #&gt;   install_packages_call        line
@@ -999,12 +1319,12 @@ Note
 #&gt; 1 install.packages('ggplot2')     1</code></pre>
 </div>
 </div>
-</section><section id="library-placement-code_library_lines" class="level3" data-number="23.5.6"><h3 data-number="23.5.6" class="anchored" data-anchor-id="library-placement-code_library_lines">
-<span class="header-section-number">23.5.6</span> Library placement: <code>code_library_lines()</code>
+</section><section id="library-placement-code_library_lines" class="level3" data-number="23.6.6"><h3 data-number="23.6.6" class="anchored" data-anchor-id="library-placement-code_library_lines">
+<span class="header-section-number">23.6.6</span> Library placement: <code>code_library_lines()</code>
 </h3>
 <p><code>code_library_lines()</code> returns the line numbers on which imports/library loads occur, with language-specific patterns (R <code>library</code>/<code>require</code>/<code><a href="https://rstudio.github.io/renv/reference/install.html">renv::install</a></code>/<code>p_load</code>; SAS <code>%include</code>/<code>libname</code>/<code>filename</code>; SPSS <code>INSERT</code>/<code>BEGIN PROGRAM</code>; Stata <code>do</code>/<code>net install</code>/<code>ssc install</code>). The module computes the maximum gap between successive import lines: if they are more than 3 non-comment lines apart, the file is flagged, because best practice is to load all dependencies in one block near the top so a script’s requirements are easy to see.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_lines</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"x &lt;- 1"</span>, <span class="st">"library(tidyr)"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_lines</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"x &lt;- 1"</span>, <span class="st">"library(tidyr)"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; # A tibble: 2 × 2
 #&gt;   code            line
@@ -1013,29 +1333,29 @@ Note
 #&gt; 2 library(tidyr)     3</code></pre>
 </div>
 </div>
-</section><section id="missing-loaded-files-code_file_refs" class="level3" data-number="23.5.7"><h3 data-number="23.5.7" class="anchored" data-anchor-id="missing-loaded-files-code_file_refs">
-<span class="header-section-number">23.5.7</span> Missing loaded files: <code>code_file_refs()</code>
+</section><section id="missing-loaded-files-code_file_refs" class="level3" data-number="23.6.7"><h3 data-number="23.6.7" class="anchored" data-anchor-id="missing-loaded-files-code_file_refs">
+<span class="header-section-number">23.6.7</span> Missing loaded files: <code>code_file_refs()</code>
 </h3>
 <p><code>code_file_refs()</code> extracts the files a script reads or loads — from read/load calls (<code>read.csv</code>, <code>read_csv</code>, <code>fread</code>, <code>readRDS</code>, <code>load</code>, <code>fromJSON</code>, <code>source</code>, and their SAS/SPSS/Stata equivalents like <code>proc import</code>, <code>infile</code>, <code>GET DATA /FILE=</code>, <code>use</code>, <code>import delimited</code>) — by capturing the quoted filename argument. The module compares each referenced file (by basename) against the files actually present in the same repository; anything not found is reported as a <strong>missing loaded file</strong>, so a reader can check whether the input data were shared. There can be valid reasons a file is not shared (e.g.&nbsp;it holds personal data), which the module cannot evaluate, so it always reports rather than judges.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source('functions.R')"</span>, <span class="st">"d &lt;- read.csv('study.csv')"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source('functions.R')"</span>, <span class="st">"d &lt;- read.csv('study.csv')"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "functions.R" "study.csv"</code></pre>
 </div>
 </div>
-</section><section id="packages-loaded-code_library_names" class="level3" data-number="23.5.8"><h3 data-number="23.5.8" class="anchored" data-anchor-id="packages-loaded-code_library_names">
-<span class="header-section-number">23.5.8</span> Packages loaded: <code>code_library_names()</code>
+</section><section id="packages-loaded-code_library_names" class="level3" data-number="23.6.8"><h3 data-number="23.6.8" class="anchored" data-anchor-id="packages-loaded-code_library_names">
+<span class="header-section-number">23.6.8</span> Packages loaded: <code>code_library_names()</code>
 </h3>
 <p><code>code_library_names()</code> extracts the names of the packages/libraries a file loads (R <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code>/<code>::</code>; Python <code>import</code>/<code>from … import</code>). The module unions and de-duplicates these across all of a paper’s code files (<code>code_packages()</code>), giving the full list of dependencies the analysis relies on — with no version information, since that is static analysis of source text, not an installed environment.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;   package  source line
 #&gt; 1   dplyr library    1</code></pre>
 </div>
 </div>
-</section><section id="reproducible-environment-.code_version_pin_check" class="level3" data-number="23.5.9"><h3 data-number="23.5.9" class="anchored" data-anchor-id="reproducible-environment-.code_version_pin_check">
-<span class="header-section-number">23.5.9</span> Reproducible environment: <code>.code_version_pin_check()</code>
+</section><section id="reproducible-environment-.code_version_pin_check" class="level3" data-number="23.6.9"><h3 data-number="23.6.9" class="anchored" data-anchor-id="reproducible-environment-.code_version_pin_check">
+<span class="header-section-number">23.6.9</span> Reproducible environment: <code>.code_version_pin_check()</code>
 </h3>
 <p>Knowing <em>which</em> packages were loaded (above) is not the same as knowing <em>which versions</em>. The module separately checks whether the repository <strong>pins</strong> the exact R/package environment the analysis depended on, via any of:</p>
 <ul>
@@ -1045,11 +1365,11 @@ Note
 </ul>
 <p>Without one of these, package versions can silently drift between when the analysis was run and any later reproduction attempt — a script that works today may fail or produce different results a year from now if <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> pulls whatever the CRAN snapshot happens to be at that time.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is also exposed for <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s Docker backend, which uses the declared R version (when found) to pick a matching base image — see <code>docker_use_declared_version</code> in that chapter.</p>
-</section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="23.6"><h2 data-number="23.6" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">23.6</span> A clean example and one with problems</h2>
+</section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">23.7</span> A clean example and one with problems</h2>
 <p>Common problems the module surfaces:</p>
 <ul>
 <li>
@@ -1060,7 +1380,7 @@ Note
 <strong>Parse errors</strong> (<code>parse_error == TRUE</code>) — the file is not valid R code.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1085,9 +1405,9 @@ Note
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bad.Rmd</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">good-example.R</td>
@@ -1273,11 +1593,11 @@ Note
 </table>
 </div>
 </div>
-</section><section id="downloading-and-options" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="downloading-and-options">
-<span class="header-section-number">23.7</span> Downloading and options</h2>
+</section><section id="downloading-and-options" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="downloading-and-options">
+<span class="header-section-number">23.8</span> Downloading and options</h2>
 <p><code>code_check</code> downloads the code files it will check (<code>download = TRUE</code>, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass <code>cache = TRUE</code>; otherwise they are discarded when the session ends. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, <code>max_download_size</code> — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># stream files from their URLs instead of downloading</span></span>
@@ -1286,10 +1606,10 @@ Note
 <p>See the <a href="../chapters/local-files.html">Local Files</a> chapter for a full walkthrough of checking local code, including cloud-synced folders. If there is no manuscript at all, <code>report_repository("path/to/folder")</code> runs <code>code_check</code> together with <code>repo_check</code>, <code>data_check</code>, and <code>codebook_check</code> on the folder in one step — see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a>.</p>
 <p><code>manifest</code> merges the distinct packages loaded across a paper’s code into a metacheck manifest’s <code>code</code> section, alongside whatever <code>data_check</code> already wrote there:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, manifest <span class="op">=</span> <span class="st">"path/to/manifest/dir"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, manifest <span class="op">=</span> <span class="st">"path/to/manifest/dir"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
-<span class="header-section-number">23.8</span> The traffic light and what you get back</h2>
+</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
+<span class="header-section-number">23.9</span> The traffic light and what you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1347,8 +1667,8 @@ Note
 </tbody>
 </table>
 <p>Downloaded code files (and any recovered <code>.spv</code>/<code>.smcl</code>/<code>.out</code>/<code>.html</code>-derived syntax files) are cached and reused via the same <code>cache</code>/<code>max_file_size</code>/<code>max_download_size</code> mechanism <code>data_check</code> uses — see the <a href="../chapters/caching.html">Caching</a> chapter.</p>
-</section><section id="notes" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">23.9</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="23.10"><h2 data-number="23.10" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">23.10</span> Notes</h2>
 <p>The module reports on <em>potential</em> problems. If you want to extend the package to perform additional checks, or make the checks work on other code languages, reach out to the Metacheck development team.</p>
 
 

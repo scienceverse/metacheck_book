@@ -11,6 +11,29 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
+## The basics
+
+When a paper shares its analysis code, that code should ideally run on someone else's computer, not just the author's own. `code_check` looks at the code files a paper links to and checks for common signs that a script will not run elsewhere — things like a missing comment explaining a step, a hardcoded file path from the author's own computer, or a call to load a package that was never actually loaded.
+
+Here is the module running on a demo paper (this needs an internet connection, because the module has to fetch the code files from the linked repository):
+
+```{r}
+paper <- demopaper()
+mo <- module_run(paper, "code_check")
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. Saving the result to a variable, here called `mo`, lets you look at specific pieces of it instead of only the printed summary. `mo$table` is a **table** — rows and columns, like a spreadsheet — with one row per code file, showing exactly which problems were found in each one:
+
+```{r}
+mo$table[, c("file_name", "language", "parse_error", "code_abs_path",
+             "percentage_comment", "loaded_files_missing")] |>
+  knitr::kable()
+```
+
+A green light means every code file was checked with no issues found, and the repository records which package versions were used. A yellow light does not mean the code is wrong — it means something was found that is usually worth fixing, such as a file path that only exists on the author's computer (`code_abs_path`), a file the script tries to read that was not shared (`loaded_files_missing`), or code with no comments at all. These checks look at the text of the code, not at whether it actually runs, so always read the flagged lines yourself before deciding whether a problem is serious.
+
 ## What it checks
 
 The `code_check` module analyses the **code files** shared with a paper. Building on the file list from [repo_check](mod-repo-check.qmd), it identifies code files, then checks each for signs of reproducibility problems:
