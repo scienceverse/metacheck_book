@@ -447,14 +447,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">14.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">14.2</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">14.3</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">14.4</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">14.5</span> Options</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">14.6</span> Notes</a></li>
-  <li><a href="#what-patterns-it-searches-for" id="toc-what-patterns-it-searches-for" class="nav-link" data-scroll-target="#what-patterns-it-searches-for"><span class="header-section-number">14.7</span> What patterns it searches for</a></li>
-  <li><a href="#an-over-inclusive-alternative-funding_check_oi" id="toc-an-over-inclusive-alternative-funding_check_oi" class="nav-link" data-scroll-target="#an-over-inclusive-alternative-funding_check_oi"><span class="header-section-number">14.8</span> An over-inclusive alternative: <code>funding_check_oi</code></a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">14.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">14.2</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">14.3</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">14.4</span> Running on many papers</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">14.5</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">14.6</span> Options</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">14.7</span> Notes</a></li>
+  <li><a href="#what-patterns-it-searches-for" id="toc-what-patterns-it-searches-for" class="nav-link" data-scroll-target="#what-patterns-it-searches-for"><span class="header-section-number">14.8</span> What patterns it searches for</a></li>
+  <li><a href="#an-over-inclusive-alternative-funding_check_oi" id="toc-an-over-inclusive-alternative-funding_check_oi" class="nav-link" data-scroll-target="#an-over-inclusive-alternative-funding_check_oi"><span class="header-section-number">14.9</span> An over-inclusive alternative: <code>funding_check_oi</code></a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-funding-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -475,30 +476,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">14.1</span> What it checks</h2>
-<p>The <code>funding_check</code> module looks for a <strong>funding statement</strong> — a sentence disclosing the financial support behind the research (or stating that it received none). Declaring funding is expected by most journals and reporting guidelines, because the source of support is relevant to how readers weigh a study.</p>
-<p>The module searches the text for the phrases funding statements usually contain and returns the sentence(s) it finds. It does not judge the funding itself; it only checks whether a statement is present.</p>
-<p>This module is <strong>fully offline</strong>.</p>
-</section><section id="running-the-module" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">14.2</span> Running the module</h2>
-<p>The demo paper contains no funding statement, so the module returns a <code>red</code> light:</p>
+</header><section id="the-basics" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">14.1</span> The basics</h2>
+<p>A funding statement is a sentence in a paper where the authors say who paid for the research (or say that no one did). <code>funding_check</code> looks through a paper’s text for a sentence like this.</p>
+<p>Here is the module running on a demo paper:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"funding_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Funding Check: No funding statement was detected.</p>
-<p>When a statement <em>is</em> found, the <code>table</code> holds the matching sentence(s):</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary. This demo paper has no funding statement, so the light is red.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it. Here is a paper that does contain a funding statement:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">funded</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"This work was supported by the National Science Foundation (grant 1234567)."</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">funded</span>, <span class="st">"funding_check"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "green"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "A funding statement was detected."</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span> <span class="op">|&gt;</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -511,16 +501,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th style="text-align: left;">text</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">019a0eeaa62efa</td>
+<td style="text-align: left;">71070c72413f05</td>
 <td style="text-align: left;">This work was supported by the National Science Foundation (grant 1234567).</td>
 </tr></tbody>
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">14.3</span> Running on many papers</h2>
+<p><code>mo$table</code> (table here just means a data table, with rows and columns, like a small spreadsheet) contains the exact sentence(s) the module found. Always read that sentence yourself. A red light does not always mean something is wrong: it may mean the paper genuinely has no funding statement, or it may mean the statement is phrased in a way the module’s search does not recognise (for example buried in an acknowledgements footnote). Either way, <code>funding_check</code> is a starting point for checking a paper by hand, not a replacement for it.</p>
+</section><section id="what-it-checks" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">14.2</span> What it checks</h2>
+<p>The <code>funding_check</code> module looks for a <strong>funding statement</strong> — a sentence disclosing the financial support behind the research (or stating that it received none). Declaring funding is expected by most journals and reporting guidelines, because the source of support is relevant to how readers weigh a study.</p>
+<p>The module searches the text for the phrases funding statements usually contain and returns the sentence(s) it finds. It does not judge the funding itself; it only checks whether a statement is present.</p>
+<p>This module is <strong>fully offline</strong>.</p>
+</section><section id="running-the-module" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">14.3</span> Running the module</h2>
+<p>The demo paper contains no funding statement, so the module returns a <code>red</code> light:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"funding_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Funding Check: No funding statement was detected.</p>
+<p>When a statement <em>is</em> found, the <code>table</code> holds the matching sentence(s):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"funding_check"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">funded</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span><span class="st">"This work was supported by the National Science Foundation (grant 1234567)."</span><span class="op">)</span></span>
+<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">funded</span>, <span class="st">"funding_check"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "green"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "A funding statement was detected."</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 83%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">paper_id</th>
+<th style="text-align: left;">text</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">44d33032efc87c</td>
+<td style="text-align: left;">This work was supported by the National Science Foundation (grant 1234567).</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</section><section id="running-on-many-papers" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">14.4</span> Running on many papers</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"funding_check"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -558,17 +591,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="interpreting-the-result" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">14.4</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="14.5"><h2 data-number="14.5" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">14.5</span> Interpreting the result</h2>
 <p>A <code>red</code> light means <em>no</em> funding statement was detected — which may be because the paper genuinely omits one, or because the statement is phrased in a way the regular expressions miss (for example buried in an acknowledgements footnote). Read the relevant section to confirm before concluding a statement is absent.</p>
-</section><section id="options" class="level2" data-number="14.5"><h2 data-number="14.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">14.5</span> Options</h2>
+</section><section id="options" class="level2" data-number="14.6"><h2 data-number="14.6" class="anchored" data-anchor-id="options">
+<span class="header-section-number">14.6</span> Options</h2>
 <p><code>funding_check</code> takes only the <code>paper</code> argument.</p>
-</section><section id="notes" class="level2" data-number="14.6"><h2 data-number="14.6" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">14.6</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="14.7"><h2 data-number="14.7" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">14.7</span> Notes</h2>
 <p>This module incorporates code from <a href="https://github.com/serghiou/rtransparent">rtransparent</a>, whose approach was validated by Serghiou and colleagues (<a href="https://doi.org/10.1371/journal.pbio.3001107">2021</a>). The companion <a href="../chapters/mod-coi-check.html">COI statement</a> module works the same way for conflict-of-interest disclosures.</p>
-</section><section id="what-patterns-it-searches-for" class="level2" data-number="14.7"><h2 data-number="14.7" class="anchored" data-anchor-id="what-patterns-it-searches-for">
-<span class="header-section-number">14.7</span> What patterns it searches for</h2>
+</section><section id="what-patterns-it-searches-for" class="level2" data-number="14.8"><h2 data-number="14.8" class="anchored" data-anchor-id="what-patterns-it-searches-for">
+<span class="header-section-number">14.8</span> What patterns it searches for</h2>
 <p>Under the hood, <code>funding_check</code> does not match a single keyword. It runs roughly three dozen separate regular-expression patterns over the sentences of the paper and flags a funding statement if <strong>any</strong> of them matches. The patterns are built from interchangeable word lists, so each one tolerates a wide range of phrasings rather than a fixed string. The families of patterns are:</p>
 <p><strong>Section and statement headings.</strong> Lines that look like a dedicated heading — <em>Funding</em>, <em>Funding source(s)</em>, <em>Source(s) of funding</em>, <em>Funding statement</em>, <em>Financial support</em>, <em>Financial disclosure</em>, <em>Grant support</em>, <em>Grant sponsorship</em>, and the combined <em>Funding and conflict of interest</em> — as well as a <em>Disclosure</em> or <em>Declaration</em> heading immediately followed by a line that mentions funds, a grant, or financial support.</p>
 <p><strong>“This work was funded by …” sentences.</strong> The most common form: a subject (<em>This/These/The/Our</em> + <em>work/study/research/project/trial/program/analysis/protocol/cohort/collaboration</em>), a linking verb (<em>is/are/was/were/has been</em>), a funding verb (<em>funded/financed/supported/sponsored/resourced/aided</em>), and an agent (<em>by/from/under</em>). Variants cover <em>“funded by [a grant/fellowship/award/scholarship/stipend/bursary]”</em> and <em>“funded by [a foundation/institute/university/ministry/council/agency/NIH/NSF/HHMI/…]”</em>.</p>
@@ -579,11 +612,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>“No funding” statements also count.</strong> Because declaring the <em>absence</em> of funding is itself a funding statement, negative forms are matched too: <em>no funding was received</em>, <em>no financial support</em>, <em>no sources of funding</em>, <em>the authors received no funding for this research</em>, and similar.</p>
 <p>Finally, the module applies a few <strong>filters to reduce false positives</strong> — for example removing sentences that merely say information about funding is <em>not</em> available, and, when nothing else matches, taking a closer look at the Acknowledgements section (between the acknowledgements heading and the reference list) for funding or project-number mentions that the main patterns missed.</p>
 <p>The practical implication is the one noted under <a href="#interpreting-the-result">Interpreting the result</a>: the net is wide, but it is built around the vocabulary of <em>funding, support, grants, and financial assistance</em>. A statement that avoids all of that vocabulary — or one mangled by PDF extraction — can still slip through, so a <code>red</code> light is best read as “no recognisable funding statement found” rather than a definitive absence.</p>
-</section><section id="an-over-inclusive-alternative-funding_check_oi" class="level2" data-number="14.8"><h2 data-number="14.8" class="anchored" data-anchor-id="an-over-inclusive-alternative-funding_check_oi">
-<span class="header-section-number">14.8</span> An over-inclusive alternative: <code>funding_check_oi</code>
+</section><section id="an-over-inclusive-alternative-funding_check_oi" class="level2" data-number="14.9"><h2 data-number="14.9" class="anchored" data-anchor-id="an-over-inclusive-alternative-funding_check_oi">
+<span class="header-section-number">14.9</span> An over-inclusive alternative: <code>funding_check_oi</code>
 </h2>
 <p>The package ships a second, separate version of this check, callable with <code>module_run(paper, "funding_check_oi")</code>. It trades precision for recall: instead of roughly three dozen targeted patterns, it looks for any sentence that contains <strong>both</strong> a funding-related word (<em>funder, funded, funding, financed, support</em>) <strong>and</strong> a study-related word (a much longer, looser list: <em>work, study, studies, research, manuscript, collaboration, paper, article, project, program, grant, award, fellowship, scholarship, stipend, none, author, declare, thank, acknowledge</em>) — favouring sentences from a funding, annex, or acknowledgement section when there is more than one match per paper.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">funded</span>, <span class="st">"funding_check_oi"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">funded</span>, <span class="st">"funding_check_oi"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Funding Check (Overinclusive): A funding statement was detected.</p>
 <p>Because the two versions are shipped as separate files, both happen to define a function with the same name internally (<code>funding_check()</code>); only the filename you pass to <code>module_run()</code> — <code>"funding_check"</code> or <code>"funding_check_oi"</code> — decides which one actually runs. <code>module_list()</code> shows them as two distinct entries, titled “Funding Check” and “Funding Check (Overinclusive)”.</p>
 <p>Use the over-inclusive version when missing a real funding statement is more costly than reading through a few false positives — for example when screening a large corpus for subsequent manual review, rather than reporting a single paper’s result as final.</p>

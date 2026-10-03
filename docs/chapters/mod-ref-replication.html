@@ -447,13 +447,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">33.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">33.2</span> Running the module</a></li>
-  <li><a href="#option-show-replication-outcomes" id="toc-option-show-replication-outcomes" class="nav-link" data-scroll-target="#option-show-replication-outcomes"><span class="header-section-number">33.3</span> Option: show replication outcomes</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">33.4</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">33.5</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">33.6</span> Options</a></li>
-  <li><a href="#updating-the-database" id="toc-updating-the-database" class="nav-link" data-scroll-target="#updating-the-database"><span class="header-section-number">33.7</span> Updating the database</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">33.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">33.2</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">33.3</span> Running the module</a></li>
+  <li><a href="#option-show-replication-outcomes" id="toc-option-show-replication-outcomes" class="nav-link" data-scroll-target="#option-show-replication-outcomes"><span class="header-section-number">33.4</span> Option: show replication outcomes</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">33.5</span> Running on many papers</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">33.6</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">33.7</span> Options</a></li>
+  <li><a href="#updating-the-database" id="toc-updating-the-database" class="nav-link" data-scroll-target="#updating-the-database"><span class="header-section-number">33.8</span> Updating the database</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-replication.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -474,40 +475,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="33.1"><h2 data-number="33.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">33.1</span> What it checks</h2>
-<p>The <code>ref_replication</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://forrt.org/">FLoRA</a> replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication’s outcome.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This module makes <strong>live network calls</strong> to the FLoRA replication database. You need an internet connection to run the code below.</p>
-</div>
-</div>
-</section><section id="running-the-module" class="level2" data-number="33.2"><h2 data-number="33.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">33.2</span> Running the module</h2>
-<p><code>demopaper()</code> cites an original study that has a recorded replication.</p>
-<div class="cell">
+</header><section id="the-basics" class="level2" data-number="33.1"><h2 data-number="33.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">33.1</span> The basics</h2>
+<p>When a paper cites an earlier (“original”) study, it is useful to know whether anyone has since tried to redo that study to see if the same result shows up again — this is called a replication. <code>ref_replication</code> looks at the studies a paper cites and checks whether any of them have a known replication attempt on record, using an online database of replications called <a href="https://forrt.org/">FLoRA</a>.</p>
+<p>Here is the module running on a demo paper, which cites an original study that has a recorded replication. Because this module needs an internet connection to look up the database, running it can take a moment:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "info"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "We found 1 replication for 1 original you cited."</code></pre>
-</div>
-</div>
-<p>The <code>table</code> matches each cited original to its replication(s):</p>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Replication Check: We found 1 replication for 1 original you cited.</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"replication_doi"</span>, <span class="st">"replication_url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"replication_doi"</span>, <span class="st">"replication_url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -524,11 +503,62 @@ Note
 </table>
 </div>
 </div>
-</section><section id="option-show-replication-outcomes" class="level2" data-number="33.3"><h2 data-number="33.3" class="anchored" data-anchor-id="option-show-replication-outcomes">
-<span class="header-section-number">33.3</span> Option: show replication outcomes</h2>
+<p><code>mo$table</code> matches each cited original study to its replication(s), identified by their DOI (a permanent identifier for a published paper). A match only means a replication exists in the database — it does not tell you whether that replication succeeded or failed; for that you need the <code>show_outcomes</code> option described later in this chapter. Either way, treat a match as an invitation to go look at the replication yourself, not as a final verdict on the original study.</p>
+</section><section id="what-it-checks" class="level2" data-number="33.2"><h2 data-number="33.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">33.2</span> What it checks</h2>
+<p>The <code>ref_replication</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://forrt.org/">FLoRA</a> replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication’s outcome.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module makes <strong>live network calls</strong> to the FLoRA replication database. You need an internet connection to run the code below.</p>
+</div>
+</div>
+</section><section id="running-the-module" class="level2" data-number="33.3"><h2 data-number="33.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">33.3</span> Running the module</h2>
+<p><code>demopaper()</code> cites an original study that has a recorded replication.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "info"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "We found 1 replication for 1 original you cited."</code></pre>
+</div>
+</div>
+<p>The <code>table</code> matches each cited original to its replication(s):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"replication_doi"</span>, <span class="st">"replication_url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">doi</th>
+<th style="text-align: left;">replication_doi</th>
+<th style="text-align: left;">replication_url</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">10.1037/0003-066x.54.6.408</td>
+<td style="text-align: left;">10.1177/1474704919852921</td>
+<td style="text-align: left;">NA</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</section><section id="option-show-replication-outcomes" class="level2" data-number="33.4"><h2 data-number="33.4" class="anchored" data-anchor-id="option-show-replication-outcomes">
+<span class="header-section-number">33.4</span> Option: show replication outcomes</h2>
 <p>By default the module reports <em>that</em> a replication exists. Set <code>show_outcomes = TRUE</code> to also include the outcome of each replication (for example, whether it was successful), which adds the <code>replication_outcome</code> and <code>replication_type</code> information to the report:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"replication_doi"</span>, <span class="st">"replication_outcome"</span>, <span class="st">"replication_type"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -554,17 +584,17 @@ Note
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="33.4"><h2 data-number="33.4" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">33.4</span> Running on many papers</h2>
+</section><section id="running-on-many-papers" class="level2" data-number="33.5"><h2 data-number="33.5" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">33.5</span> Running on many papers</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="interpreting-the-result" class="level2" data-number="33.5"><h2 data-number="33.5" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">33.5</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="33.6"><h2 data-number="33.6" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">33.6</span> Interpreting the result</h2>
 <p>A match means a replication of a cited study exists in the database — it is an invitation to check whether the replication’s result changes how you should cite the original. As always, the module surfaces information for human judgement.</p>
-</section><section id="options" class="level2" data-number="33.6"><h2 data-number="33.6" class="anchored" data-anchor-id="options">
-<span class="header-section-number">33.6</span> Options</h2>
+</section><section id="options" class="level2" data-number="33.7"><h2 data-number="33.7" class="anchored" data-anchor-id="options">
+<span class="header-section-number">33.7</span> Options</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -588,11 +618,11 @@ Note
 <td>include the outcome and type of each replication</td>
 </tr>
 </tbody>
-</table></section><section id="updating-the-database" class="level2" data-number="33.7"><h2 data-number="33.7" class="anchored" data-anchor-id="updating-the-database">
-<span class="header-section-number">33.7</span> Updating the database</h2>
+</table></section><section id="updating-the-database" class="level2" data-number="33.8"><h2 data-number="33.8" class="anchored" data-anchor-id="updating-the-database">
+<span class="header-section-number">33.8</span> Updating the database</h2>
 <p>The module matches references against a data frame called <code>FLoRA</code> that ships with Metacheck. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FLoRA_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">FLoRA_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
 <span><span class="fu">FLoRA_update</span><span class="op">(</span><span class="op">)</span>   <span class="co"># download the newest version of the FLoRA database</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>FLoRA_update()</code> downloads the latest FLoRA data (&gt;5 MB), summarises it into a compact form, deletes the large original, and caches the result so subsequent checks use the fresh data. Run it occasionally to pick up replications added since your installed version of Metacheck.</p>

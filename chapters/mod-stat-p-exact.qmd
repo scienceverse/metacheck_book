@@ -12,6 +12,30 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
+## The basics
+
+A p-value is a number researchers report alongside a statistical test, and it should normally be written out exactly (for example `p = .031`), not rounded away to something vague like `p < .05` or written as if it were exactly zero (`p = .000`, which is never actually possible). `stat_p_exact` looks through a paper's text for p-values that are reported imprecisely or as exactly zero.
+
+Here is the module running on a demo paper:
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "stat_p_exact")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.
+
+If you want to work with the result instead of just reading it, save it to a variable and look inside it:
+
+```{r}
+mo <- module_run(paper, "stat_p_exact")
+mo$table[, c("text", "p_comp", "p_value", "imprecise", "zero")] |>
+  knitr::kable()
+```
+
+`mo$table` lists every p-value the module found, with an `imprecise` flag (for a vague value like `p < .05`) and a `zero` flag (for a p-value reported as exactly zero). A red light means at least one problem value was found — always look at the matching sentence yourself to see exactly what was reported. Reporting exact p-values matters because it lets other researchers reuse your results, for example to check for inconsistencies or combine results across studies.
+
 ## What it checks
 
 The `stat_p_exact` module flags two kinds of problematic p-values:
