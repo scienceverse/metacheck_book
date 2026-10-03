@@ -21,6 +21,42 @@ pak::pkg_install("scienceverse/metacheck@dev")
 ```
 :::
 
+## The basics
+
+A **codebook** is a document that explains what each column in a dataset means — for example, that a column called `cond` holds a "condition: 0 = control, 1 = treatment". The `codebook_check` module looks at the data columns a paper shares (using [`data_check`](mod-data-check.qmd)'s results) and checks, column by column, whether each one is actually described somewhere in a codebook. A column with a matching description is **labelled**; a column with no description anywhere is **unlabelled**.
+
+Here is the module running on a small folder with one data file and a codebook that documents two of its three columns, built just for this example:
+
+```{r}
+repo <- file.path(tempdir(), "codebook_check_basics_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+utils::write.csv(
+  data.frame(id = 1:6,
+             rt = c(510, 490, 505, 512, 498, 530),
+             cond = c(0, 1, 0, 1, 0, 1)),
+  file.path(repo, "data", "study.csv"), row.names = FALSE)
+
+writeLines(c("variable,description",
+             "rt,reaction time in milliseconds",
+             "cond,condition: 0 = control, 1 = treatment"),
+           file.path(repo, "codebook.csv"))
+
+mo <- module_run(test_paper(), "codebook_check",
+                 local_path = repo, local_only = TRUE)
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+Running a module always follows the same pattern: `module_run(paper, "module_name", ...)`. Assigning the result to a variable, here `mo`, lets you look at exactly which columns were and were not documented. The central piece of output is `mo$table`, with one row per data column and its documentation status:
+
+```{r}
+mo$table[, c("column_name", "label_status", "label")] |>
+  knitr::kable()
+```
+
+`id` comes back `unlabelled` because the codebook never mentions it, while `rt` and `cond` are `labelled` with the description the codebook gave them — one undocumented column out of three is already enough to turn the light `red`, so the traffic light is sensitive even to a single gap. A `labelled` status only means a description exists for that column — it does not mean the description is accurate, complete, or correctly filled in, since `codebook_check` checks whether a label exists, not whether it is right. It also cannot find documentation that exists but is phrased or formatted in a way the module does not recognise (without an LLM enabled, it only reads structured codebook tables, not free-form prose in a README or methods section). This module does more than this simple matching — it also handles conflicting or ambiguous definitions across multiple studies, richer metadata like value labels and missing-value codes, and identifying named psychometric scales — covered in the rest of this chapter.
+
 ## What it checks
 
 Shared data is only reusable if others can tell what each column *means*. The `codebook_check` module measures **documentation coverage**: for every data column extracted by [`data_check`](mod-data-check.qmd), it asks whether that column is described in a codebook (a data dictionary) shared alongside the data.

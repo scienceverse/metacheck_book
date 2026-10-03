@@ -17,6 +17,39 @@ library(metacheck)
 `reproducibility_check` and all of the `repro_*` helper functions described in this chapter are in the `dev` development version of Metacheck — install it with `remotes::install_github("scienceverse/metacheck", ref = "dev")` to run the code below. It is not yet in a released version on CRAN.
 :::
 
+## The basics
+
+A paper reports some code and some data were used to produce its results. `reproducibility_check` asks the most direct question you can ask about that: can the shared code actually be run on the shared data, and when it is run, do the numbers it produces match the numbers the paper reports? This is the single most complex module in Metacheck, so this section only introduces the simplest possible way to use it — the rest of this chapter covers everything else it can do, including actually running the code.
+
+By default, the module does **not** run any code at all. It only looks at the code and data and works out, without executing anything, how a reproduction attempt would likely go — whether each script can even be parsed, whether the files it reads are present, and what order the scripts would need to run in:
+
+```{r}
+#| eval: false
+paper <- demopaper()
+mo <- module_run(paper, "reproducibility_check")
+mo$traffic_light
+#> [1] "yellow"
+cat(mo$summary_text)
+#>
+#> -  We assessed 7 R code files for reproducibility (static analysis; no code was run).
+#> -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).
+#> -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
+#> -  2 referenced inputs unavailable (0 withheld due to size).
+#> -  6 installable dependencies detected.
+```
+
+This example is shown rather than run live in this chapter, because it needs to download every repository the demo paper links to, and this book does not want to depend on that being reachable every time it is built. Running a module always works the same way: `module_run(paper, "module_name")`.
+
+Assigning the result to a variable, `mo` above, lets you look at individual pieces instead of only the summary. The most central piece of output here is `mo$table`, which has one row per code file and records what the static check found, including a `runnable` column:
+
+```{r}
+#| eval: false
+mo$table[, c("file_name", "parses", "run_order", "runnable")] |>
+  knitr::kable()
+```
+
+A `runnable` column of `TRUE` is a cautious signal, not a guarantee: it means the file parses, every input it reads could be located, and it can be placed in a sensible run order — nothing more, because none of this has actually executed the code yet. `runnable = FALSE` does not necessarily mean the code is broken; it means the static check could not confirm everything is in place without running it. Crucially, this simple static call never tells you whether the paper's reported numbers actually reproduce — that requires opting in to actually running the code, which is a deliberate, separate step (`execute = TRUE`) covered later in this chapter, along with how to run it safely in an isolated container. Even a fully successful execution only shows that the *numbers* reproduce; it says nothing about whether the original analysis was conceptually the right one to run.
+
 ## What it checks
 
 Where [code_check](mod-code-check.qmd) asks *"is this code written well?"*, `reproducibility_check` asks a harder question: **could this code actually be run on this data — and do the numbers it produces match the ones the paper reports?** It is the module that stands closest to the goal of computational reproducibility.

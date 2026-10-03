@@ -21,6 +21,39 @@ pak::pkg_install("scienceverse/metacheck@dev")
 ```
 :::
 
+## The basics
+
+A paper's data is usually shared as a set of files in an online repository or a folder — spreadsheets, CSV files, maybe some code. `data_check` looks at all of those files, works out which ones actually contain data, reads the ones it can, and describes every column: what it is called, how it is stored, and whether anything about it looks wrong (a column that is entirely empty, a scale value that is out of range, and so on). It does several related jobs at once rather than one single check, so think of it as a first inventory of a paper's data, not a one-line verdict.
+
+Here the module is run on a small folder with one data file (`study.csv`) and one code file, built just for this example. `test_paper()` gives a placeholder paper with no online repository, and `local_only = TRUE` tells the module to look only at this local folder:
+
+```{r}
+repo <- file.path(tempdir(), "data_check_basics_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+study <- data.frame(
+  participant_id = 1:20,
+  condition      = rep(c("control", "treatment"), each = 10),
+  age            = sample(18:65, 20, replace = TRUE),
+  rt             = round(runif(20, 300, 900))
+)
+utils::write.csv(study, file.path(repo, "data", "study.csv"), row.names = FALSE)
+
+mo <- module_run(test_paper(), "data_check",
+                 local_path = repo, local_only = TRUE)
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+Running a module always works the same way: `module_run(paper, "module_name", ...)`, here with the two extra arguments that point it at a local folder instead of an online repository. Assigning the result to a variable (`mo`, short for "module output") lets you look at specific pieces of it instead of only reading the printed summary. The most central piece for `data_check` is `mo$table`, which has one row per data column:
+
+```{r}
+mo$table[, c("column_name", "representation", "measurement_level", "concept")] |>
+  knitr::kable()
+```
+
+A green traffic light here means the files could be read and no data-quality problems were flagged — it does not mean the data itself is correct, complete, or collected the way the paper describes. `data_check` can tell you that a column called `age` holds numbers between 18 and 65, but it cannot tell you whether those ages were recorded accurately. Classifying a file as "data" also does not guarantee the file is the *right* data for the reported analysis, only that it looks like a dataset. This module does much more than this simple example shows — file classification, study grouping across multiple experiments, Qualtrics handling, and more — covered in the rest of this chapter; the automated data-quality checks it runs on each column have their own chapter, [Data Quality Checks](mod-data-validate.qmd).
+
 ## What it checks
 
 The `data_check` module is the foundation for all of Metacheck's data-oriented checks. It takes the files shared with a paper — from a linked repository or a local folder — and does three things:
