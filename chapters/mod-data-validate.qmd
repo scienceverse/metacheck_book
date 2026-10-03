@@ -21,6 +21,37 @@ pak::pkg_install("scienceverse/metacheck@dev")
 ```
 :::
 
+## The basics
+
+This chapter does not describe a module you run on its own. These data-quality checks used to be a separate module (`data_validate`, plus a second one called `excel_check` for spreadsheet formatting), but both have since been **merged into [`data_check`](mod-data-check.qmd)**: there is no `module_run(paper, "data_validate")` anymore, because `data_check` now runs every check described in this chapter automatically, on every column it reads. This chapter exists to document those checks in detail, separately from the rest of what `data_check` does.
+
+So the simplest way to see these checks run is the same call used for `data_check` itself, pointed at a folder with a planted problem — here a category typed two different ways:
+
+```{r}
+repo <- file.path(tempdir(), "data_validate_basics_demo")
+dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
+
+study <- data.frame(
+  id        = 1:39,
+  condition = c(rep("Control", 20), rep("control", 19))  # same category, different case
+)
+utils::write.csv(study, file.path(repo, "data", "study.csv"), row.names = FALSE)
+
+mo <- module_run(test_paper(), "data_check",
+                 local_path = repo, local_only = TRUE)
+mo$traffic_light
+cat(mo$summary_text)
+```
+
+The result is the same kind of object `data_check` always returns, described in full in the [Data Check](mod-data-check.qmd) chapter. The piece that matters for this chapter is `mo$findings`, which has one row per problem it found (as opposed to `mo$table`, which has one row per column):
+
+```{r}
+mo$findings[, c("column", "check", "detail")] |>
+  knitr::kable()
+```
+
+A red or yellow light here, or a row in `mo$findings`, tells you a value looks suspicious by one of these general rules — for example, the same category spelled two different ways, or a value outside the range the rest of a column uses. It does not tell you *why* that value is wrong, and it cannot tell whether a value that passes every check is actually correct: a value that happens to look fine will not be flagged, and a column with no findings at all can still contain mistaken or fabricated entries these checks have no way to see. Treat a flag as a place to look by hand, not a verdict, and treat a clean result as "nothing obvious was wrong" rather than "this data is correct." The rest of this chapter describes each individual check — rating-scale values, spreadsheet formatting, careless survey responding, personal information, and more — in detail.
+
 ## What it checks
 
 `data_check` runs automated **data-quality checks** on every column it extracts, flagging the kinds of problems that are easy to miss by eye but common in shared data. Every check is a small, dependency-free base-R function that returns a uniform `list(problem, message, values)`, so the module can run them all over every column and collect the findings. The checks are:
