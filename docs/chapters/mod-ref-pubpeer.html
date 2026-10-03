@@ -447,12 +447,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">31.1</span> What it checks</a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">31.2</span> Running the module</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">31.3</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">31.4</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">31.5</span> Options</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">31.6</span> Notes</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">31.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">31.2</span> What it checks</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">31.3</span> Running the module</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">31.4</span> Running on many papers</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">31.5</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">31.6</span> Options</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">31.7</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ref-pubpeer.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -473,42 +474,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="31.1"><h2 data-number="31.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">31.1</span> What it checks</h2>
-<p>The <code>ref_pubpeer</code> module cross-references the paper’s <strong>cited references</strong> against <a href="https://pubpeer.com/">PubPeer</a>, a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.</p>
-<p>The module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.</p>
-<p>Statcheck comments on PubPeer are ignored. Statcheck automatically posted comments on <a href="https://retractionwatch.com/2016/09/02/heres-why-more-than-50000-psychology-studies-are-about-to-have-pubpeer-entries/">tens of thousands of psychology articles</a>, so including them would flag almost every cited paper and drown out substantive human comments.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This module makes <strong>live network calls</strong> to PubPeer (matching references by DOI). You need an internet connection to run the code below.</p>
-</div>
-</div>
-</section><section id="running-the-module" class="level2" data-number="31.2"><h2 data-number="31.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">31.2</span> Running the module</h2>
-<p><code>demopaper()</code> cites a reference that has PubPeer comments.</p>
-<div class="cell">
+</header><section id="the-basics" class="level2" data-number="31.1"><h2 data-number="31.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">31.1</span> The basics</h2>
+<p><a href="https://pubpeer.com/">PubPeer</a> is a website where researchers can leave public comments on published papers, usually to raise questions or concerns about the work. <code>ref_pubpeer</code> checks whether any of the papers a manuscript cites have comments on PubPeer, so you know a discussion exists before you rely on that citation.</p>
+<p>Here is the module running on a demo paper, which cites a reference with PubPeer comments:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_pubpeer"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "info"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "You cited 1 reference with comments in PubPeer."</code></pre>
-</div>
-</div>
-<p>The <code>table</code> lists each matched reference, the number of comments, and a link:</p>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_pubpeer"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>PubPeer Comments: You cited 1 reference with comments in PubPeer.</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"total_comments"</span>, <span class="st">"url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_pubpeer"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"total_comments"</span>, <span class="st">"url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -530,20 +507,78 @@ Note
 </table>
 </div>
 </div>
-</section><section id="running-on-many-papers" class="level2" data-number="31.3"><h2 data-number="31.3" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">31.3</span> Running on many papers</h2>
+<p><code>mo$table</code> lists each cited reference that has PubPeer comments, how many, and a <code>url</code> to the discussion. A flagged result does not mean the citation is bad — it only means there is a discussion worth reading. Follow the <code>url</code>, read the comments yourself, and decide whether they matter for how the citation is used.</p>
+</section><section id="what-it-checks" class="level2" data-number="31.2"><h2 data-number="31.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">31.2</span> What it checks</h2>
+<p>The <code>ref_pubpeer</code> module cross-references the paper’s <strong>cited references</strong> against <a href="https://pubpeer.com/">PubPeer</a>, a platform for post-publication peer review. If a paper you cite has comments on PubPeer, that may be worth knowing — comments can range from minor clarifications to serious concerns about the work.</p>
+<p>The module reports which cited references have PubPeer comments, how many, and a link, so you can read the discussion and judge its relevance yourself.</p>
+<p>Statcheck comments on PubPeer are ignored. Statcheck automatically posted comments on <a href="https://retractionwatch.com/2016/09/02/heres-why-more-than-50000-psychology-studies-are-about-to-have-pubpeer-entries/">tens of thousands of psychology articles</a>, so including them would flag almost every cited paper and drown out substantive human comments.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module makes <strong>live network calls</strong> to PubPeer (matching references by DOI). You need an internet connection to run the code below.</p>
+</div>
+</div>
+</section><section id="running-the-module" class="level2" data-number="31.3"><h2 data-number="31.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">31.3</span> Running the module</h2>
+<p><code>demopaper()</code> cites a reference that has PubPeer comments.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_pubpeer"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_pubpeer"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "info"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "You cited 1 reference with comments in PubPeer."</code></pre>
+</div>
+</div>
+<p>The <code>table</code> lists each matched reference, the number of comments, and a link:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"doi"</span>, <span class="st">"total_comments"</span>, <span class="st">"url"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 14%">
+<col style="width: 61%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">doi</th>
+<th style="text-align: right;">total_comments</th>
+<th style="text-align: left;">url</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">10.1177/0956797614520714</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">https://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+</section><section id="running-on-many-papers" class="level2" data-number="31.4"><h2 data-number="31.4" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">31.4</span> Running on many papers</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ref_pubpeer"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="interpreting-the-result" class="level2" data-number="31.4"><h2 data-number="31.4" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">31.4</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="31.5"><h2 data-number="31.5" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">31.5</span> Interpreting the result</h2>
 <p>A <code>green</code>/empty result means none of the cited references had PubPeer comments. A flagged result does <strong>not</strong> mean a citation is bad — it means there is a discussion you may want to read. Follow the <code>url</code> to the PubPeer thread and judge the comments in context.</p>
-</section><section id="options" class="level2" data-number="31.5"><h2 data-number="31.5" class="anchored" data-anchor-id="options">
-<span class="header-section-number">31.5</span> Options</h2>
+</section><section id="options" class="level2" data-number="31.6"><h2 data-number="31.6" class="anchored" data-anchor-id="options">
+<span class="header-section-number">31.6</span> Options</h2>
 <p><code>ref_pubpeer</code> takes only the <code>paper</code> argument.</p>
-</section><section id="notes" class="level2" data-number="31.6"><h2 data-number="31.6" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">31.6</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="31.7"><h2 data-number="31.7" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">31.7</span> Notes</h2>
 <p>In the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.</p>
 
 

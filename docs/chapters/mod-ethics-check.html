@@ -447,16 +447,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li>
-<a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">13.1</span> What it checks</a>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">13.1</span> The basics</a></li>
+  <li>
+<a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">13.2</span> What it checks</a>
   <ul class="collapse">
-<li><a href="#how-it-decides-whether-ethics-approval-is-needed" id="toc-how-it-decides-whether-ethics-approval-is-needed" class="nav-link" data-scroll-target="#how-it-decides-whether-ethics-approval-is-needed"><span class="header-section-number">13.1.1</span> How it decides whether ethics approval is needed</a></li>
+<li><a href="#how-it-decides-whether-ethics-approval-is-needed" id="toc-how-it-decides-whether-ethics-approval-is-needed" class="nav-link" data-scroll-target="#how-it-decides-whether-ethics-approval-is-needed"><span class="header-section-number">13.2.1</span> How it decides whether ethics approval is needed</a></li>
   </ul>
 </li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">13.2</span> Running the module</a></li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">13.3</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">13.4</span> Options</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">13.5</span> Notes</a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">13.3</span> Running the module</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">13.4</span> A clean example and one with problems</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">13.5</span> Options</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes"><span class="header-section-number">13.6</span> Notes</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-ethics-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -477,57 +478,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">13.1</span> What it checks</h2>
-<p>The <code>ethics_check</code> module searches a paper for a statement that the research received <strong>ethics approval</strong> — for example from an Institutional Review Board (IRB), a Research Ethics Committee, or an animal-care committee — or that it was explicitly exempted or waived. Reporting ethics approval is expected for studies involving human or animal participants.</p>
-<p>The module recognises a wide range of committee names and approval phrasing across several languages and conventions, including:</p>
-<ul>
-<li>
-<strong>Human research committees</strong> — Institutional Review Board (IRB), Independent Ethics Committee (IEC), Research/Medical Ethics Committee, and abbreviations such as REC, REB, ERB, METC, DEC.</li>
-<li>
-<strong>Animal research committees</strong> — IACUC, Animal Welfare Ethical Review Body (AWERB), and language variants.</li>
-<li>
-<strong>Approval phrasing</strong> — “approved by the … ethics committee”, “ethically approved”, “approved under protocol …”.</li>
-<li>
-<strong>Waivers and exemptions</strong> — “ethics waiver”, “deemed exempt”, “IRB exemption”.</li>
-<li>
-<strong>Declaration of Helsinki</strong> statements.</li>
-</ul>
-<section id="how-it-decides-whether-ethics-approval-is-needed" class="level3" data-number="13.1.1"><h3 data-number="13.1.1" class="anchored" data-anchor-id="how-it-decides-whether-ethics-approval-is-needed">
-<span class="header-section-number">13.1.1</span> How it decides whether ethics approval is needed</h3>
-<p>Not every paper needs an ethics statement — theoretical work, simulations, reviews, meta-analyses, and secondary analyses of existing data usually do not. So the module does not simply flag every paper that lacks an approval statement. Instead it first judges whether the paper appears to involve <strong>live data collection</strong> from human or animal participants, and only flags a <em>missing</em> statement for those papers.</p>
-<p>This judgment is made by an internal helper that searches the text for sentences signalling that data were collected directly from participants — for example:</p>
-<ul>
-<li>
-<strong>participant actions</strong> — “participants were recruited / randomly assigned / debriefed”, “subjects gave informed consent”;</li>
-<li>
-<strong>researcher actions</strong> — “we recruited / enrolled / ran participants”, “we conducted the study / survey / clinical trial”;</li>
-<li>
-<strong>consent and recruitment</strong> — “informed consent was obtained”, a “participant pool” or “research participation scheme”;</li>
-<li>
-<strong>sample descriptions</strong> — “our participants”, student samples, or participant/patient inclusion and exclusion criteria;</li>
-<li>
-<strong>animal data collection</strong> — equivalent phrasing for animal subjects.</li>
-</ul>
-<p>The patterns are deliberately <strong>conservative</strong>: they require explicit participant- or recruitment-language rather than generic words like “sample”, so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the <code>needs_ethics</code> column of the summary table, and the traffic light only turns red for papers where <code>needs_ethics</code> is <code>TRUE</code> <em>and</em> no approval statement was found.</p>
-<p>This module is <strong>fully offline</strong> — it uses only regular expressions, so all the code below runs with just the Metacheck package.</p>
-</section></section><section id="running-the-module" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">13.2</span> Running the module</h2>
-<p>The module only flags a <em>missing</em> statement when a paper appears to involve <strong>live data collection</strong> (so re-analyses of existing data are not penalised). We run it across the first ten papers of the <code>psychsci</code> corpus (see <a href="../chapters/papers-databases.html">Using the Paper Database Corpora</a>).</p>
+</header><section id="the-basics" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">13.1</span> The basics</h2>
+<p>Ethics approval is a formal sign-off, usually from a university or hospital committee, confirming that a study involving human or animal participants meets ethical standards before it is run. <code>ethics_check</code> looks through a paper’s text for a sentence saying that this approval was obtained (or that it was not needed).</p>
+<p>A single demo paper does not show this well, because the module first has to decide whether a paper needed ethics approval at all, and the demo paper does not appear to involve live data collection. So here it is running on ten real papers instead:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ethics_check"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ethics Approval Check: 3 of 10 papers appeared to involve live data collection and lacked an ethics approval statement.</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light and a one-line summary — here, several of the ten papers appeared to collect data but did not report an ethics approval statement.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ethics_check"</span><span class="op">)</span></span>
-<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "red"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "3 of 10 papers appeared to involve live data collection and lacked an ethics approval statement."</code></pre>
-</div>
-</div>
-<p>The <code>summary_table</code> has one row per paper, with an <code>ethics_approved</code> flag and the matched statement(s):</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"ethics_approved"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ethics_check"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"ethics_approved"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -580,11 +541,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">13.3</span> A clean example and one with problems</h2>
+<p><code>ethics_approved</code> tells you whether a statement was found for each paper. A <code>TRUE</code> only means a statement is <em>present</em>, not that approval was properly obtained. A paper with <code>FALSE</code> is not necessarily a problem either — the module may have decided (via a separate <code>needs_ethics</code> flag) that the paper did not need one, or the statement may simply be phrased in a way the module does not recognise. Either way, treat a red light as a prompt to check the paper by hand, not a final verdict.</p>
+</section><section id="what-it-checks" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">13.2</span> What it checks</h2>
+<p>The <code>ethics_check</code> module searches a paper for a statement that the research received <strong>ethics approval</strong> — for example from an Institutional Review Board (IRB), a Research Ethics Committee, or an animal-care committee — or that it was explicitly exempted or waived. Reporting ethics approval is expected for studies involving human or animal participants.</p>
+<p>The module recognises a wide range of committee names and approval phrasing across several languages and conventions, including:</p>
+<ul>
+<li>
+<strong>Human research committees</strong> — Institutional Review Board (IRB), Independent Ethics Committee (IEC), Research/Medical Ethics Committee, and abbreviations such as REC, REB, ERB, METC, DEC.</li>
+<li>
+<strong>Animal research committees</strong> — IACUC, Animal Welfare Ethical Review Body (AWERB), and language variants.</li>
+<li>
+<strong>Approval phrasing</strong> — “approved by the … ethics committee”, “ethically approved”, “approved under protocol …”.</li>
+<li>
+<strong>Waivers and exemptions</strong> — “ethics waiver”, “deemed exempt”, “IRB exemption”.</li>
+<li>
+<strong>Declaration of Helsinki</strong> statements.</li>
+</ul>
+<section id="how-it-decides-whether-ethics-approval-is-needed" class="level3" data-number="13.2.1"><h3 data-number="13.2.1" class="anchored" data-anchor-id="how-it-decides-whether-ethics-approval-is-needed">
+<span class="header-section-number">13.2.1</span> How it decides whether ethics approval is needed</h3>
+<p>Not every paper needs an ethics statement — theoretical work, simulations, reviews, meta-analyses, and secondary analyses of existing data usually do not. So the module does not simply flag every paper that lacks an approval statement. Instead it first judges whether the paper appears to involve <strong>live data collection</strong> from human or animal participants, and only flags a <em>missing</em> statement for those papers.</p>
+<p>This judgment is made by an internal helper that searches the text for sentences signalling that data were collected directly from participants — for example:</p>
+<ul>
+<li>
+<strong>participant actions</strong> — “participants were recruited / randomly assigned / debriefed”, “subjects gave informed consent”;</li>
+<li>
+<strong>researcher actions</strong> — “we recruited / enrolled / ran participants”, “we conducted the study / survey / clinical trial”;</li>
+<li>
+<strong>consent and recruitment</strong> — “informed consent was obtained”, a “participant pool” or “research participation scheme”;</li>
+<li>
+<strong>sample descriptions</strong> — “our participants”, student samples, or participant/patient inclusion and exclusion criteria;</li>
+<li>
+<strong>animal data collection</strong> — equivalent phrasing for animal subjects.</li>
+</ul>
+<p>The patterns are deliberately <strong>conservative</strong>: they require explicit participant- or recruitment-language rather than generic words like “sample”, so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the <code>needs_ethics</code> column of the summary table, and the traffic light only turns red for papers where <code>needs_ethics</code> is <code>TRUE</code> <em>and</em> no approval statement was found.</p>
+<p>This module is <strong>fully offline</strong> — it uses only regular expressions, so all the code below runs with just the Metacheck package.</p>
+</section></section><section id="running-the-module" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">13.3</span> Running the module</h2>
+<p>The module only flags a <em>missing</em> statement when a paper appears to involve <strong>live data collection</strong> (so re-analyses of existing data are not penalised). We run it across the first ten papers of the <code>psychsci</code> corpus (see <a href="../chapters/papers-databases.html">Using the Paper Database Corpora</a>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"ethics_check"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "red"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "3 of 10 papers appeared to involve live data collection and lacked an ethics approval statement."</code></pre>
+</div>
+</div>
+<p>The <code>summary_table</code> has one row per paper, with an <code>ethics_approved</code> flag and the matched statement(s):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"ethics_approved"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead><tr class="header">
+<th style="text-align: left;">paper_id</th>
+<th style="text-align: left;">ethics_approved</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0956797613520608</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797614522816</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797614527830</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797614557697</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797614560771</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797614566469</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797615569001</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797615569889</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797615583071</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797615588467</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">13.4</span> A clean example and one with problems</h2>
 <p>Papers that report approval show the exact sentence the module matched — useful for confirming it found a genuine statement:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">approved</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">$</span><span class="va">ethics_approved</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="cn">TRUE</span>, <span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">approved</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">$</span><span class="va">ethics_approved</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="cn">TRUE</span>, <span class="op">]</span></span>
 <span><span class="va">approved</span><span class="op">$</span><span class="va">ethics_statements</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "The ethics committee for the region of Midtjylland, Denmark, approved the experiment."</code></pre>
@@ -592,18 +657,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Papers that appear to collect data but contain <strong>no</strong> approval statement are the ones to check. These are what turn the traffic light red:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">$</span><span class="va">needs_ethics</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="cn">TRUE</span> <span class="op">&amp;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">$</span><span class="va">needs_ethics</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="cn">TRUE</span> <span class="op">&amp;</span></span>
 <span>                 <span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">$</span><span class="va">ethics_approved</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="cn">FALSE</span>, <span class="st">"paper_id"</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "0956797614522816" "0956797614560771" "0956797615569001"</code></pre>
 </div>
 </div>
 <p>A missing statement is not proof that approval was never obtained — many authors simply omit it — but it flags papers where a reviewer should confirm the ethics reporting.</p>
-</section><section id="options" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="options">
-<span class="header-section-number">13.4</span> Options</h2>
+</section><section id="options" class="level2" data-number="13.5"><h2 data-number="13.5" class="anchored" data-anchor-id="options">
+<span class="header-section-number">13.5</span> Options</h2>
 <p><code>ethics_check</code> takes only the <code>paper</code> argument.</p>
-</section><section id="notes" class="level2" data-number="13.5"><h2 data-number="13.5" class="anchored" data-anchor-id="notes">
-<span class="header-section-number">13.5</span> Notes</h2>
+</section><section id="notes" class="level2" data-number="13.6"><h2 data-number="13.6" class="anchored" data-anchor-id="notes">
+<span class="header-section-number">13.6</span> Notes</h2>
 <p>Because the module matches committee names and approval phrasing with regular expressions, it can miss unusually worded statements, and may occasionally match a sentence that mentions ethics for another reason. As with every module, treat the output as a prompt for human judgement rather than a verdict.</p>
 
 
