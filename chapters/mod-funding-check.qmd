@@ -12,6 +12,31 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
+## The basics
+
+A funding statement is a sentence in a paper where the authors say who paid for the research (or say that no one did). `funding_check` looks through a paper's text for a sentence like this.
+
+Here is the module running on a demo paper:
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "funding_check")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary. This demo paper has no funding statement, so the light is red.
+
+If you want to work with the result instead of just reading it, save it to a variable and look inside it. Here is a paper that does contain a funding statement:
+
+```{r}
+funded <- test_paper("This work was supported by the National Science Foundation (grant 1234567).")
+mo <- module_run(funded, "funding_check")
+mo$table |>
+  knitr::kable()
+```
+
+`mo$table` (table here just means a data table, with rows and columns, like a small spreadsheet) contains the exact sentence(s) the module found. Always read that sentence yourself. A red light does not always mean something is wrong: it may mean the paper genuinely has no funding statement, or it may mean the statement is phrased in a way the module's search does not recognise (for example buried in an acknowledgements footnote). Either way, `funding_check` is a starting point for checking a paper by hand, not a replacement for it.
+
 ## What it checks
 
 The `funding_check` module looks for a **funding statement** — a sentence disclosing the financial support behind the research (or stating that it received none). Declaring funding is expected by most journals and reporting guidelines, because the source of support is relevant to how readers weigh a study.

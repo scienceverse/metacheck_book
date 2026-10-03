@@ -447,14 +447,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link active" data-scroll-target="#what-it-checks"><span class="header-section-number">15.1</span> What it checks</a></li>
-  <li><a href="#how-it-differs-from-repo_check-and-code_check" id="toc-how-it-differs-from-repo_check-and-code_check" class="nav-link" data-scroll-target="#how-it-differs-from-repo_check-and-code_check"><span class="header-section-number">15.2</span> How it differs from <code>repo_check</code> and <code>code_check</code></a></li>
-  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">15.3</span> Running the module</a></li>
-  <li><a href="#a-good-example-and-a-false-positive" id="toc-a-good-example-and-a-false-positive" class="nav-link" data-scroll-target="#a-good-example-and-a-false-positive"><span class="header-section-number">15.4</span> A good example and a false positive</a></li>
-  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">15.5</span> Running on many papers</a></li>
-  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">15.6</span> Interpreting the result</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">15.7</span> Options</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">15.8</span> Related</a></li>
+<li><a href="#the-basics" id="toc-the-basics" class="nav-link active" data-scroll-target="#the-basics"><span class="header-section-number">15.1</span> The basics</a></li>
+  <li><a href="#what-it-checks" id="toc-what-it-checks" class="nav-link" data-scroll-target="#what-it-checks"><span class="header-section-number">15.2</span> What it checks</a></li>
+  <li><a href="#how-it-differs-from-repo_check-and-code_check" id="toc-how-it-differs-from-repo_check-and-code_check" class="nav-link" data-scroll-target="#how-it-differs-from-repo_check-and-code_check"><span class="header-section-number">15.3</span> How it differs from <code>repo_check</code> and <code>code_check</code></a></li>
+  <li><a href="#running-the-module" id="toc-running-the-module" class="nav-link" data-scroll-target="#running-the-module"><span class="header-section-number">15.4</span> Running the module</a></li>
+  <li><a href="#a-good-example-and-a-false-positive" id="toc-a-good-example-and-a-false-positive" class="nav-link" data-scroll-target="#a-good-example-and-a-false-positive"><span class="header-section-number">15.5</span> A good example and a false positive</a></li>
+  <li><a href="#running-on-many-papers" id="toc-running-on-many-papers" class="nav-link" data-scroll-target="#running-on-many-papers"><span class="header-section-number">15.6</span> Running on many papers</a></li>
+  <li><a href="#interpreting-the-result" id="toc-interpreting-the-result" class="nav-link" data-scroll-target="#interpreting-the-result"><span class="header-section-number">15.7</span> Interpreting the result</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">15.8</span> Options</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">15.9</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-open-practices.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -475,8 +476,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-it-checks" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="what-it-checks">
-<span class="header-section-number">15.1</span> What it checks</h2>
+</header><section id="the-basics" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="the-basics">
+<span class="header-section-number">15.1</span> The basics</h2>
+<p>Open practices means making the data, code, materials, or preregistration behind a study available for others to look at, rather than keeping them private. <code>open_practices</code> looks through a paper’s text for sentences where the authors say they have made one of these things available.</p>
+<p>Here is the module running on a real paper from the <code>psychsci</code> corpus (a collection of papers published in the journal <em>Psychological Science</em>, loaded further down in this chapter):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"open_practices"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Open Practices Check: Shared data detected.</p>
+<p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.</p>
+<p>If you want to work with the result instead of just reading it, save it to a variable and look inside it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"open_practices"</span><span class="op">)</span></span>
+<span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"data"</span>, <span class="st">"code"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 91%">
+<col style="width: 3%">
+<col style="width: 4%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">text</th>
+<th style="text-align: left;">data</th>
+<th style="text-align: left;">code</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Additional supporting information can be found at http://pss .sagepub.com/content/by/supplemental-data</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">All data have been made publicly available via Open Science Framework and can be accessed at https://osf.io/e2aks/.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The complete Open Practices Disclosure for this article can be found at http://pss.sagepub.com/content/by/supplemental-data.</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>mo$table</code> contains the exact sentence(s) the module found, along with which type of open practice (data, code, materials, preregistration) each one mentions. Always read these sentences yourself. A detection only means the paper <em>says</em> something is shared — it does not confirm that a link works, that the repository is non-empty, or that the shared files are what the sentence claims. The module can also pick up boilerplate journal text that merely mentions sharing without describing this particular paper, so treat a green light as a sentence to go check, not as proof the materials are actually there.</p>
+</section><section id="what-it-checks" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="what-it-checks">
+<span class="header-section-number">15.2</span> What it checks</h2>
 <p>The <code>open_practices</code> module searches the text of a paper for <strong>statements that data, code, materials, or a preregistration are openly available</strong>. It returns the sentences it finds, and records for each open-practice type whether a statement was detected. It also flags statements that data or materials are available only <em>on request</em>.</p>
 <p>It is important to be precise about what this module does and does not do. It checks whether the paper <em>says</em> something is shared; it does <strong>not</strong> verify that anything actually was. A sentence such as “All data are available on the Open Science Framework” is reported as a detected data statement even if the link is dead, the repository is empty, or the files are not what the sentence claims.</p>
 <p>This module is <strong>fully offline</strong>: it reads only the manuscript text and makes no network calls.</p>
@@ -493,8 +540,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>open_practices</code> has <strong>not yet been validated</strong>. We have not measured its accuracy against a hand-coded reference set, so the detection rates below should be read as illustrative, not as performance guarantees. We initially used the <a href="https://github.com/quest-bih/oddpub">ODDPub</a> package, but as this package is made for the biomedical literature, it missed too many real data sharing statements in the psychology literature we mainly work with. Compared with the older ODDPub-based approach, this module has a <em>lower false-negative rate but a higher false-positive rate</em>. Treat its output as a set of statements to <strong>review</strong>, not as a verdict. See <a href="../index.html">Module Validation</a> for what validation means in Metacheck. This module is still work in progress, and we are actively exploring the best solution to the detection of open practices statements. If you want to contribute to this development, reach out to the team.</p>
 </div>
 </div>
-</section><section id="how-it-differs-from-repo_check-and-code_check" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="how-it-differs-from-repo_check-and-code_check">
-<span class="header-section-number">15.2</span> How it differs from <code>repo_check</code> and <code>code_check</code>
+</section><section id="how-it-differs-from-repo_check-and-code_check" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="how-it-differs-from-repo_check-and-code_check">
+<span class="header-section-number">15.3</span> How it differs from <code>repo_check</code> and <code>code_check</code>
 </h2>
 <p>Three modules touch on open data and code, and it is easy to confuse them. They answer different questions and work in fundamentally different ways:</p>
 <table class="caption-top table">
@@ -527,26 +574,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>In short: <code>open_practices</code> reads what the authors <em>wrote</em>, while <code>repo_check</code> and <code>code_check</code> inspect what the authors <em>deposited</em>. A paper can trigger <code>open_practices</code> (it says “data are on OSF”) yet fail <code>repo_check</code> (the OSF project turns out to be empty), and vice versa — a repository can hold data and code that the manuscript never mentions in a formal statement. Because <code>open_practices</code> never leaves the text, it is the right tool when you have no internet access, when the linked repository is private or behind login, or when you only want to know what the paper <em>discloses</em>. Use <code>repo_check</code> and <code>code_check</code> when you want to confirm the disclosure against the real contents.</p>
-</section><section id="running-the-module" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="running-the-module">
-<span class="header-section-number">15.3</span> Running the module</h2>
+</section><section id="running-the-module" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="running-the-module">
+<span class="header-section-number">15.4</span> Running the module</h2>
 <p>The <code>summary_text</code> and traffic light summarise what was found, and the <code>table</code> holds the matching sentence(s):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"open_practices"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Open Practices Check: Shared data detected.</p>
-</section><section id="a-good-example-and-a-false-positive" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="a-good-example-and-a-false-positive">
-<span class="header-section-number">15.4</span> A good example and a false positive</h2>
+</section><section id="a-good-example-and-a-false-positive" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="a-good-example-and-a-false-positive">
+<span class="header-section-number">15.5</span> A good example and a false positive</h2>
 <p>A single paper often shows both ends of the module’s behaviour at once. Paper 4 of the <code>psychsci</code> corpus returns three “data” statements:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, <span class="st">"open_practices"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, <span class="st">"open_practices"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "Shared data detected."</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"data"</span>, <span class="st">"code"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"data"</span>, <span class="st">"code"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -588,11 +635,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The other two are <strong>false positives</strong>. They are the generic Sage journal footer (“Additional supporting information can be found at http://pss.sagepub.com/content/by/supplemental-data” and “The complete Open Practices Disclosure for this article can be found at …”). This boilerplate appears on a large share of <em>Psychological Science</em> articles regardless of whether any data were actually shared, but the module reads it as a data statement. Across the <code>psychsci</code> corpus this kind of journal boilerplate accounts for a meaningful fraction of all “data” hits, which is one reason the data-detection rate looks high in that corpus specifically.</p>
 <p>The detector also occasionally misfires on the <strong>type</strong> of practice. In other papers, a methods sentence such as “the position data were polynomially interpolated using Qualisys Track Manager” is flagged as <code>code = TRUE</code>, simply because of the vocabulary it contains, even though no code was shared. Again: the flag means “a candidate statement was found”, not “this practice was verified”.</p>
 <p>The practical takeaway mirrors the <a href="../chapters/mod-funding-check.html">funding</a> and <a href="../chapters/mod-coi-check.html">COI</a> modules: read the matched sentence before trusting the flag.</p>
-</section><section id="running-on-many-papers" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="running-on-many-papers">
-<span class="header-section-number">15.5</span> Running on many papers</h2>
+</section><section id="running-on-many-papers" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="running-on-many-papers">
+<span class="header-section-number">15.6</span> Running on many papers</h2>
 <p>The per-paper <code>summary_table</code> records, for each paper, whether a statement of each type was detected:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"open_practices"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span>, <span class="st">"open_practices"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"data_open"</span>, <span class="st">"code_open"</span>, <span class="st">"materials_open"</span>, <span class="st">"prereg_open"</span>, <span class="st">"on_request"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -779,18 +826,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Detection rates vary widely and <strong>legitimately</strong> across journals and eras. In a sample of <em>Psychological Science</em> articles — a journal that adopted open-practice badges early — a large majority mention shared data. Corpora loaded through the <a href="../chapters/papers-databases.html">paper databases</a> tell a different story: in a sample of <em>Journal of Decision Making</em> articles almost none do, while <em>PLOS Medicine</em> articles fall in between. These differences reflect real variation in disclosure norms, not a malfunction of the module. (They are also a reminder that the module measures <em>statements</em>, so a high rate partly reflects journal boilerplate, as shown above.)</p>
-</section><section id="interpreting-the-result" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="interpreting-the-result">
-<span class="header-section-number">15.6</span> Interpreting the result</h2>
+</section><section id="interpreting-the-result" class="level2" data-number="15.7"><h2 data-number="15.7" class="anchored" data-anchor-id="interpreting-the-result">
+<span class="header-section-number">15.7</span> Interpreting the result</h2>
 <ul>
 <li>A <strong>detection</strong> (<code>data_open</code>, <code>code_open</code>, etc. is <code>TRUE</code>) means a sharing statement was found — not that the resource exists or is usable. Confirm with <a href="../chapters/mod-repo-check.html"><code>repo_check</code></a> where possible, or by following the link yourself.</li>
 <li>
 <strong>No detection</strong> means no recognisable statement was found. The paper may genuinely share nothing, or it may share something using wording the module does not match, or the relevant sentence may have been mangled during PDF extraction (garbled URLs such as <code>osf .io/ideta</code> are common and can cause both false positives and missed links).</li>
 <li>An <strong><code>on_request</code></strong> flag means the paper says data or materials are available <em>on request</em>, which is worth noting because such availability is frequently not honoured in practice.</li>
-</ul></section><section id="options" class="level2" data-number="15.7"><h2 data-number="15.7" class="anchored" data-anchor-id="options">
-<span class="header-section-number">15.7</span> Options</h2>
+</ul></section><section id="options" class="level2" data-number="15.8"><h2 data-number="15.8" class="anchored" data-anchor-id="options">
+<span class="header-section-number">15.8</span> Options</h2>
 <p><code>open_practices</code> takes only the <code>paper</code> argument; it has no additional options.</p>
-</section><section id="related" class="level2" data-number="15.8"><h2 data-number="15.8" class="anchored" data-anchor-id="related">
-<span class="header-section-number">15.8</span> Related</h2>
+</section><section id="related" class="level2" data-number="15.9"><h2 data-number="15.9" class="anchored" data-anchor-id="related">
+<span class="header-section-number">15.9</span> Related</h2>
 <ul>
 <li>
 <a href="../chapters/mod-repo-check.html"><code>repo_check</code></a> follows the links a paper provides and reports what is actually in the linked repositories.</li>

@@ -12,6 +12,30 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
+## The basics
+
+Sometimes a result does not reach the threshold a researcher chose for calling it "significant" (a statistical test result unlikely to have arisen by chance), but the paper describes it anyway as "marginally significant" or "approaching significance". This is a way of talking up a result that did not pass the test. `marginal` looks through a paper's text for sentences that use phrasing like this.
+
+Here is the module running on a demo paper:
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "marginal")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.
+
+If you want to work with the result instead of just reading it, save it to a variable and look inside it:
+
+```{r}
+mo <- module_run(paper, "marginal")
+mo$table[, c("text", "section_type")] |>
+  knitr::kable()
+```
+
+`mo$table` contains the exact sentence(s) the module found. Always read these sentences yourself, in context. A flagged sentence is a candidate for over-interpreting a non-significant result, not an automatic verdict — some flagged wording may be acceptable in context, and the module also misses some cases that use phrasing it does not search for. Treat the result as a first-pass highlighter for you to review by hand, not a final judgement.
+
 ## What it checks
 
 The `marginal` module lists every sentence that describes an effect as **"marginally significant"** (or a related phrase). Describing a non-significant result as "marginally significant", "approaching significance", or "trending toward significance" is a common way to over-interpret a result that did not pass the chosen threshold. The module surfaces these sentences so a reader can judge each in context.

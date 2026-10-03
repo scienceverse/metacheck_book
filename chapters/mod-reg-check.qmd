@@ -11,6 +11,38 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
+## The basics
+
+A preregistration is a document researchers write and file *before* they collect their data, stating what they plan to do (for example, how many people they will test and which statistical test they will use). `reg_check` compares what a paper actually reports against what was preregistered, and points out where the two disagree. It needs a paper that links to a preregistration to have anything to compare — without one, there is nothing for the module to check.
+
+The comparison is made by a large language model (an AI system that reads text and answers questions about it), run through a tool called RegCheck, and it can take several minutes to finish. Here is the module running on the demo paper, which links to two preregistrations:
+
+```{r}
+#| eval: false
+paper <- demopaper()
+mo <- module_run(paper, "reg_check", client = "groq")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. Here the result is saved to a variable (`mo`) rather than printed directly, because the comparison is slow and uses an external service; the rest of this chapter shows what that saved result looks like.
+
+If you want to work with the result instead of just reading a printed report, look inside the saved variable:
+
+```{r}
+#| echo: false
+mo <- readRDS("_regcheck_demo.Rds")
+mo$traffic_light
+mo$summary_text
+```
+
+```{r}
+#| echo: false
+mo$table[, c("dimension", "deviation_judgement", "prereg_id")] |>
+  head(10) |>
+  knitr::kable()
+```
+
+`mo$table` (table here just means a data table, with rows and columns, like a small spreadsheet) has one row per thing being compared (called a dimension, such as the planned sample size or the planned statistical model), with the model's judgement on whether the paper deviates from the plan. Because the judgements come from a language model rather than an exact rule, they are **pointers for you to check by hand, never automated conclusions** — a "deviation" is not automatically a problem, and a preregistered study can deviate for good, clearly explained reasons. Always read the supporting detail behind a flagged dimension before drawing a conclusion.
+
 ## What it checks
 
 The `reg_check` module compares a paper against its **preregistration** using [RegCheck](https://github.com/JamieCummins/regcheck), an LLM-based tool that judges, dimension by dimension, whether the paper is consistent with what was preregistered. Where the [prereg_check](mod-prereg-check.qmd) module simply *retrieves* the preregistration, `reg_check` goes a step further and *compares* the two documents.

@@ -12,6 +12,30 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
+## The basics
+
+Open practices means making the data, code, materials, or preregistration behind a study available for others to look at, rather than keeping them private. `open_practices` looks through a paper's text for sentences where the authors say they have made one of these things available.
+
+Here is the module running on a real paper from the `psychsci` corpus (a collection of papers published in the journal *Psychological Science*, loaded further down in this chapter):
+
+```{r}
+#| results: asis
+paper <- psychsci[[4]]
+module_run(paper, "open_practices")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light (called a traffic light, after the red/yellow/green of a real traffic light) and a one-line summary.
+
+If you want to work with the result instead of just reading it, save it to a variable and look inside it:
+
+```{r}
+mo <- module_run(paper, "open_practices")
+mo$table[, c("text", "data", "code")] |>
+  knitr::kable()
+```
+
+`mo$table` contains the exact sentence(s) the module found, along with which type of open practice (data, code, materials, preregistration) each one mentions. Always read these sentences yourself. A detection only means the paper *says* something is shared — it does not confirm that a link works, that the repository is non-empty, or that the shared files are what the sentence claims. The module can also pick up boilerplate journal text that merely mentions sharing without describing this particular paper, so treat a green light as a sentence to go check, not as proof the materials are actually there.
+
 ## What it checks
 
 The `open_practices` module searches the text of a paper for **statements that data, code, materials, or a preregistration are openly available**. It returns the sentences it finds, and records for each open-practice type whether a statement was detected. It also flags statements that data or materials are available only *on request*.
