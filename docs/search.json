@@ -1014,7 +1014,7 @@
     "href": "chapters/mod-coi-check.html",
     "title": "\n16  Conflict of Interest Statement\n",
     "section": "",
-    "text": "16.1 What it checks\nThe coi_check module looks for a conflict of interest (COI) statement — a disclosure of any financial or personal interests that could have influenced the research (or a declaration that there are none). Like the funding statement, a COI declaration is expected by most journals and reporting guidelines.\nThe module searches the text for the phrases COI statements usually contain and returns the sentence(s) it finds. It checks only that a statement is present; it does not evaluate the disclosed interests.\nThis module is fully offline.",
+    "text": "16.1 The basics\nA conflict of interest (COI) statement is a short section in a paper where the authors say whether anything — money, a personal relationship, a job — might have influenced how they did the research. coi_check looks through a paper’s text for a sentence like this.\nHere is the module running on a demo paper:\nCOI Check: A conflict of interest statement was detected.\nRunning a module always works the same way: module_run(paper, \"module_name\"). The printed result above is a short report: a coloured light and a one-line summary.\nIf you want to work with the result instead of just reading it, save it to a variable and look inside it:\nmo &lt;- module_run(paper, \"coi_check\")\nmo$table |&gt;\n  knitr::kable()\n\n\n\npaper_id\ntext\n\n\nto_err_is_human\nThe authors declare a conflict of interest.\nmo$table contains the exact sentence(s) the module found. Always read that sentence yourself. A green light only means a statement is present — it does not mean the statement is complete, honest, or correctly filled in. A red light means no statement was found, which could mean there really is none, or it could mean the paper phrased it in a way the module does not recognise. Either way, coi_check is a starting point for checking a paper by hand, not a replacement for it.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1024,8 +1024,8 @@
     "objectID": "chapters/mod-coi-check.html#running-the-module",
     "href": "chapters/mod-coi-check.html#running-the-module",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.2 Running the module",
-    "text": "16.2 Running the module\nThe demo paper contains a conflict of interest statement, so the module returns a green light:\npaper &lt;- demopaper()\nmodule_run(paper, \"coi_check\")\nCOI Check: A conflict of interest statement was detected.\nThe table holds the matching sentence(s):\n\nmo &lt;- module_run(paper, \"coi_check\")\nmo$traffic_light\n\n#&gt; [1] \"green\"\n\nmo$summary_text\n\n#&gt; [1] \"A conflict of interest statement was detected.\"\n\nmo$table |&gt;\n  knitr::kable()\n\n\n\npaper_id\ntext\n\n\nto_err_is_human\nThe authors declare a conflict of interest.",
+    "section": "\n16.3 Running the module",
+    "text": "16.3 Running the module\nThe demo paper contains a conflict of interest statement, so the module returns a green light:\npaper &lt;- demopaper()\nmodule_run(paper, \"coi_check\")\nCOI Check: A conflict of interest statement was detected.\nThe table holds the matching sentence(s):\n\nmo &lt;- module_run(paper, \"coi_check\")\nmo$traffic_light\n\n#&gt; [1] \"green\"\n\nmo$summary_text\n\n#&gt; [1] \"A conflict of interest statement was detected.\"\n\nmo$table |&gt;\n  knitr::kable()\n\n\n\npaper_id\ntext\n\n\nto_err_is_human\nThe authors declare a conflict of interest.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1035,8 +1035,8 @@
     "objectID": "chapters/mod-coi-check.html#running-on-many-papers",
     "href": "chapters/mod-coi-check.html#running-on-many-papers",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.3 Running on many papers",
-    "text": "16.3 Running on many papers\n\nmo &lt;- module_run(psychsci[1:20], \"coi_check\")\nhead(mo$summary_table) |&gt;\n  knitr::kable()\n\n\n\npaper_id\ncoi_found\n\n\n\n0956797613520608\nTRUE\n\n\n0956797614522816\nTRUE\n\n\n0956797614527830\nTRUE\n\n\n0956797614557697\nTRUE\n\n\n0956797614560771\nTRUE\n\n\n0956797614566469\nTRUE",
+    "section": "\n16.4 Running on many papers",
+    "text": "16.4 Running on many papers\n\nmo &lt;- module_run(psychsci[1:20], \"coi_check\")\nhead(mo$summary_table) |&gt;\n  knitr::kable()\n\n\n\npaper_id\ncoi_found\n\n\n\n0956797613520608\nTRUE\n\n\n0956797614522816\nTRUE\n\n\n0956797614527830\nTRUE\n\n\n0956797614557697\nTRUE\n\n\n0956797614560771\nTRUE\n\n\n0956797614566469\nTRUE",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1046,8 +1046,8 @@
     "objectID": "chapters/mod-coi-check.html#interpreting-the-result",
     "href": "chapters/mod-coi-check.html#interpreting-the-result",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.4 Interpreting the result",
-    "text": "16.4 Interpreting the result\nA detected statement means the disclosure exists, not that it is complete or correct — read it to see what was declared. When no statement is found, the phrasing may simply differ from what the module searches for, so check the paper before concluding one is absent.",
+    "section": "\n16.5 Interpreting the result",
+    "text": "16.5 Interpreting the result\nA detected statement means the disclosure exists, not that it is complete or correct — read it to see what was declared. When no statement is found, the phrasing may simply differ from what the module searches for, so check the paper before concluding one is absent.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1057,8 +1057,8 @@
     "objectID": "chapters/mod-coi-check.html#options",
     "href": "chapters/mod-coi-check.html#options",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.5 Options",
-    "text": "16.5 Options\ncoi_check takes only the paper argument.",
+    "section": "\n16.6 Options",
+    "text": "16.6 Options\ncoi_check takes only the paper argument.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1068,8 +1068,8 @@
     "objectID": "chapters/mod-coi-check.html#notes",
     "href": "chapters/mod-coi-check.html#notes",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.6 Notes",
-    "text": "16.6 Notes\nThis module incorporates code from rtransparent, whose approach was validated by Serghiou and colleagues (2021). The companion funding statement module works the same way for funding disclosures.",
+    "section": "\n16.7 Notes",
+    "text": "16.7 Notes\nThis module incorporates code from rtransparent, whose approach was validated by Serghiou and colleagues (2021). The companion funding statement module works the same way for funding disclosures.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1079,8 +1079,8 @@
     "objectID": "chapters/mod-coi-check.html#what-patterns-it-searches-for",
     "href": "chapters/mod-coi-check.html#what-patterns-it-searches-for",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.7 What patterns it searches for",
-    "text": "16.7 What patterns it searches for\ncoi_check works differently from most Metacheck modules: instead of exact regular expressions, it uses approximate (fuzzy) matching, which tolerates small spelling and spacing differences. It looks for sentences that approximately contain one of seven core phrases:\n\nconflict of interest\nconflicts of interest\ncompeting interest\ncompeting financial interest\ndisclosure\ndeclaration of interest\nduality of interest\n\nBecause fuzzy matching alone would catch many incidental uses of these words (a paper can mention a participant’s “competing interests” or a “disclosure” of something unrelated), the module then applies a set of rules to decide whether a candidate sentence is really a COI statement rather than a passing mention. A candidate is kept when it shows at least one of the hallmarks of a genuine statement:\n\nit is capitalised as a heading or sentence start (Conflict…, CONFLICT…, Compet…);\nit contains a negation — the common “no conflict of interest” / “the authors declare no competing interests” form;\nit mentions the authors (“The authors declare…”);\nit is followed by punctuation (a colon, period, or semicolon after “interest”, as in a heading or list item); or\nit uses a reporting verb — disclosed, reported, declared, mentioned, revealed, communicated, expressed.\n\nA bare mention of “competing interest” with none of these features is treated as a false positive and dropped.\nTwo further refinements handle layout quirks of converted PDFs. When a hit ends with “interest:” or begins with “Disclosure:”, the module treats text from that point onward as the disclosure section, and when a statement is split across short lines or set as bullet points (so the keyword sits on one line and “None.” on the next), it stitches the adjacent lines back together so the full statement is captured. It also specifically excludes “financial disclosure” and unrelated uses of “disclosure” (such as a patient-information disclosure) that are not about conflicts of interest.\nAs with the funding check, the practical implication is that detection is built around a specific vocabulary. A disclosure that avoids the words conflict, competing, disclosure, declaration, and duality of interest — or one badly garbled in extraction — can be missed, so a red light means “no recognisable COI statement found” rather than a guaranteed absence.",
+    "section": "\n16.8 What patterns it searches for",
+    "text": "16.8 What patterns it searches for\ncoi_check works differently from most Metacheck modules: instead of exact regular expressions, it uses approximate (fuzzy) matching, which tolerates small spelling and spacing differences. It looks for sentences that approximately contain one of seven core phrases:\n\nconflict of interest\nconflicts of interest\ncompeting interest\ncompeting financial interest\ndisclosure\ndeclaration of interest\nduality of interest\n\nBecause fuzzy matching alone would catch many incidental uses of these words (a paper can mention a participant’s “competing interests” or a “disclosure” of something unrelated), the module then applies a set of rules to decide whether a candidate sentence is really a COI statement rather than a passing mention. A candidate is kept when it shows at least one of the hallmarks of a genuine statement:\n\nit is capitalised as a heading or sentence start (Conflict…, CONFLICT…, Compet…);\nit contains a negation — the common “no conflict of interest” / “the authors declare no competing interests” form;\nit mentions the authors (“The authors declare…”);\nit is followed by punctuation (a colon, period, or semicolon after “interest”, as in a heading or list item); or\nit uses a reporting verb — disclosed, reported, declared, mentioned, revealed, communicated, expressed.\n\nA bare mention of “competing interest” with none of these features is treated as a false positive and dropped.\nTwo further refinements handle layout quirks of converted PDFs. When a hit ends with “interest:” or begins with “Disclosure:”, the module treats text from that point onward as the disclosure section, and when a statement is split across short lines or set as bullet points (so the keyword sits on one line and “None.” on the next), it stitches the adjacent lines back together so the full statement is captured. It also specifically excludes “financial disclosure” and unrelated uses of “disclosure” (such as a patient-information disclosure) that are not about conflicts of interest.\nAs with the funding check, the practical implication is that detection is built around a specific vocabulary. A disclosure that avoids the words conflict, competing, disclosure, declaration, and duality of interest — or one badly garbled in extraction — can be missed, so a red light means “no recognisable COI statement found” rather than a guaranteed absence.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -1090,8 +1090,8 @@
     "objectID": "chapters/mod-coi-check.html#an-over-inclusive-alternative-coi_check_oi",
     "href": "chapters/mod-coi-check.html#an-over-inclusive-alternative-coi_check_oi",
     "title": "\n16  Conflict of Interest Statement\n",
-    "section": "\n16.8 An over-inclusive alternative: coi_check_oi\n",
-    "text": "16.8 An over-inclusive alternative: coi_check_oi\n\nThe package ships a second, separate version of this check, callable with module_run(paper, \"coi_check_oi\"). Where coi_check requires a candidate sentence to show a genuine hallmark of a real statement (capitalisation, negation, authorship, punctuation, or a reporting verb), coi_check_oi drops all of that: it simply keeps every sentence that mentions interest(s) or COI and one of conflict, compet(ing), disclosure, or declaration — excluding only the specific phrase “financial disclosure” — and merges hits by section rather than stitching adjacent lines.\nmodule_run(paper, \"coi_check_oi\")\nCOI Check Overinclusive: A conflict of interest statement was detected.\nBecause the two versions are shipped as separate files, both happen to define a function with the same name internally (coi_check()); only the filename you pass to module_run() — \"coi_check\" or \"coi_check_oi\" — decides which one actually runs. module_list() shows them as two distinct entries, titled “COI Check” and “COI Check Overinclusive”.\nUse the over-inclusive version for the same reason as its funding-check counterpart: when missing a real COI statement is more costly than reading through a few false positives, such as a first pass over a large corpus before manual review.",
+    "section": "\n16.9 An over-inclusive alternative: coi_check_oi\n",
+    "text": "16.9 An over-inclusive alternative: coi_check_oi\n\nThe package ships a second, separate version of this check, callable with module_run(paper, \"coi_check_oi\"). Where coi_check requires a candidate sentence to show a genuine hallmark of a real statement (capitalisation, negation, authorship, punctuation, or a reporting verb), coi_check_oi drops all of that: it simply keeps every sentence that mentions interest(s) or COI and one of conflict, compet(ing), disclosure, or declaration — excluding only the specific phrase “financial disclosure” — and merges hits by section rather than stitching adjacent lines.\nmodule_run(paper, \"coi_check_oi\")\nCOI Check Overinclusive: A conflict of interest statement was detected.\nBecause the two versions are shipped as separate files, both happen to define a function with the same name internally (coi_check()); only the filename you pass to module_run() — \"coi_check\" or \"coi_check_oi\" — decides which one actually runs. module_list() shows them as two distinct entries, titled “COI Check” and “COI Check Overinclusive”.\nUse the over-inclusive version for the same reason as its funding-check counterpart: when missing a real COI statement is more costly than reading through a few false positives, such as a first pass over a large corpus before manual review.",
     "crumbs": [
       "Modules",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
@@ -3878,6 +3878,28 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>D</span>  <span class='chapter-title'>Function reference</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-coi-check.html#the-basics",
+    "href": "chapters/mod-coi-check.html#the-basics",
+    "title": "\n16  Conflict of Interest Statement\n",
+    "section": "",
+    "text": "paper &lt;- demopaper()\nmodule_run(paper, \"coi_check\")",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/mod-coi-check.html#what-it-checks",
+    "href": "chapters/mod-coi-check.html#what-it-checks",
+    "title": "\n16  Conflict of Interest Statement\n",
+    "section": "\n16.2 What it checks",
+    "text": "16.2 What it checks\nThe coi_check module looks for a conflict of interest (COI) statement — a disclosure of any financial or personal interests that could have influenced the research (or a declaration that there are none). Like the funding statement, a COI declaration is expected by most journals and reporting guidelines.\nThe module searches the text for the phrases COI statements usually contain and returns the sentence(s) it finds. It checks only that a statement is present; it does not evaluate the disclosed interests.\nThis module is fully offline.",
+    "crumbs": [
+      "Modules",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Conflict of Interest Statement</span>"
     ]
   }
 ]
