@@ -428,14 +428,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/repository-tokens.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Getting API Tokens for Other Repositories</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
   </div>
 </li>
       </ul>
@@ -458,6 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul>
 </li>
   <li><a href="#large-language-models" id="toc-large-language-models" class="nav-link" data-scroll-target="#large-language-models"><span class="header-section-number">2.3</span> Large language models</a></li>
+  <li><a href="#api-keys-and-tokens-for-online-repositories" id="toc-api-keys-and-tokens-for-online-repositories" class="nav-link" data-scroll-target="#api-keys-and-tokens-for-online-repositories"><span class="header-section-number">2.4</span> API keys and tokens for online repositories</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/get-started.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -550,6 +557,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section></section><section id="large-language-models" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="large-language-models">
 <span class="header-section-number">2.3</span> Large language models</h2>
 <p>A few modules (notably <a href="../chapters/mod-power.html">power</a> and <a href="../chapters/mod-prereg-check.html">prereg_check</a>) can use a large language model to extract structured information from text. LLM use is <strong>entirely optional and opt-in</strong>, and the vast majority of modules work without any LLM. For how to turn LLM support on, choose a model, run one locally with Ollama, or use a cloud API, see <a href="../chapters/llms.html">Using Large Language Models</a>.</p>
+</section><section id="api-keys-and-tokens-for-online-repositories" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="api-keys-and-tokens-for-online-repositories">
+<span class="header-section-number">2.4</span> API keys and tokens for online repositories</h2>
+<p>The <a href="../chapters/mod-repo-check.html">repo_check</a> module and related functions can read files directly from repositories such as OSF, Zenodo, Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab. For most of these an access token is optional and only raises how many requests you may make per hour, or gives you access to your own private material — the one exception is Dryad, where a token is required even to download files from a fully public dataset.</p>
+<p>Each service issues its own token, which you store once in a file called <code>.Renviron</code> so R finds it automatically every time it starts. Step-by-step instructions, with screenshots, exist for <a href="../chapters/archiving-osf.html">OSF</a> and <a href="../chapters/uploading-to-zenodo.html">Zenodo</a>; for Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab, see <a href="../chapters/repository-tokens.html">Getting API Tokens for Other Repositories</a>. LLM provider API keys (OpenAI, Anthropic, Groq, and so on) are a separate matter, covered in <a href="../chapters/llms.html">Using Large Language Models</a>.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

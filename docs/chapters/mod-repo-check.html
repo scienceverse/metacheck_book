@@ -427,14 +427,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../chapters/repository-tokens.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Getting API Tokens for Other Repositories</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/osf-schemas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">OSF Registration Schemas</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/function-reference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Function reference</span></span></a>
   </div>
 </li>
       </ul>
@@ -512,10 +518,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 77 files in 4 repositories.
+#&gt; -  We found 78 files in 4 repositories.
 #&gt; -  We found 6 README files and 3 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 13 file naming problems to fix.</code></pre>
+#&gt; -  We found 15 file naming problems to fix.</code></pre>
 </div>
 </div>
 <p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. Saving the result to a variable, here called <code>mo</code>, lets you look at specific pieces of it instead of only the printed summary. <code>mo$table</code> is a <strong>table</strong> — rows and columns, like a spreadsheet — listing every file found across all the repositories the paper links to:</p>
@@ -638,10 +644,10 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 77 files in 4 repositories.
+#&gt; -  We found 78 files in 4 repositories.
 #&gt; -  We found 6 README files and 3 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 13 file naming problems to fix.</code></pre>
+#&gt; -  We found 15 file naming problems to fix.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> lists every file found across all linked repositories:</p>
@@ -830,6 +836,7 @@ Note
 </tbody>
 </table>
 <p>DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.</p>
+<p>Several of these platforms need an access token before Metacheck can download their files — Dryad requires one even for a fully public dataset. See <a href="../chapters/repository-tokens.html">Getting API Tokens for Other Repositories</a>, or <a href="../chapters/archiving-osf.html">Downloading an OSF Account</a> for OSF specifically.</p>
 <section id="osf-registrations-follow-their-source-project" class="level3" data-number="22.5.1"><h3 data-number="22.5.1" class="anchored" data-anchor-id="osf-registrations-follow-their-source-project">
 <span class="header-section-number">22.5.1</span> OSF registrations follow their source project</h3>
 <p>An OSF <strong>registration</strong> is a locked snapshot. Many “Open-Ended Registration” entries (common in older schemas) only <em>describe</em> what was shared, with the real files living in the project the registration was made from (<code>registered_from</code>). Since the manuscript usually links only the registration, <code>repo_check</code> follows <code>registered_from</code> automatically:</p>
@@ -965,10 +972,10 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 77 files in 4 repositories.
+#&gt; -  We found 78 files in 4 repositories.
 #&gt; -  We found 6 README files and 3 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 13 file naming problems to fix.</code></pre>
+#&gt; -  We found 15 file naming problems to fix.</code></pre>
 </div>
 </div>
 <p>Here the issues are a <strong>missing README</strong> and an <strong>archive file</strong> whose contents could not be examined. The per-paper summary table counts each file type — note <code>files_readme</code> is 0 (no README was shared) and <code>files_zip</code> is 1 (one archive):</p>
@@ -1004,13 +1011,13 @@ Note
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">77</td>
-<td style="text-align: right;">21</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">22</td>
 <td style="text-align: right;">39</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">13</td>
+<td style="text-align: right;">15</td>
 <td style="text-align: left;">FALSE</td>
 </tr></tbody>
 </table>
