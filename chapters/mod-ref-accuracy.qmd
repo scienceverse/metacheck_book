@@ -13,6 +13,33 @@ suppressMessages(library(dplyr))
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
+## The basics
+
+Every reference in a paper's bibliography can carry a **DOI** — a permanent identifying code that points to the official record of that work online. `ref_accuracy` looks up each reference's DOI and checks whether the title, authors, journal, and year the paper printed for that reference actually match the official record.
+
+Because this check needs to look things up online, the demo paper first needs that lookup done with `add_bib_match()`:
+
+```{r}
+#| results: asis
+paper <- add_bib_match(demopaper())
+module_run(paper, "ref_accuracy")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
+
+If you want to work with the result instead of just reading it, save it to a variable and look inside it:
+
+```{r}
+mo <- module_run(paper, "ref_accuracy")
+mo$table |>
+  dplyr::select(bib_id, tier, incoherent,
+                title_mismatch, author_mismatch,
+                container_mismatch, year_mismatch) |>
+  knitr::kable()
+```
+
+`mo$table` has one row per reference, with an `incoherent` flag marking references where the printed details do not match the official record. A flagged reference is a candidate worth checking by hand, not a confirmed error — as the chapter explains further down, common innocent causes include merged references, renamed journals, and reprint DOIs. Only references that supply their own DOI are checked at all; a reference with no DOI is listed separately and is not flagged either way.
+
 ## What it checks
 
 The `ref_accuracy` module looks for **incoherent references**. A reference is incoherent when the details the paper cites for it — the title, authors, journal, or year — do not match the record that the reference's own DOI points to. If you cite a paper as appearing in one journal but its DOI resolves to a different journal, something is wrong: a wrong DOI, a mis-named journal, or (increasingly) an AI-fabricated citation.

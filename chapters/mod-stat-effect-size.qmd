@@ -12,6 +12,30 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
+## The basics
+
+An **effect size** is a number that says how big a result is, not just whether it is "statistically significant". `stat_effect_size` looks at every *t*-test and *F*-test (two common statistical tests) it finds in a paper and checks whether the effect size reported alongside the test makes mathematical sense given the test statistic.
+
+Here is the module running on a demo paper:
+
+```{r}
+#| results: asis
+paper <- demopaper()
+module_run(paper, "stat_effect_size")
+```
+
+Running a module always works the same way: `module_run(paper, "module_name")`. The printed result above is a short report: a coloured light and a one-line summary.
+
+If you want to work with the result instead of just reading it, save it to a variable and look inside it:
+
+```{r}
+mo <- module_run(paper, "stat_effect_size")
+mo$table[, c("test", "test_text", "es", "d_coherence", "d_coherence_note")] |>
+  knitr::kable()
+```
+
+`mo$table` has one row per test the module found, showing any reported effect size (`es`) and a coherence verdict. A `no_match` verdict is worth checking carefully — it means the reported effect size does not fit the test statistic under any assumption, which can be a genuine error. A `match_under_assumptions` verdict only means the value is *possible*, not that it is *correct* — the check cannot prove an effect size is right, only rule out that it is impossible. Either way, read the original sentence before drawing a conclusion.
+
 ## What it checks
 
 The `stat_effect_size` module checks whether **effect sizes are reported** for *t*-tests and *F*-tests, and whether the reported effect size is **coherent** with the test statistic and degrees of freedom. Reporting a standardized effect size alongside a test is an APA Journal Article Reporting Standard, and it is what makes a result usable in a meta-analysis.
