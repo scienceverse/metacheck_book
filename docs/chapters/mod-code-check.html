@@ -510,16 +510,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 33 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
-#&gt; -  1 code file had no comments.
-#&gt; -  11 files loaded in the code were missing in the repository.
-#&gt; -  Absolute file paths were found.
-#&gt; -  No setwd() calls were found.
-#&gt; -  No install.packages() calls were found.
-#&gt; -  Libraries/imports were loaded in multiple places.
-#&gt; -  The code loaded 7 distinct packages.
-#&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found.
-#&gt; -  Parsing issues of R-type files were found.</code></pre>
+#&gt; -  We found 32 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  All your code files had comments.
+#&gt; -  Libraries/imports were loaded in multiple places in bad.R, bad.Rmd.
+#&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found. Consider adding a solution to improve computational reproducibility.</code></pre>
 </div>
 </div>
 <p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. Saving the result to a variable, here called <code>mo</code>, lets you look at specific pieces of it instead of only the printed summary. <code>mo$table</code> is a <strong>table</strong> — rows and columns, like a spreadsheet — with one row per code file, showing exactly which problems were found in each one:</p>
@@ -569,22 +563,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">0.0666667</td>
 <td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">good-example.R</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.4000000</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">test_script.R</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.1666667</td>
-<td style="text-align: right;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">01.R</td>
@@ -787,6 +765,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">good-example.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4000000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Study 1.r</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
@@ -800,14 +794,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.5372549</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">._utils.R</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0000000</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -911,7 +897,7 @@ Note
 </tr>
 </tbody>
 </table>
-<p>A <code>.ipynb</code> notebook is JSON, not a plain script: its code cells are extracted from the <code>source</code> array of each cell (the same way <code>.Rmd</code>/<code>.qmd</code> are purled to R code below) before any text-based check runs. <code>.py</code> and <code>.m</code> are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but <em>running</em> the code stays out of scope (that is <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s job, and it is R-only).</p>
+<p>A <code>.ipynb</code> notebook is JSON, not a plain script: its code cells are extracted from the <code>source</code> array of each cell (the same way <code>.Rmd</code>/<code>.qmd</code> are purled to R code below) before any text-based check runs. <code>.py</code> and <code>.m</code> are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but <em>running</em> the code stays out of scope (that is <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s job, and it runs R and Python code, not MATLAB).</p>
 <p>Some file types are never code themselves but <em>contain</em> the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS <code>.spv</code> (rendered output) has its syntax recovered as a <code>.sps</code> file, a Stata <code>.smcl</code> log has its echoed commands recovered as a <code>.do</code> file, an Mplus <code>.out</code> file has its “INPUT INSTRUCTIONS” section recovered as an <code>.inp</code> file, and an <code>.html</code> file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_lang</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis.R"</span>, <span class="st">"clean.do"</span>, <span class="st">"model.sas"</span>, <span class="st">"survey.sps"</span>, <span class="st">"study.jasp"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -939,16 +925,10 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 33 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
-#&gt; -  1 code file had no comments.
-#&gt; -  10 files loaded in the code were missing in the repository.
-#&gt; -  Absolute file paths were found.
-#&gt; -  No setwd() calls were found.
-#&gt; -  No install.packages() calls were found.
-#&gt; -  Libraries/imports were loaded in multiple places.
-#&gt; -  The code loaded 7 distinct packages.
-#&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found.
-#&gt; -  Parsing issues of R-type files were found.</code></pre>
+#&gt; -  We found 32 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  All your code files had comments.
+#&gt; -  Libraries/imports were loaded in multiple places in bad.R, bad.Rmd.
+#&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found. Consider adding a solution to improve computational reproducibility.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> has one row per code file, with the reproducibility checks as columns:</p>
@@ -994,26 +974,10 @@ Note
 <tr class="odd">
 <td style="text-align: left;">bad.Rmd</td>
 <td style="text-align: left;">R</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">good-example.R</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.4000000</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">test_script.R</td>
-<td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">0.1666667</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0666667</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">01.R</td>
@@ -1216,6 +1180,22 @@ Note
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">good-example.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4000000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Study 1.r</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
@@ -1229,14 +1209,6 @@ Note
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0.5372549</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">._utils.R</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0000000</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -1411,20 +1383,8 @@ Note
 </tr>
 <tr class="odd">
 <td style="text-align: left;">bad.Rmd</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">good-example.R</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">test_script.R</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: left;">FALSE</td>
 </tr>
 <tr class="even">
@@ -1578,6 +1538,18 @@ Note
 <td style="text-align: left;">FALSE</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">good-example.R</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">test_script.R</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Study 1.r</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">3</td>
@@ -1588,12 +1560,6 @@ Note
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">._utils.R</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
 </table>

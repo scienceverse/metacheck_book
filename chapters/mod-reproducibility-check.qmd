@@ -31,9 +31,9 @@ mo$traffic_light
 #> [1] "yellow"
 cat(mo$summary_text)
 #>
-#> -  We assessed 7 R code files for reproducibility (static analysis; no code was run).
+#> -  We assessed 6 R code files for reproducibility (static analysis; no code was run).
 #> -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).
-#> -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
+#> -  25 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
 #> -  2 referenced inputs unavailable (0 withheld due to size).
 #> -  6 installable dependencies detected.
 ```
@@ -59,6 +59,8 @@ The module works in two phases, and you choose how far to go:
 1. A **static phase** (always run) that works out everything a reproduction attempt *would* involve — the dependencies, the file-path rewrites, the run order, the missing inputs — and reports where that attempt is likely to break, **without running any code**.
 2. An **execution phase** (opt-in, `execute = TRUE`) that actually **runs the code**, either in a subprocess on your own machine or inside a locked-down Docker container, against a throwaway copy of the data, captures the statistical output it produces, and — together with any self-contained JASP/jamovi files in the deposit — lets you check whether the reported results are reproduced.
 
+Both phases cover R code and Python code. Most of this chapter describes R; [Python code](#python-code) below describes where Python is handled differently.
+
 ::: callout-important
 Executing downloaded code runs it — somewhere. It is off by default and is a deliberate, opt-in action (`execute = TRUE`). How much risk that carries depends entirely on `sandbox`, a second argument covered in detail in [Two ways to run the code](#two-ways-to-run-the-code) below: the default (`sandbox = "process"`) only isolates a *crash*, not the filesystem or network, so code could still delete files or reach the internet; `sandbox = "docker"` is a real containment boundary (no network, read-only filesystem, non-root user) and is what you should reach for when running code you do not personally trust.
 :::
@@ -79,14 +81,14 @@ mo$traffic_light
 #> [1] "yellow"
 cat(mo$summary_text)
 #>
-#> -  We assessed 7 R code files for reproducibility (static analysis; no code was run).
+#> -  We assessed 6 R code files for reproducibility (static analysis; no code was run).
 #> -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).
-#> -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
+#> -  25 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
 #> -  2 referenced inputs unavailable (0 withheld due to size).
 #> -  6 installable dependencies detected.
 ```
 
-The `table` has one row per R code file, carrying the static assessments as columns:
+The `table` has one row per R or Python code file, carrying the static assessments as columns (there is no language column; the file extension shows the language):
 
 ```{r}
 #| eval: false
@@ -97,15 +99,14 @@ mo$table[, c("file_name", "parses", "run_order", "order_basis",
 
 |               |file_name      |parses | run_order|order_basis | paths_rewritten|runnable |
 |:--------------|:--------------|:------|---------:|:-----------|---------------:|:--------|
-|test_script.R  |test_script.R  |TRUE   |         6|none        |               0|FALSE    |
-|bad.R          |bad.R          |TRUE   |         3|none        |               0|FALSE    |
-|bad.Rmd        |bad.Rmd        |TRUE   |         4|none        |               1|FALSE    |
-|good-example.R |good-example.R |TRUE   |         5|none        |               1|TRUE     |
+|test_script.R  |test_script.R  |TRUE   |         5|none        |               0|FALSE    |
+|bad.R          |bad.R          |TRUE   |         2|none        |               0|FALSE    |
+|bad.Rmd        |bad.Rmd        |TRUE   |         3|none        |               1|FALSE    |
 |01.R           |01.R           |TRUE   |         1|numeric     |               0|TRUE     |
-|utils.R        |utils.R        |TRUE   |         7|none        |               0|TRUE     |
-|._utils.R      |._utils.R      |FALSE  |         2|none        |               0|FALSE    |
+|good-example.R |good-example.R |TRUE   |         4|none        |               1|TRUE     |
+|utils.R        |utils.R        |TRUE   |         6|none        |               0|TRUE     |
 
-A file is marked `runnable` only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a *static* check: `runnable = FALSE` does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place. When it *is* `FALSE`, the column `not_runnable_reason` names exactly why — one of `parse_error`, `unplaceable`, or `missing_input`, checked in that priority order — and `unresolved_inputs` names the specific file(s) that could not be resolved.
+A file is marked `runnable` only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a *static* check: `runnable = FALSE` does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place. When it *is* `FALSE`, the column `not_runnable_reason` names exactly why — one of `parse_error`, `unplaceable`, or `missing_input`, checked in that priority order — and `unresolved_inputs` names the specific file(s) that could not be resolved. Two further reasons apply only to an R file that does not parse as R: `not_r_content` when its content is not R at all (for example a JSON or HTML file saved with a `.R` extension), and `jags_model` when it is a JAGS/BUGS model definition. Neither counts as a parse error, because the file is not broken R code, and neither is run.
 
 Two further list-columns, `reads` and `writes`, carry the basenames each script reads and writes (as `repro_file_io()` extracted them) directly on the table — useful if you want the code↔data provenance for a file without recomputing it yourself:
 
@@ -122,15 +123,12 @@ mo$table$reads
 #> [1] "example.csv"  "example2.csv"
 #>
 #> [[4]]
-#> [1] "file.txt"
+#> character(0)
 #>
 #> [[5]]
-#> character(0)
+#> [1] "file.txt"
 #>
 #> [[6]]
-#> character(0)
-#>
-#> [[7]]
 #> character(0)
 mo$table$writes
 #> [[1]]
@@ -149,9 +147,6 @@ mo$table$writes
 #> character(0)
 #>
 #> [[6]]
-#> character(0)
-#>
-#> [[7]]
 #> character(0)
 ```
 
@@ -184,20 +179,21 @@ Each static assessment is an exported helper, so you can run it on your own code
 
 ### Dependencies: `repro_dependencies()`
 
-`repro_dependencies()` walks the code and returns the distinct packages it loads, tagged with **where each would be installed from** — a distinction `code_check`'s package list does not make. A `library()` call resolves to CRAN by default; a `remotes::install_github("user/repo")` call is read from the source the code names (with the pinned `@ref` kept when present); packages that ship with R are tagged `base`, because a run never needs to install them; and a bundled list of common **Bioconductor** package names (`edgeR`, `DESeq2`, and similar) is checked so those are tagged `bioc` instead of `cran` — confirmed as the single largest identifiable cause of install failures in a real corpus run, since a Bioconductor-only package is never on CRAN and `install.packages()` simply fails for it unless this distinction is made upfront.
+`repro_dependencies()` walks R code and returns the distinct packages it loads, tagged with **where each would be installed from** — a distinction `code_check`'s package list does not make. A `library()` call resolves to CRAN by default; a `remotes::install_github("user/repo")` call sets the install source of the package the code loads under that repository's name (with the pinned `@ref` kept when present); packages that ship with R are tagged `base`, because a run never needs to install them; and a bundled list of common **Bioconductor** package names (`edgeR`, `DESeq2`, and similar) is checked so those are tagged `bioc` instead of `cran` — confirmed as the single largest identifiable cause of install failures in a real corpus run, since a Bioconductor-only package is never on CRAN and `install.packages()` simply fails for it unless this distinction is made upfront.
 
 ```{r}
 code_text <- c(
   "library(dplyr)",
+  "library(ggplot2)",
   "remotes::install_github('tidyverse/ggplot2@v3.4.0')",
   "x <- stats::sd(1:10)"
 )
 repro_dependencies(code_text)
 ```
 
-Note that a namespace-qualified call — `stats::sd(...)` above — is picked up as a dependency even without an explicit `library()` call; the third row shows `stats` tagged `base`. `repro_dependencies()` also accepts a **list** of per-file character vectors and pools them into one result: when the same package is named both bare (`library(pkg)`) and via an explicit GitHub source somewhere else in the pooled files, the GitHub row wins, since it carries the real install source.
+Note that a namespace-qualified call — `stats::sd(...)` and `remotes::install_github(...)` above — is picked up as a dependency even without an explicit `library()` call; the last row shows `stats` tagged `base`. `repro_dependencies()` also accepts a **list** of per-file character vectors and pools them into one result: when the same package is named both bare (`library(pkg)`) and via an explicit GitHub source somewhere else in the pooled files, the GitHub row wins, since it carries the real install source.
 
-The dependency list is deliberately **name-only, not version-pinned**: static analysis cannot recover which version of a package was used. This is not a limitation to apologise for — it is the point. A reproduction runs against the *current* versions of these packages, and if it breaks under current versions, that break is itself a finding: it argues that the authors should have pinned their versions.
+For R code, the dependency list is deliberately **name-only, not version-pinned**: static analysis cannot recover which version of a package was used. (Python code is the exception: see [Python code](#python-code) for how versions are read from a `requirements.txt` or `pyproject.toml`.) This is not a limitation to apologise for — it is the point. A reproduction runs against the *current* versions of these packages, and if it breaks under current versions, that break is itself a finding: it argues that the authors should have pinned their versions.
 
 That said, `reproducibility_check` does not have to guess blindly at what "current" means. As of the version documented in this chapter, [code_check](mod-code-check.qmd) itself checks whether a deposit **declared** its environment at all — see [Declared R versions](#declared-r-versions-and-why-they-matter-for-docker) below, which explains how this feeds directly into the Docker execution path.
 
@@ -242,6 +238,8 @@ io
 2. **`source()` edges** — if A `source()`s B, B must run first;
 3. **numeric filename prefixes** — `0_prep.R` before `1_analysis.R`, and also embedded numbering such as `Exp1_02_...` before `Exp2_1_...` (a weak tie-breaker, not a dependency). The numeric key is the *vector* of every digit run anywhere in the filename, not just a leading prefix, so `Exp1_02_preprocessing.R` correctly sorts before `Exp2_1_import.R`.
 
+Python has no equivalent of `source()` that the module follows, so Python scripts are ordered by the first and third signals only. For R, `repro_run_order()` also returns every `source()` link it found, as a data frame in its `"source_edges"` attribute (`from` is the script that is sourced, `to` the script that sources it); when the code is run, the module uses it to run a sourced script only inside the script that sources it (see the outcome `run_by_source` below).
+
 The scripts are then topologically sorted. A dependency **cycle** (A reads a file B writes, and vice versa) cannot be ordered and is reported; so is an **ambiguous** ordering, where nothing — no dependency and no numbering — distinguishes the order of two or more files.
 
 ```{r}
@@ -264,8 +262,8 @@ This distinction is the reason the static phase is worth running before a manual
 
 Two further exported helpers feed the module internally and are rarely called on their own, but are worth knowing about if you are extending the checks:
 
-- **`repro_defined_vars(code_text_list)`** returns, for each file, the variable names it assigns at its *top level* (not inside a function). This is what powers the corrective re-run described below: when a script fails with `object 'x' not found`, the module looks for exactly one other file whose `repro_defined_vars()` result includes `x`, and — if there is exactly one — infers that it must run first.
-- **`repro_materialize_layout()`** and **`repro_write_scripts()`** build the throwaway Psych-DS-shaped directory the execution phase actually runs against, and write the path-rewritten scripts into it. You will see their effects described below (the `data/`, `output/`, and `statistical_output/` folders), but you would only call them directly if you were building your own execution pipeline on top of metacheck's static analysis.
+- **`repro_defined_vars(code_text_list)`** returns, for each R file, the variable names it assigns at its *top level* (not inside a function). This is what powers the corrective re-run for R described below: when a script fails with `object 'x' not found`, the module looks for exactly one other file whose `repro_defined_vars()` result includes `x`, and — if there is exactly one — infers that it must run first.
+- **`repro_materialize_layout()`** and **`repro_write_scripts()`** build the throwaway Psych-DS-shaped directory the execution phase actually runs against, and write the path-rewritten scripts into it. You will see their effects described below (the `data/`, `output/`, and `statistical_output/` folders), but you would only call them directly if you were building your own execution pipeline on top of metacheck's static analysis. `repro_write_scripts()`'s `inject_libs` argument adds one or more `library()` calls to the top of a named R script; the corrective re-run uses it.
 
 ## Two ways to run the code {#two-ways-to-run-the-code}
 
@@ -288,15 +286,15 @@ The two options carry genuinely different risk, and the difference is worth unde
 
 | | `sandbox = "process"` (default) | `sandbox = "docker"` |
 |---|---|---|
-| Mechanism | a `callr` subprocess on your machine | a `docker run` container |
+| Mechanism | a subprocess on your machine: a `callr` R process for an R script, a `python` process for a Python script | a `docker run` container |
 | Isolates a crash? | Yes | Yes |
 | Isolates the filesystem? | **No** — the code can read, write, or delete anywhere your R session can | **Yes** — `--read-only`, with only the throwaway sandbox directory writable |
 | Isolates the network? | **No** — the code can reach the internet freely | **Yes** — `--network none` during the run phase |
 | Runs as | your own user account | a fixed non-root user (uid 1000) inside the container |
-| Requires | the `callr` package | Docker installed and running, plus the `processx` package |
+| Requires | the `callr` package (only when the paper has R code); for Python code, the `processx` package and a Python interpreter (`python`, or else `python3`) | Docker installed and running, plus the `processx` package |
 | Speed | fast — no container overhead | pre-built image (see below) makes this close to the process backend for most papers |
 
-`sandbox = "process"` isolating only a *crash* is worth restating plainly: `callr` runs the script in a separate R process so that a segfault or a fatal error does not take down your own R session, but that subprocess is still the same operating-system user, the same filesystem, and the same network as the R session that launched it. Nothing stops a malicious or merely careless script from calling `unlink()` on files far outside the sandbox, or `system()`-ing out to install something, or exfiltrating data over the network. If you are running code from a repository you have not personally reviewed, `sandbox = "docker"` is the option that actually delivers on the word "sandbox".
+`sandbox = "process"` isolating only a *crash* is worth restating plainly: `callr` runs the script in a separate R process (and a Python script runs in a separate `python` process) so that a segfault or a fatal error does not take down your own R session, but that subprocess is still the same operating-system user, the same filesystem, and the same network as the R session that launched it. Nothing stops a malicious or merely careless script from calling `unlink()` on files far outside the sandbox, or `system()`-ing out to install something, or exfiltrating data over the network. If you are running code from a repository you have not personally reviewed, `sandbox = "docker"` is the option that actually delivers on the word "sandbox".
 
 `sandbox = "docker"` achieves real containment with these `docker run` flags, applied to every script individually during the run phase:
 
@@ -304,7 +302,8 @@ The two options carry genuinely different risk, and the difference is worth unde
 --network none --read-only --tmpfs /tmp
 --user 1000:1000 --cap-drop ALL
 --security-opt no-new-privileges --pids-limit 512
--v <sandbox>:/sandbox -v <library>:/rlib:ro
+-v <sandbox>:/sandbox -v <library>:/rlib:ro                       (R)
+-v <sandbox>:/sandbox -v <library>:/pylib:ro -e PYTHONPATH=/pylib  (Python)
 ```
 
 Network is fully disabled, the filesystem is read-only outside the mounted sandbox (with only `/tmp` and the sandbox itself writable), the container runs as a fixed non-root user, all Linux capabilities are dropped, privilege escalation is blocked, and the number of processes the container can spawn is capped. Before checking any of this, call `repro_docker_available()` to confirm Docker is installed and its daemon is actually running — `reproducibility_check()` calls this for you and stops with a clear message if it is not, rather than failing partway through a batch of papers with a cryptic error.
@@ -319,7 +318,7 @@ repro_docker_available()
 ```
 
 ::: callout-note
-The dependency-install phase under `sandbox = "docker"` runs with the network **on** (it has to, to reach CRAN or GitHub) but is otherwise hardened the same way — non-root, capabilities dropped, no new privileges. Only the per-script *run* phase disables the network entirely, since that is the phase running the paper's own, potentially untrusted, analysis code.
+The dependency-install phase under `sandbox = "docker"` runs with the network **on** (it has to, to reach CRAN or GitHub, or for Python code the package index that `pip` installs from) but is otherwise hardened the same way — non-root, capabilities dropped, no new privileges. Only the per-script *run* phase disables the network entirely, since that is the phase running the paper's own, potentially untrusted, analysis code.
 :::
 
 ::: callout-tip
@@ -330,11 +329,13 @@ Working through a whole corpus rather than one paper? [Batch mode](#batch-mode),
 
 The first time you think through what `sandbox = "docker"` needs to do to run a real paper's code, an obvious problem appears: most papers' scripts `library()` several packages that are not part of base R, and a container starts with nothing installed. Naively, every single `reproducibility_check()` call would need to install a paper's entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (`rstan`, `lme4`, and dozens of others), that can mean minutes of compilation *per paper*.
 
-To avoid that, Docker containers under `sandbox = "docker"` default to a **pre-built image**, `ghcr.io/scienceverse/metacheck_r:latest`, rather than a bare R installation. That image already has R, Quarto, and the roughly 750 most common packages a real corpus of psychology-science papers' code actually uses — found by scanning thousands of real `.R`/`.Rmd`/`.qmd` files for their `library()`/`require()` calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper's dependencies are already in that list — which, for an ordinary `tidyverse`-and-`lme4`-shaped analysis, they usually are — the install phase does almost nothing, because `requireNamespace()` already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install.
+To avoid that, Docker containers under `sandbox = "docker"` default to a **pre-built image**, `ghcr.io/scienceverse/metacheck_r_large:latest`, rather than a bare R installation. That image already has R, Quarto, JAGS, Java, the GDAL/GEOS/PROJ libraries for geographic data, and the roughly 750 most common packages a real corpus of psychology-science papers' code actually uses — found by scanning thousands of real `.R`/`.Rmd`/`.qmd` files for their `library()`/`require()` calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper's dependencies are already in that list — which, for an ordinary `tidyverse`-and-`lme4`-shaped analysis, they usually are — the install phase does almost nothing, because `requireNamespace()` already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install. A smaller variant, `metacheck_r_small` (about 390 packages, each seen in at least three files of that scan, without the geographic libraries), is also published, but `reproducibility_check()` has no argument to choose it. Python code runs in a separate image, `ghcr.io/scienceverse/metacheck_py_small:latest` — see [Python code](#python-code).
 
 The image, its Dockerfile, the full package list, and detailed notes on how it was built (including some genuinely non-obvious bugs found along the way — a package can report a successful install and still fail to *load*, because a runtime shared library it needs is missing from a minimal image) are all in a dedicated repository: [scienceverse/metacheck_docker_reproducibility](https://github.com/scienceverse/metacheck_docker_reproducibility). If you want to build your own variant — a smaller image with only the most common packages, or one that adds LaTeX for PDF rendering, or CmdStan for `cmdstanr`-based Bayesian models — that repository is the starting point, and its README documents exactly which levers actually reduce image size and which ones (surprisingly) do not.
 
 ## Declared R versions, and why they matter for Docker {#declared-r-versions-and-why-they-matter-for-docker}
+
+This section applies to R code only; metacheck does not read a declared Python version, and Python code always runs in the pre-built Python image.
 
 The pre-built image is fast, but it was built against one specific R version. A paper that deposited an `renv.lock` file, or a `sessionInfo()` text dump, or that pins its environment with `groundhog`/`checkpoint`, has told you *exactly* which R version its authors actually used — and that might not be the version the pre-built image happens to run.
 
@@ -364,7 +365,7 @@ mo <- module_run(paper, "reproducibility_check",
                  docker_use_declared_version = TRUE)
 ```
 
-By default (`docker_use_declared_version = FALSE`), the module always uses the pre-built `metacheck_r` image, prioritising speed. If the paper *did* declare a version, you get a warning naming the mismatch and explaining how to opt out of it — this is a deliberate design choice: silently running a paper's code against a different R version than the one its authors used could, in principle, change results, and that substitution should never happen invisibly.
+By default (`docker_use_declared_version = FALSE`), the module always uses the pre-built `metacheck_r_large` image, prioritising speed. If the paper *did* declare a version, you get a warning naming the mismatch and explaining how to opt out of it — this is a deliberate design choice: silently running a paper's code against a different R version than the one its authors used could, in principle, change results, and that substitution should never happen invisibly.
 
 ```
 Warning message:
@@ -396,7 +397,7 @@ mo <- module_run(papers, "reproducibility_check",
 
 A few things are worth understanding about how this actually runs, rather than treating it as a black box:
 
-- **Each paper runs in its own background R process** (via the `callr` package — install it if it is not already present), not in your current R session. This is deliberate, not an implementation detail you can ignore: `reproducibility_check()` reads and restores a few process-wide settings during a single-paper call (`llm_use()`, an internal option `data_check`/`code_check` share for API-limit handling), and those are not safe for several papers to set and restore *concurrently* in one shared session. A separate OS process per paper sidesteps the problem entirely — one paper's settings can never be observed by another's.
+- **Each paper runs in its own background R process** (via the `callr` package — install it if it is not already present), not in your current R session. This is deliberate, not an implementation detail you can ignore: `reproducibility_check()` reads and restores a few process-wide settings during a single-paper call (`llm_use()`, an internal option `data_check`/`code_check` share for API-limit handling), and those are not safe for several papers to set and restore *concurrently* in one shared session. A separate OS process per paper sidesteps the problem entirely — one paper's settings can never be observed by another's. Every `metacheck.*` option you have set in your own session (for example the cache directory) is copied into each background process, so each paper's run uses the same settings yours would.
 - **Every other argument still means exactly what it means for one paper.** `timeout`, `install_missing`, `docker_use_declared_version`, `cache`, and everything else in [Options](#options) apply individually to each paper's own run; `workers` only controls how many of those individual runs are in flight together.
 - **Container resource limits scale with `workers` automatically.** Each container is capped at `1/workers` of the host's CPU and memory (`--cpus`, `--memory`, in addition to the `--pids-limit 512` every container already had) — so four concurrent papers cannot collectively claim more than the whole machine, and one runaway script cannot starve the other three. You do not set this yourself; it is computed from `workers` and the host's own detected CPU count and RAM.
 - **`results_dir` writes each paper's full result to disk as soon as that paper finishes** — one `<paper_id>.rds` file per paper, in the same format `capture_module_tables()` uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with `metacheck:::collect_module_tables("repro_results", "reproducibility_check")` — both `capture_module_tables()` and `collect_module_tables()` are internal helpers, not exported, so they need the `metacheck:::` prefix rather than a plain call.
@@ -420,8 +421,8 @@ Whichever `sandbox` you choose, the mechanics are the same:
 
 1. **materialises the Psych-DS layout** into a throwaway temporary directory (the source data files copied to their target paths), so the run never touches your real archive or the download cache;
 2. **writes the path-rewritten scripts** into that layout, so their reads and writes resolve;
-3. optionally **installs the declared dependencies** into a throwaway library (`install_missing = TRUE`), never your main R library — under `sandbox = "docker"` this is *always* into a throwaway library inside the container, since a container has no access to your host library at all;
-4. **runs each script in run order**, each in its own subprocess or container with a per-script `timeout`, capturing the outcome and the console output.
+3. optionally **installs the declared dependencies** into a throwaway library (`install_missing = TRUE`), never your main R library — under `sandbox = "docker"` this is *always* into a throwaway library inside the container, since a container has no access to your host library at all (Python packages are installed with `pip install --target` into a throwaway folder in the same way);
+4. **runs each script in run order**, each in its own subprocess or container with a per-script `timeout`, capturing the outcome and the console output. An R script that another script runs with `source()` is not run on its own, but only as part of the script that sources it.
 
 ```{r}
 #| eval: false
@@ -430,7 +431,7 @@ mo <- module_run(paper, "reproducibility_check",
                  timeout = 600, keep_sandbox = TRUE)
 ```
 
-Each script gets one of six outcomes, added to the `$table` in an `outcome` column:
+Each script gets one of seven outcomes, added to the `$table` in an `outcome` column:
 
 | Outcome | Meaning |
 |---|---|
@@ -438,30 +439,61 @@ Each script gets one of six outcomes, added to the `$table` in an `outcome` colu
 | `errored` | the script raised an error (captured, with the message and output) |
 | `timed_out` | still running at the `timeout` cutoff — **not** a failure, just slow; raise `timeout` for legitimately long analyses (e.g. Bayesian sampling) |
 | `skipped_missing_inputs` | not run, because an input it needs is unavailable |
-| `not_parsed` | not run, because the script does not parse |
-| `dependency_unavailable` | not run (or failed immediately), because the script's own package could not be installed from live CRAN, the CRAN Archive, *or* a named GitHub/URL source — an infrastructure limitation, not a defect in the paper's code |
+| `not_parsed` | not run, because the script does not parse (for Python, checked with Python's own parser; code written for Python 2 fails this check) |
+| `dependency_unavailable` | not run (or failed immediately), because the script's own package could not be installed from live CRAN, the CRAN Archive, *or* a named GitHub/URL source — an infrastructure limitation, not a defect in the paper's code. For Python: the script stopped with `No module named ...` for a package `pip` could not install |
+| `run_by_source` | an R script that another script runs with `source()`. It is run only inside that script, because on its own it lacks the packages and objects the sourcing script sets up first; its result is part of that script's result. A sourced script that does not parse or lacks an input keeps its own outcome instead |
 
 `dependency_unavailable` is deliberately **excluded** from forcing the traffic light red, unlike `errored`/`timed_out` — a package that has genuinely vanished from every source metacheck tries is not evidence the paper's own analysis is broken.
 
-An error whose message is `object '...' not found` is called out specially: it usually means the script expects a variable another script defines, so it was meant to be `source()`d into a larger session rather than run alone. When that missing variable *is* defined by another script in the repository — checked via `repro_defined_vars()` — the module infers the correct order (adding a "definer runs first" edge and re-sorting), re-runs **once**, and reports the corrected outcome. It does not iterate further: a second `object not found` error after that one corrective pass is accepted as the final result rather than chased indefinitely.
+Two R errors lead to one corrective re-run. An error whose message is `object '...' not found` usually means the script expects a variable another script defines. When exactly one other script in the repository defines that variable — checked via `repro_defined_vars()` — the module places that script first (adding a "definer runs first" edge and re-sorting). An error whose message is `could not find function "..."`, for a function no script of the paper defines, usually means a package was never loaded. The module then adds `library()` calls to the top of the failing script: all the packages the project's other scripts load, when one of them provides the function (such a script was usually written to run after those scripts, in the same R session); otherwise the one package, among the paper's own dependencies and a short list of very common packages, that exports the function; otherwise, for `%>%`, magrittr. Each added call is recorded in `$modifications`, and a script that then runs is reported as reproducible only after adding `library()` calls it should make itself. The module re-runs **once** and reports the corrected outcome. It does not iterate further: a second such error after that one corrective pass is accepted as the final result rather than chased indefinitely.
+
+Python scripts get no corrective re-run; see [Python code](#python-code).
 
 ::: callout-note
-Two habits in shared code are handled automatically. A `setwd()` call — which hardcodes where the code must run and would override the sandbox — is commented out before the script runs, and the report notes that the script is "reproducible after ignoring a `setwd()` that should not have been in the code." An SPSS data file (`.sav`/`.zsav`/`.por`) with **no** accompanying syntax (`.sps`) turns the light red, because that analysis cannot be reproduced from the deposit; the same is true for a Stata `.dta` file with no `.do`. The report recommends depositing analyses as jamovi or JASP files instead, since those bundle data and analyses together and need no code to be re-run at all.
+Two habits in shared code are handled automatically. A `setwd()` call in R, or an `os.chdir()` call in Python — which hardcodes where the code must run and would override the sandbox — is commented out before the script runs, recorded in `$modifications`, and the report notes that the script is "reproducible after ignoring a `setwd()` that should not have been in the code" (or an `os.chdir()`). An SPSS data file (`.sav`/`.zsav`/`.por`) with **no** accompanying syntax (`.sps`) turns the light red, because that analysis cannot be reproduced from the deposit; the same is true for a Stata `.dta` file with no `.do`. This holds whatever language the paper's code is in, also when the paper has only Python code. The report recommends depositing analyses as jamovi or JASP files instead, since those bundle data and analyses together and need no code to be re-run at all.
 :::
 
 ::: callout-note
 Byte-identical duplicate files are only run once. A paper that links several repository components mirroring the same materials — a "live" OSF component, an "Archive of OSF Storage" snapshot, a view-only anonymised link — would otherwise have `code_check` list the *same* script once per mirror, and the module would run it two, four, or more times for no reason. `reproducibility_check` hashes each resolved script's actual content and drops exact duplicates before running, naming which kept file each dropped one mirrors in the report.
 :::
 
-## What if there's no R code at all?
+## Python code {#python-code}
 
-Not every deposit has R code to run, and the module handles several of those cases explicitly rather than falling through to a generic "nothing to check" result:
+Python code goes through the same two phases as R code, and the report describes it in its own section, headed "Python code", after the R sections. A `.py` file is Python code, and so is a Jupyter notebook (`.ipynb`) or Quarto document (`.qmd`) whose code is Python (`code_check` reads a notebook's declared kernel, and a Quarto document's declared engine or else its first code chunk). The code in a notebook or Quarto document is taken out of it first, so that `python` runs the code and not the notebook's JSON text or the document's Markdown.
 
-- **A JASP (`.jasp`) or jamovi (`.omv`) file, with no R code anywhere** — these formats bundle the data *and* the analyses *and* the rendered results together, so they are reproducible from the file itself. The module still extracts and matches their statistics (see below); the traffic light is `yellow`, not `na`, because there is a real, substantive finding to report.
+The static phase differs from R in three ways:
+
+- **Syntax check.** Each file is read by Python's own parser, which checks the syntax without running the code. This needs a Python interpreter (`python`, or else `python3`) on your computer; without one, every file is counted as parsing and the report says that the check could not be done. Code written for Python 2 (for example `print "x"`) fails this check.
+- **Dependencies.** `repro_dependencies_py()` reads the packages from the `import` lines. Modules of Python's standard library are tagged `base`, the rest `pypi`. When the name a package is imported under differs from the name `pip` installs, the `pip` name is reported: `sklearn` becomes `scikit-learn`, `cv2` becomes `opencv-python`, `PIL` becomes `Pillow`, `yaml` becomes `PyYAML`, `bs4` becomes `beautifulsoup4`, and so on for about twenty such names. Unlike for R, versions can be known: when the repository has a `requirements.txt` (or, if not, a `pyproject.toml`), the requirement it states for a package is kept in `ref` and used when installing it.
+- **Run order.** Python scripts are ordered by read-after-write and by the numbers in their filenames only.
+
+```{r}
+code_text <- c(
+  "import numpy as np",
+  "from sklearn.linear_model import LinearRegression",
+  "import os"
+)
+repro_dependencies_py(code_text, manifest_text = "scikit-learn==1.3.0")
+```
+
+With `execute = TRUE`:
+
+- Each Python script runs whole, as its own `python` process. With `sandbox = "process"` this needs the `processx` package and a Python interpreter on your computer; if no interpreter is found, or installing or running stops with an error, the Python files are reported as not run, with the reason, and the R results are still returned. With `sandbox = "docker"`, each script runs in its own container from the image `ghcr.io/scienceverse/metacheck_py_small:latest`, which has about 45 common packages (numpy, pandas, scipy, matplotlib, seaborn, scikit-learn, statsmodels, and others) already installed. `reproducibility_check()` has no argument to choose another Python image; only `repro_install_deps_py_docker()` and `repro_run_scripts_py_docker()`, called directly, take an `image` argument.
+- With `install_missing = TRUE`, packages are installed with `pip install --target` into a throwaway folder, never into your own Python installation.
+- Because each script runs in its own process, a name (a variable, function, or class) that one script defines is never available to another, whatever the order. A script that fails with a `NameError` is therefore not re-run; the report names the script or scripts that define the missing name instead.
+- What a script prints is read with the same reader used for notebook outputs. A printed scipy result such as `TtestResult(statistic=4.89, pvalue=6.75e-05, df=22)` becomes a t-statistic, a p-value, and degrees of freedom, which are compared with the paper together with the R output (see [Matching the reported results against the output](#matching-the-reported-results-against-the-output)). Only the printed text is read: unlike for R, the result objects themselves are not recorded, so a value a script computes but never prints is not seen.
+
+## What if there's no R or Python code at all?
+
+Not every deposit has R or Python code to run, and the module handles several of those cases explicitly rather than falling through to a generic "nothing to check" result:
+
+- **A JASP (`.jasp`) or jamovi (`.omv`) file, with no R or Python code anywhere** — these formats bundle the data *and* the analyses *and* the rendered results together, so they are reproducible from the file itself. The module still extracts and matches their statistics (see below); the traffic light is `yellow`, not `na`, because there is a real, substantive finding to report.
 - **Stata `.do` files with a `.smcl` output log, but no separate `.dta`** — the `.smcl` log both recovers the executed syntax (as a synthetic `.do` file `code_check` can check) and carries the results it printed, extracted the same way as JASP/jamovi output.
 - **Stata syntax with no data *and* no output at all** — named explicitly in the report as `"Stata code without data or output"`, with the light set to `info`, because this is real, actionable guidance (deposit a `.smcl` log) rather than an empty check.
 - **The same for SPSS syntax with no data or output**, SAS code, MATLAB code, or any other language `code_check` recognises but this module does not execute: each gets its own named block explaining specifically what is missing, rather than one generic message.
-- **Genuinely nothing at all** — no R code, no self-contained output, no other-language code either — is the only case that returns `na`.
+- **Genuinely nothing at all** — no R or Python code, no self-contained output, no other-language code either — is the only case that returns `na`.
+
+When a paper does have R or Python code, the same findings about SPSS/Stata files, self-reproducible output, and code in other languages are added to the report after the code sections (under the heading "All code and output" when there is Python code).
 
 ```{r}
 #| eval: false
@@ -482,7 +514,8 @@ Running the code is only half of reproducibility — the other half is *the numb
 - **SPSS Viewer files (`.spv`)** likewise carry their own results structure, and — since the `.spv`'s own structure XML records the exact SPSS syntax that produced each table — the module also recovers that syntax as a synthetic `.sps` file, checked by `code_check` like any other syntax file.
 - **Stata output logs (`.smcl`)** are Stata's own rendered output, echoing every command that was run; the module both extracts the printed results and recovers the commands as a synthetic `.do` file.
 - **Mplus output (`.out`)** always self-documents: its own "INPUT INSTRUCTIONS" section holds the exact syntax that produced it, so there is no "data without syntax" failure mode for Mplus the way there is for SPSS and Stata.
-- **Jupyter notebooks (`.ipynb`)** save each code cell's output *into* the file, so a Python analysis's printed statistics are recoverable with no Python installed and nothing re-run.
+- **Jupyter notebooks (`.ipynb`)** save each code cell's output *into* the file, so a Python analysis's printed statistics are recoverable with no Python installed and nothing re-run. (With `execute = TRUE`, the notebook's code is also run, as described in [Python code](#python-code).)
+- **Python scripts**, when executed, have their printed output read the same way as a notebook's saved output.
 - **R scripts**, when executed, print their results to the console (`summary(lm(...))`, `t.test(...)`, an `anova` table). The module parses that captured output into the same structured form, and — where possible — also captures the actual R **objects** a script's statements return (an `htest`, a `summary.lm`), not just their printed text, so a statistic's exact value and identity survive even when the console text alone would be ambiguous (the same `"W"` is Shapiro–Wilk's after `shapiro.test()` but the rank sum after `wilcox.test()`).
 
 Every extracted statistic is typed with the **STATO** ontology (the *Statistical Methods Ontology*), so a `t`-value carries the accession for "t-statistic", a `p`-value the accession for "p-value", and so on; a statistic with no STATO class keeps its own column header as a plain label, so nothing is dropped.
@@ -507,6 +540,8 @@ The final question — the one reproducibility is really about — is whether th
 A reported statistical test is not a single number; it is a multi-component statement, for example *"M = 1.93, SD = 0.76, W = 183.5, p = .791, rb = -0.16"*. Metacheck's text extractor records each of those numbers in the paper's `$eq` table, grouped so that the numbers from one reported test stay together. `match_reported_output()` **recomposes** each reported test from its components, then checks whether those component values **co-occur in a single analysis of the extracted output**.
 
 Matching whole tests, rather than lone numbers, is what makes the check trustworthy: any single value will coincidentally appear somewhere in a large enough set of output numbers, but several components of one test agreeing *at once* is essentially never accidental.
+
+Inside the module, this comparison is made once, after both the R and the Python code have run, so it uses the output of both languages together with any self-reproducible output. A printed scipy result names its values `statistic` and `pvalue`, which say nothing about the kind of test, so the kind is taken from the result's class name: `TtestResult` gives a t-statistic, `F_onewayResult` an F-statistic, `PearsonRResult` Pearson's r, and `Chi2ContingencyResult` a chi-squared statistic with its degrees of freedom (`dof`). `spearmanr()` and `kendalltau()` return the same class, so their coefficient is left without a type.
 
 ```{r}
 #| eval: false
@@ -542,24 +577,26 @@ If your extracted paper has any results tables (not just narrative text), pass `
 | Light | Meaning |
 |---|---|
 | **green** | every script parses, its inputs resolve, the run order is unambiguous, no path rewrite is ambiguous, and (when executed) nothing errored |
-| **yellow** | some obstacle short of a full reproduction failure — a parse error, an unresolved input, an ambiguous path or order, or a self-reproducible output file present with no R code to run |
+| **yellow** | some obstacle short of a full reproduction failure — a parse error, an unresolved input, an ambiguous path or order, or a self-reproducible output file present with no R or Python code to run |
 | **red** | a reproduction failure: code that errored or timed out when run, missing inputs that are *entirely* explained by size withholding, or SPSS/Stata data deposited without its syntax |
-| **info** | no R code and no self-contained output, but the module found something specific and actionable to say (e.g. Stata syntax with neither data nor an output log) |
-| **na** | genuinely nothing to check — no R code, no self-contained output, no other-language code either |
+| **info** | no R or Python code and no self-contained output, but the module found something specific and actionable to say (e.g. Stata syntax with neither data nor an output log) |
+| **na** | genuinely nothing to check — no R or Python code, no self-contained output, no other-language code either |
 
 The static-only red condition is worth stating precisely, since it is easy to over-read: it fires when there **are** missing inputs and **every single one** of them is classified `withheld_size` — not merely when *some* inputs are size-withheld. Once code is actually executed (`execute = TRUE`), an execution error or timeout overrides the static signal and forces red regardless — a script that crashes on its own analysis is a genuine reproduction failure, whatever the static assessment said.
 
+R code and Python code each get their own light by these rules, and the paper gets the more serious of the two (red before yellow before green). SPSS or Stata data without syntax then turns the paper's light red, whatever language its code is in.
+
 | Element | What it contains |
 |---|---|
-| `$table` | one row per R file: `parses`, `run_order`, `order_basis`, `depends_on`, `paths_rewritten`, `paths_ambiguous`, `setwd_removed`, `runnable`, `not_runnable_reason`, `unresolved_inputs`, `reads`, `writes`, and (when executed) `outcome`, `error_type`, `undefined_var` |
-| `$summary_table` | per-paper aggregates (`repro_code_n`, `repro_runnable`, `repro_missing_inputs`, `repro_deps`, `repro_ran_ok`, `repro_tests_reported`, `repro_tests_matched`) |
-| `$run_results` | per-script execution record: `outcome`, `error`, `error_type`, `undefined_var`, captured `stdout` / `stderr`, `elapsed` time, `script_lines`, `captures` (the raw captured R objects) |
-| `$install_results` | per-dependency install record: `package`, `source`, `installed`, `message`, `via_archive` |
+| `$table` | one row per R or Python file: `parses`, `run_order`, `order_basis`, `depends_on`, `paths_rewritten`, `paths_ambiguous`, `setwd_removed` (for Python, the number of `os.chdir()` calls removed), `runnable`, `not_runnable_reason`, `unresolved_inputs`, `reads`, `writes`, and (when executed) `outcome`, `error_type`, `undefined_var` |
+| `$summary_table` | per-paper aggregates (`repro_code_n`, `repro_runnable`, `repro_missing_inputs`, `repro_deps`, `repro_ran_ok`, `repro_tests_reported`, `repro_tests_matched`); the first five add up the R and the Python counts |
+| `$run_results` | per-script execution record: `outcome`, `error`, `error_type`, `undefined_var`, captured `stdout` / `stderr`, `elapsed` time, `script_lines`, `captures` (the raw captured R objects; always empty for Python) |
+| `$install_results` | per-dependency install record: `package`, `source`, `installed`, `message`, `via_archive`, `category` (for Python, always `FALSE` and `NA`) |
 | `$stat_output` | per-file extracted statistical output: the structured JSON document and the flattened result rows |
 | `$match_table` | the full `match_reported_output()` result, when there was output to match against |
-| `$modifications` | per-file modification detail: `file_name`, `change_type`, `detail` — path rewrites, `setwd()` removal, font substitution, and `library()` injection. Empty when `execute = FALSE` or nothing needed modifying |
-| `$report` | formatted report sections, including per-script output and the self-reproducible JASP/jamovi results |
-| `$summary_text` | plain-text bulleted summary |
+| `$modifications` | per-file modification detail: `file_name`, `change_type`, `detail` — path rewrites (`path_rewrite`, listed even when `execute = FALSE`), and, when executed, `setwd()` or `os.chdir()` removal (`setwd_removed`), font substitution (`font_replaced`, R only), and added `library()` calls (`library_injected`, R only). Empty when nothing needed modifying |
+| `$report` | formatted report sections, including per-script output and the self-reproducible JASP/jamovi results; the R sections come first, then a "Python code" section when there is Python code |
+| `$summary_text` | plain-text bulleted summary, as one text also when the paper has R and Python code |
 | `$sandbox` | (only present when `keep_sandbox = TRUE`) the path to the materialised throwaway directory — see below |
 
 ## Options
@@ -567,10 +604,10 @@ The static-only red condition is worth stating precisely, since it is easy to ov
 | Argument | Default | Effect |
 |---|---|---|
 | `execute` | `FALSE` | run the paper's code; off by default |
-| `sandbox` | `"process"` | `"process"` runs in an isolated `callr` subprocess (isolates a crash only); `"docker"` runs inside a locked-down container (isolates filesystem and network too) |
-| `docker_use_declared_version` | `FALSE` | when `sandbox = "docker"`, use the paper's own declared R version (slower, from-scratch install) instead of the fast pre-built `metacheck_r` image |
-| `install_missing` | `FALSE` | install declared dependencies into a throwaway library before running |
-| `cran_install_main` | `FALSE` | (only under `sandbox = "process"`) install CRAN-source dependencies into your real default library instead of a throwaway one, so they persist across papers in a batch run; ignored under `sandbox = "docker"`, where a container never has access to your host library |
+| `sandbox` | `"process"` | `"process"` runs each R script in an isolated `callr` subprocess and each Python script in a `python` subprocess (isolates a crash only); `"docker"` runs inside a locked-down container (isolates filesystem and network too) |
+| `docker_use_declared_version` | `FALSE` | when `sandbox = "docker"`, use the paper's own declared R version (slower, from-scratch install) instead of the fast pre-built `metacheck_r_large` image; R code only |
+| `install_missing` | `FALSE` | install declared dependencies into a throwaway library before running (Python packages with `pip install --target`) |
+| `cran_install_main` | `FALSE` | (only for R code, under `sandbox = "process"`) install CRAN-source dependencies into your real default library instead of a throwaway one, so they persist across papers in a batch run; ignored under `sandbox = "docker"`, where a container never has access to your host library |
 | `timeout` | `600` | per-script timeout in seconds |
 | `keep_sandbox` | `FALSE` | keep the throwaway run directory and return its path as `$sandbox`, to inspect exactly what ran |
 | `workers` | `1` | when `paper` is a paperlist and `sandbox = "docker"`, run this many papers' checks concurrently — see [Batch mode](#batch-mode) |
@@ -594,10 +631,11 @@ Honest limits worth keeping in mind:
 
 - The static phase cannot always tell that a file a script reads is an **intermediate produced by another script** under a different name, so it may report it as an "absent" input.
 - Helper scripts `source()`d through a **dynamically built path** do not get a source edge, so they order arbitrarily with basis `none`.
-- Only **R** is executed. Python, SPSS syntax, Stata syntax, SAS, and MATLAB are reported but not run; SPSS/Stata/JASP/jamovi/Mplus/notebook results are read from their own output files rather than recomputed.
-- The output parser handles the common R output shapes (one-line tests like `t.test`; fixed-width tables like `summary(lm)` and `aov`) and JASP/jamovi/SPSS-Viewer/Mplus/notebook result tables. Unusual or bespoke output may parse incompletely; statistics with no STATO class are kept under their own header rather than semantically typed.
+- Only **R** and **Python** are executed. SPSS syntax, Stata syntax, SAS, and MATLAB are reported but not run; SPSS/Stata/JASP/jamovi/Mplus results are read from their own output files, and a notebook's saved results from the notebook, rather than recomputed.
+- Each Python script runs in its own process, so a script written to run after another one in the same Python session fails on the names that other script defines; there is no corrective re-run for Python. Python dependencies come only from `import` lines, so a package imported under a name other than its `pip` name is installed correctly only when that name is in the module's built-in list.
+- The output parser handles the common R output shapes (one-line tests like `t.test`; fixed-width tables like `summary(lm)` and `aov`), printed Python results such as scipy's, and JASP/jamovi/SPSS-Viewer/Mplus/notebook result tables. Unusual or bespoke output may parse incompletely; statistics with no STATO class are kept under their own header rather than semantically typed.
 - Extracted values inherit the **display precision** the software reported (`p = "< .001"` is a threshold, `t = 2.77` is rounded), so matching is precision-aware rather than exact — it compares what was *reported*, which is what you want for a reproducibility check.
 - `sandbox = "process"` genuinely does run downloaded code on your own machine with your own user's filesystem and network access. If you are not confident in a paper's code, use `sandbox = "docker"` instead — the two are not equivalent safety-wise, only equivalent in what they check.
-- The pre-built Docker image is built for one specific R version at a time; if a paper's own declared version matters to you specifically (not just "some recent R"), use `docker_use_declared_version = TRUE` and accept the slower, from-scratch install.
+- The pre-built R Docker image is built for one specific R version at a time; if a paper's own declared version matters to you specifically (not just "some recent R"), use `docker_use_declared_version = TRUE` and accept the slower, from-scratch install.
 
 If you want to extend the checks, or help harden the execution and matching phases, reach out to the Metacheck development team.

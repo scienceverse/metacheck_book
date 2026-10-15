@@ -23,7 +23,7 @@ pak::pkg_install("scienceverse/metacheck@dev")
 
 ## The basics
 
-This chapter does not describe a module you run on its own. These data-quality checks used to be a separate module (`data_validate`, plus a second one called `excel_check` for spreadsheet formatting), but both have since been **merged into [`data_check`](mod-data-check.qmd)**: there is no `module_run(paper, "data_validate")` anymore, because `data_check` now runs every check described in this chapter automatically, on every column it reads. This chapter exists to document those checks in detail, separately from the rest of what `data_check` does.
+This chapter does not describe a module you run on its own. These data-quality checks used to be a separate module (`data_validate`, plus a second one called `excel_check` for spreadsheet formatting), but both have since been **merged into [`data_check`](mod-data-check.qmd)**: there is no `module_run(paper, "data_validate")` anymore, because `data_check` now runs these checks automatically, on every column it reads. This chapter exists to document those checks in detail, separately from the rest of what `data_check` does.
 
 So the simplest way to see these checks run is the same call used for `data_check` itself, pointed at a folder with a planted problem — here a category typed two different ways:
 
@@ -50,14 +50,12 @@ mo$findings[, c("column", "check", "detail")] |>
   knitr::kable()
 ```
 
-A red or yellow light here, or a row in `mo$findings`, tells you a value looks suspicious by one of these general rules — for example, the same category spelled two different ways, or a value outside the range the rest of a column uses. It does not tell you *why* that value is wrong, and it cannot tell whether a value that passes every check is actually correct: a value that happens to look fine will not be flagged, and a column with no findings at all can still contain mistaken or fabricated entries these checks have no way to see. Treat a flag as a place to look by hand, not a verdict, and treat a clean result as "nothing obvious was wrong" rather than "this data is correct." The rest of this chapter describes each individual check — rating-scale values, spreadsheet formatting, careless survey responding, personal information, and more — in detail.
+A red or yellow light here, or a row in `mo$findings`, tells you a value looks suspicious by one of these general rules — for example, the same category spelled two different ways, or a column of numbers with a note typed into one cell. It does not tell you *why* that value is wrong, and it cannot tell whether a value that passes every check is actually correct: a value that happens to look fine will not be flagged, and a column with no findings at all can still contain mistaken or fabricated entries these checks have no way to see. Treat a flag as a place to look by hand, not a verdict, and treat a clean result as "nothing obvious was wrong" rather than "this data is correct." The rest of this chapter describes each individual check — spreadsheet formatting, careless survey responding, personal information, and more — in detail.
 
 ## What it checks
 
 `data_check` runs automated **data-quality checks** on every column it extracts, flagging the kinds of problems that are easy to miss by eye but common in shared data. Every check is a small, dependency-free base-R function that returns a uniform `list(problem, message, values)`, so the module can run them all over every column and collect the findings. The checks are:
 
-- **Values outside a rating scale** — a value outside a Likert/rating scale's valid range, classified as a miscoded missing value, a keying typo, or unexplained.
-- **Constant and near-constant columns** — a column with a single repeated value that carries no information.
 - **Empty columns** — a column with no observed values at all.
 - **SPSS filter variables** — a `filter_$` variable left in the export, signalling the data are a pre-filtered subset.
 - **Numeric-as-text** — a mostly-numeric column contaminated by a few text entries.
@@ -68,7 +66,9 @@ A red or yellow light here, or a row in `mo$findings`, tells you a value looks s
 - **Mixed / legacy encoding** — text whose bytes are not valid UTF-8.
 - **Personal information** — columns whose name or values look like data that should not be shared openly (emails, IP addresses, national IDs, credit-card numbers, geographic coordinates, free text).
 
-For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_check` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet.
+For every **spreadsheet file** (`.xlsx`, legacy `.xls`, OpenDocument `.ods`/`.fods`), `data_check` also inspects the **raw workbook**, not just the data it extracts from it — colour-coded cells, merged ranges, empty rows and columns, and a header row that is not the first row of the sheet. And for every **`.csv` file whose values are separated by spaces** instead of commas, it reports that the file's columns could not be checked.
+
+Two checks that earlier versions ran are no longer part of `data_check`: **values outside a rating scale**, which has moved to [Codebook Check](mod-codebook-check.qmd), where the data are compared with the range a codebook documents, and **constant columns**, which is switched off. Both are explained below.
 
 It also produces an inventory of **demographic columns**, a **Qualtrics survey metadata** summary, a **careless-responding** screen for survey data, and a **combined distribution figure** of the numeric columns.
 
@@ -84,10 +84,10 @@ dir.create(file.path(repo, "data"), recursive = TRUE, showWarnings = FALSE)
 
 study <- data.frame(
   id        = 1:40,
-  rating    = c(sample(1:7, 39, replace = TRUE), 99),  # 99 in a 1-7 scale
-  age       = c(rnorm(39, 30, 5), -99),                # miscoded missing
-  condition = c(rep("Control", 20), rep("control", 19), "X"),  # casing
-  constant  = rep(1, 40)                               # no information
+  age       = round(rnorm(40, 30, 5)),
+  score     = c(round(rnorm(39, 50, 10), 1), "see note"),          # a note in a number column
+  condition = c(rep("Control", 20), rep("control", 19), "Control "), # casing, trailing space
+  notes     = NA                                                    # never filled in
 )
 utils::write.csv(study, file.path(repo, "data", "study.csv"), row.names = FALSE)
 ```
@@ -100,7 +100,7 @@ mo$traffic_light
 cat(mo$summary_text)
 ```
 
-`data_check` reads and classifies the columns first, then applies the quality checks to the result, so a single call does both.
+`data_check` reads and classifies the columns first, then applies the quality checks to the result, so a single call does both. Three of the five columns are flagged, which is more than a quarter, so the light is red (see [The traffic light](#the-traffic-light)).
 
 ## The findings table
 
@@ -119,11 +119,11 @@ The `check` column names the category of problem, and `detail` explains it in wo
 `data_check` returns both, at deliberately different grains. `$table` has one row per **column**, describing what each column is. `$findings` has one row per **problem**, describing what is wrong. They are separate because one column can raise several findings, and because a spreadsheet-formatting or careless-responding finding has no single column to attach to at all. When this chapter refers to a finding, it is in `$findings`.
 :::
 
-## Values outside a rating scale: `data_check_scale_values()`
+## Values outside a rating scale: moved to Codebook Check
 
-The single most informative numeric check. Earlier versions ran a raw Tukey-outlier flag on every numeric column, but that is misleading: a long tail on a reaction-time or score column is normal, not an error. Instead, `data_check_scale_values()` fires *only on bounded rating scales* — the one place a value can be genuinely "impossible". A rating scale has a small set of consecutive valid integer levels, and any value outside that set is a data problem.
+`data_check` no longer looks for values outside a rating scale. That check has moved to [Codebook Check](mod-codebook-check.qmd), which compares each column with the value codes its codebook documents ("the codebook says 1–5, but the column contains a 6") and reports the values outside that documented range. When `data_check` ran it, a codebook was in practice never available to it (`codebook_check` runs after `data_check` and reads its output), so the range was always guessed from the column's own values; a value outside a guessed range is weak evidence, and a documented range is not guessed.
 
-The valid range is **ground truth** when a codebook supplies it (enumerated valid codes or a declared missing scheme, passed in from `codebook_check`); otherwise it is inferred by `.detect_likert_scale()`, which grows a dense consecutive core outward from the modal value, bridges small interior gaps between common levels, anchors the floor to the natural scale start (0 or 1), and returns everything outside `[lo, hi]` as suspects. Crucially it infers the range from the *dense core*, not `min`/`max`, so a single stray `99` cannot destroy the scale it is meant to reveal.
+`codebook_check` does this with the exported helper `data_check_scale_values()`, which you can also call directly on any column. Given a codebook's valid codes it uses those; called without them, it infers the range with `.detect_likert_scale()`, which grows a dense consecutive core outward from the modal value, bridges small interior gaps between common levels, anchors the floor to the natural scale start (0 or 1), and returns everything outside `[lo, hi]` as suspects. Crucially it infers the range from the *dense core*, not `min`/`max`, so a single stray `99` cannot destroy the scale it is meant to reveal.
 
 Each out-of-scale value is then **classified**:
 
@@ -137,30 +137,34 @@ data_check_scale_values(c(sample(1:7, 50, replace = TRUE), 99, 33))$message
 ```
 
 ```
-[1] "2 values outside the 1–7 scale: 33 (looks like a typo of 3),
-     99 (looks like a missing-data code → recode to NA)"
+[1] "2 values outside the 1-7 scale: 33 (looks like a typo of 3), 99 (looks like a missing-data code -> recode to NA)"
 ```
 
 The sentinel list is deliberately conservative: the `9x`-block (`97`/`98`/`99`), repeated-digit `8`- and `7`-families, wide placeholders, and the two attested negative codings (`-99`, `-999`). Single digits `7`/`8`/`9` are excluded (valid Likert points), and a sentinel only ever fires when it sits *outside* the scale, so a `99` in an age column or a `97` in a 0–100 score does not trip it.
 
-The related helper `data_check_outliers()` still computes the Tukey 1.5×IQR fences, but they are now used only as **visual context** — the dashed red lines on the distribution figure — and as the basis for the careless-responding IRV screen, not as a per-column finding.
+The related helper `data_check_outliers()` still computes the Tukey 1.5×IQR fences and can be called directly, but `data_check` no longer uses it: no column is flagged for values beyond the fences, the distribution figure does not draw them, and the careless-responding screen does not use them either. On real data the fences mostly mark the long right tail of skewed columns such as reaction times, which is their expected shape, not an error.
 
-## Constant, empty, and SPSS filter columns
+## Empty columns and SPSS filter variables
 
-These fire for any column type, and are tiered by how likely they are to signal a real problem:
+These fire for any column type:
 
 - **`data_check_empty()`** — an all-missing column (all `NA`, or for text all blank/whitespace). Always flagged: a variable that never recorded anything.
-- **`data_check_constant()`** — a single repeated value (or ≥99% one value, "near-constant"). A constant column is flagged when it is *numeric*, or when its name looks like a design/condition variable (`data_check_design_name()` — `condition`/`group`/`treatment`/`arm`/`dose`, with a word boundary so "charm" ≠ "arm"), because one value there suggests the file was filtered to a single condition before export. A constant *text* column is usually intentional file-level metadata (a version number, a language code) and is only listed in an informational note, not counted as an issue.
 - **`data_check_spss_filter()`** — an SPSS "Select Cases" filter variable (`filter_$`). Flagged whether constant or not: constant-1 means the shared file is a pre-filtered subset; varying means the reported analyses likely used only the selected rows and the filter must be re-applied.
 
 ```{r}
 #| eval: false
 data_check_empty(c(NA, NA, NA))$message
 #> "Column is empty: all 3 values are missing."
-data_check_constant(rep(1, 40))$message
-#> "Column is constant: every value is \"1\"."
 data_check_spss_filter("filter_$", rep(1, 30))$problem
 #> TRUE
+```
+
+**Constant columns are not flagged.** Earlier versions flagged a column holding a single repeated value (or 99% one value) with `data_check_constant()`. This check is switched off, because on real data most constant columns are constant on purpose: in a file that holds one participant's trials, `subject_ID`, `Age` and `Gender` have one value because the file is about one person, and columns that record the experiment software's settings are constant as well. `data_check_constant()` (and `data_check_design_name()`, which recognises a condition or group variable by its name) can still be called directly:
+
+```{r}
+#| eval: false
+data_check_constant(rep(1, 40))$message
+#> "Column is constant: every value is \"1\"."
 ```
 
 ## Categorical checks
@@ -245,6 +249,30 @@ Two further, related checks fire on any spreadsheet regardless of formatting:
 - **"Not a rectangular dataset"** — `data_check` itself already decided this file does not read as a usable dataset (mostly free text, or almost entirely empty); `data_check` adds the structural note here so the finding shows up in the same table rather than only in `data_check`'s own output.
 - **"Un-inspectable (.xls)"** — legacy binary `.xls` has no XML to inspect for colour or merges; it is still checked for an offset header (which does not need the XML structure), but colour/merge/empty-row-or-column checks are skipped with a note recommending conversion to `.xlsx` or `.ods`.
 
+## Space-separated `.csv` files {#space-separated-csv-files}
+
+`data_check` works out the separator of a `.csv` file from the commas, semicolons, tabs and vertical bars in its first line, never from spaces (see the [Data Check](mod-data-check.qmd) chapter). A `.csv` whose values are separated by spaces therefore reads as one column of text, and none of its columns can be checked. Without a warning, such a file could leave the light green.
+
+So `data_check` looks at the first lines of every `.csv` file it has a copy of (up to six, skipping blank lines and lines that start with `#`). It reports a **"Space-separated .csv"** finding when none of these lines holds a comma, semicolon, tab or vertical bar, every line splits at its spaces into the same number of values (at least three), and at least one value below the first line is a number. The rule is strict on purpose, so that a one-column file of short phrases is not mistaken for a space-separated table. The file is not read again with spaces as the separator: the finding asks the authors to save it as a comma-separated `.csv` or a tab-separated `.tsv`, because a value that itself contains a space cannot be told apart from the separator.
+
+```{r}
+spaced <- file.path(tempdir(), "space_csv_demo")
+dir.create(file.path(spaced, "data"), recursive = TRUE, showWarnings = FALSE)
+writeLines(c("id condition score",
+             "1 control 4.5",
+             "2 treatment 5.1",
+             "3 control 3.9"),
+           file.path(spaced, "data", "scores.csv"))
+
+mo_sp <- module_run(test_paper(), "data_check",
+                    local_path = spaced, local_only = TRUE)
+mo_sp$traffic_light
+mo_sp$findings[, c("source_file", "column", "check")] |>
+  knitr::kable()
+```
+
+The finding concerns the whole file, so `column` and `label` are both `NA`. It turns a green light yellow, but it is not counted towards the quarter-of-columns red threshold. In this example the file is also reported, in `mo_sp$summary_text`, as not a usable rectangular dataset, because its single column holds only text.
+
 ## Mixed / legacy encoding
 
 `data_check` records, per column, how many values had to be re-interpreted as Latin-1 because their bytes were not valid UTF-8 (the `utf8_repaired` count). `data_check` turns any non-zero count into a **Mixed encoding** finding: metacheck read the file by re-interpreting those bytes, but on another system such characters corrupt silently (`é` becomes `Ã©` or `�`), so the researcher is told to re-save the file as UTF-8 (with the exact steps for Excel, R, and SPSS).
@@ -273,9 +301,9 @@ mo_pii$findings[, c("column", "check")] |>
   knitr::kable()
 ```
 
-## Codebook ground truth
+## Codebook labels
 
-When `codebook_check` has run, `data_check` uses its output as ground truth for the numeric checks. The internal `codebook_of()` lookup decodes the documented **valid values** (a code list) and **declared missing values** from the codebook table's JSON columns: a documented 1–5 value set makes a `6` out-of-range even when the data alone would not reveal the scale, and a declared `-99` is flagged as missing directly. The `label_of()` lookup attaches each column's documented **label** to its findings for context.
+No check in `data_check` depends on a codebook. When output from `codebook_check` is available, `data_check` uses it for two things only: the `label_of()` lookup adds each column's documented **label** to its findings (the `label` column of `$findings`), and a careless-responding block is named after the scale `codebook_check` identified ("PANAS") rather than the shared start of its column names. Usually that output is not available, because `codebook_check` runs after `data_check` and reads its results; the label is then `NA` and the block keeps the name taken from its columns. Comparing the data with the valid and missing values a codebook documents is done in [Codebook Check](mod-codebook-check.qmd).
 
 ## Demographic variables
 
@@ -313,14 +341,14 @@ The substantive question columns are deliberately *not* interpreted here — tha
 
 ## Careless responding
 
-For **survey data**, `data_check` additionally screens for **careless responding** — respondents who straightline (give the same answer to every item) or answer unusually flatly or erratically. This uses the [`careless`](https://cran.r-project.org/package=careless) package's *longstring* and *intra-individual response variability* (IRV) indices, computed per scale block by `.dv_careless_block()`.
+For **survey data**, `data_check` additionally screens for **careless responding** — respondents who straightline (give the same answer to almost every item of a scale). This uses the [`careless`](https://cran.r-project.org/package=careless) package's *longstring* index (the longest run of identical answers), computed per scale block by `.dv_careless_block()`. The package's *intra-individual response variability* (IRV, the standard deviation of a respondent's answers) is computed and reported alongside, but it does not flag anyone.
 
-Because these indices only make sense on a block of items measured on a common scale, and a finding is only actionable if you can point to *which* respondent, the check runs only when **both** conditions hold:
+Because these indices only make sense on a block of items measured on a common scale, and a finding is only actionable if you can point to *which* respondent, the check runs only on files with at least 30 rows and at least 5 columns, and only when **both** conditions hold:
 
 1. the file contains a **block of Likert-type items** — detected by `.detect_scale_blocks()`, a maximal run of adjacent integer columns (3–11 response options) sharing a variable-name prefix (via `.scale_name_prefix()`), with at least `.scale_min_items` (3) items; and
 2. the file has an **identifier column** (from `data_check`'s `identifier` role, a name-pattern fallback, or else the check is skipped).
 
-Item blocks are split by their variable-name prefix, so `panas_1 … panas_10` and `rse_1 … rse_5` are treated as two separate scales even when they sit next to each other. Within a block, a respondent is flagged when *either* their longest run of identical answers covers ≥80% of the items (straightlining) *or* their IRV is a Tukey outlier for the block (flat or erratic answering).
+Item blocks are split by their variable-name prefix, so `panas_1 … panas_10` and `rse_1 … rse_5` are treated as two separate scales even when they sit next to each other. Within a block, a respondent is flagged when their longest run of identical answers covers ≥80% of the items and is at least 5 answers long, so a block of fewer than 5 items never flags anyone. Earlier versions also flagged a respondent whose IRV lay outside the Tukey fences for the block; that rule was dropped because it flags a few percent of respondents in any block, whether or not anyone answered carelessly.
 
 ```{r}
 survey <- file.path(tempdir(), "careless_demo")
@@ -330,7 +358,8 @@ set.seed(1)
 n <- 60
 items <- as.data.frame(matrix(sample(2:4, n * 10, replace = TRUE), nrow = n))
 names(items) <- paste0("mood_", 1:10)
-# add one straightliner (all 3s) and one erratic responder (1,5,1,5,...)
+# add one straightliner (all 3s), who is flagged, and one erratic
+# responder (1,5,1,5,...), who is not: only straightlining flags a respondent
 items <- rbind(items,
                as.data.frame(matrix(rep(3, 10), nrow = 1)) |> setNames(names(items)),
                as.data.frame(matrix(rep(c(1, 5), 5), nrow = 1)) |> setNames(names(items)))
@@ -343,7 +372,7 @@ mo_car$careless |>
   knitr::kable()
 ```
 
-The per-block findings are aggregated to **one row per respondent** by `.dv_careless_by_respondent()`, which records how many blocks flagged each person, on which scales, the worst longstring and most extreme IRV, and a `short_scale_only` flag — `TRUE` when *every* flag is short-scale straightlining (a run of identical answers on a scale of ≤7 items), which on a short unidirectional scale is often normal coherent answering rather than carelessness. These are **prompts to inspect those rows**, not automatic exclusions.
+The per-block findings are aggregated to **one row per respondent** by `.dv_careless_by_respondent()`, which records how many blocks flagged each person, on which scales, the longest run (`max_longstring`), the lowest IRV, the run that triggered the strongest flag in words (`threshold`), and a `short_scale_only` flag — `TRUE` when *every* flag is short-scale straightlining (a run of identical answers on a scale of ≤7 items), which on a short unidirectional scale is often normal coherent answering rather than carelessness. These are **prompts to inspect those rows**, not automatic exclusions.
 
 ::: callout-note
 The careless check needs the optional `careless` package. If it is not installed, the check is skipped and the report notes how many survey files it *would* have screened.
@@ -359,17 +388,15 @@ The synthetic example above shows the mechanics. To see the check on real resear
 #| eval: false
 mo <- module_run(test_paper(), "data_check",
                  local_path = "divine-protection-replication", local_only = TRUE)
-mo$careless[, c("scale", "respondent", "longstring", "irv", "reason")]
+mo$careless[, c("respondent", "scales", "max_longstring", "irv")]
 ```
 
 ```
-                scale respondent longstring  irv                      reason
-1 dos (1-5, 40 items)        129         40 0.00 straightlining + IRV outlier
-2 dos (1-5, 40 items)        ...          9 0.63                 IRV outlier
-# ... 19 respondents flagged in total
+  respondent              scales max_longstring irv
+1        129 dos (1-5, 40 items)             40   0
 ```
 
-Respondent 129 answered **all 40 items identically** (`longstring = 40`, `IRV = 0`) — an unambiguous straightliner. A further 18 respondents are flagged as IRV outliers for a closer look.
+Respondent 129 answered **all 40 items identically** (`max_longstring = 40`, `IRV = 0`) — an unambiguous straightliner, and the only respondent flagged.
 
 **Several short scales, split by prefix.** The "Parents' Failure Mindsets" data of @haimovitz_failure contain three separate failure-mindset scales in adjacent columns, named `fail_*`, `failbad_*`, and `failgood_*`, all on a 1–6 metric.
 
@@ -377,18 +404,19 @@ Respondent 129 answered **all 40 items identically** (`longstring = 40`, `IRV = 
 #| eval: false
 mo <- module_run(test_paper(), "data_check",
                  local_path = "parents-failure-mindsets", local_only = TRUE)
-unique(mo$careless$scale)
+unique(unlist(strsplit(mo$careless$scales, "; ")))
 ```
 
 ```
-[1] "fail (1-6, 6 items)"     "failbad (1-6, 5 items)"  "failgood (2-6, 5 items)"
+[1] "fail (1-6, 6 items)"     "failgood (2-6, 5 items)"
+[3] "failbad (1-6, 5 items)"
 ```
 
-Even though the three scales sit next to each other on the same response metric, the variable-name prefix splits them into **three distinct blocks**, and careless indices are computed within each.
+Even though the three scales sit next to each other on the same response metric, the variable-name prefix splits them into **three distinct blocks**, and careless indices are computed within each. All 45 flagged respondents here have `short_scale_only = TRUE`: on scales of 5 or 6 items, answering the same way throughout is often consistent answering rather than carelessness.
 
 ## Distributions in a report
 
-When you pass `plot_distributions = TRUE` (and have `ggplot2` installed), `data_check` draws a **single combined figure** with one small histogram per numeric column, the outlier fences drawn as dashed red lines, built by `data_validate_dist_facets()`. Earlier versions drew one plot per column, which was slow and unreadable on wide files (a survey export can have hundreds of numeric columns). The combined figure renders once as a self-contained inline image (so a moved report keeps its plot) and caps the number of panels at `max_facets` (default 40), noting how many columns were omitted if it truncates. All columns are still *checked* — only the figure is limited.
+When you pass `plot_distributions = TRUE` (and have `ggplot2` installed), `data_check` draws a **single combined figure** with one small histogram per numeric column, built by `data_validate_dist_facets()`. Earlier versions also drew the Tukey outlier fences as dashed red lines; these are no longer drawn, because on most real columns the values beyond them are not suspect. Earlier versions drew one plot per column, which was slow and unreadable on wide files (a survey export can have hundreds of numeric columns). The combined figure renders once as a self-contained inline image (so a moved report keeps its plot) and caps the number of panels at `max_facets` (default 40), noting how many columns were omitted if it truncates. All columns are still *checked* — only the figure is limited.
 
 ```{r}
 #| eval: false
@@ -400,23 +428,16 @@ module_run(test_paper(), "data_check", local_path = repo,
 
 | Light | Meaning |
 |---|---|
-| **green** | columns were checked and no issues were found |
-| **yellow** | fewer than a quarter of columns were flagged, or only careless-responding respondents or spreadsheet-formatting issues were found |
+| **green** | columns were checked and no issues were found. The light is also green when tabular data files were found but none could be read as a usable table, so that no column was checked; the summary text then says so |
+| **yellow** | fewer than a quarter of columns were flagged, or only careless-responding respondents, spreadsheet-formatting issues or space-separated `.csv` files were found |
 | **red** | a quarter or more of columns were flagged |
-| **na** | there were no readable tabular data files to validate, and no spreadsheet-formatting issues either |
+| **na** | no tabular data file was found, and there were no spreadsheet-formatting or space-separated `.csv` findings either |
 
-Spreadsheet-formatting findings are file-level, not column-level, so they are never counted in the quarter-of-columns red threshold — a workbook with a colour-coded cell does not turn the whole result red the way a quarter of columns having out-of-range values would. If **no** columns could be validated at all (no readable tabular data) but a spreadsheet file *was* found with formatting problems, the result is `yellow`, not `na` — there is a real, actionable finding to report even though nothing could be checked at the column level.
+Spreadsheet-formatting and space-separated `.csv` findings are file-level, not column-level, so they are never counted in the quarter-of-columns red threshold — a workbook with a colour-coded cell does not turn the whole result red the way a quarter of columns being flagged would. If **no** columns could be validated at all (no readable tabular data) but a spreadsheet file *was* found with formatting problems, or a `.csv` separated by spaces, the result is `yellow`, not `na` — there is a real, actionable finding to report even though nothing could be checked at the column level. The light shown is the worse of this light and the one for reading the files, described in the [Data Check](mod-data-check.qmd) chapter.
 
 ## Options
 
-```{r}
-#| eval: false
-# make the outlier rule stricter or more lenient (default k = 1.5)
-module_run(test_paper(), "data_check",
-           local_path = repo, local_only = TRUE, outlier_k = 3)
-```
-
-A larger `outlier_k` widens the fences used for the distribution figure and the IRV screen, so only more extreme values are flagged.
+Earlier versions had an `outlier_k` argument that set the width of the Tukey fences. It has been removed, because no check uses the fences any more; passing it now stops `module_run()` with an "unused argument" error. The options that remain for these checks are `plot_distributions` and `max_facets`, described under [Distributions in a report](#distributions-in-a-report).
 
 ## What you get back
 
@@ -427,17 +448,19 @@ These are elements of what `data_check` returns. The [Data Check](mod-data-check
 | `$traffic_light` | `green` / `yellow` / `red` / `na` |
 | `$summary_text` | plain-text summary with a per-check breakdown |
 | `$summary_table` | `paper_id`, `column_n`, `flagged_n`, `spreadsheet_file_n`, `spreadsheet_flagged_file_n`, alongside `data_file_n` and `empty_col_n` from the file-classification pass |
-| `$findings` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` — spreadsheet-formatting findings join the same table with `column = NA` and the sheet name in `label` |
+| `$findings` | one row per (column, check): `source_file`, `column`, `label`, `check`, `detail` — spreadsheet-formatting findings join the same table with `column = NA` and the sheet name in `label`; a space-separated `.csv` finding has both `column` and `label` `NA` |
 | `$table` | one row per **column** rather than per problem: what each column is, with its facets and summary statistics |
 | `$demographics` | one row per detected demographic column: `source_file`, `column`, `demographic` |
 | `$qualtrics` | one row per detected Qualtrics export: response count, preview/unfinished rows, median time, collection window, PII fields present |
 | `$careless` | one row per flagged respondent (survey data), aggregated across scale blocks |
 | `$previews` | the data frames themselves, as read from each file |
-| `$report` | formatted report with the issue breakdown, out-of-range table, spreadsheet-formatting table, combined distribution figure, Qualtrics summary, and careless-responding table |
+| `$report` | formatted report with the issue table, the combined distribution figure (when `plot_distributions = TRUE`), Qualtrics summary, spreadsheet-formatting section, and careless-responding section |
 
 `spreadsheet_file_n` counts every spreadsheet file examined (`.xlsx`/`.xls`/`.ods`/`.fods`), whether or not it had any issues; `spreadsheet_flagged_file_n` counts how many of those had at least one formatting finding.
+
+When no file could be read as a usable table, the column checks do not run: `$table` has no rows, `$findings` holds only the spreadsheet-formatting and space-separated `.csv` findings (if any), and `$demographics`, `$qualtrics` and `$careless` are not returned. The summary, report and traffic light are returned as usual.
 
 ## Related
 
 - [Data Check](mod-data-check.qmd) is the module these checks are part of. It classifies the files, reads them, and describes every column, and the checks in this chapter then run on that result.
-- [Codebook Check](mod-codebook-check.qmd) checks whether those columns are documented — the `label` column here, and the codebook ground truth for the numeric checks, come from its output when available.
+- [Codebook Check](mod-codebook-check.qmd) checks whether those columns are documented, and compares the data with the values a codebook documents (the check for values outside a rating scale). The `label` column here comes from its output when available.

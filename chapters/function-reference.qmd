@@ -9,7 +9,7 @@ used together stay together. Unlike a hand-written summary, this page is
 regenerated from source and cannot drift out of sync with the installed
 package's actual exports.
 
-As of this build, that is **267 functions** across **20 groups**.
+As of this build, that is **276 functions** across **20 groups**.
 
 ## Getting a paper to work with
 
@@ -132,7 +132,7 @@ Checks if a paper object conforms to the JSON schema.
 *Write paper*
 
 ```r
-paper_write(paper, file_name = NULL, save_path = ".")
+paper_write(paper, file_name = NULL, save_path = ".", schema_version = NULL)
 ```
 
 Save a paper as a JSON file.
@@ -292,7 +292,12 @@ self-hosted bibr instance (`"selfhosted"`) for direct API access.
 *Convert Grobid TEI XML file to bibr format*
 
 ```r
-grobid_to_bibr(xml_path, save_path = ".", crossref_lookup = FALSE)
+grobid_to_bibr(
+xml_path,
+save_path = ".",
+crossref_lookup = FALSE,
+schema_version = NULL
+)
 ```
 
 **Returns:** a paper object
@@ -636,13 +641,16 @@ modules = c("prereg_check", "funding_check", "coi_check", "power", "repo_check",
 "ref_summary"),
 output_file = paste0(paper$paper_id, "_report.", output_format),
 output_format = c("html", "qmd"),
+report_type = c("full", "simple"),
 args = list()
 )
 ```
 
 Run specified modules on a paper and generate a report in quarto (qmd), html, or pdf format.
 
-**Returns:** the file path the report is saved to
+**Returns:** the module output, invisibly, with the report's file path in its
+`save_path` attribute (a vector of paths, one per paper, when `paper` is
+a paperlist)
 
 ### `report_module_run`
 
@@ -698,6 +706,7 @@ report_repository(
 path,
 output_file = NULL,
 output_format = c("html", "qmd"),
+report_type = c("full", "simple"),
 modules = c("repo_check", "code_check", "data_check", "codebook_check"),
 args = list()
 )
@@ -710,6 +719,33 @@ improved, before archiving the files somewhere permanent.
 
 **Returns:** the module output, invisibly, with the report's file path in its
 `save_path` attribute
+
+### `report_type`
+
+*Set or get the report type*
+
+```r
+report_type(report_type = NULL)
+```
+
+Controls two independent things about how `report()`/`report_repository()`
+build a report:
+
+- **rendering mechanics** -- a full, interactive HTML report (light/dark
+theme toggle, sortable/paginated JavaScript tables, tabbed sections) vs.
+a "simple" static report with none of that -- plain tables, stacked
+headings instead of tabs, a single theme, no inline `<script>` content.
+Email clients and mail scanners routinely flag the embedded JavaScript a
+full report carries (even though it is inert without a browser), so a
+"simple" report type is the setting to use before emailing a report.
+
+- **content amount** -- every module's full detail vs. only the modules
+flagged red/yellow/fail (i.e. what needs attention), with just their
+one-line summary and no expandable detail, "How It Works" callout, or
+validation note. This is the "brief" setting, for getting to "what to
+improve" as fast as possible.
+
+**Returns:** the current option value
 
 ## Report-building helpers
 
@@ -741,7 +777,7 @@ report_table(table, colwidths = "auto", maxrows = 2, escape = FALSE)
 
 A function to display tables in reports.
 
-**Returns:** the datatable
+**Returns:** the datatable (full report) or a knitr::kable object (simple report)
 
 ### `collapse_section`
 
@@ -1643,7 +1679,12 @@ Same two-tier approach `zenodo_links()` uses.
 dryad_info(dryad_url, id_col = 1, pb = NULL, cache = FALSE)
 ```
 
-**Returns:** a data frame of information
+**Returns:** a data frame of information, one row per link, with the dataset's
+metadata, its file records in the list column `files`, and
+`storage_size` (the dataset's total size in bytes as Dryad reports it),
+`files_total` (the number of files Dryad reports), and
+`files_incomplete` (`TRUE` when fewer files could be listed than Dryad
+reports; a warning is given too)
 
 ### `dryad_file_download`
 
@@ -1753,8 +1794,10 @@ figshare_pat(pat = NULL)
 
 Figshare issues personal access tokens from account settings
 (https://figshare.com/account/applications). A token is optional for
-reading public articles (used here only to raise rate limits or read
-private ones), unlike Dataverse where a token is per-installation.
+reading public articles and is used here only to read private ones (it
+does not raise any request limit: Figshare documents no automatic rate
+limiting and asks for at most 1 request per second either way), unlike
+Dataverse where a token is per-installation.
 
 **Returns:** the current token (character; `""` when none is set)
 
@@ -2017,6 +2060,13 @@ fallback for a bare mention that still carries one of these hosts (a bare
 handle prefix with no host at all cannot be attributed to a specific
 installation -- see `.dspace7_parse()`).
 
+A DOI mentioned in the text is also looked up, and kept when it leads to
+one of these installations. The paper's own DOI, and DOIs under a prefix
+that another detector handles and no DSpace 7 installation uses (see
+`.dspace7_skip_doi_prefixes()`), are not looked up. The lookup reads the
+URL registered for the DOI from doi.org's handle API rather than visiting
+the landing page, and each DOI is looked up once per R session.
+
 **Returns:** a table with the DSpace 7 url in the first (href) column
 
 ### `dspace7_file_download`
@@ -2088,6 +2138,46 @@ mendeley_info(mendeley_url, id_col = 1, pb = NULL, cache = FALSE)
 ```
 
 **Returns:** a data frame of information
+
+### `ldbase_links`
+
+*Find LDbase links in a paper*
+
+```r
+ldbase_links(paper)
+```
+
+Finds links to LDbase (<https://ldbase.org>) projects, datasets, code and
+documents, as hyperlinks or in the text, and LDbase DOIs (prefix 10.33009,
+e.g. `10.33009/ldbase.1627053448.d151`). LDbase's own DOI
+(`10.33009/ldbase`, cited for the repository itself) and links to its home
+or search pages are not included: they name no deposit.
+
+**Returns:** a data frame with a row for each link (`href`, plus `text_id` /
+`paper_id`), with `ldbase_url` (the link) and `ldbase_type` (`projects`,
+`datasets`, `code`, `documents`, or `doi` for a DOI not yet resolved)
+
+### `ldbase_info`
+
+*Get the files of LDbase projects, datasets, code and documents*
+
+```r
+ldbase_info(ldbase_url, id_col = 1, pb = NULL, cache = FALSE)
+```
+
+Lists the files of each LDbase link: for a project, every dataset, code
+and document in its hierarchy (child projects included); for a single
+dataset, code or document, its own file. A DOI is first resolved to the
+page it leads to. LDbase has no API, so this reads the public pages (one
+request per project or item). Items stored elsewhere (LDbase's "external
+link" option) have no file here and are not listed.
+
+**Returns:** a data frame with one row per link: `ldbase_url`, `ldbase_page`
+(the resolved page), `ldbase_type`, `title`, `doi`, `license` (the
+licence of the item, or every distinct licence of a project's items
+joined by "; "), a list-column `files` (a data frame per link with
+`file_name`, `file_path`, `file_url`, `item_type`, `item_url`) and
+`error` (NA, or why the link could not be listed)
 
 ### `fsd_links`
 
@@ -2391,7 +2481,25 @@ package does, not a tradeoff against quality.
 
 **Returns:** the current default reasoning effort (invisibly when setting)
 
-**`llm_timeout()`** — *(no documentation found)*
+### `llm_timeout`
+
+*Set the per-call timeout for LLM requests*
+
+```r
+llm_timeout(seconds = NULL)
+```
+
+Every single request `llm()` makes (one item, or one batch, depending on
+the caller) is bounded by this wall-clock limit. Without it, a stuck local
+model (most often Ollama under load, or a batch too large for the model to
+finish) blocks silently -- no log output, no progress, nothing -- for as
+long as the underlying HTTP client is willing to wait, which can be hours.
+A timeout turns that invisible stall into a fast, visible, per-row failure
+(recorded the same way a provider error already is -- see `llm()`'s own
+error handling), so a large batch run fails fast and retries instead of
+hanging.
+
+**Returns:** the current timeout in seconds (invisibly when setting)
 
 ### `llm_cache`
 
@@ -3360,6 +3468,28 @@ applied separately by codebook_check when `llm_use(TRUE)`.
 `source_file`, `column_name`, `group`, `label`, `codebook_variable`,
 `label_source`, `label_status`, `label_method`.
 
+### `psychds_file_plan`
+
+*Build a file-to-target-path plan for a Psych-DS-style layout*
+
+```r
+psychds_file_plan(structure_df, group_no_evidence = FALSE)
+```
+
+Maps every file `data_check` found to the location it would occupy in a
+Psych-DS-shaped layout: data files under `data/`, code under `analysis/`,
+materials under `materials/`, documentation under `documentation/` (or
+`documentation/codebooks/` for codebooks), the root readme/licence at the
+collection root, and anything unclassified under `unknown/`. This is pure
+file/folder organisation -- it does not check Psych-DS compliance (that is
+`psychds_check()`) and it does not write anything to disk.
+
+**Returns:** a list with `table` (one row per file: `file_name`, `data_type`,
+`group`, `current_path`, `target_path`, `status` -- `"present"`/`"move"`/
+`"excluded"` --, `convert`, `original_target`, `referenced_by`) and
+`group_no_evidence` (passed through unchanged). `table` is an empty
+data.frame when `structure_df` is NULL or has no rows.
+
 ## Checking whether shared code reproduces the paper's results
 
 ### `repro_dependencies`
@@ -3427,13 +3557,14 @@ daemon not running)
 *Extract the files a script reads, writes, and sources*
 
 ```r
-repro_file_io(code_text_list)
+repro_file_io(code_text_list, lang = "R")
 ```
 
 A thin wrapper that runs the static reference scans over each code file and
 returns the per-file read / write / source basenames `repro_run_order()`
 needs. Reads/writes come from `code_file_refs()` split by call type; sources
-from a scan for `source()`. All returned as lowercased basenames.
+from a scan for `source()` (R only — see `lang` below). All returned as
+lowercased basenames.
 
 **Returns:** a data frame with `file_name` and list-columns `reads`, `writes`,
 `sources` (each a character vector of basenames).
@@ -3579,7 +3710,10 @@ signal placed a multi-file set (they share `order = NA`, basis `none`).
 Attribute `"fuzzy_sources"` is a data frame (`from`, `to`) of `source()`
 edges that only resolved after normalising both basenames (a renumbered/
 reworded script reference — see `.repro_normalize_basename()`), empty
-when every `source()` reference matched an exact basename.
+when every `source()` reference matched an exact basename. Attribute
+`"source_edges"` is a data frame (`from`, `to`) of every resolved
+`source()` edge, exact or fuzzy: `from` is the sourced file, `to` the
+file that sources it.
 
 ### `repro_run_scripts`
 
@@ -3657,7 +3791,8 @@ code_text_list,
 rewrite_list,
 plan,
 root,
-inject_libs = NULL
+inject_libs = NULL,
+lang = "R"
 )
 ```
 
@@ -3677,8 +3812,154 @@ still runnable). A reference left ambiguous or unmatched is written unchanged
 arguments replaced with `"sans"`, so a plot call does not fail with
 "invalid font type" for a font not registered on the machine running the
 sandbox), `family_detail` (semicolon-joined `<old> -> "sans"` text for
-each replacement), and `library_injected` (the package name injected via
-`inject_libs` for that file, or `NA` when none was).
+each replacement), and `library_injected` (the package name(s) injected
+via `inject_libs` for that file, comma-joined, or `NA` when none was).
+
+### `repro_dependencies_py`
+
+*Collect the package dependencies a set of Python files declare*
+
+```r
+repro_dependencies_py(code_text, manifest_text = NULL)
+```
+
+The Python sibling of `repro_dependencies()`: walks each file's `import`/
+`from ... import` statements via `code_library_names()` (lang = "Python"),
+and additionally reads any `requirements.txt`/`pyproject.toml` the
+repository supplies for version pins — static analysis of the code alone
+cannot see those (a script that does `import numpy` says nothing about
+which version), so when a manifest is present its pin is attached to the
+matching imported package instead of being reported separately. A top-
+level package name is tagged `base` (the Python standard library; a run
+never needs to `pip install` these) or `pypi` — unlike R's CRAN/
+Bioconductor/GitHub/URL split, this does not attempt to tell a PyPI
+install apart from a `pip install git+...`/local-path install named in a
+`requirements.txt` line: both are reported `source = "pypi"`, with `ref`
+carrying the raw requirement line verbatim when it is not a bare
+`package==version` pin, so the install step can still attempt it.
+
+**Returns:** a data frame with columns `package`, `source` (`pypi` or `base`),
+`ref` (the manifest's own pin/requirement text for that package, or NA
+when the package was seen only via `import`), and `base` (logical, TRUE
+for a standard-library module). One row per distinct package. Empty
+frame (same columns) when none are found.
+
+### `repro_install_deps_py`
+
+*Install a paper's declared Python dependencies into a throwaway environment*
+
+```r
+repro_install_deps_py(
+install_deps,
+lib_dir,
+python_bin = "python",
+timeout = 300
+)
+```
+
+The process-sandbox twin of `repro_install_deps()`: installs each
+non-stdlib dependency via `pip install --target <lib_dir>`, so a run does
+not touch the host's own site-packages. A manifest-pinned requirement
+(`ref` non-NA — see `repro_dependencies_py()`) is installed by that exact
+requirement text (honouring the pin); an import-only package (`ref` NA) is
+installed by bare name, latest version. Installing runs a package's own
+build/setup code, so this is part of the gated execute phase, same as its
+R counterpart.
+
+**Returns:** a data frame with `package`, `source`, `installed` (logical),
+`message` (error text/pip stderr on failure, else ""), `via_archive`
+(always FALSE — pip has no CRAN-Archive-style fallback registry to retry
+against), and `category` (always NA — pip's own error text is not
+classified into categories the way `.repro_classify_install_message()`
+does for R's install.packages()/BiocManager error shapes) — same column
+SET as `repro_install_deps()` so callers do not need to branch on which
+language ran.
+
+### `repro_install_deps_py_docker`
+
+*Install Python dependencies inside a throwaway Docker container*
+
+```r
+repro_install_deps_py_docker(
+install_deps,
+lib_dir,
+image = .repro_docker_default_image_py,
+timeout = 600
+)
+```
+
+The Docker-backed twin of `repro_install_deps_py()`: same return contract,
+same throwaway-library semantics, but the actual `pip install` runs INSIDE
+a container (default networking, since PyPI must be reachable), writing
+into `lib_dir` via a bind mount — so the run phase
+(`repro_run_scripts_py_docker()`), which mounts the same `lib_dir` with the
+network off, finds the packages already there.
+
+**Returns:** a data frame with `package`, `source`, `installed` (logical),
+`message` (pip's stderr on failure, else ""), `via_archive` (always
+FALSE — pip has no CRAN-Archive-style fallback), and `category` (always
+NA) — same columns as `repro_install_deps_py()` so callers do not need
+to branch on which backend ran.
+
+### `repro_run_scripts_py`
+
+*Run Python scripts, in order, each in an isolated subprocess*
+
+```r
+repro_run_scripts_py(
+run_tbl,
+order,
+lib_dir = NULL,
+python_bin = "python",
+timeout = 600,
+skip = character(0),
+parses = NULL,
+failed_deps = character(0)
+)
+```
+
+The Python sibling of `repro_run_scripts()`: runs each script WHOLE, as a
+`python <script>` subprocess via `processx::run()` (not `callr`, which is
+R-specific), with the working directory set to the materialised sandbox.
+Unlike `repro_run_scripts()`'s `callr`-based runner, there is no per-
+statement capture of result objects here (see this file's header for why)
+— only the whole script's stdout/stderr/exit status/elapsed time are
+recorded, so `captures` is always `NULL` for every row (kept as a column,
+not dropped, so the module's downstream code that expects the same shape
+`repro_run_scripts()` returns does not need to branch by language).
+
+**Returns:** a data frame — same columns as `repro_run_scripts()`'s return:
+`file_name`, `outcome`, `error`, `error_type`, `undefined_var`,
+`stdout`, `stderr`, `elapsed`, `script_lines`, `captures` (always `NULL`
+per row — see above)
+
+### `repro_run_scripts_py_docker`
+
+*Run Python scripts, in order, each in an isolated Docker container*
+
+```r
+repro_run_scripts_py_docker(
+run_tbl,
+order,
+sandbox_root,
+lib_dir = NULL,
+image = .repro_docker_default_image_py,
+timeout = 600,
+skip = character(0),
+parses = NULL,
+failed_deps = character(0)
+)
+```
+
+The Docker-backed twin of `repro_run_scripts_py()`: same return contract,
+same per-script semantics (skip on missing inputs / parse failure,
+timeout, error classification), but each script runs via `docker run --network none --read-only --user <non-root>` instead of a `processx`
+subprocess on the host — so the code cannot reach the network or touch
+anything outside the mounted sandbox and library, even deliberately.
+
+**Returns:** a data frame — identical columns to `repro_run_scripts_py()`'s
+return: `file_name`, `outcome`, `error`, `error_type`, `undefined_var`,
+`stdout`, `stderr`, `elapsed`, `script_lines`, `captures` (always `NULL`)
 
 ## Importing and exporting statistical output
 
@@ -4181,10 +4462,10 @@ check_file_naming(file_name, file_path = file_name, data_type = NA_character_)
 ```
 
 Checks every file's name against the naming conventions from the metacheck
-"machine readable FAIR data and code" guide: no spaces or special
-characters, lowercase only, no CamelCase, an actually-classifiable name
+"machine readable FAIR data and code" guide: no spaces, special characters
+or diacritics, an actually-classifiable name
 (not `data_type == "unknown"`), zero-padded numbering across sibling files,
-YYYYMMDD dates, and four path-length budgets (255/228/100/50 characters).
+and four path-length budgets (255/228/100/50 characters).
 
 **Returns:** a data.frame with one row per naming violation: `file_name`,
 `rule`, `severity` (`"bad"` or `"suggestion"` — see Details), `detail`.
@@ -4195,7 +4476,13 @@ YYYYMMDD dates, and four path-length budgets (255/228/100/50 characters).
 *Peek at the contents of a remote ZIP file without downloading it*
 
 ```r
-zip_peek(url, tail_bytes = 131072, cache = FALSE, skip_on_api_limit = FALSE)
+zip_peek(
+url,
+tail_bytes = 131072,
+cache = FALSE,
+skip_on_api_limit = FALSE,
+size = NULL
+)
 ```
 
 Uses an HTTP range request to fetch only the tail of a ZIP archive and read
@@ -4208,8 +4495,10 @@ contain data, or only stimuli/assets?) before spending the bandwidth.
 host does not support range requests or the listing cannot be read (the
 caller should then download-and-inspect). Also returns `method`, `csize`,
 `offset`, and `crc`, which describe where each member's bytes sit in the
-archive so a single member can be fetched without the rest; `csize` and
-`offset` are `NA` for a Zip64 archive, which cannot be fetched this way.
+archive so a single member can be fetched without the rest. Zip64 archives
+(over 4 GB or over 65,535 entries) are read in full, including the sizes
+and offsets stored only in their Zip64 extra fields; `csize` and `offset`
+are `NA` only for an entry whose listing is malformed.
 
 ### `zip_decision`
 
@@ -4220,7 +4509,8 @@ zip_decision(
 url,
 skip_types = "materials",
 cache = FALSE,
-skip_on_api_limit = FALSE
+skip_on_api_limit = FALSE,
+size = NULL
 )
 ```
 

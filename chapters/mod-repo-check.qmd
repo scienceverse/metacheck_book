@@ -46,8 +46,11 @@ Beyond listing files, `repo_check` runs a set of checks on what it finds:
 - whether **file names** follow machine-parseable conventions;
 - whether the studies the manuscript names match how the repository's files are **grouped**;
 - whether proprietary **E-Prime** binary files (`.edat`/`.emrg`) have a matching plain-text export;
-- whether any files sit behind **restricted or embargoed access**; and
-- whether an OSF **registration** points at a closed or inaccessible source project.
+- whether any files sit behind **restricted or embargoed access**;
+- whether an OSF **registration** points at a closed or inaccessible source project; and
+- whether the repository holds **files that do not belong in it**, such as the `__MACOSX` folder a Mac adds to a zip (see [below](#files-that-do-not-belong-in-a-repository)).
+
+The most recently added platforms are **Mendeley Data**, **DataONE** (Arctic Data Center, KNB, and other member repositories) and **LDbase**; the [table below](#repositories-it-searches) lists every platform.
 
 ::: callout-note
 This module makes **live network calls** to the linked repositories. You need an internet connection to run the code below.
@@ -91,13 +94,16 @@ mo$summary_table
 | GitLab | `gitlab_links()` | `gitlab_tree_files()` | gitlab.com (single service) |
 | ResearchBox | `rbox_links()` | `rbox_file_download()` (downloads and unzips the box) | researchbox.org (single service) |
 | DSpace (legacy) | `dspace_links()` | `psycharchives_file_download()` (DSpace's older REST API; lists without downloading) | PsychArchives and 5 other installations still running this API version |
-| DSpace 7 | `dspace7_links()` | `dspace7_file_download()` (DSpace 7's newer REST API; lists without downloading) | 64 installations, including Cornell's eCommons, Georgia Tech's Digital Repository, and ETH Zürich's Research Collection |
+| DSpace 7 | `dspace7_links()` | `dspace7_file_download()` (DSpace 7's newer REST API; lists without downloading) | 66 installations, including Cornell's eCommons, Georgia Tech's Digital Repository, and ETH Zürich's Research Collection |
 | Zenodo | `zenodo_links()` | `zenodo_info()` | zenodo.org (single service) |
 | Dataverse | `dataverse_links()` | `dataverse_info()` / `dataverse_file_download()` | 121 independent installations, including Harvard Dataverse, DataverseNL, and the DANS Data Stations |
-| Figshare | `figshare_links()` | `figshare_info()` / `figshare_file_download()` | figshare.com (any branded subdomain) plus 16 institutions with their own address on the same service, e.g. the University of Leicester and DTU Data |
+| Figshare | `figshare_links()` | `figshare_info()` / `figshare_file_download()` | figshare.com (any branded subdomain) plus 24 addresses on institutions' own domains that use the same service, e.g. the University of Leicester and DTU Data |
 | 4TU.ResearchData | `researchdata4tu_links()` | `researchdata4tu_info()` / `researchdata4tu_file_download()` | data.4tu.nl (single service; runs Djehuty, a documented copy of Figshare's own API) |
 | Dryad | `dryad_links()` | `dryad_info()` | datadryad.org (single service) |
 | ReShare | `reshare_links()` | `reshare_info()` | UK Data Service's self-deposit repository (single service) |
+| Mendeley Data | `mendeley_links()` | `mendeley_info()` | data.mendeley.com (single service) |
+| DataONE | `dataone_links()` | `dataone_info()` | a federation of independently-run repositories; 5 member nodes recognised, including the Arctic Data Center and KNB |
+| LDbase | `ldbase_links()` | `ldbase_info()` (reads the public web pages; see below) | ldbase.org (single service), including LDbase DOIs (prefix 10.33009) |
 
 DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.
 
@@ -124,6 +130,20 @@ Note that this concerns *listing* only. How much of a repository is ever **downl
 Earlier versions of `repo_check` took three arguments — `github_gate`, `github_max_repo_size_mb` and `github_max_files` — that skipped listing a repository over a size threshold. These have been removed, so code passing them will now fail. Delete them from any script that used them; no replacement is needed, because listing is no longer gated.
 :::
 
+### LDbase is read from its web pages
+
+[LDbase](https://ldbase.org) is the data repository for educational and developmental sciences at Florida State University. It organises a deposit as a **project** that holds datasets, code, documents, and sometimes further projects inside it. `ldbase_links()` finds links to LDbase projects, datasets, code and documents, and LDbase DOIs (prefix 10.33009). It does not count LDbase's own DOI (`10.33009/ldbase`), which authors cite for the repository itself rather than for a deposit.
+
+LDbase offers no API, so `ldbase_info()` reads the same public web pages a visitor sees, one page per project or item. For a project it lists every dataset, code file and document in the project's hierarchy, including those in projects inside it, each in a folder named after the item; for a single dataset, code file or document it lists that item's current file. Older versions of a dataset are not listed. No account or token is needed, and the files download without one.
+
+LDbase's firewall answers a quick series of requests with a check meant for a web browser instead of the page, so metacheck requests LDbase pages at most once per second. A link that still cannot be listed is kept, with the reason, in `$gated_repos`.
+
+```{r}
+#| eval: false
+paper <- test_paper(url = "https://ldbase.org/projects/09609d82-c45f-4442-8c0c-d136191bdc50")
+ldbase_links(paper)
+```
+
 ## Study grouping
 
 `repo_check` runs a **preliminary** classification and grouping pass over every file it finds:
@@ -140,10 +160,25 @@ If the manuscript explicitly names studies (e.g. "Study 1", "Study 2"), `repo_ch
 
 ## File naming conventions
 
-`check_file_naming()` checks every file name for machine-parseability: no spaces or special characters, and every file classifiable by name or extension (`data_type != "unknown"`). Issues are split into two severities:
+`check_file_naming()` checks every file name for machine-parseability. Issues are split into two severities:
 
 - **bad** — a real naming problem (should be fixed);
-- **suggestion** — not required, but a good habit (e.g. a more descriptive name).
+- **suggestion** — not required, but a good habit.
+
+The **bad** rules:
+
+- **spaces** — the name contains a space;
+- **special characters** — a character other than a letter, digit, dot, underscore, or dash;
+- **diacritics** — a non-ASCII character (e.g. an accented letter);
+- **unclassifiable** — the file could not be classified by name or extension at all (`data_type == "unknown"`);
+- **path length over 255 characters** — the full relative path exceeds the hard limit most filesystems and tools enforce.
+
+The **suggestion** rules:
+
+- **zero-padding** — within a family of files sharing the same prefix/suffix around a number (e.g. `data-2.csv`, `data-11.csv`), the numbers aren't zero-padded to a consistent width, so the files don't sort in numeric order;
+- **path length over 228 characters** — the full relative path, accounting for a typical Downloads-folder prefix;
+- **directory length over 100 characters** — the directory portion of the path alone;
+- **filename length over 50 characters** — the base filename alone.
 
 ```{r}
 mo$naming_issues |> head(5) |> knitr::kable()
@@ -171,6 +206,24 @@ module_run(paper, "repo_check", peek_zips = FALSE)
 ```
 
 This works for `.zip` only. `.7z`, `.rar` and `.tar.gz` keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. `repo_check` warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and `data_check` opens it after downloading, as before.
+
+## Files that do not belong in a repository
+
+Some files end up in a repository because software creates them by itself, not because the authors meant to share them, and they hold nothing a reader can use. `repo_check` leaves these files out of its file list, after looking inside any zips, so they are not counted, not classified, and not checked for naming. `data_check` leaves them out too, so it no longer tries to read, for example, the `._` copy of a `.csv` file that a Mac adds to a zip as if it were data. In one LDbase zip, such files made up 993 of the 1,826 files listed.
+
+The files left out are:
+
+| Kind | Examples |
+|---|---|
+| operating system | macOS's `__MACOSX/` folder and the `._` copy of every file a Mac puts in a zip, `.DS_Store`; Windows's `Thumbs.db` and `desktop.ini`; recycle-bin and trash folders |
+| RStudio session files | the `.Rproj.user/` folder, which holds open tabs and unsaved edits |
+| Jupyter checkpoints | the `.ipynb_checkpoints/` folder of automatic notebook copies |
+| compiled Python files | the `__pycache__/` folder and `.pyc` files, which Python recreates when the code runs |
+| open-document lock files | `~$report.docx` and `.~lock.report.odt#`, left while Word, Excel, PowerPoint or LibreOffice has a document open |
+
+The list comes from GitHub's templates for files to keep out of a repository, and each kind was found in real repositories. Files that may still matter to someone, such as `.RData`, `.Rhistory`, backup copies, `.tmp` files and knitr caches, are kept.
+
+When any such files are found, the summary text says how many were left out and of which kinds, and the report adds a section, "Files that do not belong in the repository", listing each file and explaining how to keep them out (for example, creating zips on a Mac with `zip -r -X`, or adding a `.gitignore` file based on GitHub's templates). These files do not change the traffic light.
 
 ## A clean example and one with problems
 
@@ -231,13 +284,14 @@ module_run(paper, "repo_check", model = "gpt-4o-mini", params = list(temperature
 
 | Element | What it contains |
 |---|---|
-| `$table` | one row per file across all repositories: `repo_url`, `file_name`, `file_path`, `file_url`, `file_location`, `file_size`, `file_type`, `data_type`, `doc_role`, `group`, `paper_id` |
+| `$table` | one row per file across all repositories: `repo_url`, `repo_name`, `file_name`, `file_path`, `file_url`, `file_location`, `file_size`, `file_type`, `data_type`, `doc_role`, `group`, `paper_id` |
 | `$summary_table` | per-paper aggregates: `repo_n`, `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch` |
 | `$naming_issues` | full output of `check_file_naming()` — one row per issue, with severity |
 | `$roster_check` | the manuscript-vs-file study roster comparison (`roster`, `missing`, `extra`), or `NULL` if not applicable |
-| `$gated_repos` | repositories found but not listed (e.g. a GitHub repo over the size gate, or a private OSF component), with the reason |
+| `$gated_repos` | repositories found but not listed (e.g. a GitHub repository too large for GitHub to list in one request, a private OSF component, or an LDbase link that could not be read), with the reason |
+| `$repo_metadata` | one row per repository (not per file): `paper_id`, `repo_url`, `doi`, `license` |
 | `$group_no_evidence` | `TRUE` if study grouping had no evidence to work from |
-| `$report` | formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, and a full classification breakdown |
+| `$report` | formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown |
 | `$summary_text` | plain-text bulleted summary of each check |
 
 ## Related

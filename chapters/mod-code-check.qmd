@@ -69,7 +69,7 @@ The module first labels every file with its language using `code_lang()`, which 
 | JASP | `.jasp` | **listed only** |
 | jamovi | `.omv` | **listed only** |
 
-A `.ipynb` notebook is JSON, not a plain script: its code cells are extracted from the `source` array of each cell (the same way `.Rmd`/`.qmd` are purled to R code below) before any text-based check runs. `.py` and `.m` are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but *running* the code stays out of scope (that is [reproducibility_check](mod-reproducibility-check.qmd)'s job, and it is R-only).
+A `.ipynb` notebook is JSON, not a plain script: its code cells are extracted from the `source` array of each cell (the same way `.Rmd`/`.qmd` are purled to R code below) before any text-based check runs. `.py` and `.m` are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but *running* the code stays out of scope (that is [reproducibility_check](mod-reproducibility-check.qmd)'s job, and it runs R and Python code, not MATLAB).
 
 Some file types are never code themselves but *contain* the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS `.spv` (rendered output) has its syntax recovered as a `.sps` file, a Stata `.smcl` log has its echoed commands recovered as a `.do` file, an Mplus `.out` file has its "INPUT INSTRUCTIONS" section recovered as an `.inp` file, and an `.html` file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page.
 

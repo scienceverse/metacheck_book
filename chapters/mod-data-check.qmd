@@ -23,7 +23,7 @@ pak::pkg_install("scienceverse/metacheck@dev")
 
 ## The basics
 
-A paper's data is usually shared as a set of files in an online repository or a folder — spreadsheets, CSV files, maybe some code. `data_check` looks at all of those files, works out which ones actually contain data, reads the ones it can, and describes every column: what it is called, how it is stored, and whether anything about it looks wrong (a column that is entirely empty, a scale value that is out of range, and so on). It does several related jobs at once rather than one single check, so think of it as a first inventory of a paper's data, not a one-line verdict.
+A paper's data is usually shared as a set of files in an online repository or a folder — spreadsheets, CSV files, maybe some code. `data_check` looks at all of those files, works out which ones actually contain data, reads the ones it can, and describes every column: what it is called, how it is stored, and whether anything about it looks wrong (a column that is entirely empty, a category typed two different ways, and so on). It does several related jobs at once rather than one single check, so think of it as a first inventory of a paper's data, not a one-line verdict.
 
 Here the module is run on a small folder with one data file (`study.csv`) and one code file, built just for this example. `test_paper()` gives a placeholder paper with no online repository, and `local_only = TRUE` tells the module to look only at this local folder:
 
@@ -60,7 +60,7 @@ The `data_check` module is the foundation for all of Metacheck's data-oriented c
 
 1. **Classifies every file** into a semantic type: tabular *data*, *code*, *documentation* (README, codebook, supplemental material, licence), *materials* (images/audio/video/stimuli, software), *output*, or *unknown*. Within *documentation*, a separate `doc_role` column distinguishes a README from a codebook from other supplemental material.
 2. **Reads each readable tabular data file** and describes every column along several independent **facets** — how it is stored, its measurement level, what it measures, how it functions, and its unit — together with basic **summary statistics**.
-3. **Runs data-quality checks** on those columns, and on the raw workbook of every spreadsheet, described in [Data Quality Checks](mod-data-validate.qmd). These were formerly two separate modules, `data_validate` and `excel_check`; both are now part of `data_check`.
+3. **Runs data-quality checks** on those columns and on the raw workbook of every spreadsheet, and checks whether any `.csv` file is separated by spaces instead of commas, described in [Data Quality Checks](mod-data-validate.qmd). These were formerly two separate modules, `data_validate` and `excel_check`; both are now part of `data_check`.
 4. **Makes the extracted columns and read data frames available** to the other data modules — `codebook_check` builds on `data_check`'s output rather than re-reading the files, and `psychds_check` and `convert_psychds()` are designed to use its classification and study grouping to build a Psych-DS archive once that module's own development resumes (see [Psych-DS Check](mod-psychds-check.qmd)).
 
 On its own, `data_check` gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.
@@ -121,6 +121,8 @@ Every file is sorted into one of six semantic types. The vocabulary is `data`, `
 | `unknown` | anything no rule places (an LLM may reclassify these); an unopenable archive also falls back here |
 
 `documentation` is deliberately coarse: it answers "is this file documentation of some kind," which is what drives Psych-DS folder placement and report grouping. A separate, orthogonal column, `doc_role`, answers the finer question of *which* documentation artifact a file is — `"readme"`, `"license"`, `"codebook"`, or `"supplemental"` — and is what `codebook_check` uses to decide which files to parse.
+
+Files that software creates by itself, and that hold nothing a reader can use, are left out of the file list, so they are never classified or read: macOS's `__MACOSX/` folder and `._` files, `.DS_Store`, Windows's `Thumbs.db` and `desktop.ini`, RStudio's `.Rproj.user/` folder, Jupyter's `.ipynb_checkpoints/` folder, compiled Python files (`__pycache__/`, `.pyc`), the lock files Office and LibreOffice leave while a document is open, and a few similar files. `repo_check`, which supplies `data_check`'s list of files, removes them, and `data_check` removes them again from the contents of any archive it unpacks. The [Repository Check](mod-repo-check.qmd) chapter describes these files in full.
 
 ### How the classifier works: `data_classify_files()`
 
@@ -232,7 +234,7 @@ data_check_demographic("condition", c(1, 2, 1, 2))        # NA: values don't agr
 
 ## Summary statistics: `data_col_stats()`
 
-Alongside the facets, `data_col_stats()` computes a one-row block of statistics for each column: `n`, `n_missing`, `n_unique`, `mean`, `sd`, `se`, `median`, `min`, `max`, `range`, `p25`, `p75`, `iqr`, `skewness`, and `kurtosis`. Non-numeric or empty columns return `n`/`n_missing`/`n_unique` with the numeric statistics as `NA`. These feed the report's *Descriptives Overview* (one table per source file) and are carried into the data-quality checks and the Psych-DS `variableMeasured` block.
+Alongside the facets, `data_col_stats()` computes a one-row block of statistics for each column: `n`, `n_missing`, `n_unique`, `mean`, `sd`, `se`, `median`, `min`, `max`, `range`, `p25`, `p75`, `iqr`, `skewness`, and `kurtosis`. Non-numeric or empty columns return `n`/`n_missing`/`n_unique` with the numeric statistics as `NA`. These feed the report's *Descriptives Overview* (one table per source file) and are carried into the Psych-DS `variableMeasured` block. The data-quality checks do not use them; they read the values themselves.
 
 ## Study groups
 
@@ -249,7 +251,7 @@ Two guards make the result trustworthy. `data_study_roster()` reads the manuscri
 
 `data_check` reads tabular files with `data_read_head()` (`n_rows = Inf` reads the whole file), which is deliberately tolerant of the messy encodings and formats research data actually ships in:
 
-- **Delimited text** (`.csv`/`.tsv`/`.txt`/`.dat`): the delimiter is sniffed (`.sniff_delimiter()`) and header presence auto-detected (`.detect_header()` — a file whose first two rows are both all-numeric is treated as headerless). Reading uses `data.table::fread` when available (orders of magnitude faster on awkward quoted fields) and falls back to `read.delim`.
+- **Delimited text** (`.csv`/`.tsv`/`.txt`/`.dat`): a `.tsv` is read as tab-separated; for the other files `.sniff_delimiter()` counts the commas, semicolons, tabs and vertical bars (`|`) in the first line that is neither blank nor a comment (starting with `#`) and uses the most frequent one, or a comma when none is present. A space is never used as the separator, so a `.csv` separated by spaces reads as one column of text (`data_check` reports such files; see [Data Quality Checks](mod-data-validate.qmd#space-separated-csv-files)). Header presence is auto-detected (`.detect_header()` — a file whose first two rows are both all-numeric is treated as headerless). Reading uses `data.table::fread` when available (orders of magnitude faster on awkward quoted fields) and falls back to `read.delim`.
 - **A "single big field" blob** (a JSON/XML document dumped under one header) is detected from the first two lines (`.is_single_field_blob()`) and skipped — it is not a table, and parsing it is pathologically slow.
 - **Excel** (`.xlsx`/`.xls`) via `readxl`; **SPSS/Stata/SAS** (`.sav`/`.dta`/`.sas7bdat`) via `haven` (preserving value labels and declared missing codes for `codebook_check`); **JASP** (`.jasp`) and **jamovi** (`.omv`) return a labelled data frame like a `.sav`.
 - **R objects**: `.rds` yields its data frame; an `.RData`/`.rda` workspace is restored in an **isolated subprocess** (`.read_rdata_isolated()`) because loading a saved model that references an uninstalled package can print C-level diagnostics or crash. A workspace that holds no reusable data frame (only fitted models / session state) returns `NULL` and is reported as a data-sharing recommendation.
@@ -263,9 +265,9 @@ Several file types read as a data frame but are not straightforward datasets. `d
 
 - **File manifests** (`data_is_manifest()`): a "table of contents" CSV whose cells name *other files in the repository*. Detected by content (≥80% of a column's values resolve to repo files, across ≥2 distinct extensions, so a genuine `stimulus` column of images does not trip it), then demoted to `supplemental`.
 - **R workspaces** with no reusable data: reported with advice to share the underlying data as CSV + codebook.
-- **Coding worksheets** (`.tabular_usable()`): a human-formatted worksheet (mostly free-text annotation columns, mostly empty cells) reads as a data frame but is not a rectangular *dataset*. Detected from the already-computed facets using a **prose fraction** and a **missingness fraction** with tiered rules (overwhelmingly free text, or moderately free-text *and* mostly empty). Columns are *not* extracted and nothing is sent to the LLM, but the file stays classified as `data` so `excel_check` still inspects its formatting. Crucially, high missingness *alone* never excludes — a branched/planned-missing survey is 90%+ missing but is real numeric data.
+- **Coding worksheets** (`.tabular_usable()`): a human-formatted worksheet (mostly free-text annotation columns, mostly empty cells) reads as a data frame but is not a rectangular *dataset*. Detected from the already-computed facets using a **prose fraction** and a **missingness fraction** with tiered rules (overwhelmingly free text, or moderately free-text *and* mostly empty). Columns are *not* extracted and nothing is sent to the LLM, but the file stays classified as `data` so the spreadsheet-formatting checks (formerly the separate `excel_check` module) still inspect it. Crucially, high missingness *alone* never excludes — a branched/planned-missing survey is 90%+ missing but is real numeric data.
 - **`.txt` reclassification** (`txt_classify_content()`): a `.txt` is ambiguous by name (an E-Prime export, a task log, a codebook, or prose all ship as `.txt`), so all `.txt` files are fetched under `download = "data"` and reclassified from their *content* once on disk. Only ever an *upgrade* to `data` (an E-Prime header block, or a delimited table with a real header row); an unrecognised `.txt` keeps whatever its name implied, so prose is never mistaken for data. A name-based README/codebook verdict is authoritative and never overridden.
-- **Trial-level files** (`.bh_is_trial_level_file()`): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file *per participant per block*. Treating each as its own dataset would produce hundreds of fragmented "datasets" for one instrument, so they are held out of the tabular extractor, recorded, and are designed to be later **merged per instrument** into `paradata/<instrument>.json` by `convert_psychds()` (not yet available), following the [Behaverse Data Model](https://behaverse.github.io/data-model/) `trial` standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. The Behaverse schema is described in full in the [Psych-DS Check](mod-psychds-check.qmd) chapter.
+- **Trial-level files** (`.bh_is_trial_level_file()`): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file *per participant per block*. Treating each as its own dataset would produce hundreds of fragmented "datasets" for one instrument, so they are held out of the tabular extractor, recorded, and are designed to be later **merged per instrument** into `paradata/<instrument>.json` by `convert_psychds()` (not yet available), following the [Behaverse Data Model](https://behaverse.github.io/data-model/) `trial` standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. To recognise an Inquisit, jsPsych or Behaverse file, `data_check` reads only the file's first line (the column names), so the check stays fast even on a table with thousands of columns; an E-Prime export is recognised from the header block in its first lines. The Behaverse schema is described in full in the [Psych-DS Check](mod-psychds-check.qmd) chapter.
 
 ## Qualtrics survey exports
 
@@ -275,7 +277,7 @@ Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved re
 
 | Element | What it contains |
 |---|---|
-| `$traffic_light` | the worse of two separately computed lights: whether files were actually read (`"green"`/`"yellow"` when some tabular files had no local copy/`"na"` when there is nothing to check), and the data-quality checks on the columns that *were* read (`"green"` with no issues, `"yellow"` below 25% of columns flagged — or any careless-responding/spreadsheet-formatting finding at all — `"red"` at 25% or more). A clean extraction never hides a real data-quality problem, and a quality problem on the columns that loaded never gets hidden by an otherwise-successful read |
+| `$traffic_light` | the worse of two separately computed lights: whether files were actually read (`"green"`/`"yellow"` when some tabular files had no local copy/`"na"` when there is nothing to check), and the data-quality checks on the columns that *were* read (`"green"` with no issues, `"yellow"` below 25% of columns flagged — or any careless-responding, spreadsheet-formatting or space-separated `.csv` finding at all — `"red"` at 25% or more). A clean extraction never hides a real data-quality problem, and a quality problem on the columns that loaded never gets hidden by an otherwise-successful read |
 | `$summary_text` | plain-text bulleted summary: files classified, columns extracted, study groups, and any held-back files |
 | `$summary_table` | per-paper counts (`data_file_n`, `column_n`, `empty_col_n`, plus wide per-representation counts) |
 | `$table` | one row per column, with the facets, `sample_values`, `utf8_repaired`, and summary statistics |
@@ -283,6 +285,8 @@ Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved re
 | `$previews` | the full data frames that were read |
 | `$gated_repos` | repositories found but not listable (size-gated GitHub, private OSF) |
 | `$manifest_path` | path to a written JSON manifest, when one was requested |
+
+The findings of the data-quality checks are in `$findings`, described in [Data Quality Checks](mod-data-validate.qmd). When no file could be read as a table (a repository with only code, documents or images, or with data files that are not usable tables), `data_check` still returns its summary, report and traffic light; `$table` then has no rows, and any spreadsheet-formatting or space-separated `.csv` findings are in `$findings`.
 
 The `$structure` and `$previews` elements are what the downstream modules consume, which is why you rarely need to run `data_check` on its own beforehand — running `codebook_check` triggers it automatically and reuses the result, and `psychds_check` and `convert_psychds()` are designed to do the same once that module's own development resumes.
 
@@ -315,6 +319,8 @@ Two caps bound how much is downloaded per repository, and they work as an **upfr
 - **`max_download_size`** (default **500 MB**): if a repository's *total* exceeds this, the whole repository is refused.
 
 Set either to `Inf` for no cap. A file whose size cannot be determined at all also causes its repository to be skipped, so nothing huge is ever fetched blind. Every skip is reported inline (`$gated_repos`), so you can raise the relevant cap and re-run.
+
+Some hosts sit behind an Amazon web firewall that, after many requests in a short time, answers with a check meant for a web browser instead of the file, so the file's size cannot be read and it cannot be downloaded. Metacheck then gives a warning, once per host in each R session, naming the host and saying to try again later. Such files used to be left out without any message.
 
 These caps govern *downloading*, and they apply to every platform alike. *Listing* a repository is never capped: since listing transfers no file contents, GitHub repositories are now listed in full whatever their size, as described in the [repo_check](mod-repo-check.qmd) chapter.
 

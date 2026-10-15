@@ -134,7 +134,7 @@ families <- list(
   ),
   "Building a report" = c(
     "report", "report_module_run", "module_report", "report_qmd",
-    "report_app", "report_repository"
+    "report_app", "report_repository", "report_type"
   ),
   "Report-building helpers" = c(
     "scroll_table", "report_table", "collapse_section", "link", "plural",
@@ -178,6 +178,7 @@ families <- list(
     "dspace_links", "dspace7_links", "dspace7_file_download",
     "dataone_links", "dataone_info",
     "mendeley_links", "mendeley_info",
+    "ldbase_links", "ldbase_info",
     "fsd_links", "fsd_info",
     "dryad_auth",
     "local_files", "download_repo_files",
@@ -211,14 +212,18 @@ families <- list(
     "data_col_facets", "data_col_stats", "data_col_type", "data_format",
     "data_group_llm", "data_is_manifest", "data_promote_header_row",
     "data_read_head", "data_strip_qualtrics_header", "data_study_roster",
-    "parse_codebook", "parse_qsf", "manifest_merge", "match_column_labels"
+    "parse_codebook", "parse_qsf", "manifest_merge", "match_column_labels",
+    "psychds_file_plan"
   ),
   "Checking whether shared code reproduces the paper's results" = c(
     "repro_dependencies", "repro_defined_vars", "repro_docker_available",
     "repro_file_io", "repro_install_deps", "repro_install_deps_docker",
     "repro_materialize_layout", "repro_missing_inputs",
     "repro_rewrite_paths", "repro_run_order", "repro_run_scripts",
-    "repro_run_scripts_docker", "repro_write_scripts"
+    "repro_run_scripts_docker", "repro_write_scripts",
+    "repro_dependencies_py", "repro_install_deps_py",
+    "repro_install_deps_py_docker", "repro_run_scripts_py",
+    "repro_run_scripts_py_docker"
   ),
   "Importing and exporting statistical output" = c(
     "import_jasp", "import_omv", "import_mplus_output",

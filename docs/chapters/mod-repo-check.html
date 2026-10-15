@@ -462,6 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#osf-registrations-follow-their-source-project" id="toc-osf-registrations-follow-their-source-project" class="nav-link" data-scroll-target="#osf-registrations-follow-their-source-project"><span class="header-section-number">22.5.1</span> OSF registrations follow their source project</a></li>
   <li><a href="#github-repositories-are-listed-in-full" id="toc-github-repositories-are-listed-in-full" class="nav-link" data-scroll-target="#github-repositories-are-listed-in-full"><span class="header-section-number">22.5.2</span> GitHub repositories are listed in full</a></li>
+  <li><a href="#ldbase-is-read-from-its-web-pages" id="toc-ldbase-is-read-from-its-web-pages" class="nav-link" data-scroll-target="#ldbase-is-read-from-its-web-pages"><span class="header-section-number">22.5.3</span> LDbase is read from its web pages</a></li>
   </ul>
 </li>
   <li>
@@ -479,10 +480,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#archives-and-looking-inside-a-.zip" id="toc-archives-and-looking-inside-a-.zip" class="nav-link" data-scroll-target="#archives-and-looking-inside-a-.zip"><span class="header-section-number">22.8.3</span> Archives, and looking inside a <code>.zip</code></a></li>
   </ul>
 </li>
-  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">22.9</span> A clean example and one with problems</a></li>
-  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">22.10</span> Options</a></li>
-  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">22.11</span> The traffic light and what you get back</a></li>
-  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">22.12</span> Related</a></li>
+  <li><a href="#files-that-do-not-belong-in-a-repository" id="toc-files-that-do-not-belong-in-a-repository" class="nav-link" data-scroll-target="#files-that-do-not-belong-in-a-repository"><span class="header-section-number">22.9</span> Files that do not belong in a repository</a></li>
+  <li><a href="#a-clean-example-and-one-with-problems" id="toc-a-clean-example-and-one-with-problems" class="nav-link" data-scroll-target="#a-clean-example-and-one-with-problems"><span class="header-section-number">22.10</span> A clean example and one with problems</a></li>
+  <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">22.11</span> Options</a></li>
+  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">22.12</span> The traffic light and what you get back</a></li>
+  <li><a href="#related" id="toc-related" class="nav-link" data-scroll-target="#related"><span class="header-section-number">22.13</span> Related</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-repo-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -518,10 +520,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 78 files in 4 repositories.
+#&gt; -  We found 73 files in 4 repositories.
 #&gt; -  We found 6 README files and 3 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 15 file naming problems to fix.</code></pre>
+#&gt; -  We found 9 file naming problems to fix.
+#&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
 <p>Running a module always works the same way: <code>module_run(paper, "module_name")</code>. Saving the result to a variable, here called <code>mo</code>, lets you look at specific pieces of it instead of only the printed summary. <code>mo$table</code> is a <strong>table</strong> — rows and columns, like a spreadsheet — listing every file found across all the repositories the paper links to:</p>
@@ -576,27 +579,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">README</td>
+<td style="text-align: left;">README.md</td>
 <td style="text-align: left;">readme</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: right;">36</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">papercheck.png</td>
-<td style="text-align: left;">image</td>
-<td style="text-align: right;">1564236</td>
+<td style="text-align: left;">01.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">33</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">README.md</td>
-<td style="text-align: left;">readme</td>
-<td style="text-align: right;">887</td>
+<td style="text-align: left;">02.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">33</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">DESCRIPTION</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">867</td>
+<td style="text-align: left;">03.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">33</td>
 </tr>
 </tbody>
 </table>
@@ -614,9 +617,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>whether <strong>file names</strong> follow machine-parseable conventions;</li>
 <li>whether the studies the manuscript names match how the repository’s files are <strong>grouped</strong>;</li>
 <li>whether proprietary <strong>E-Prime</strong> binary files (<code>.edat</code>/<code>.emrg</code>) have a matching plain-text export;</li>
-<li>whether any files sit behind <strong>restricted or embargoed access</strong>; and</li>
-<li>whether an OSF <strong>registration</strong> points at a closed or inaccessible source project.</li>
+<li>whether any files sit behind <strong>restricted or embargoed access</strong>;</li>
+<li>whether an OSF <strong>registration</strong> points at a closed or inaccessible source project; and</li>
+<li>whether the repository holds <strong>files that do not belong in it</strong>, such as the <code>__MACOSX</code> folder a Mac adds to a zip (see <a href="#files-that-do-not-belong-in-a-repository">below</a>).</li>
 </ul>
+<p>The most recently added platforms are <strong>Mendeley Data</strong>, <strong>DataONE</strong> (Arctic Data Center, KNB, and other member repositories) and <strong>LDbase</strong>; the <a href="#repositories-it-searches">table below</a> lists every platform.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -644,10 +649,11 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 78 files in 4 repositories.
+#&gt; -  We found 73 files in 4 repositories.
 #&gt; -  We found 6 README files and 3 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 15 file naming problems to fix.</code></pre>
+#&gt; -  We found 9 file naming problems to fix.
+#&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
 <p>The <code>table</code> lists every file found across all linked repositories:</p>
@@ -702,27 +708,27 @@ Note
 </tr>
 <tr class="odd">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">README</td>
+<td style="text-align: left;">README.md</td>
 <td style="text-align: left;">readme</td>
-<td style="text-align: right;">30</td>
+<td style="text-align: right;">36</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">papercheck.png</td>
-<td style="text-align: left;">image</td>
-<td style="text-align: right;">1564236</td>
+<td style="text-align: left;">01.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">33</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">README.md</td>
-<td style="text-align: left;">readme</td>
-<td style="text-align: right;">887</td>
+<td style="text-align: left;">02.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">33</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">pngda</td>
-<td style="text-align: left;">DESCRIPTION</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">867</td>
+<td style="text-align: left;">03.R</td>
+<td style="text-align: left;">code</td>
+<td style="text-align: right;">33</td>
 </tr>
 </tbody>
 </table>
@@ -789,7 +795,7 @@ Note
 <td><code>dspace7_links()</code></td>
 <td>
 <code>dspace7_file_download()</code> (DSpace 7’s newer REST API; lists without downloading)</td>
-<td>64 installations, including Cornell’s eCommons, Georgia Tech’s Digital Repository, and ETH Zürich’s Research Collection</td>
+<td>66 installations, including Cornell’s eCommons, Georgia Tech’s Digital Repository, and ETH Zürich’s Research Collection</td>
 </tr>
 <tr class="odd">
 <td>Zenodo</td>
@@ -811,7 +817,7 @@ Note
 <td>
 <code>figshare_info()</code> / <code>figshare_file_download()</code>
 </td>
-<td>figshare.com (any branded subdomain) plus 16 institutions with their own address on the same service, e.g.&nbsp;the University of Leicester and DTU Data</td>
+<td>figshare.com (any branded subdomain) plus 24 addresses on institutions’ own domains that use the same service, e.g.&nbsp;the University of Leicester and DTU Data</td>
 </tr>
 <tr class="even">
 <td>4TU.ResearchData</td>
@@ -832,6 +838,25 @@ Note
 <td><code>reshare_links()</code></td>
 <td><code>reshare_info()</code></td>
 <td>UK Data Service’s self-deposit repository (single service)</td>
+</tr>
+<tr class="odd">
+<td>Mendeley Data</td>
+<td><code>mendeley_links()</code></td>
+<td><code>mendeley_info()</code></td>
+<td>data.mendeley.com (single service)</td>
+</tr>
+<tr class="even">
+<td>DataONE</td>
+<td><code>dataone_links()</code></td>
+<td><code>dataone_info()</code></td>
+<td>a federation of independently-run repositories; 5 member nodes recognised, including the Arctic Data Center and KNB</td>
+</tr>
+<tr class="odd">
+<td>LDbase</td>
+<td><code>ldbase_links()</code></td>
+<td>
+<code>ldbase_info()</code> (reads the public web pages; see below)</td>
+<td>ldbase.org (single service), including LDbase DOIs (prefix 10.33009)</td>
 </tr>
 </tbody>
 </table>
@@ -861,6 +886,15 @@ Note
 <p>Earlier versions of <code>repo_check</code> took three arguments — <code>github_gate</code>, <code>github_max_repo_size_mb</code> and <code>github_max_files</code> — that skipped listing a repository over a size threshold. These have been removed, so code passing them will now fail. Delete them from any script that used them; no replacement is needed, because listing is no longer gated.</p>
 </div>
 </div>
+</section><section id="ldbase-is-read-from-its-web-pages" class="level3" data-number="22.5.3"><h3 data-number="22.5.3" class="anchored" data-anchor-id="ldbase-is-read-from-its-web-pages">
+<span class="header-section-number">22.5.3</span> LDbase is read from its web pages</h3>
+<p><a href="https://ldbase.org">LDbase</a> is the data repository for educational and developmental sciences at Florida State University. It organises a deposit as a <strong>project</strong> that holds datasets, code, documents, and sometimes further projects inside it. <code>ldbase_links()</code> finds links to LDbase projects, datasets, code and documents, and LDbase DOIs (prefix 10.33009). It does not count LDbase’s own DOI (<code>10.33009/ldbase</code>), which authors cite for the repository itself rather than for a deposit.</p>
+<p>LDbase offers no API, so <code>ldbase_info()</code> reads the same public web pages a visitor sees, one page per project or item. For a project it lists every dataset, code file and document in the project’s hierarchy, including those in projects inside it, each in a folder named after the item; for a single dataset, code file or document it lists that item’s current file. Older versions of a dataset are not listed. No account or token is needed, and the files download without one.</p>
+<p>LDbase’s firewall answers a quick series of requests with a check meant for a web browser instead of the page, so metacheck requests LDbase pages at most once per second. A link that still cannot be listed is kept, with the reason, in <code>$gated_repos</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://ldbase.org/projects/09609d82-c45f-4442-8c0c-d136191bdc50"</span><span class="op">)</span></span>
+<span><span class="fu">ldbase_links</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section></section><section id="study-grouping" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="study-grouping">
 <span class="header-section-number">22.6</span> Study grouping</h2>
 <p><code>repo_check</code> runs a <strong>preliminary</strong> classification and grouping pass over every file it finds:</p>
@@ -878,15 +912,39 @@ Note
 <p>If the manuscript explicitly names studies (e.g.&nbsp;“Study 1”, “Study 2”), <code>repo_check</code> compares that roster against the studies the <em>files</em> actually separate into. A mismatch — a named study with no matching files, or a file-derived group not named in the manuscript — is flagged in the report. A manuscript that never names studies explicitly has no roster to compare against, so this check is silently skipped rather than treated as a mismatch.</p>
 </section></section><section id="file-naming-conventions" class="level2" data-number="22.7"><h2 data-number="22.7" class="anchored" data-anchor-id="file-naming-conventions">
 <span class="header-section-number">22.7</span> File naming conventions</h2>
-<p><code>check_file_naming()</code> checks every file name for machine-parseability: no spaces or special characters, and every file classifiable by name or extension (<code>data_type != "unknown"</code>). Issues are split into two severities:</p>
+<p><code>check_file_naming()</code> checks every file name for machine-parseability. Issues are split into two severities:</p>
 <ul>
 <li>
 <strong>bad</strong> — a real naming problem (should be fixed);</li>
 <li>
-<strong>suggestion</strong> — not required, but a good habit (e.g.&nbsp;a more descriptive name).</li>
+<strong>suggestion</strong> — not required, but a good habit.</li>
+</ul>
+<p>The <strong>bad</strong> rules:</p>
+<ul>
+<li>
+<strong>spaces</strong> — the name contains a space;</li>
+<li>
+<strong>special characters</strong> — a character other than a letter, digit, dot, underscore, or dash;</li>
+<li>
+<strong>diacritics</strong> — a non-ASCII character (e.g.&nbsp;an accented letter);</li>
+<li>
+<strong>unclassifiable</strong> — the file could not be classified by name or extension at all (<code>data_type == "unknown"</code>);</li>
+<li>
+<strong>path length over 255 characters</strong> — the full relative path exceeds the hard limit most filesystems and tools enforce.</li>
+</ul>
+<p>The <strong>suggestion</strong> rules:</p>
+<ul>
+<li>
+<strong>zero-padding</strong> — within a family of files sharing the same prefix/suffix around a number (e.g.&nbsp;<code>data-2.csv</code>, <code>data-11.csv</code>), the numbers aren’t zero-padded to a consistent width, so the files don’t sort in numeric order;</li>
+<li>
+<strong>path length over 228 characters</strong> — the full relative path, accounting for a typical Downloads-folder prefix;</li>
+<li>
+<strong>directory length over 100 characters</strong> — the directory portion of the path alone;</li>
+<li>
+<strong>filename length over 50 characters</strong> — the base filename alone.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">naming_issues</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">naming_issues</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -957,30 +1015,70 @@ Note
 <p>An archive shared as a single file hides what is in it. By default <code>repo_check</code> therefore reads each <code>.zip</code>’s own listing and reports the files inside it, in place of the archive as one opaque row. This costs one HTTP range request per archive and downloads none of its contents: a <code>.zip</code> stores a directory of what it holds at the end of the file, and a server that honours range requests will return just that stretch of bytes. The helper that does this is <code>zip_peek()</code>, and you can call it yourself on any archive URL.</p>
 <p>Turn it off to leave archives as single rows and make no per-archive request at all:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, peek_zips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, peek_zips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This works for <code>.zip</code> only. <code>.7z</code>, <code>.rar</code> and <code>.tar.gz</code> keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. <code>repo_check</code> warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and <code>data_check</code> opens it after downloading, as before.</p>
-</section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
-<span class="header-section-number">22.9</span> A clean example and one with problems</h2>
+</section></section><section id="files-that-do-not-belong-in-a-repository" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="files-that-do-not-belong-in-a-repository">
+<span class="header-section-number">22.9</span> Files that do not belong in a repository</h2>
+<p>Some files end up in a repository because software creates them by itself, not because the authors meant to share them, and they hold nothing a reader can use. <code>repo_check</code> leaves these files out of its file list, after looking inside any zips, so they are not counted, not classified, and not checked for naming. <code>data_check</code> leaves them out too, so it no longer tries to read, for example, the <code>._</code> copy of a <code>.csv</code> file that a Mac adds to a zip as if it were data. In one LDbase zip, such files made up 993 of the 1,826 files listed.</p>
+<p>The files left out are:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Kind</th>
+<th>Examples</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>operating system</td>
+<td>macOS’s <code>__MACOSX/</code> folder and the <code>._</code> copy of every file a Mac puts in a zip, <code>.DS_Store</code>; Windows’s <code>Thumbs.db</code> and <code>desktop.ini</code>; recycle-bin and trash folders</td>
+</tr>
+<tr class="even">
+<td>RStudio session files</td>
+<td>the <code>.Rproj.user/</code> folder, which holds open tabs and unsaved edits</td>
+</tr>
+<tr class="odd">
+<td>Jupyter checkpoints</td>
+<td>the <code>.ipynb_checkpoints/</code> folder of automatic notebook copies</td>
+</tr>
+<tr class="even">
+<td>compiled Python files</td>
+<td>the <code>__pycache__/</code> folder and <code>.pyc</code> files, which Python recreates when the code runs</td>
+</tr>
+<tr class="odd">
+<td>open-document lock files</td>
+<td>
+<code>~$report.docx</code> and <code>.~lock.report.odt#</code>, left while Word, Excel, PowerPoint or LibreOffice has a document open</td>
+</tr>
+</tbody>
+</table>
+<p>The list comes from GitHub’s templates for files to keep out of a repository, and each kind was found in real repositories. Files that may still matter to someone, such as <code>.RData</code>, <code>.Rhistory</code>, backup copies, <code>.tmp</code> files and knitr caches, are kept.</p>
+<p>When any such files are found, the summary text says how many were left out and of which kinds, and the report adds a section, “Files that do not belong in the repository”, listing each file and explaining how to keep them out (for example, creating zips on a Mac with <code>zip -r -X</code>, or adding a <code>.gitignore</code> file based on GitHub’s templates). These files do not change the traffic light.</p>
+</section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.10"><h2 data-number="22.10" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
+<span class="header-section-number">22.10</span> A clean example and one with problems</h2>
 <p>The demo paper links to three repositories, and running <code>repo_check</code> on it produces a <strong>yellow</strong> light — there are problems to address. The summary text reports exactly what:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "yellow"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We found 1 empty repository.
-#&gt; -  We found 78 files in 4 repositories.
+#&gt; -  We found 73 files in 4 repositories.
 #&gt; -  We found 6 README files and 3 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 15 file naming problems to fix.</code></pre>
+#&gt; -  We found 9 file naming problems to fix.
+#&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
 <p>Here the issues are a <strong>missing README</strong> and an <strong>archive file</strong> whose contents could not be examined. The per-paper summary table counts each file type — note <code>files_readme</code> is 0 (no README was shared) and <code>files_zip</code> is 1 (one archive):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1011,13 +1109,13 @@ Note
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">78</td>
+<td style="text-align: right;">73</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: right;">39</td>
+<td style="text-align: right;">35</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">15</td>
+<td style="text-align: right;">9</td>
 <td style="text-align: left;">FALSE</td>
 </tr></tbody>
 </table>
@@ -1025,7 +1123,7 @@ Note
 </div>
 <p>We can see the specific archive file that was flagged in the full file table:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="st">"archive"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_name"</span>, <span class="st">"file_name"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="st">"archive"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_name"</span>, <span class="st">"file_name"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top">
@@ -1038,11 +1136,11 @@ Note
 </div>
 </div>
 <p>A <strong>clean</strong> result, by contrast, would include a README in every linked repository (<code>files_readme</code> ≥ 1 for each), share files individually rather than as a zip (<code>files_zip</code> of 0), have no unclassifiable or badly-named files, agree with the manuscript’s study roster, and have no closed registrations — producing a green light with no items to address.</p>
-</section><section id="options" class="level2" data-number="22.10"><h2 data-number="22.10" class="anchored" data-anchor-id="options">
-<span class="header-section-number">22.10</span> Options</h2>
+</section><section id="options" class="level2" data-number="22.11"><h2 data-number="22.11" class="anchored" data-anchor-id="options">
+<span class="header-section-number">22.11</span> Options</h2>
 <p><code>repo_check</code> accepts arguments for working with <strong>local files</strong> instead of (or in addition to) online repositories:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># also include files from a local folder</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># also include files from a local folder</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/downloaded/files"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># only check a local folder, skip all online lookups</span></span>
@@ -1052,10 +1150,10 @@ Note
 <p>If you have no manuscript at all — just a folder to check — <code>report_repository("path/to/folder")</code> wraps this same <code>local_path</code>/<code>local_only = TRUE</code> pattern (and the three modules below it) into a one-line report; see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a> and <a href="../chapters/creating-a-report.html">Creating a Report</a>.</p>
 <p><code>model</code> and <code>params</code> are passed through to <code>data_group_llm()</code> for study grouping, and only take effect when <code>llm_use(TRUE)</code> and the deterministic grouping rules cannot place a file:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>, params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>temperature <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>, params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>temperature <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="22.11"><h2 data-number="22.11" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
-<span class="header-section-number">22.11</span> The traffic light and what you get back</h2>
+</section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="22.12"><h2 data-number="22.12" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
+<span class="header-section-number">22.12</span> The traffic light and what you get back</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1092,7 +1190,7 @@ Note
 <tbody>
 <tr class="odd">
 <td><code>$table</code></td>
-<td>one row per file across all repositories: <code>repo_url</code>, <code>file_name</code>, <code>file_path</code>, <code>file_url</code>, <code>file_location</code>, <code>file_size</code>, <code>file_type</code>, <code>data_type</code>, <code>doc_role</code>, <code>group</code>, <code>paper_id</code>
+<td>one row per file across all repositories: <code>repo_url</code>, <code>repo_name</code>, <code>file_name</code>, <code>file_path</code>, <code>file_url</code>, <code>file_location</code>, <code>file_size</code>, <code>file_type</code>, <code>data_type</code>, <code>doc_role</code>, <code>group</code>, <code>paper_id</code>
 </td>
 </tr>
 <tr class="even">
@@ -1110,24 +1208,29 @@ Note
 </tr>
 <tr class="odd">
 <td><code>$gated_repos</code></td>
-<td>repositories found but not listed (e.g.&nbsp;a GitHub repo over the size gate, or a private OSF component), with the reason</td>
+<td>repositories found but not listed (e.g.&nbsp;a GitHub repository too large for GitHub to list in one request, a private OSF component, or an LDbase link that could not be read), with the reason</td>
 </tr>
 <tr class="even">
+<td><code>$repo_metadata</code></td>
+<td>one row per repository (not per file): <code>paper_id</code>, <code>repo_url</code>, <code>doi</code>, <code>license</code>
+</td>
+</tr>
+<tr class="odd">
 <td><code>$group_no_evidence</code></td>
 <td>
 <code>TRUE</code> if study grouping had no evidence to work from</td>
 </tr>
-<tr class="odd">
-<td><code>$report</code></td>
-<td>formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, and a full classification breakdown</td>
-</tr>
 <tr class="even">
+<td><code>$report</code></td>
+<td>formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown</td>
+</tr>
+<tr class="odd">
 <td><code>$summary_text</code></td>
 <td>plain-text bulleted summary of each check</td>
 </tr>
 </tbody>
-</table></section><section id="related" class="level2" data-number="22.12"><h2 data-number="22.12" class="anchored" data-anchor-id="related">
-<span class="header-section-number">22.12</span> Related</h2>
+</table></section><section id="related" class="level2" data-number="22.13"><h2 data-number="22.13" class="anchored" data-anchor-id="related">
+<span class="header-section-number">22.13</span> Related</h2>
 <p>The companion <a href="../chapters/mod-code-check.html">code_check</a> module analyses the actual code files that <code>repo_check</code> discovers. <a href="../chapters/mod-data-check.html">data_check</a> re-downloads and reclassifies the data files using their contents (not just names and paths), and runs the <a href="../chapters/mod-data-validate.html">data-quality checks</a> on the columns it finds.</p>
 
 
