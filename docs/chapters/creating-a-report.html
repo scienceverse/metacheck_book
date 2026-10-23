@@ -459,6 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#choosing-modules" id="toc-choosing-modules" class="nav-link" data-scroll-target="#choosing-modules"><span class="header-section-number">36.2.1</span> Choosing modules</a></li>
   <li><a href="#choosing-the-output-format" id="toc-choosing-the-output-format" class="nav-link" data-scroll-target="#choosing-the-output-format"><span class="header-section-number">36.2.2</span> Choosing the output format</a></li>
+  <li><a href="#choosing-the-report-type" id="toc-choosing-the-report-type" class="nav-link" data-scroll-target="#choosing-the-report-type"><span class="header-section-number">36.2.3</span> Choosing the report type</a></li>
   </ul>
 </li>
   <li><a href="#checking-a-folder-instead-of-a-paper-report_repository" id="toc-checking-a-folder-instead-of-a-paper-report_repository" class="nav-link" data-scroll-target="#checking-a-folder-instead-of-a-paper-report_repository"><span class="header-section-number">36.3</span> Checking a folder instead of a paper: <code>report_repository()</code></a></li>
@@ -517,12 +518,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="the-quick-way-report" class="level2" data-number="36.2"><h2 data-number="36.2" class="anchored" data-anchor-id="the-quick-way-report">
 <span class="header-section-number">36.2</span> The quick way: <code>report()</code>
 </h2>
-<p><code>report()</code> runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the <strong>default battery</strong> of sixteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration (<a href="../chapters/mod-prereg-check.html"><code>prereg_check</code></a>), funding and conflict-of-interest statements (<a href="../chapters/mod-funding-check.html"><code>funding_check</code></a>, <a href="../chapters/mod-coi-check.html"><code>coi_check</code></a>), statistical power (<a href="../chapters/mod-power.html"><code>power</code></a>), data and code availability (<a href="../chapters/mod-repo-check.html"><code>repo_check</code></a>, <a href="../chapters/mod-code-check.html"><code>code_check</code></a>), the reporting of statistics (<a href="../chapters/mod-stat-check.html"><code>stat_check</code></a>, <a href="../chapters/mod-stat-p-exact.html"><code>stat_p_exact</code></a>, <a href="../chapters/mod-stat-p-nonsig.html"><code>stat_p_nonsig</code></a>, <a href="../chapters/mod-stat-effect-size.html"><code>stat_effect_size</code></a>, <a href="../chapters/mod-marginal.html"><code>marginal</code></a>), and the reference list (<a href="../chapters/mod-ref-accuracy.html"><code>ref_accuracy</code></a>, <a href="../chapters/mod-ref-replication.html"><code>ref_replication</code></a>, <a href="../chapters/mod-ref-retraction.html"><code>ref_retraction</code></a>, <a href="../chapters/mod-ref-pubpeer.html"><code>ref_pubpeer</code></a>, <a href="../chapters/mod-ref-summary.html"><code>ref_summary</code></a>).</p>
+<p><code>report()</code> runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the <strong>default battery</strong> of fifteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration (<a href="../chapters/mod-prereg-check.html"><code>prereg_check</code></a>), funding and conflict-of-interest statements (<a href="../chapters/mod-funding-check.html"><code>funding_check</code></a>, <a href="../chapters/mod-coi-check.html"><code>coi_check</code></a>), statistical power (<a href="../chapters/mod-power.html"><code>power</code></a>), data and code availability (<a href="../chapters/mod-repo-check.html"><code>repo_check</code></a>, <a href="../chapters/mod-code-check.html"><code>code_check</code></a>), the reporting of statistics (<a href="../chapters/mod-stat-check.html"><code>stat_check</code></a>, <a href="../chapters/mod-stat-p-exact.html"><code>stat_p_exact</code></a>, <a href="../chapters/mod-stat-p-nonsig.html"><code>stat_p_nonsig</code></a>, <a href="../chapters/mod-stat-effect-size.html"><code>stat_effect_size</code></a>, <a href="../chapters/mod-marginal.html"><code>marginal</code></a>), and the reference list (<a href="../chapters/mod-ref-replication.html"><code>ref_replication</code></a>, <a href="../chapters/mod-ref-retraction.html"><code>ref_retraction</code></a>, <a href="../chapters/mod-ref-pubpeer.html"><code>ref_pubpeer</code></a>, <a href="../chapters/mod-ref-summary.html"><code>ref_summary</code></a>). <a href="../chapters/mod-ref-accuracy.html"><code>ref_accuracy</code></a> is, for now, not among the defaults, because most of the references it flags turn out to be errors in reading the PDF; you can still add it to <code>modules</code> yourself.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span>
-<span><span class="co">#&gt; "[paper_id]_report.html"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The function returns the path to the file it wrote. By default that is <code>"&lt;paper_id&gt;_report.html"</code> in the working directory; set <code>output_file</code> to choose your own name and location.</p>
+<p>By default the report is saved as <code>"&lt;paper_id&gt;_report.html"</code> in the working directory; set <code>output_file</code> to choose your own name and location. The function returns the output of the modules, without printing it, and the path of the file it wrote is stored with that output: <code>attr(result, "save_path")</code>. For a list of papers, <code>report()</code> writes one report per paper, named <code>"&lt;paper_id&gt;_&lt;output_file&gt;"</code>, and <code>save_path</code> holds one path per paper. Papers in a list that share a <code>paper_id</code> are first renamed <code>"&lt;paper_id&gt;~2"</code>, <code>"&lt;paper_id&gt;~3"</code>, and so on, with a warning, so that each gets its own report.</p>
 <section id="choosing-modules" class="level3" data-number="36.2.1"><h3 data-number="36.2.1" class="anchored" data-anchor-id="choosing-modules">
 <span class="header-section-number">36.2.1</span> Choosing modules</h3>
 <p>You rarely need all the default checks. Pass a <code>modules</code> vector to run exactly the ones you want, in the order you want them reported:</p>
@@ -545,13 +545,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>       output_format <span class="op">=</span> <span class="st">"qmd"</span><span class="op">)</span>    <span class="co"># write the Quarto source instead</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Rendering to HTML requires <a href="https://quarto.org">Quarto</a> to be installed. If rendering fails for any reason, <code>report()</code> falls back to saving the <code>qmd</code> source (and warns you), so you never lose the result of running the modules.</p>
+</section><section id="choosing-the-report-type" class="level3" data-number="36.2.3"><h3 data-number="36.2.3" class="anchored" data-anchor-id="choosing-the-report-type">
+<span class="header-section-number">36.2.3</span> Choosing the report type</h3>
+<p><code>report_type</code> sets how the report is laid out and how much it contains:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th><code>report_type</code></th>
+<th>What you get</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code>"full"</code> (default)</td>
+<td>the interactive report: a light and dark theme, tables you can sort and page through, and tabbed sections</td>
+</tr>
+<tr class="even">
+<td><code>"brief"</code></td>
+<td>the same report, but only the modules with a red, yellow or failed light, each with its one-line summary</td>
+</tr>
+<tr class="odd">
+<td><code>"simple"</code></td>
+<td>a static report without JavaScript: plain tables and headings in place of tabs. Use it for a report you will send by e-mail, since mail programs often flag the JavaScript in a full report</td>
+</tr>
+<tr class="even">
+<td><code>"simple_brief"</code></td>
+<td>the static layout of <code>"simple"</code> with the content of <code>"brief"</code>
+</td>
+</tr>
+<tr class="odd">
+<td><code>"checklist"</code></td>
+<td>a static report laid out by check instead of by module (see below)</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, report_type <span class="op">=</span> <span class="st">"checklist"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <strong>checklist</strong> report sorts every check of every module into six groups: to fix, to improve, decide by hand, for information, fine, and not applicable, with the number in each group at the top. Each check that needs work is a block that says what was found and what to do on separate lines, with its tables folded underneath. The checks that are fine or not applicable take one line each, and the explanation of how each module works is folded at the bottom. When <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> ran the code, it gets a section of its own after the results: it says how the scripts were run and how many ran to the end, lists in run order what happened to each script (ran to the end, stopped with an error, with the error itself, ran out of time, could not run because a package is missing, or was not run, with the reason), names other problems in the files such as <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, and says how many of the statistical tests reported in the paper were found in the output of the code. The report uses the colours and font of <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website on SURF Research Cloud</a>. How a module tells the checklist report what its checks are is explained in <a href="../chapters/creating-modules.html">Creating Modules</a>.</p>
+<p>A module can ask to stay in the brief report whatever its light. <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> does this when it ran at least one script, so that a successful run is not left out and the report does not read as if the code was never checked.</p>
 </section></section><section id="checking-a-folder-instead-of-a-paper-report_repository" class="level2" data-number="36.3"><h2 data-number="36.3" class="anchored" data-anchor-id="checking-a-folder-instead-of-a-paper-report_repository">
 <span class="header-section-number">36.3</span> Checking a folder instead of a paper: <code>report_repository()</code>
 </h2>
 <p>Everything above starts from a manuscript. Sometimes there is no manuscript: you have a folder of shared files on your own computer — a repository you downloaded, or your own work before you share it — and you want to know what is in it and what could be improved.</p>
 <p><code>report_repository()</code> is for that case. Give it a folder and it writes a report:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_downloaded_project"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_downloaded_project"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>It runs the four modules that read a repository’s files, in the order they depend on each other:</p>
 <table class="caption-top table">
@@ -580,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>The report is named after the folder, so the call above writes <code>my_downloaded_project_report.html</code> into your working directory. Name the file yourself to put it elsewhere, and pass <code>modules</code> to run fewer of them:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_downloaded_project"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_downloaded_project"</span>,</span>
 <span>                  output_file <span class="op">=</span> <span class="st">"reports/project_check.html"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"my_downloaded_project"</span>,</span>
@@ -604,19 +646,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">36.4</span> Running a single module</h2>
 <p><code>report()</code> is convenient, but it always writes a file. While you are exploring a paper interactively it is often handier to run one module and look at the result in the console. That is what <code>module_run()</code> does:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The object it returns holds everything the module found. The pieces you will use most are the traffic light, the one-line summary, and the full results table:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "We found 1 imprecise *p* value out of 3 detected *p* values."</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -706,14 +748,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Printing the object gives a compact summary, and <code>module_report()</code> formats the same output as the Markdown section that would appear in a report:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_report</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_report</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="exact-p-values" class="level3 red" data-number="36.4.1"><h3 class="red anchored" data-number="36.4.1" data-anchor-id="exact-p-values">
 <span class="header-section-number">36.4.1</span> ⚠️ Exact P-Values</h3>
 <p>We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
 <details><summary>
 View detailed feedback
-</summary><div>
-<p>Reporting <em>p</em> values imprecisely (e.g., <em>p</em> &lt; .05) reduces transparency, reproducibility, and re-use (e.g., in <em>p</em> value meta-analyses). Best practice is to report exact p-values with three decimal places (e.g., <em>p</em> = .032) unless <em>p</em> values are smaller than 0.001, in which case you can use <em>p</em> &lt; .001.</p>
+</summary><p>Reporting <em>p</em> values imprecisely (e.g., <em>p</em> &lt; .05) reduces transparency, reproducibility, and re-use (e.g., in <em>p</em> value meta-analyses). Best practice is to report exact p-values with three decimal places (e.g., <em>p</em> = .032) unless <em>p</em> values are smaller than 0.001, in which case you can use <em>p</em> &lt; .001.</p>
 <pre class="{r}"><code>#| echo: false
 
 
@@ -740,7 +781,6 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </div>
 </div>
 </div>
-</div>
 </details><div class="callout callout-style-default callout-note callout-titled" title="How It Works">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -756,7 +796,9 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <p>List any p-values reported with insufficient precision (e.g., p &lt; .05 or p = n.s.) or reported as exactly zero (e.g., p = .000).</p>
 <p>This module uses regular expressions to identify p-values. It will flag any values reported as p &gt; ? or p &lt; numbers greater than .001. It will also flag p-values reported as exactly zero (e.g., p = .000, p = 0.00), which are mathematically impossible — p-values are never exactly zero and should instead be reported as p &lt; .001.</p>
 <p>We try to exclude figure and table notes like “* p &lt; .05”, but may not succeed at excluding all false positives.</p>
-<p>This module was developed by Lisa DeBruine</p>
+<p>This module only checks p-values reported in the running text of the manuscript. It cannot (yet) process p-values reported only in tables (as opposed to a table’s footnote text, which the module does see and tries to exclude — see above).</p>
+<p>This module was developed by Lisa DeBruine and Daniel Lakens</p>
+<p>Read more in the <a href="https://www.scienceverse.org/metacheck_book/chapters/mod-stat-p-exact.html">metacheck manual</a>.</p>
 </div>
 </div>
 </div>
@@ -767,29 +809,29 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <span class="header-section-number">36.5</span> Running multiple modules</h2>
 <p>To run several modules and keep their combined output <em>without</em> writing a file, use <code>report_module_run()</code>. It takes the same <code>modules</code> vector as <code>report()</code> and returns a list of module outputs:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span> <span class="op">&lt;-</span> <span class="fu">report_module_run</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span> <span class="op">&lt;-</span> <span class="fu">report_module_run</span><span class="op">(</span></span>
 <span>  <span class="va">paper</span>,</span>
 <span>  modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"stat_p_exact"</span>, <span class="st">"stat_p_nonsig"</span>, <span class="st">"marginal"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The result is a named list — one entry per module — that you can inspect individually:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">module_output</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">module_output</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "stat_p_exact"  "stat_p_nonsig" "marginal"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span><span class="op">[[</span><span class="st">"marginal"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span><span class="op">[[</span><span class="st">"marginal"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span><span class="op">[[</span><span class="st">"marginal"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">module_output</span><span class="op">[[</span><span class="st">"marginal"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "You described 2 effects with terms related to 'marginally significant'."</code></pre>
 </div>
 </div>
 <p>This is the same intermediate object <code>report()</code> builds internally. To turn it into a finished document yourself, pass it to <code>report_qmd()</code>, which produces the Quarto report text (header, summary section, and one section per module):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">report_text</span> <span class="op">&lt;-</span> <span class="fu">report_qmd</span><span class="op">(</span><span class="va">module_output</span>, <span class="va">paper</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">report_text</span> <span class="op">&lt;-</span> <span class="fu">report_qmd</span><span class="op">(</span><span class="va">module_output</span>, <span class="va">paper</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span><span class="op">(</span><span class="va">report_text</span>, <span class="st">"demo_report.qmd"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Splitting the work this way — run the modules once with <code>report_module_run()</code>, then format with <code>report_qmd()</code> — is useful when the modules are slow (for example reference checks that query external services) and you want to render the report more than once without re-running them.</p>
@@ -806,20 +848,20 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </ul>
 <p><code>module_help("module_name")</code> shows the arguments a given module accepts:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_help</span><span class="op">(</span><span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_help</span><span class="op">(</span><span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Power Analysis Check
 #&gt; 
-#&gt; This module uses uses regular expressions to identify sentences that contain a statistical power analysis. If specified by the user, it also uses a large language module (LLM) to extract information reported in power analyses, including the statistical test, sample size, alpha level, desired level of power, and magnitude and type of effect size.
+#&gt; This module uses regular expressions to identify sentences that contain a statistical power analysis. If specified by the user, it also uses a large language model (LLM) to extract information reported in power analyses, including the statistical test, sample size, alpha level, desired level of power, and magnitude and type of effect size.
 #&gt; 
 #&gt; module_run(paper, "power", seed = 8675309)
 #&gt; 
 #&gt; - paper: a paper object or paperlist object  
 #&gt; - seed: a seed for the LLM  
 #&gt; 
-#&gt; The Power Analysis Check module uses regular expressions to identify sentences that contain a statistical power analysis. Without the use of an LMM, the module uses regular expressions to classify the power analysis as a-priori, sensitivity or post-hoc. With the use of an LMM, it checks if the power analysis is reported with all required information.
+#&gt; The Power Analysis Check module uses regular expressions to identify sentences that contain a statistical power analysis. Without the use of an LLM, the module uses regular expressions to classify the power analysis as a-priori, sensitivity or post-hoc. With the use of an LLM, it checks if the power analysis is reported with all required information.
 #&gt; 
-#&gt; The regular expressions can miss power analyses, or fail to classify them correctly. The type of power analysis is often difficult to classify, which can easily be solved by explicitly specifying the type of power analysis as 'a-priori', 'sensitivity', or 'post-hoc'. Note that 'post-hoc' or 'observed' power is rarely useful. The LMM can fail to identify information in the paper, and will not have access to information in paragraphs in the paper other than those that contain the word 'power'. This package was validated by the Metacheck team on articles in Psychological Science.
+#&gt; The regular expressions can miss power analyses, or fail to classify them correctly. The type of power analysis is often difficult to classify, which can easily be solved by explicitly specifying the type of power analysis as 'a-priori', 'sensitivity', or 'post-hoc'. Note that 'post-hoc' or 'observed' power is rarely useful. The LLM can fail to identify information in the paper, and will not have access to information in paragraphs in the paper other than those that contain the word 'power'. This package was validated by the Metacheck team on articles in Psychological Science.
 #&gt; 
 #&gt; &lt;validation&gt;In a sample of 128 papers with 246 instances of power statements, 203 were correctly detected (true positives), 22 were missed (false negatives) and 21 were incorrectly detected (false positives). Overall, among all instances flagged as power statements, 90.6% were correct (positive predictive value).&lt;/validation&gt;</code></pre>
 </div>
@@ -829,14 +871,14 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <span class="header-section-number">36.6.1</span> One module: pass arguments directly</h3>
 <p>With <code>module_run()</code>, extra arguments go straight through the <code>...</code>, exactly as if you were calling the module function itself:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_replication"</span>, show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="several-modules-the-args-list" class="level3" data-number="36.6.2"><h3 data-number="36.6.2" class="anchored" data-anchor-id="several-modules-the-args-list">
 <span class="header-section-number">36.6.2</span> Several modules: the <code>args</code> list</h3>
 <p>When you run <em>several</em> modules at once with <code>report()</code> or <code>report_module_run()</code>, you cannot use <code>...</code>, because an argument like <code>seed</code> would be ambiguous — which module is it for? Instead you pass a single <code>args</code> argument: <strong>a named list of lists</strong>, where each name matches a module name and each value is the list of arguments for that module.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  power           <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span>,</span>
 <span>  ref_replication <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>show_outcomes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  repo_check      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -850,7 +892,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </div>
 <p>The same <code>args</code> list works with <code>report()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span></span>
 <span>  <span class="va">paper</span>,</span>
 <span>  modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"power"</span>, <span class="st">"ref_replication"</span>, <span class="st">"repo_check"</span><span class="op">)</span>,</span>
 <span>  args    <span class="op">=</span> <span class="va">args</span></span>
@@ -867,7 +909,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </ul>
 <p>Putting it together, here is a complete report that runs four modules, two of them with custom settings and two with their defaults:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span></span>
 <span>  <span class="va">paper</span>,</span>
 <span>  modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"stat_p_exact"</span>, <span class="st">"marginal"</span>, <span class="st">"power"</span>, <span class="st">"ref_replication"</span><span class="op">)</span>,</span>
 <span>  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
@@ -891,7 +933,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <tbody>
 <tr class="odd">
 <td>Run modules and write a finished report file</td>
-<td><code>report(paper, modules, output_file, output_format, args)</code></td>
+<td><code>report(paper, modules, output_file, output_format, report_type, args)</code></td>
 </tr>
 <tr class="even">
 <td>Check a folder of files, with no manuscript</td>

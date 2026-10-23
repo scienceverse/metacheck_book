@@ -501,7 +501,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="the-basics" class="level2" data-number="34.1"><h2 data-number="34.1" class="anchored" data-anchor-id="the-basics">
 <span class="header-section-number">34.1</span> The basics</h2>
 <p>Every reference in a paper’s bibliography can carry a <strong>DOI</strong> — a permanent identifying code that points to the official record of that work online. <code>ref_accuracy</code> looks up each reference’s DOI and checks whether the title, authors, journal, and year the paper printed for that reference actually match the official record.</p>
-<p>Because this check needs to look things up online, the demo paper first needs that lookup done with <code>add_bib_match()</code>:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For now, <code>ref_accuracy</code> is not among <code>report()</code>’s default modules and is not offered in the Metacheck apps. Its validation on nine PsyArXiv preprints found that most of the references it flagged were errors in reading the PDF, not errors in the paper. Run it yourself with <code>module_run(paper, "ref_accuracy")</code>, or add it to <code>report()</code>’s <code>modules</code>. The other reference modules still use the DOIs Crossref finds for references.</p>
+</div>
+</div>
+<p>Because this check needs to look things up online, the demo paper first needs that lookup done with <code>add_bib_match()</code>. Without that lookup (no <code>bib_match</code> table), the module reports “na”: the references were not looked up at Crossref, so their accuracy was not checked.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">add_bib_match</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_accuracy"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Reference Accuracy: We checked the 4 references that supplied a DOI against the record that DOI points to, and found 2 incoherent references to check for parsing errors or mistakes. 0 references had no DOI and could not be checked. Incoherent references are mostly PDF parsing errors (we are working on improving reference parsing).</p>

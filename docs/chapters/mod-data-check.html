@@ -773,7 +773,7 @@ Note
 <pre><code>[1] "tabular" "raw"     "raw"     "tabular" "raw"</code></pre>
 </section></section><section id="the-data-tree" class="level2" data-number="24.5"><h2 data-number="24.5" class="anchored" data-anchor-id="the-data-tree">
 <span class="header-section-number">24.5</span> The data tree</h2>
-<p>To make the layout of a repository easy to see at a glance, <code>data_check</code>’s report includes a <strong>data tree</strong> — the folder structure of each repository drawn as an indented tree (<code>repo_tree_lines()</code> / <code>repo_tree_block()</code>, internal to the module). Directories are listed before files and both are sorted alphabetically, so the same repository always produces the same tree. In the rendered report the tree appears inside a collapsible <em>“Data Tree”</em> callout, one per repository when several are linked.</p>
+<p>To make the layout of a repository easy to see at a glance, <code>data_check</code>‘s report includes a <strong>data tree</strong> — the folder structure of each repository drawn as an indented tree, under the heading <em>“Data Tree”</em>, one per repository when several are linked. Each file is followed by how it was classified, the study it belongs to, and any file-naming problem <code>repo_check</code> found. The tree shows everything in a repository: a local folder is listed itself, with hidden files, files that do not belong in a repository (see <a href="../chapters/mod-repo-check.html#files-that-do-not-belong-in-a-repository">Repository Check</a>) and empty folders, and a repository link shows those unwanted files too. Unwanted files are marked “junk: remove” or “junk: keep only on purpose”, a folder such as <code>.git/</code>, <code>__pycache__/</code> or <code>__MACOSX/</code> is one line with the number of files inside, other hidden files are marked “hidden file”, and empty folders “empty folder”. Folders, empty ones included, are listed before files, and both are sorted alphabetically without regard to capitals, so the same repository always produces the same tree. A local folder is named by its own name (“Repository: my_study”), not by its full path on the computer that ran the check. The tree sits in a box with its own scroll bar, so a large repository does not make the report endless. The repository apps’ brief report shows the same tree.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tree_lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"^[│├└ ]"</span>, <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">report</span>, <span class="st">"\n"</span><span class="op">)</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">tree_lines</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -783,10 +783,10 @@ Note
 #&gt; └── analysis.R     💻 code ex1
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(17L, 2L, 20L, 2L, 20L, 18L), Mean = c(41.25, 
-#&gt;     NA, NA, NA, 588.2, 50.87), SD = c(15.427, NA, NA, NA, 164.838, 
-#&gt;     14.955), Min = c(18, NA, NA, NA, 316, 19.9), Max = c(62, 
-#&gt;     NA, NA, NA, 891, 77.7)), row.names = c("age", "condition",</code></pre>
+#&gt;     0), "N Unique" = c(13L, 2L, 20L, 2L, 20L, 19L), Mean = c(47.2, 
+#&gt;     NA, NA, NA, 562.4, 51.73), SD = c(14.877, NA, NA, NA, 184.723, 
+#&gt;     10.503), Min = c(18, NA, NA, NA, 302, 29.6), Max = c(63, 
+#&gt;     NA, NA, NA, 837, 69.3)), row.names = c("age", "condition",</code></pre>
 </div>
 </div>
 <p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
@@ -1007,7 +1007,13 @@ Note
 <li>
 <strong>Excel</strong> (<code>.xlsx</code>/<code>.xls</code>) via <code>readxl</code>; <strong>SPSS/Stata/SAS</strong> (<code>.sav</code>/<code>.dta</code>/<code>.sas7bdat</code>) via <code>haven</code> (preserving value labels and declared missing codes for <code>codebook_check</code>); <strong>JASP</strong> (<code>.jasp</code>) and <strong>jamovi</strong> (<code>.omv</code>) return a labelled data frame like a <code>.sav</code>.</li>
 <li>
-<strong>R objects</strong>: <code>.rds</code> yields its data frame; an <code>.RData</code>/<code>.rda</code> workspace is restored in an <strong>isolated subprocess</strong> (<code>.read_rdata_isolated()</code>) because loading a saved model that references an uninstalled package can print C-level diagnostics or crash. A workspace that holds no reusable data frame (only fitted models / session state) returns <code>NULL</code> and is reported as a data-sharing recommendation.</li>
+<strong>R objects</strong>: <code>.rds</code> yields its data frame; an <code>.RData</code>/<code>.rda</code> workspace is restored in an <strong>isolated subprocess</strong> (<code>.read_rdata_isolated()</code>) because loading a saved model that references an uninstalled package can print C-level diagnostics or crash. A workspace that holds no reusable data frame (only fitted models / session state) returns <code>NULL</code> and is reported as a data-sharing recommendation. An <code>.rds</code> file that was made with <code><a href="https://rdrr.io/r/base/save.html">save()</a></code> instead of <code><a href="https://rdrr.io/r/base/readRDS.html">saveRDS()</a></code> (so it is really a workspace, which <code><a href="https://rdrr.io/r/base/readRDS.html">readRDS()</a></code> refuses) is opened with the workspace reader, with an <strong>“R workspace named .rds”</strong> warning that makes the light at least yellow.</li>
+<li>
+<strong>Columns that need an R package</strong>: an <code>.rds</code> or <code>.rda</code> file whose columns hold values of a package’s own type, such as lubridate’s periods and durations, cannot be used without that package. Each such column is read as its plain stored numbers, the package is named in the column’s <code>needs_package</code> value in <code>$table</code>, and a <strong>“Needs an R package”</strong> warning tells the authors that anyone without that package cannot open the file.</li>
+<li>
+<strong>Old Excel <code>.xls</code> files</strong> are first opened in a separate R process, because some of them (for example an old Mac Excel file) make <code>readxl</code> stop the whole R process. Such a file is reported as unreadable and the rest of the check goes on.</li>
+<li>
+<strong>UTF-16 text files</strong>, such as E-Prime and other Windows exports, are read in that encoding.</li>
 <li>
 <strong>Invalid UTF-8</strong> bytes (a Latin-1/Windows-1252 export) are re-interpreted as Latin-1 rather than failing (<code>.utf8_repair_df()</code>), and the per-column repair count is recorded in a <code>utf8_repaired</code> attribute so the mixed encoding can be reported.</li>
 </ul>
@@ -1055,12 +1061,11 @@ Note
 </tr>
 <tr class="even">
 <td><code>$table</code></td>
-<td>one row per column, with the facets, <code>sample_values</code>, <code>utf8_repaired</code>, and summary statistics</td>
+<td>one row per column, with the facets, <code>sample_values</code>, <code>utf8_repaired</code>, <code>needs_package</code>, and summary statistics</td>
 </tr>
 <tr class="odd">
 <td><code>$structure</code></td>
-<td>one row per file, with <code>data_type</code>, <code>data_format</code>, <code>group</code>, and <code>tabular_usable</code> / <code>non_tabular_reason</code>
-</td>
+<td>one row per file, with <code>data_type</code>, <code>data_format</code>, <code>group</code>, <code>tabular_usable</code> / <code>non_tabular_reason</code>, and <code>source_file</code> (see below)</td>
 </tr>
 <tr class="even">
 <td><code>$previews</code></td>
@@ -1076,6 +1081,7 @@ Note
 </tr>
 </tbody>
 </table>
+<p>Files with the same name in different folders (for example a <code>log.csv</code> in each of 22 scan folders) are all read and checked. Each file has a <code>source_file</code> name that is unique within the run: the file name when no other file has it, so nothing changes for most repositories; otherwise its path in the repository (<code>scan1/log.csv</code>); and where even that repeats, the repository’s name in front. The tables in <code>$previews</code>, the column table, the findings and <code>codebook_check</code>’s labels use this name.</p>
 <p>The findings of the data-quality checks are in <code>$findings</code>, described in <a href="../chapters/mod-data-validate.html">Data Quality Checks</a>. When no file could be read as a table (a repository with only code, documents or images, or with data files that are not usable tables), <code>data_check</code> still returns its summary, report and traffic light; <code>$table</code> then has no rows, and any spreadsheet-formatting or space-separated <code>.csv</code> findings are in <code>$findings</code>.</p>
 <p>The <code>$structure</code> and <code>$previews</code> elements are what the downstream modules consume, which is why you rarely need to run <code>data_check</code> on its own beforehand — running <code>codebook_check</code> triggers it automatically and reuses the result, and <code>psychds_check</code> and <code>convert_psychds()</code> are designed to do the same once that module’s own development resumes.</p>
 </section><section id="downloading-files" class="level2" data-number="24.13"><h2 data-number="24.13" class="anchored" data-anchor-id="downloading-files">

@@ -463,6 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#osf-registrations-follow-their-source-project" id="toc-osf-registrations-follow-their-source-project" class="nav-link" data-scroll-target="#osf-registrations-follow-their-source-project"><span class="header-section-number">22.5.1</span> OSF registrations follow their source project</a></li>
   <li><a href="#github-repositories-are-listed-in-full" id="toc-github-repositories-are-listed-in-full" class="nav-link" data-scroll-target="#github-repositories-are-listed-in-full"><span class="header-section-number">22.5.2</span> GitHub repositories are listed in full</a></li>
   <li><a href="#ldbase-is-read-from-its-web-pages" id="toc-ldbase-is-read-from-its-web-pages" class="nav-link" data-scroll-target="#ldbase-is-read-from-its-web-pages"><span class="header-section-number">22.5.3</span> LDbase is read from its web pages</a></li>
+  <li><a href="#links-that-could-not-be-checked" id="toc-links-that-could-not-be-checked" class="nav-link" data-scroll-target="#links-that-could-not-be-checked"><span class="header-section-number">22.5.4</span> Links that could not be checked</a></li>
   </ul>
 </li>
   <li>
@@ -514,14 +515,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "yellow"</code></pre>
+<pre><code>#&gt; [1] "red"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 1 empty repository.
-#&gt; -  We found 73 files in 4 repositories.
-#&gt; -  We found 6 README files and 3 repositories without READMEs.
+#&gt; -  We could not check 2 repositories: https://osf.io/5tbm9 (private); https://github.com/Lak- (links to a GitHub account, not to a specific repository).
+#&gt; -  We found 73 files in 5 repositories.
+#&gt; -  We found 6 README files and 2 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
 #&gt; -  We found 9 file naming problems to fix.
 #&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
@@ -643,14 +644,14 @@ Note
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "yellow"</code></pre>
+<pre><code>#&gt; [1] "red"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 1 empty repository.
-#&gt; -  We found 73 files in 4 repositories.
-#&gt; -  We found 6 README files and 3 repositories without READMEs.
+#&gt; -  We could not check 2 repositories: https://osf.io/5tbm9 (private); https://github.com/Lak- (links to a GitHub account, not to a specific repository).
+#&gt; -  We found 73 files in 5 repositories.
+#&gt; -  We found 6 README files and 2 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
 #&gt; -  We found 9 file naming problems to fix.
 #&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
@@ -895,7 +896,15 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">test_paper</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://ldbase.org/projects/09609d82-c45f-4442-8c0c-d136191bdc50"</span><span class="op">)</span></span>
 <span><span class="fu">ldbase_links</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="study-grouping" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="study-grouping">
+</section><section id="links-that-could-not-be-checked" class="level3" data-number="22.5.4"><h3 data-number="22.5.4" class="anchored" data-anchor-id="links-that-could-not-be-checked">
+<span class="header-section-number">22.5.4</span> Links that could not be checked</h3>
+<p>A repository that is linked but cannot be retrieved is kept, as a repository that could not be checked, and is never counted as an empty repository or as one without a README. Its reason is recorded in <code>$gated_repos</code>. For the OSF, the reasons say whether the OSF did not answer (HTTP 503, for example during an outage), the project was not found (HTTP 404), was deleted or withdrawn (HTTP 410), or the rate limit was reached (HTTP 429). A failed OSF lookup is not stored in the cache, so a later run asks again. The summary and report name each repository that could not be checked, the summary table counts them in <code>repo_unchecked</code>, and the traffic light is not green while any could not be checked.</p>
+<p>Some links are recognised but lead to no single repository:</p>
+<ul>
+<li>a link to a <strong>GitHub account or organisation</strong> (<code>https://github.com/OneZoom/</code>) instead of to one repository is reported as “links to a GitHub account, not to a specific repository”; a GitLab address with one path segment is reported the same way;</li>
+<li>a <strong>Dryad sharing link</strong> (<code>datadryad.org/stash/share/...</code>), made for reviewers before publication, is followed to the dataset it leads to, and <code>dryad_links()</code> finds such links in the text. A sharing link that leads nowhere is reported as “private or expired Dryad sharing link”;</li>
+<li>an <strong>OSF registration’s licence</strong> is looked up for the project it was made from, since that is where its files are listed from; a project that is closed or has no licence takes the registration’s licence.</li>
+</ul></section></section><section id="study-grouping" class="level2" data-number="22.6"><h2 data-number="22.6" class="anchored" data-anchor-id="study-grouping">
 <span class="header-section-number">22.6</span> Study grouping</h2>
 <p><code>repo_check</code> runs a <strong>preliminary</strong> classification and grouping pass over every file it finds:</p>
 <ul>
@@ -1017,11 +1026,12 @@ Note
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, peek_zips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This works for <code>.zip</code> only. <code>.7z</code>, <code>.rar</code> and <code>.tar.gz</code> keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. <code>repo_check</code> warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and <code>data_check</code> opens it after downloading, as before.</p>
+<p>A plain (uncompressed) <code>.tar</code> has no such directory either, but its files can be listed from one download: a <code>.tar</code> whose size the repository gives, up to 50 MB, is downloaded once, and its file names and sizes are read from that copy. The copy is kept for the session, so <code>data_check</code> takes the data and documentation files from it without downloading it again. A larger <code>.tar</code>, or one of unknown size, stays one row.</p>
+<p><code>.7z</code>, <code>.rar</code> and <code>.tar.gz</code> keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. <code>repo_check</code> warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and <code>data_check</code> opens it after downloading, as before.</p>
 </section></section><section id="files-that-do-not-belong-in-a-repository" class="level2" data-number="22.9"><h2 data-number="22.9" class="anchored" data-anchor-id="files-that-do-not-belong-in-a-repository">
 <span class="header-section-number">22.9</span> Files that do not belong in a repository</h2>
 <p>Some files end up in a repository because software creates them by itself, not because the authors meant to share them, and they hold nothing a reader can use. <code>repo_check</code> leaves these files out of its file list, after looking inside any zips, so they are not counted, not classified, and not checked for naming. <code>data_check</code> leaves them out too, so it no longer tries to read, for example, the <code>._</code> copy of a <code>.csv</code> file that a Mac adds to a zip as if it were data. In one LDbase zip, such files made up 993 of the 1,826 files listed.</p>
-<p>The files left out are:</p>
+<p>The files left out are of two kinds. The first kind should be removed:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -1034,69 +1044,109 @@ Note
 <tbody>
 <tr class="odd">
 <td>operating system</td>
-<td>macOS’s <code>__MACOSX/</code> folder and the <code>._</code> copy of every file a Mac puts in a zip, <code>.DS_Store</code>; Windows’s <code>Thumbs.db</code> and <code>desktop.ini</code>; recycle-bin and trash folders</td>
+<td>macOS’s <code>__MACOSX/</code> folder and the <code>._</code> copy of every file a Mac puts in a zip, <code>.DS_Store</code>, <code>.TemporaryItems</code>; Windows’s <code>Thumbs.db</code> and <code>desktop.ini</code>; recycle-bin and trash folders</td>
 </tr>
 <tr class="even">
 <td>RStudio session files</td>
 <td>the <code>.Rproj.user/</code> folder, which holds open tabs and unsaved edits</td>
 </tr>
 <tr class="odd">
+<td>R history</td>
+<td>
+<code>.Rhistory</code>, the commands typed in an R session, which can hold file paths and passwords</td>
+</tr>
+<tr class="even">
 <td>Jupyter checkpoints</td>
 <td>the <code>.ipynb_checkpoints/</code> folder of automatic notebook copies</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>compiled Python files</td>
 <td>the <code>__pycache__/</code> folder and <code>.pyc</code> files, which Python recreates when the code runs</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>open-document lock files</td>
 <td>
 <code>~$report.docx</code> and <code>.~lock.report.odt#</code>, left while Word, Excel, PowerPoint or LibreOffice has a document open</td>
 </tr>
+<tr class="odd">
+<td>editor backups</td>
+<td>
+<code>file~</code>, <code>.bak</code>, and Vim’s <code>.swp</code> and <code>.swo</code> files</td>
+</tr>
+<tr class="even">
+<td>temporary files</td>
+<td>
+<code>.tmp</code> and <code>.temp</code> files a program did not remove</td>
+</tr>
 </tbody>
 </table>
-<p>The list comes from GitHub’s templates for files to keep out of a repository, and each kind was found in real repositories. Files that may still matter to someone, such as <code>.RData</code>, <code>.Rhistory</code>, backup copies, <code>.tmp</code> files and knitr caches, are kept.</p>
-<p>When any such files are found, the summary text says how many were left out and of which kinds, and the report adds a section, “Files that do not belong in the repository”, listing each file and explaining how to keep them out (for example, creating zips on a Mac with <code>zip -r -X</code>, or adding a <code>.gitignore</code> file based on GitHub’s templates). These files do not change the traffic light.</p>
+<p>The second kind should only be kept on purpose:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Kind</th>
+<th>Examples</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>version control</td>
+<td>
+<code>.git/</code>, <code>.svn/</code> and <code>.hg/</code> folders, which hold the project’s history, including earlier versions of files and data that was later removed</td>
+</tr>
+<tr class="even">
+<td>editor settings</td>
+<td>
+<code>.idea/</code> and <code>.vscode/</code> folders, which can hold paths on the author’s own computer</td>
+</tr>
+</tbody>
+</table>
+<p>The list follows GitHub’s templates for files to keep out of a repository and the rules TU/e’s data managers check before a data package is archived, and each kind was found in real repositories. Files that may still matter to someone, such as <code>.RData</code> files and knitr caches, are kept. When <code>repo_check</code> lists a local folder, <code>local_files()</code> includes hidden files of these kinds (such as <code>.DS_Store</code>, <code>.Rhistory</code> and <code>.git/</code>), so they are found there too; other hidden files stay out.</p>
+<p>When any such files are found, the summary text says how many were left out and of which kinds, and the report adds a section, “Files that do not belong in the repository”, listing each file and explaining how to keep them out (for example, creating zips on a Mac with <code>zip -r -X</code>, or adding a <code>.gitignore</code> file based on GitHub’s templates). Files of the first kind make the traffic light red; files of the second kind make it at least yellow. They are returned in <code>$useless_files</code>, one row per file, with the <code>kind</code> and a <code>severity</code> of <code>"problem"</code> (first kind) or <code>"suggestion"</code> (second kind), so other modules can use them.</p>
 </section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="22.10"><h2 data-number="22.10" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
 <span class="header-section-number">22.10</span> A clean example and one with problems</h2>
-<p>The demo paper links to three repositories, and running <code>repo_check</code> on it produces a <strong>yellow</strong> light — there are problems to address. The summary text reports exactly what:</p>
+<p>The demo paper links to several repositories, and running <code>repo_check</code> on it produces a <strong>red</strong> light: the repositories hold files that should be removed. Because the module visits the repositories online, its result changes when a repository changes (for example when a project is made private). The summary text reports exactly what it found when this chapter was built:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "yellow"</code></pre>
+<pre><code>#&gt; [1] "red"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 1 empty repository.
-#&gt; -  We found 73 files in 4 repositories.
-#&gt; -  We found 6 README files and 3 repositories without READMEs.
+#&gt; -  We could not check 2 repositories: https://osf.io/5tbm9 (private); https://github.com/Lak- (links to a GitHub account, not to a specific repository).
+#&gt; -  We found 73 files in 5 repositories.
+#&gt; -  We found 6 README files and 2 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
 #&gt; -  We found 9 file naming problems to fix.
 #&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
-<p>Here the issues are a <strong>missing README</strong> and an <strong>archive file</strong> whose contents could not be examined. The per-paper summary table counts each file type — note <code>files_readme</code> is 0 (no README was shared) and <code>files_zip</code> is 1 (one archive):</p>
+<p>The light is red because of the <strong>files that do not belong in a repository</strong>: here the <code>__MACOSX</code> folder and the <code>._</code> files that a Mac adds when it creates a zip file. The summary also names the other problems, each of which alone would give a yellow light: links that could not be checked, repositories without a README, a file that could not be classified, and file names to fix. The per-paper summary table counts each of these (<code>repo_unchecked</code>, <code>files_readme</code>, <code>files_unknown</code>, <code>naming_issues</code>):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 13%">
+<col style="width: 11%">
 <col style="width: 5%">
-<col style="width: 6%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 5%">
 <col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 10%">
 <col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 13%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">paper_id</th>
 <th style="text-align: right;">repo_n</th>
+<th style="text-align: right;">repo_unchecked</th>
 <th style="text-align: right;">files_n</th>
 <th style="text-align: right;">files_data</th>
 <th style="text-align: right;">files_code</th>
@@ -1108,7 +1158,8 @@ Note
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
-<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: right;">73</td>
 <td style="text-align: right;">22</td>
 <td style="text-align: right;">35</td>
@@ -1121,17 +1172,87 @@ Note
 </table>
 </div>
 </div>
-<p>We can see the specific archive file that was flagged in the full file table:</p>
+<p>The files that were left out, and of which kind:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="st">"archive"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_name"</span>, <span class="st">"file_name"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">useless_files</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_url"</span>, <span class="st">"file_path"</span>, <span class="st">"kind"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<table class="caption-top">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 24%">
+<col style="width: 50%">
+<col style="width: 19%">
+</colgroup>
 <thead><tr class="header">
-<th style="text-align: left;">repo_name</th>
-<th style="text-align: left;">file_name</th>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">repo_url</th>
+<th style="text-align: left;">file_path</th>
+<th style="text-align: left;">kind</th>
 </tr></thead>
-<tbody></tbody>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">7.1</td>
+<td style="text-align: left;">https://osf.io/629bx</td>
+<td style="text-align: left;">Archive.zip/__MACOSX/._to_err_is_human.txt</td>
+<td style="text-align: left;">operating system</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7.3</td>
+<td style="text-align: left;">https://osf.io/629bx</td>
+<td style="text-align: left;">Archive.zip/__MACOSX/._to_err_is_human.xml</td>
+<td style="text-align: left;">operating system</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34.1</td>
+<td style="text-align: left;">https://osf.io/pngda</td>
+<td style="text-align: left;">Archive.zip/__MACOSX/._0956797613520608.xml</td>
+<td style="text-align: left;">operating system</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34.3</td>
+<td style="text-align: left;">https://osf.io/pngda</td>
+<td style="text-align: left;">Archive.zip/__MACOSX/._0956797614522816.xml</td>
+<td style="text-align: left;">operating system</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">38.1</td>
+<td style="text-align: left;">https://osf.io/pngda</td>
+<td style="text-align: left;">code.zip/__MACOSX/._utils.R</td>
+<td style="text-align: left;">operating system</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The links that could not be checked, with the reason:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">gated_repos</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 11%">
+<col style="width: 62%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">repo_url</th>
+<th style="text-align: left;">repo_type</th>
+<th style="text-align: left;">repo_error</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">https://osf.io/5tbm9</td>
+<td style="text-align: left;">osf</td>
+<td style="text-align: left;">private</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">https://github.com/Lak-</td>
+<td style="text-align: left;">github</td>
+<td style="text-align: left;">links to a GitHub account, not to a specific repository</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
@@ -1140,7 +1261,7 @@ Note
 <span class="header-section-number">22.11</span> Options</h2>
 <p><code>repo_check</code> accepts arguments for working with <strong>local files</strong> instead of (or in addition to) online repositories:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># also include files from a local folder</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># also include files from a local folder</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/downloaded/files"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># only check a local folder, skip all online lookups</span></span>
@@ -1150,15 +1271,11 @@ Note
 <p>If you have no manuscript at all — just a folder to check — <code>report_repository("path/to/folder")</code> wraps this same <code>local_path</code>/<code>local_only = TRUE</code> pattern (and the three modules below it) into a one-line report; see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a> and <a href="../chapters/creating-a-report.html">Creating a Report</a>.</p>
 <p><code>model</code> and <code>params</code> are passed through to <code>data_group_llm()</code> for study grouping, and only take effect when <code>llm_use(TRUE)</code> and the deterministic grouping rules cannot place a file:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>, params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>temperature <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>, params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>temperature <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="22.12"><h2 data-number="22.12" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
 <span class="header-section-number">22.12</span> The traffic light and what you get back</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead><tr class="header">
 <th>Light</th>
 <th>Meaning</th>
@@ -1166,13 +1283,17 @@ Note
 <tbody>
 <tr class="odd">
 <td><strong>green</strong></td>
-<td>repositories were found; every one has a README; no archive files, unclassifiable files, or bad file names; no study/repository mismatch; and no closed OSF registrations</td>
+<td>repositories were found and every one could be checked; every one has a README; no archive files, unclassifiable files, bad file names, or files that do not belong in a repository; no study/repository mismatch; and no closed OSF registrations</td>
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
-<td>at least one repository is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript’s study roster disagrees with the repository’s file grouping, or a registration points at a closed source project</td>
+<td>at least one repository could not be checked or is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript’s study roster disagrees with the repository’s file grouping, a registration points at a closed source project, or version-control folders or editor settings were found</td>
 </tr>
 <tr class="odd">
+<td><strong>red</strong></td>
+<td>the repositories hold files that do not belong in a repository and should be removed (see <a href="#files-that-do-not-belong-in-a-repository">above</a>)</td>
+</tr>
+<tr class="even">
 <td><strong>na</strong></td>
 <td>no repository links were found in the paper at all</td>
 </tr>
@@ -1195,7 +1316,7 @@ Note
 </tr>
 <tr class="even">
 <td><code>$summary_table</code></td>
-<td>per-paper aggregates: <code>repo_n</code>, <code>files_n</code>, <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, <code>files_zip</code>, <code>files_unknown</code>, <code>naming_issues</code>, <code>roster_mismatch</code>
+<td>per-paper aggregates: <code>repo_n</code>, <code>repo_unchecked</code> (repositories linked but not retrieved, so “no repository linked” and “a repository could not be checked” can be told apart), <code>files_n</code>, <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, <code>files_zip</code>, <code>files_unknown</code>, <code>naming_issues</code>, <code>roster_mismatch</code>
 </td>
 </tr>
 <tr class="odd">
@@ -1208,23 +1329,28 @@ Note
 </tr>
 <tr class="odd">
 <td><code>$gated_repos</code></td>
-<td>repositories found but not listed (e.g.&nbsp;a GitHub repository too large for GitHub to list in one request, a private OSF component, or an LDbase link that could not be read), with the reason</td>
+<td>repositories found but not listed (e.g.&nbsp;a GitHub repository too large for GitHub to list in one request, a private OSF component, an OSF link during an OSF outage, or an LDbase link that could not be read), with the reason</td>
 </tr>
 <tr class="even">
+<td><code>$useless_files</code></td>
+<td>files that do not belong in a repository: <code>paper_id</code>, <code>repo_url</code>, <code>file_path</code>, <code>kind</code>, <code>severity</code>
+</td>
+</tr>
+<tr class="odd">
 <td><code>$repo_metadata</code></td>
 <td>one row per repository (not per file): <code>paper_id</code>, <code>repo_url</code>, <code>doi</code>, <code>license</code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>$group_no_evidence</code></td>
 <td>
 <code>TRUE</code> if study grouping had no evidence to work from</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>$report</code></td>
 <td>formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>$summary_text</code></td>
 <td>plain-text bulleted summary of each check</td>
 </tr>

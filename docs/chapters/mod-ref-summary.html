@@ -480,6 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="what-it-checks" class="level2" data-number="35.1"><h2 data-number="35.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">35.1</span> What it checks</h2>
 <p>The <code>ref_summary</code> module does not run a check of its own. Instead it <strong>collects the results of the other reference-section modules</strong> — <a href="../chapters/mod-ref-accuracy.html">accuracy</a>, <a href="../chapters/mod-ref-pubpeer.html">PubPeer</a>, <a href="../chapters/mod-ref-replication.html">replication</a>, and <a href="../chapters/mod-ref-retraction.html">retraction</a> — into a single table with one row per reference, so you can see everything known about each cited work in one place.</p>
+<p><code>ref_summary</code> only collects the results of modules that ran before it; it does not run them itself. Because <a href="../chapters/mod-ref-accuracy.html">ref_accuracy</a> is, for now, not among <code>report()</code>’s default modules, the accuracy columns stay empty in a default report. Add <code>"ref_accuracy"</code> to <code>modules</code>, before <code>"ref_summary"</code>, to fill them.</p>
 <p>Because it summarises the output of those modules, <code>ref_summary</code> must run <strong>after</strong> them, in the same report. On its own it has nothing to summarise.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -554,14 +555,14 @@ Note
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">title</td>
+<td style="text-align: left;">NA</td>
 <td style="text-align: left;"><a href="https://pubpeer.com/publications/3FA648ECECB88454C91804F09E2E56" target="_blank">Link</a></td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">Retraction</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">3</td>
-<td style="text-align: left;">doi, author</td>
+<td style="text-align: left;">author</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>

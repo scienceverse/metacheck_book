@@ -597,6 +597,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <strong>The type spec is reduced to its printed form</strong>, so if you change the requested output structure (add a field, change a description), the key changes and you get a fresh call rather than a stale answer for the old structure.</li>
 </ul>
 <p>Change <em>any</em> of these five inputs and the key changes, so the cache misses and a real call is made. This is exactly what you want: a different question is a different question.</p>
+<p>The key does not depend on the version of R. Before Metacheck 0.4.1 it did, by accident (R’s serialised bytes record the version of R that wrote them), so upgrading R emptied the cache. Because the key changed once with that fix, answers cached by an earlier version of Metacheck are not found after updating, and the first run after the update makes real calls again.</p>
 <p>Each entry stores not just the parsed answer (the data frame <code>llm()</code> returns) but also the raw provider result and, where the provider exposes it, the model’s reasoning/thinking trace — so nothing is lost by going through the cache.</p>
 </section><section id="turning-it-on-and-off" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="turning-it-on-and-off">
 <span class="header-section-number">7.2.3</span> Turning it on and off</h3>
