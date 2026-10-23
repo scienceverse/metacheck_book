@@ -84,6 +84,8 @@ These are serialised to a canonical byte stream and reduced to an MD5 hash, whic
 
 Change *any* of these five inputs and the key changes, so the cache misses and a real call is made. This is exactly what you want: a different question is a different question.
 
+The key does not depend on the version of R. Before Metacheck 0.4.1 it did, by accident (R's serialised bytes record the version of R that wrote them), so upgrading R emptied the cache. Because the key changed once with that fix, answers cached by an earlier version of Metacheck are not found after updating, and the first run after the update makes real calls again.
+
 Each entry stores not just the parsed answer (the data frame `llm()` returns) but also the raw provider result and, where the provider exposes it, the model's reasoning/thinking trace — so nothing is lost by going through the cache.
 
 ### Turning it on and off

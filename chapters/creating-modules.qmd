@@ -153,6 +153,14 @@ You can add an example of how to use this module with the `module_run()` functio
 #' module_run(psychsci, "module_name")
 ```
 
+### Minimum Metacheck version
+
+If your module needs a function or behaviour that only exists from a certain version of Metacheck, state that version. `module_install()` and `module_run()` then refuse to install or run the module with an older Metacheck.
+
+```
+#' @metacheck 0.3.4
+```
+
 ## Function Code
 
 The module function is written like any R package function, with the requirement that the first argument be `paper`. Set `module_name` to your module name, which must be a valid R variable name. Your module script should also have the same name, with a .R suffix (e.g., `module_name.R`).
@@ -502,6 +510,28 @@ Structure the returned values in a list. The names below are reserved for specif
   )
 ```
 
+A module can also return these optional elements, which only change how reports show it:
+
+| Element | What it does |
+|---|---|
+| `brief` | `TRUE` keeps the module in a brief report (`report_type = "brief"` or `"simple_brief"`) whatever its traffic light. A brief report normally shows only modules with a red, yellow or failed light |
+| `checks` | a data frame with one row per check, used by the checklist report (`report_type = "checklist"`), see below |
+| `intro` | a paragraph shown at the top of a checklist report |
+| `logo` | the path of an image shown next to Metacheck's logo in a checklist report |
+| `checklist_section` | markdown for a section of its own in a checklist report, under the module's title, after the results and before "More detail". The module's check then links to that section, and its report is folded at the end of it. `reproducibility_check` gives one when it ran the code |
+
+The checklist report sorts every check of every module by its result. A module that returns no `checks` is shown as one check: its traffic light gives the result (red: to fix, yellow: to improve, green: fine), its summary text says what was found, and its report becomes the folded details. To list several checks, return a `checks` data frame with these columns:
+
+| Column | Content |
+|---|---|
+| `status` | `"fix"`, `"improve"`, `"decide"` (decide by hand), `"info"`, `"fine"` or `"na"` (not applicable) |
+| `title` | the name of the check |
+| `found` | what was found (markdown) |
+| `todo` | what to do (markdown) |
+| `why`, `note` | optional: why the check matters, and a note (markdown) |
+| `section` | optional: a label shown next to the title |
+| `details`, `details_title` | optional: folded details (markdown, for example a `scroll_table()`), and the line the reader clicks to unfold them |
+
 ## A complete worked example {#sec-strain-example}
 
 The sections above describe each piece in isolation. Here we put them together into a complete, working module you can run. It is inspired by the `ethics_check` and `coi_check` modules, which scan a paper's sentences for specific terms.
@@ -614,3 +644,41 @@ This module only checks whether strain names are *present*; a more sophisticated
 
 Once you are happy with a module, save it as a standalone `.R` file (named to match the function) with the roxygen documentation described earlier, and validate it against hand-coded papers as shown in the validation sections above.
 
+
+## Sharing a module through GitHub
+
+A module does not have to be part of Metacheck to be used like a built-in one. Put it in its own public GitHub repository, and anyone can install it with `module_install()`:
+
+```{r}
+#| eval: false
+module_install("owner/repo")
+module_run(demopaper(), "module_name")
+```
+
+An example is the [TU/e Data Manager Check](https://github.com/Lakens/tue_datamanager_check), a module that checks a research data package the way TU/e's data managers do before it is archived: its components and structure, its README against the TU/e README template, the documents needed for research with human participants, and file formats, names and personal data. It runs other Metacheck modules (such as `repo_check`, `data_check` and `code_check`) and gives its results as `checks`, so it fits the checklist report. It states `@metacheck 0.4.0` in its header.
+
+```{r}
+#| eval: false
+module_install("Lakens/tue_datamanager_check")
+
+report_repository("path/to/my_package",
+                  modules = "tue_datamanager_check",
+                  report_type = "checklist")
+```
+
+`module_install()` downloads the repository's default branch, or the branch, tag or commit given as `ref`, and saves it in the Metacheck user data folder, where downloaded paper corpora are also kept. Every `.R` file with a roxygen header in the repository's top folder, or in a folder called `modules/`, becomes a module that `module_run()`, `report()`, `module_info()` and `module_help()` find by its name. Other files, such as helper code or data, are saved with it but are not listed as modules. Nothing is saved when a module in the repository has the same name as a built-in module, as a module from another installed repository, or as another module in the same repository. Installing a module means its code runs whenever you use it, so only install modules from repositories you trust.
+
+| Function | What it does |
+|---|---|
+| `module_install("owner/repo")` | downloads and saves the repository (`overwrite = TRUE` replaces an installed copy) |
+| `module_update()` | downloads the newest commit of the branch or tag each repository was installed from, or of one repository with `module_update("owner/repo")` |
+| `module_remove("owner/repo")` | deletes an installed repository |
+| `module_installed()` | lists the installed repositories, with the branch or tag, the commit, the date of installation and their modules |
+
+`module_list()` lists the installed modules together with the built-in ones; its `source` column names the repository a module came from (empty for built-in modules), and `module_list(external = FALSE)` lists only the built-in modules. In a report, the "How It Works" box of an installed module names the repository and commit it came from, instead of linking to a chapter of this manual.
+
+A module found by name is looked up first among the built-in modules, then among the installed modules, and only then in the working directory and a `modules/` folder in it. A file in the working directory therefore cannot replace an installed module with the same name.
+
+Installed modules belong to the user who installed them. To share them between users, for example with the user a Shiny Server runs its apps as, set the environment variable `METACHECK_MODULES_DIR` to a folder all of them can read, both when installing and when using the modules.
+
+A module in its own repository should only use Metacheck's exported functions, since internal functions can change without notice, and can state the lowest Metacheck version it needs with `@metacheck` (see [Minimum Metacheck version](#minimum-metacheck-version)).

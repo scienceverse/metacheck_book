@@ -18,12 +18,45 @@ library(metacheck)
 
 ## The easiest way to get started
 
-This manual mostly explains how to use Metacheck from R. If you do not want to install anything, you can instead use the hosted Shiny app at [https://shiny.ieis.tue.nl/metacheck/](https://shiny.ieis.tue.nl/metacheck/): upload a paper and it creates a standard report, with no installation required. The options are more limited than running Metacheck from R — for example, the use of LLMs is limited, you can only view the report rather than store the result, and you cannot set parameters for modules — but it is the easiest way to use Metacheck.
+This manual mostly explains how to use Metacheck from R. If you do not want to install anything, use Metacheck's website on SURF Research Cloud instead. It runs on SURF's servers in the Netherlands: PDFs are converted to text on the server itself (in the paper report app you can also choose another converter), and the one check that uses a language model, the [power check](mod-power.qmd), uses an open-source model on the same server, so your paper is not sent to an external provider. The site is GDPR compliant.
 
-Two other hosted apps are available:
+The server offers these tools:
 
-- **For data managers:** [https://shiny.ieis.tue.nl/metacheck_repocheck/](https://shiny.ieis.tue.nl/metacheck_repocheck/) lets you try the modules that check shared data and code, such as [Data Check](mod-data-check.qmd) and [Code Check](mod-code-check.qmd).
-- **A temporary demo of every option:** [https://try.metacheck.app/](https://try.metacheck.app/) shows all of Metacheck's options in one place. You log in with a GitHub or ORCID account. This demonstration is temporary, so do not rely on it remaining available.
+| Tool | What you can do with it |
+|---|---|
+| [Metacheck website](https://metacheckserve.metacheck.src.surf-hosted.nl/) | Upload a paper as a PDF or a bibr JSON file and receive a report. Or choose a folder of data and code, a .zip file, or a link to an online repository (GitHub, OSF, Zenodo, Dataverse, Dryad, and others), and receive a report on the data and code; the R and Python code can also be run, in a closed sandbox without internet access. |
+| [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) | Compare a data package with TU/e's archiving guidelines, the way TU/e's data managers check it before a package is archived. |
+| [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) | Check the data and code in a ResearchBox. |
+| [Paper report app](https://metacheckserve.metacheck.src.surf-hosted.nl/metacheck/) | Create a report from a PDF, choosing which modules to run and whether the power check uses the language model. |
+| [Web interface](https://metacheckserve.metacheck.src.surf-hosted.nl/api/__docs__/) | Use the same tools from R, Python or the command line (see below). |
+
+![The Metacheck website on SURF Research Cloud](../images/surf-website.png){fig-alt="Screenshot of the Metacheck website, with a box to run Metacheck on a paper and a box to run Metacheck on a repository"}
+
+You receive the report as a web page in your browser, which you can save. The report starts with an explanation of Metacheck, a legend of the symbols for each check (a possible problem, something to check, no problem, information only), and a table of contents that lists every check with its result. Below that come a summary and the results of each check.
+
+![The top of a Metacheck report](../images/surf-report-top.png){fig-alt="Screenshot of the top of a Metacheck report, with the paper's title, an introduction, the legend of symbols, and a table of contents listing the checks and their results"}
+
+The data manager check and the ResearchBox check use the modules that check shared data and code, such as [Data Check](mod-data-check.qmd) and [Code Check](mod-code-check.qmd).
+
+Every tool can also be used from your own code through the web interface. For example, from a terminal:
+
+``` bash
+curl -F file=@paper.pdf https://metacheckserve.metacheck.src.surf-hosted.nl/api/report -o report.html
+```
+
+The [documentation of the web interface](https://metacheckserve.metacheck.src.surf-hosted.nl/api/__docs__/) lists all options.
+
+The options of the server are more limited than running Metacheck from R: for example, you cannot set the parameters of a module. Uploaded files are deleted as soon as they have been read, and reports are kept on the server for one hour, so save a report you want to keep. For everything else, install Metacheck in R (see below).
+
+You can also run Metacheck's website on your own computer, without installing R, with the Metacheck Docker image. The image contains the same website as on SURF Research Cloud (with the ResearchBox and TU/e Data Manager checks), the Shiny app, and a GROBID server, so a PDF is converted on your computer and is not sent to an external server. The website can also run the R and Python code of a repository, inside the Docker container. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), start it, and run in a terminal:
+
+``` bash
+docker run --rm -p 127.0.0.1:3838:3838 ghcr.io/scienceverse/metacheck_platform_docker
+```
+
+The first time, Docker downloads the image, which takes about 3 GB of disk space. When the terminal shows "metacheck is ready", open [http://localhost:3838](http://localhost:3838) in your browser for the website, or [http://localhost:3838/metacheck/](http://localhost:3838/metacheck/) for the Shiny app. To stop Metacheck, press Ctrl+C in the terminal.
+
+For the optional LLM power check, the app uses [Ollama](https://ollama.com) on your computer, so the paragraphs are not sent to an external provider either. Install Ollama, start it, and download the model once with `ollama pull qwen3.5:4b`. On Linux, add `--add-host=host.docker.internal:host-gateway` to the `docker run` command, and let Ollama accept connections from Docker by starting it with `OLLAMA_HOST=172.17.0.1`.
 
 ## Installation
 
@@ -104,13 +137,15 @@ Metacheck has been developed so that it can run locally, without sending any inf
 
 When such privacy concerns are not an issue (for example when running Metacheck on a publicly available preprint) you can use online servers for specific tasks, such as converting a pdf to xml. This offers an easier user experience. 
 
-Converting a PDF to text uses a GROBID server. By default Metacheck uses a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and chooses the first available — by default a GROBID server at Eindhoven University of Technology that meets GDPR requirements. If you cannot send manuscripts to an external server, you can run your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0.
+By default, `convert()` sends a PDF to Metacheck's own server on SURF Research Cloud in the Netherlands, which converts it with bibr when bibr is available, and otherwise with GROBID on the same server. That server needs no API key, deletes the uploaded PDF once it is converted, and deletes the result an hour later. Only when that server cannot be reached does Metacheck look for a local GROBID server, then a local bibr server, and then the first available server in a [list of active servers](https://www.scienceverse.org/metacheck/convert.json).
+
+If you cannot send manuscripts to an external server, you can run your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0.
 
 ``` bash
 docker run --rm --init --ulimit core=0 -p 8070:8070 lfoppiano/grobid:0.9.0
 ```
 
-If a local GROBID server is detected, Metacheck will use it automatically, so no manuscript text leaves your computer. The same principle applies to large language models: the recommended setup runs a model locally so no data is sent to an external service (see [Using Large Language Models](llms.qmd)).
+A running local GROBID server is **not** chosen automatically while the SURF server can be reached, so to keep the manuscript on your computer, name the local server when you convert: `convert(pdf_file, method = "grobid", api_url = "http://localhost:8070")`. The same principle applies to large language models: the recommended setup runs a model locally so no data is sent to an external service (see [Using Large Language Models](llms.qmd)).
 
 See the [Reading in a Paper](reading-a-paper.qmd) chapter for the full details of converting and reading papers, including how to point `convert()` at a local server.
 

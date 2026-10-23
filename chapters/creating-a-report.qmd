@@ -38,15 +38,14 @@ Everything below works on this single `paper` object. The same functions also ac
 
 ## The quick way: `report()`
 
-`report()` runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the **default battery** of sixteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration ([`prereg_check`](mod-prereg-check.qmd)), funding and conflict-of-interest statements ([`funding_check`](mod-funding-check.qmd), [`coi_check`](mod-coi-check.qmd)), statistical power ([`power`](mod-power.qmd)), data and code availability ([`repo_check`](mod-repo-check.qmd), [`code_check`](mod-code-check.qmd)), the reporting of statistics ([`stat_check`](mod-stat-check.qmd), [`stat_p_exact`](mod-stat-p-exact.qmd), [`stat_p_nonsig`](mod-stat-p-nonsig.qmd), [`stat_effect_size`](mod-stat-effect-size.qmd), [`marginal`](mod-marginal.qmd)), and the reference list ([`ref_accuracy`](mod-ref-accuracy.qmd), [`ref_replication`](mod-ref-replication.qmd), [`ref_retraction`](mod-ref-retraction.qmd), [`ref_pubpeer`](mod-ref-pubpeer.qmd), [`ref_summary`](mod-ref-summary.qmd)).
+`report()` runs a set of modules on a paper and writes a finished report to disk. With no other arguments it runs the **default battery** of fifteen modules and saves an HTML file named after the paper. The defaults span the whole manuscript: preregistration ([`prereg_check`](mod-prereg-check.qmd)), funding and conflict-of-interest statements ([`funding_check`](mod-funding-check.qmd), [`coi_check`](mod-coi-check.qmd)), statistical power ([`power`](mod-power.qmd)), data and code availability ([`repo_check`](mod-repo-check.qmd), [`code_check`](mod-code-check.qmd)), the reporting of statistics ([`stat_check`](mod-stat-check.qmd), [`stat_p_exact`](mod-stat-p-exact.qmd), [`stat_p_nonsig`](mod-stat-p-nonsig.qmd), [`stat_effect_size`](mod-stat-effect-size.qmd), [`marginal`](mod-marginal.qmd)), and the reference list ([`ref_replication`](mod-ref-replication.qmd), [`ref_retraction`](mod-ref-retraction.qmd), [`ref_pubpeer`](mod-ref-pubpeer.qmd), [`ref_summary`](mod-ref-summary.qmd)). [`ref_accuracy`](mod-ref-accuracy.qmd) is, for now, not among the defaults, because most of the references it flags turn out to be errors in reading the PDF; you can still add it to `modules` yourself.
 
 ```{r}
 #| eval: false
 report(paper)
-#> "[paper_id]_report.html"
 ```
 
-The function returns the path to the file it wrote. By default that is `"<paper_id>_report.html"` in the working directory; set `output_file` to choose your own name and location.
+By default the report is saved as `"<paper_id>_report.html"` in the working directory; set `output_file` to choose your own name and location. The function returns the output of the modules, without printing it, and the path of the file it wrote is stored with that output: `attr(result, "save_path")`. For a list of papers, `report()` writes one report per paper, named `"<paper_id>_<output_file>"`, and `save_path` holds one path per paper. Papers in a list that share a `paper_id` are first renamed `"<paper_id>~2"`, `"<paper_id>~3"`, and so on, with a warning, so that each gets its own report.
 
 ### Choosing modules
 
@@ -77,6 +76,27 @@ report(paper,
 ```
 
 Rendering to HTML requires [Quarto](https://quarto.org) to be installed. If rendering fails for any reason, `report()` falls back to saving the `qmd` source (and warns you), so you never lose the result of running the modules.
+
+### Choosing the report type
+
+`report_type` sets how the report is laid out and how much it contains:
+
+| `report_type` | What you get |
+|---|---|
+| `"full"` (default) | the interactive report: a light and dark theme, tables you can sort and page through, and tabbed sections |
+| `"brief"` | the same report, but only the modules with a red, yellow or failed light, each with its one-line summary |
+| `"simple"` | a static report without JavaScript: plain tables and headings in place of tabs. Use it for a report you will send by e-mail, since mail programs often flag the JavaScript in a full report |
+| `"simple_brief"` | the static layout of `"simple"` with the content of `"brief"` |
+| `"checklist"` | a static report laid out by check instead of by module (see below) |
+
+```{r}
+#| eval: false
+report(paper, report_type = "checklist")
+```
+
+The **checklist** report sorts every check of every module into six groups: to fix, to improve, decide by hand, for information, fine, and not applicable, with the number in each group at the top. Each check that needs work is a block that says what was found and what to do on separate lines, with its tables folded underneath. The checks that are fine or not applicable take one line each, and the explanation of how each module works is folded at the bottom. When [reproducibility_check](mod-reproducibility-check.qmd) ran the code, it gets a section of its own after the results: it says how the scripts were run and how many ran to the end, lists in run order what happened to each script (ran to the end, stopped with an error, with the error itself, ran out of time, could not run because a package is missing, or was not run, with the reason), names other problems in the files such as `setwd()` calls, and says how many of the statistical tests reported in the paper were found in the output of the code. The report uses the colours and font of [Metacheck's website on SURF Research Cloud](https://metacheckserve.metacheck.src.surf-hosted.nl/). How a module tells the checklist report what its checks are is explained in [Creating Modules](creating-modules.qmd).
+
+A module can ask to stay in the brief report whatever its light. [reproducibility_check](mod-reproducibility-check.qmd) does this when it ran at least one script, so that a successful run is not left out and the report does not read as if the code was never checked.
 
 ## Checking a folder instead of a paper: `report_repository()`
 
@@ -251,7 +271,7 @@ report(
 
 | You want to… | Use |
 |---|---|
-| Run modules and write a finished report file | `report(paper, modules, output_file, output_format, args)` |
+| Run modules and write a finished report file | `report(paper, modules, output_file, output_format, report_type, args)` |
 | Check a folder of files, with no manuscript | `report_repository(path, output_file, output_format, modules)` |
 | Run one module and inspect the result | `module_run(paper, module, ...)` |
 | Run several modules, keep the result, write no file | `report_module_run(paper, modules, args)` |

@@ -45,7 +45,7 @@ The `code_check` module analyses the **code files** shared with a paper. Buildin
 - whether they call **`install.packages()`** (which installs software on whoever runs the script, without asking);
 - whether the files they try to **load** are actually present in the repository;
 - whether **libraries are loaded in multiple places** rather than in a single block near the top of the script; and
-- whether the repository **pins its R/package environment** (`renv.lock`, a `sessionInfo()` dump, or a `groundhog`/`checkpoint` date-pin call), so package versions do not silently drift between the original analysis and any later reproduction attempt.
+- whether the repository **pins its R/package environment** (`renv.lock`, a `sessionInfo()` dump, or a `groundhog`/`checkpoint` date-pin call), and for Python code whether it lists its packages (such as a `requirements.txt`), so package versions do not silently drift between the original analysis and any later reproduction attempt.
 
 The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in *Psychological Science*.
 
@@ -193,6 +193,8 @@ Knowing *which* packages were loaded (above) is not the same as knowing *which v
 
 Without one of these, package versions can silently drift between when the analysis was run and any later reproduction attempt — a script that works today may fail or produce different results a year from now if `install.packages()` pulls whatever the CRAN snapshot happens to be at that time.
 
+Python code gets Python advice. For Python, the module looks for a list of the packages the code needs: `requirements*.txt`, `environment.yml`, `Pipfile` or `Pipfile.lock`, `poetry.lock`, `uv.lock`, or `pyproject.toml`. These are returned as `python_files` and `python_pinned` in `$version_pin`, next to `pinned`, which stays about R. Python code without such a list is told to add a `requirements.txt`, R code keeps the R advice, and a repository with code in both languages needs both. Code in neither language is judged as before. The traffic light and `code_version_pinned` follow this. In the same way, the advice that goes with an `install.packages()` call names `requirements.txt` for Python next to R's `renv.lock` and `DESCRIPTION`.
+
 ```{r}
 #| eval: false
 .code_version_pin_check(all_files, code_text_list = list(r_script_lines))
@@ -249,7 +251,7 @@ module_run(paper, "code_check", manifest = "path/to/manifest/dir")
 | `$summary_table` | per-paper aggregates (`code_n`, `code_checked`, `code_abs_path`, `code_setwd`, `code_install_packages`, `code_missing_files`, `code_min_comments`, `code_parse_errors`, `code_packages_n`, `code_version_pinned`) |
 | `$report` | formatted report sections: comments, missing files, absolute paths, working directory, package installation, libraries, packages/dependencies, reproducible environment, and parsable code |
 | `$summary_text` | plain-text bulleted summary of each check |
-| `$version_pin` | the raw output of `.code_version_pin_check()` (mechanisms found, declared R version(s), and any `renv.lock` package table) — used by `reproducibility_check()`'s Docker backend to pick a matching base image |
+| `$version_pin` | the raw output of `.code_version_pin_check()` (mechanisms found, declared R version(s), any `renv.lock` package table, and `python_files` / `python_pinned` for Python package lists) — used by `reproducibility_check()`'s Docker backend to pick a matching base image |
 
 Downloaded code files (and any recovered `.spv`/`.smcl`/`.out`/`.html`-derived syntax files) are cached and reused via the same `cache`/`max_file_size`/`max_download_size` mechanism `data_check` uses — see the [Caching](caching.qmd) chapter.
 

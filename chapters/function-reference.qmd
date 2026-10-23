@@ -9,7 +9,7 @@ used together stay together. Unlike a hand-written summary, this page is
 regenerated from source and cannot drift out of sync with the installed
 package's actual exports.
 
-As of this build, that is **276 functions** across **20 groups**.
+As of this build, that is **280 functions** across **20 groups**.
 
 ## Getting a paper to work with
 
@@ -269,7 +269,7 @@ This function uses a GDPR-compliant public grobid server maintained by Eindhoven
 convert_bibr(
 file_path,
 save_path = ".",
-backend = c("auto", "scivrs", "selfhosted"),
+backend = c("auto", "surf", "scivrs", "selfhosted"),
 api_key = NULL,
 api_url = NULL,
 include_figures = FALSE,
@@ -281,9 +281,11 @@ timeout = 600
 ```
 
 Converts document files (PDF, DOC, DOCX) to structured JSON using the bibr
-extraction service. Supports two backends: the Scienceverse platform
-(`"scivrs"`) which uses a job queue with load balancing, and a
-self-hosted bibr instance (`"selfhosted"`) for direct API access.
+extraction service. Supports three backends: metacheck's API on SURF
+Research Cloud (`"surf"`), which converts PDF files and needs no API
+key; the Scienceverse platform (`"scivrs"`) which uses a job queue
+with load balancing; and a self-hosted bibr instance (`"selfhosted"`)
+for direct API access.
 
 **Returns:** Path(s) to the saved JSON file(s)
 
@@ -567,10 +569,13 @@ and returns a tidy data frame with one row per detected cause–effect relation.
 *List modules*
 
 ```r
-module_list(module_dir = system.file("modules", package = "metacheck"))
+module_list(
+module_dir = system.file("modules", package = "metacheck"),
+external = TRUE
+)
 ```
 
-**Returns:** a data frame of modules
+**Returns:** a data frame of modules; `source` is the GitHub repository of an installed module, or NA
 
 ### `module_run`
 
@@ -626,6 +631,64 @@ A helper for creating modules. Checks for previous module outputs in a chain and
 
 **Returns:** the extracted list item, or NULL if not found
 
+### `module_install`
+
+*Install modules from GitHub*
+
+```r
+module_install(repo, ref = NULL, overwrite = FALSE)
+```
+
+Downloads a public GitHub repository that holds one or more metacheck
+modules and saves it in the metacheck user data directory, so its modules
+can be used by name in `module_run()`, `report()`, `module_list()` and
+`module_help()`, like the built-in modules.
+
+**Returns:** a data frame of the installed repository (see
+`module_installed()`), invisibly
+
+### `module_update`
+
+*Update installed modules*
+
+```r
+module_update(repo = NULL)
+```
+
+Downloads the latest commit of the branch or tag each repository was
+installed from (see `module_install()`). A repository that is already up to
+date is not downloaded again.
+
+**Returns:** a data frame of the installed repositories (see
+`module_installed()`), invisibly
+
+### `module_remove`
+
+*Remove installed modules*
+
+```r
+module_remove(repo)
+```
+
+Deletes a repository of modules installed with `module_install()`.
+
+**Returns:** `TRUE` invisibly if removed, `FALSE` if not installed
+
+### `module_installed`
+
+*List installed module repositories*
+
+```r
+module_installed()
+```
+
+Lists the GitHub repositories installed with `module_install()`. Use
+`module_list()` to see their modules together with the built-in ones.
+
+**Returns:** a data frame with one row per repository: `repo`, the `ref`
+(branch, tag or commit) it was installed from, the `sha` of the installed
+commit, when it was `installed`, its `modules`, and the local `path`
+
 ## Building a report
 
 ### `report`
@@ -637,11 +700,10 @@ report(
 paper,
 modules = c("prereg_check", "funding_check", "coi_check", "power", "repo_check",
 "code_check", "stat_check", "stat_p_exact", "stat_p_nonsig", "stat_effect_size",
-"marginal", "ref_accuracy", "ref_replication", "ref_retraction", "ref_pubpeer",
-"ref_summary"),
+"marginal", "ref_replication", "ref_retraction", "ref_pubpeer", "ref_summary"),
 output_file = paste0(paper$paper_id, "_report.", output_format),
 output_format = c("html", "qmd"),
-report_type = c("full", "simple"),
+report_type = c("full", "brief", "simple", "simple_brief", "checklist"),
 args = list()
 )
 ```
@@ -706,7 +768,7 @@ report_repository(
 path,
 output_file = NULL,
 output_format = c("html", "qmd"),
-report_type = c("full", "simple"),
+report_type = c("full", "brief", "simple", "simple_brief", "checklist"),
 modules = c("repo_check", "code_check", "data_check", "codebook_check"),
 args = list()
 )
@@ -1684,7 +1746,10 @@ metadata, its file records in the list column `files`, and
 `storage_size` (the dataset's total size in bytes as Dryad reports it),
 `files_total` (the number of files Dryad reports), and
 `files_incomplete` (`TRUE` when fewer files could be listed than Dryad
-reports; a warning is given too)
+reports; a warning is given too). A sharing link
+(`datadryad.org/stash/share/...`) is followed to the dataset it leads to;
+one that leads nowhere has its reason in `error`, as a dataset that
+could not be found does.
 
 ### `dryad_file_download`
 
@@ -2059,13 +2124,6 @@ hyperlinks from the paper's own `url` table, plus a body-text
 fallback for a bare mention that still carries one of these hosts (a bare
 handle prefix with no host at all cannot be attributed to a specific
 installation -- see `.dspace7_parse()`).
-
-A DOI mentioned in the text is also looked up, and kept when it leads to
-one of these installations. The paper's own DOI, and DOIs under a prefix
-that another detector handles and no DSpace 7 installation uses (see
-`.dspace7_skip_doi_prefixes()`), are not looked up. The lookup reads the
-URL registered for the DOI from doi.org's handle API rather than visiting
-the landing page, and each DOI is looked up once per R session.
 
 **Returns:** a table with the DSpace 7 url in the first (href) column
 
@@ -3113,7 +3171,8 @@ declared = NULL,
 valid_values = NULL,
 valid_range = NULL,
 n_max = 10,
-min_ground_truth_coverage = 0.5
+min_ground_truth_coverage = 0.5,
+infer = TRUE
 )
 ```
 
@@ -3656,7 +3715,9 @@ the referenced basenames against the file plan and the download-skip records
 `download_repo_files()` attaches, and classifies each unresolved reference.
 
 **Returns:** a data frame with `basename`, `status` (one of `in_repo_not_downloaded`,
-`withheld_size`, `absent`), `detail` (a human-readable reason), and
+`withheld_size`, `in_archive` (the file is in the repository only inside
+a .zip or .tar, so the code cannot read it as the package is), `absent`),
+`detail` (a human-readable reason), and
 `similar_to` (a candidate near-match basename from the repository's file
 list, or `NA` — only ever set for `absent` rows; see below).
 
@@ -3727,7 +3788,8 @@ lib_dir = NULL,
 timeout = 600,
 skip = character(0),
 parses = NULL,
-failed_deps = character(0)
+failed_deps = character(0),
+deadline = NULL
 )
 ```
 
@@ -3764,7 +3826,8 @@ image = "rocker/r-ver:latest",
 timeout = 600,
 skip = character(0),
 parses = NULL,
-failed_deps = character(0)
+failed_deps = character(0),
+deadline = NULL
 )
 ```
 
@@ -3792,7 +3855,9 @@ rewrite_list,
 plan,
 root,
 inject_libs = NULL,
-lang = "R"
+lang = "R",
+script_paths = NULL,
+writes_in_place = FALSE
 )
 ```
 
@@ -3806,7 +3871,8 @@ still runnable). A reference left ambiguous or unmatched is written unchanged
 
 **Returns:** a data frame with `file_name`, `script_path` (absolute path written),
 `run_dir` (the working directory a run should use — always `root`),
-`setwd_removed` (count of `setwd()` lines commented out),
+`setwd_removed` (count of `setwd()`/`os.chdir()` calls replaced with a
+statement that does nothing),
 `setwd_paths` (comma-joined paths those calls named, for the warning),
 `family_replaced` (count of `family =`/`base_family =` named-font
 arguments replaced with `"sans"`, so a plot call does not fail with
@@ -3914,7 +3980,8 @@ python_bin = "python",
 timeout = 600,
 skip = character(0),
 parses = NULL,
-failed_deps = character(0)
+failed_deps = character(0),
+deadline = NULL
 )
 ```
 
@@ -3947,7 +4014,8 @@ image = .repro_docker_default_image_py,
 timeout = 600,
 skip = character(0),
 parses = NULL,
-failed_deps = character(0)
+failed_deps = character(0),
+deadline = NULL
 )
 ```
 
@@ -4494,8 +4562,11 @@ contain data, or only stimuli/assets?) before spending the bandwidth.
 `size` (uncompressed bytes), excluding directory entries; or `NULL` when the
 host does not support range requests or the listing cannot be read (the
 caller should then download-and-inspect). Also returns `method`, `csize`,
-`offset`, and `crc`, which describe where each member's bytes sit in the
-archive so a single member can be fetched without the rest. Zip64 archives
+`offset`, `crc` and `name_bytes`, which describe where each member's bytes
+sit in the archive so a single member can be fetched without the rest.
+Names without the zip's UTF-8 flag are read as CP437 (old Windows zip
+tools) and returned in UTF-8; `name_bytes` is the name's stored length.
+Zip64 archives
 (over 4 GB or over 65,535 entries) are read in full, including the sizes
 and offsets stored only in their Zip64 extra fields; `csize` and `offset`
 are `NA` only for an entry whose listing is malformed.

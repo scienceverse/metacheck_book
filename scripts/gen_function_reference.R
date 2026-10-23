@@ -1,13 +1,13 @@
 ## Generates chapters/function-reference.qmd from the package's .Rd files.
 ## Source of truth: man/*.Rd (roxygen2-generated). Run from the metacheck_book repo root,
-## with a sibling ../metacheck checkout providing NAMESPACE + man/.
+## with a sibling ../metacheck-new checkout providing NAMESPACE + man/.
 ##
 ## When metacheck gains or loses an exported function, this script's family
 ## sanity check will stop() rather than silently render an incomplete page:
 ## add the new name to the right family list below (or a new family, if it
 ## does not fit an existing one), then re-run.
 
-pkg_dir  <- "../metacheck"
+pkg_dir  <- "../metacheck-new"
 man_dir  <- file.path(pkg_dir, "man")
 ns_file  <- file.path(pkg_dir, "NAMESPACE")
 
@@ -130,7 +130,8 @@ families <- list(
   ),
   "Running checks (modules)" = c(
     "module_list", "module_run", "module_help", "module_info",
-    "module_template", "get_prev_outputs"
+    "module_template", "get_prev_outputs",
+    "module_install", "module_update", "module_remove", "module_installed"
   ),
   "Building a report" = c(
     "report", "report_module_run", "module_report", "report_qmd",

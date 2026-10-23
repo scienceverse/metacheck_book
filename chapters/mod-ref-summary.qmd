@@ -15,6 +15,8 @@ library(metacheck)
 
 The `ref_summary` module does not run a check of its own. Instead it **collects the results of the other reference-section modules** — [accuracy](mod-ref-accuracy.qmd), [PubPeer](mod-ref-pubpeer.qmd), [replication](mod-ref-replication.qmd), and [retraction](mod-ref-retraction.qmd) — into a single table with one row per reference, so you can see everything known about each cited work in one place.
 
+`ref_summary` only collects the results of modules that ran before it; it does not run them itself. Because [ref_accuracy](mod-ref-accuracy.qmd) is, for now, not among `report()`'s default modules, the accuracy columns stay empty in a default report. Add `"ref_accuracy"` to `modules`, before `"ref_summary"`, to fill them.
+
 Because it summarises the output of those modules, `ref_summary` must run **after** them, in the same report. On its own it has nothing to summarise.
 
 ::: callout-note

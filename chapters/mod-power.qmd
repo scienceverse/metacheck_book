@@ -132,6 +132,16 @@ The two models behaved noticeably differently on the same input:
 
 There is no single "correct" answer here — the output depends on the model. A larger or more capable model generally gives cleaner extraction with fewer false positives, which is exactly why the model you choose matters. This is also why module output is meant to **prompt human judgement** rather than serve as a verdict: a person reading these tables quickly sees that the abstract and the code line are not real power analyses. See the [Local AI with Ollama](ollama.qmd) chapter for more on choosing and running local models.
 
+### How the model's answers are matched to known values
+
+The model answers four questions in its own words: the type of power analysis, the statistical test, the effect size measure, and the software. Metacheck then matches each answer to a list of known values, so `power_type`, `statistical_test`, `effect_size_metric` and `software` always hold one of those values. Earlier versions gave the model the fixed lists to choose from, but some providers (such as Groq) reject an answer outside the list, and one unexpected value then lost the whole power analysis. An answer that matches no known value becomes `"other"` (for the type of power analysis, `"unknown"`), and the model's own words are kept in `statistical_test_other`, `effect_size_metric_other` or `software_other`. The software list holds the power-analysis and sample-size packages on CRAN, widely used packages whose title does not mention power (such as MBESS, faux and simglm), packages no longer on CRAN or from Bioconductor, and other programs such as G\*Power, POWSIM, nQuery, GLIMMPSE, jamovi, JASP, SAS, Stata and SPSS.
+
+### Paragraphs the model could not check
+
+When the request for a paragraph fails, for example because the provider did not answer, that paragraph is not counted as having no power analysis. The summary text says how many paragraphs could not be checked, the traffic light is yellow instead of green or "not applicable", and the summary table has a `power_unchecked` column with the number of such paragraphs per paper, so a run over many papers can find those papers and check them again.
+
+Metacheck needs ellmer 0.4.2 or later for this module: with older versions, Groq rejects every structured request.
+
 ### Reproducibility
 
 The `power` module accepts a `seed` argument (default `8675309`) passed to the LLM, so repeated runs with the same model are more reproducible:

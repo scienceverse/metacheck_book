@@ -17,7 +17,11 @@ psychsci <- papers_load("psychsci", cache = TRUE)
 
 Every reference in a paper's bibliography can carry a **DOI** — a permanent identifying code that points to the official record of that work online. `ref_accuracy` looks up each reference's DOI and checks whether the title, authors, journal, and year the paper printed for that reference actually match the official record.
 
-Because this check needs to look things up online, the demo paper first needs that lookup done with `add_bib_match()`:
+::: callout-note
+For now, `ref_accuracy` is not among `report()`'s default modules and is not offered in the Metacheck apps. Its validation on nine PsyArXiv preprints found that most of the references it flagged were errors in reading the PDF, not errors in the paper. Run it yourself with `module_run(paper, "ref_accuracy")`, or add it to `report()`'s `modules`. The other reference modules still use the DOIs Crossref finds for references.
+:::
+
+Because this check needs to look things up online, the demo paper first needs that lookup done with `add_bib_match()`. Without that lookup (no `bib_match` table), the module reports "na": the references were not looked up at Crossref, so their accuracy was not checked.
 
 ```{r}
 #| results: asis

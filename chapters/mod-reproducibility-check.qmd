@@ -11,12 +11,6 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-::: callout-note
-## Now in `dev`
-
-`reproducibility_check` and all of the `repro_*` helper functions described in this chapter are in the `dev` development version of Metacheck — install it with `remotes::install_github("scienceverse/metacheck", ref = "dev")` to run the code below. It is not yet in a released version on CRAN.
-:::
-
 ## The basics
 
 A paper reports some code and some data were used to produce its results. `reproducibility_check` asks the most direct question you can ask about that: can the shared code actually be run on the shared data, and when it is run, do the numbers it produces match the numbers the paper reports? This is the single most complex module in Metacheck, so this section only introduces the simplest possible way to use it — the rest of this chapter covers everything else it can do, including actually running the code.
@@ -197,7 +191,7 @@ For R code, the dependency list is deliberately **name-only, not version-pinned*
 
 That said, `reproducibility_check` does not have to guess blindly at what "current" means. As of the version documented in this chapter, [code_check](mod-code-check.qmd) itself checks whether a deposit **declared** its environment at all — see [Declared R versions](#declared-r-versions-and-why-they-matter-for-docker) below, which explains how this feeds directly into the Docker execution path.
 
-### Paths: `repro_rewrite_paths()`
+### Paths: `repro_rewrite_paths()` {#paths}
 
 A script reads and writes data by relative path — `read_csv("raw/x.csv")`, `saveRDS(m, "../out/model.rds")`. When the release is re-laid-out into the Psych-DS structure, with data under `data/` and per-study `study-<group>/data/` folders, those paths no longer resolve. `repro_rewrite_paths()` maps each referenced path to its new location, using the file plan that [psychds_check](mod-psychds-check.qmd) produces.
 
@@ -254,7 +248,10 @@ When a script reads a file that is not present, the reason matters. `repro_missi
 
 - `withheld_size` — the file *is* in the repository, but was not downloaded because it exceeded a size cap. This is a size-cap issue, not a reproducibility failure: raising `max_file_size` / `max_download_size` (in [data_check](mod-data-check.qmd)) would fetch it.
 - `in_repo_not_downloaded` — listed in the repository but not present locally for another reason.
+- `in_archive` — the file is in the repository only inside a `.zip` or `.tar` (for example `data.zip/data/x.csv`), and the code reads it at the path unpacking would give (`data/x.csv`). The reason reads "only inside data.zip; unpack it so the code finds it", and the script is not run.
 - `absent` — not in the repository at all. The script reads a file the authors did not share (or that an earlier, un-captured step was meant to produce).
+
+A file that a script writes itself, and then reads back, is not a missing input.
 
 This distinction is the reason the static phase is worth running before a manual reproduction attempt: a run that fails because a 3 GB data file was skipped by the size gate is a completely different situation from a run that fails because the input data were never shared, and only the latter is a genuine openness problem.
 
@@ -330,6 +327,8 @@ Working through a whole corpus rather than one paper? [Batch mode](#batch-mode),
 The first time you think through what `sandbox = "docker"` needs to do to run a real paper's code, an obvious problem appears: most papers' scripts `library()` several packages that are not part of base R, and a container starts with nothing installed. Naively, every single `reproducibility_check()` call would need to install a paper's entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (`rstan`, `lme4`, and dozens of others), that can mean minutes of compilation *per paper*.
 
 To avoid that, Docker containers under `sandbox = "docker"` default to a **pre-built image**, `ghcr.io/scienceverse/metacheck_r_large:latest`, rather than a bare R installation. That image already has R, Quarto, JAGS, Java, the GDAL/GEOS/PROJ libraries for geographic data, and the roughly 750 most common packages a real corpus of psychology-science papers' code actually uses — found by scanning thousands of real `.R`/`.Rmd`/`.qmd` files for their `library()`/`require()` calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper's dependencies are already in that list — which, for an ordinary `tidyverse`-and-`lme4`-shaped analysis, they usually are — the install phase does almost nothing, because `requireNamespace()` already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install. A smaller variant, `metacheck_r_small` (about 390 packages, each seen in at least three files of that scan, without the geographic libraries), is also published, but `reproducibility_check()` has no argument to choose it. Python code runs in a separate image, `ghcr.io/scienceverse/metacheck_py_small:latest` — see [Python code](#python-code).
+
+The container's home folder cannot be written to, so R's cache, configuration and data folders are placed in `/tmp`. This lets a script run `renv::restore()`, which needs to write its cache. `rmarkdown::render()` finds the Pandoc program that Quarto bundles in the image, through the `RSTUDIO_PANDOC` environment variable.
 
 The image, its Dockerfile, the full package list, and detailed notes on how it was built (including some genuinely non-obvious bugs found along the way — a package can report a successful install and still fail to *load*, because a runtime shared library it needs is missing from a minimal image) are all in a dedicated repository: [scienceverse/metacheck_docker_reproducibility](https://github.com/scienceverse/metacheck_docker_reproducibility). If you want to build your own variant — a smaller image with only the most common packages, or one that adds LaTeX for PDF rendering, or CmdStan for `cmdstanr`-based Bayesian models — that repository is the starting point, and its README documents exactly which levers actually reduce image size and which ones (surprisingly) do not.
 
@@ -419,10 +418,10 @@ Batch mode is specific to `sandbox = "docker"`. Passing `workers > 1` with `sand
 
 Whichever `sandbox` you choose, the mechanics are the same:
 
-1. **materialises the Psych-DS layout** into a throwaway temporary directory (the source data files copied to their target paths), so the run never touches your real archive or the download cache;
+1. **lays out the files** in a throwaway temporary directory (see [Two layouts](#two-layouts) below), so the run never touches your real archive or the download cache;
 2. **writes the path-rewritten scripts** into that layout, so their reads and writes resolve;
 3. optionally **installs the declared dependencies** into a throwaway library (`install_missing = TRUE`), never your main R library — under `sandbox = "docker"` this is *always* into a throwaway library inside the container, since a container has no access to your host library at all (Python packages are installed with `pip install --target` into a throwaway folder in the same way);
-4. **runs each script in run order**, each in its own subprocess or container with a per-script `timeout`, capturing the outcome and the console output. An R script that another script runs with `source()` is not run on its own, but only as part of the script that sources it.
+4. **runs each script in run order**, each in its own subprocess or container with a per-script `timeout`, capturing the outcome and the console output. An R script that another script runs with `source()` is not run on its own, but only as part of the script that sources it, and the same holds for a Python file that other files import.
 
 ```{r}
 #| eval: false
@@ -431,7 +430,29 @@ mo <- module_run(paper, "reproducibility_check",
                  timeout = 600, keep_sandbox = TRUE)
 ```
 
-Each script gets one of seven outcomes, added to the `$table` in an `outcome` column:
+### Two layouts {#two-layouts}
+
+The `layout` argument sets which files the code runs against:
+
+- **`"package"`** copies every file the run has (every file of a local folder; for a repository, every file that was downloaded, see `download`) to its own path, so a path that works in the package works in the sandbox. Only a path that cannot work as written is rewritten: an absolute path on the author's computer or a path out of the package, to the file with that name, and a path that counts from the script's own folder (`source("helpers.R")`, `"../data/x.csv"`) or from its RStudio project's (`.Rproj`) folder, to the file's path from the top of the package. This also applies to files the code makes: a script in `Study 2/` writing `"Data/processed.csv"` writes into `Study 2/Data/`. Any other relative path is left as written, also when other files share its name, since code commonly joins it with a folder of its own. A script's writes stay where the code puts them, so a later script reads the file where it expects it (only a write to an absolute path or out of the package goes to `output/`), and the copied files are writable, so a script can save over a file the package holds.
+- **`"psychds"`** copies only the data files the module recognised, renamed and placed as a Psych-DS release, and rewrites the code's paths to match (see [Paths](#paths)). That suits a study whose scripts read a few tables, but code that reads folders of images or scan files, or imports its own helper modules from a subfolder, fails there for files that are in the package.
+- **`"auto"`** (the default) uses `"package"` for a local folder (`local_path`, as `report_repository()` and the repository apps give it) and `"psychds"` otherwise.
+
+```{r}
+#| eval: false
+module_run(NULL, "reproducibility_check", local_path = "path/to/folder",
+           execute = TRUE, layout = "package")
+```
+
+### Time limits
+
+`timeout` limits each script (600 seconds by default). `total_timeout` limits all scripts together, R and Python: by default one hour (3600 seconds), counted from when the first script starts. Use `NULL` or `Inf` for no limit, or give a clock time (`POSIXct`) by which all scripts must be done, such as a server's job limit minus the time its report needs. Once the time has run out, a running script is stopped and no further script is started, so a package with many slow scripts still gets a report. A script that was not started gets the outcome `skipped_time_limit`, which the report names, and the light is then at least yellow. A script the corrective second run (see below) has no time for keeps its first result.
+
+To find the statistical results in what a script printed, the module searches only the first 20,000 lines of each script's printed output, and the report says when it stopped there. The search reads about 700 lines a second, so a script that prints a growing table in a loop could otherwise take longer to search than to run. Set another number with `options(metacheck.repro_output_max_lines = ...)`.
+
+### Outcomes
+
+Each script gets one of nine outcomes, added to the `$table` in an `outcome` column:
 
 | Outcome | Meaning |
 |---|---|
@@ -440,8 +461,10 @@ Each script gets one of seven outcomes, added to the `$table` in an `outcome` co
 | `timed_out` | still running at the `timeout` cutoff — **not** a failure, just slow; raise `timeout` for legitimately long analyses (e.g. Bayesian sampling) |
 | `skipped_missing_inputs` | not run, because an input it needs is unavailable |
 | `not_parsed` | not run, because the script does not parse (for Python, checked with Python's own parser; code written for Python 2 fails this check) |
-| `dependency_unavailable` | not run (or failed immediately), because the script's own package could not be installed from live CRAN, the CRAN Archive, *or* a named GitHub/URL source — an infrastructure limitation, not a defect in the paper's code. For Python: the script stopped with `No module named ...` for a package `pip` could not install |
+| `dependency_unavailable` | not run (or failed immediately), because a package the script needs is missing: with `install_missing = TRUE`, it could not be installed from live CRAN, the CRAN Archive, *or* a named GitHub/URL source; with `install_missing = FALSE`, it is simply not installed on the computer or in the container that ran the script. Either way this is a limitation of where the code ran, not a defect in the paper's code. For Python: the script stopped with `No module named ...` for a package `pip` could not install, or that was not installed |
 | `run_by_source` | an R script that another script runs with `source()`. It is run only inside that script, because on its own it lacks the packages and objects the sourcing script sets up first; its result is part of that script's result. A sourced script that does not parse or lacks an input keeps its own outcome instead |
+| `run_by_import` | a Python file that other files import, such as `utils/data_handling.py`: a module that defines functions for the scripts that import it, which fails or does nothing on its own. It is not run, and not counted among the scripts that ran. A file with an `if __name__ == "__main__":` block still runs |
+| `skipped_time_limit` | not run, because `total_timeout` had run out (see [Time limits](#time-limits)) |
 
 `dependency_unavailable` is deliberately **excluded** from forcing the traffic light red, unlike `errored`/`timed_out` — a package that has genuinely vanished from every source metacheck tries is not evidence the paper's own analysis is broken.
 
@@ -450,7 +473,7 @@ Two R errors lead to one corrective re-run. An error whose message is `object '.
 Python scripts get no corrective re-run; see [Python code](#python-code).
 
 ::: callout-note
-Two habits in shared code are handled automatically. A `setwd()` call in R, or an `os.chdir()` call in Python — which hardcodes where the code must run and would override the sandbox — is commented out before the script runs, recorded in `$modifications`, and the report notes that the script is "reproducible after ignoring a `setwd()` that should not have been in the code" (or an `os.chdir()`). An SPSS data file (`.sav`/`.zsav`/`.por`) with **no** accompanying syntax (`.sps`) turns the light red, because that analysis cannot be reproduced from the deposit; the same is true for a Stata `.dta` file with no `.do`. This holds whatever language the paper's code is in, also when the paper has only Python code. The report recommends depositing analyses as jamovi or JASP files instead, since those bundle data and analyses together and need no code to be re-run at all.
+Two habits in shared code are handled automatically. A `setwd()` call in R, or an `os.chdir()` call in Python — which hardcodes where the code must run and would override the sandbox — is replaced before the script runs by a statement that does nothing (`invisible(NULL)` in R, `pass` in Python), with the original call kept in a comment beside it, so a block that held only that call still has a statement. This also applies to `base::setwd()` and to `chdir()` under any module name (`from os import chdir`, or `o.chdir()` after `import os as o`). Each change is recorded in `$modifications`, and the report notes that the script is "reproducible after ignoring a `setwd()` that should not have been in the code" (or an `os.chdir()`). An SPSS data file (`.sav`/`.zsav`/`.por`) with **no** accompanying syntax (`.sps`) turns the light red, because that analysis cannot be reproduced from the deposit; the same is true for a Stata `.dta` file with no `.do`. This holds whatever language the paper's code is in, also when the paper has only Python code. The report recommends depositing analyses as jamovi or JASP files instead, since those bundle data and analyses together and need no code to be re-run at all.
 :::
 
 ::: callout-note
@@ -608,7 +631,9 @@ R code and Python code each get their own light by these rules, and the paper ge
 | `docker_use_declared_version` | `FALSE` | when `sandbox = "docker"`, use the paper's own declared R version (slower, from-scratch install) instead of the fast pre-built `metacheck_r_large` image; R code only |
 | `install_missing` | `FALSE` | install declared dependencies into a throwaway library before running (Python packages with `pip install --target`) |
 | `cran_install_main` | `FALSE` | (only for R code, under `sandbox = "process"`) install CRAN-source dependencies into your real default library instead of a throwaway one, so they persist across papers in a batch run; ignored under `sandbox = "docker"`, where a container never has access to your host library |
+| `layout` | `"auto"` | which files the code runs against: `"package"`, `"psychds"`, or `"auto"` (`"package"` for a local folder) — see [Two layouts](#two-layouts) |
 | `timeout` | `600` | per-script timeout in seconds |
+| `total_timeout` | `3600` | time for all scripts together, in seconds from when the first script starts, or a clock time (`POSIXct`); `NULL` or `Inf` for no limit — see [Time limits](#time-limits) |
 | `keep_sandbox` | `FALSE` | keep the throwaway run directory and return its path as `$sandbox`, to inspect exactly what ran |
 | `workers` | `1` | when `paper` is a paperlist and `sandbox = "docker"`, run this many papers' checks concurrently — see [Batch mode](#batch-mode) |
 | `results_dir` | `NULL` | with `workers > 1`, write each paper's result to `<paper_id>.rds` in this directory as soon as that paper finishes |
@@ -623,7 +648,7 @@ R code and Python code each get their own light by these rules, and the paper ge
 `download`, `skip_types`, and `peek_zips` are also part of the key the LLM response cache uses for `data_check`'s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.
 :::
 
-`keep_sandbox = TRUE` is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains `data/` (the materialised Psych-DS layout), `output/` (anything a script's write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/`.spv`/`.smcl`/`.out` file — a `statistical_output/` folder with the structured results documents. This is also what [convert_psychds()](mod-psychds-check.qmd) looks for when building an archive: pass `keep_sandbox = TRUE` if you want its `statistical_output/` folder included, since `convert_psychds()` does not run `reproducibility_check` itself and has no other way to obtain it.
+`keep_sandbox = TRUE` is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (`data/` for the Psych-DS layout, or a copy of the whole package for the package layout), `output/` (anything a script's write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/`.spv`/`.smcl`/`.out` file — a `statistical_output/` folder with the structured results documents. This is also what [convert_psychds()](mod-psychds-check.qmd) looks for when building an archive: pass `keep_sandbox = TRUE` if you want its `statistical_output/` folder included, since `convert_psychds()` does not run `reproducibility_check` itself and has no other way to obtain it.
 
 ## Notes and limitations
 

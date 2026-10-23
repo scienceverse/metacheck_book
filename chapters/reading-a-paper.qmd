@@ -15,9 +15,9 @@ library(metacheck)
 psychsci <- papers_load("psychsci", cache = TRUE)
 ```
 
-The first step to using Metacheck is to read in a manuscript. Currently, Metacheck relies on GROBID, which works with PDF files. If you have a manuscript in a different format, save a copy as a PDF. You have two options to convert a PDF to the GROBID .xml format. First, you can use a local version of GROBID. We will explain this below, but it requires more technical knowledge, and sufficient space on your harddrive. Alternatively, you can use an online server. As this is much simpler, and you can use a GROBID server at Eindhoven University of Technology that is GDPRR compliant and does not store any data. This is the approach we will use by default in this manual. Nevertheless, you might prefer not to send your manuscript to an external server, or you might not be allowed to. We have developed Metacheck to always work locally, without an internet connection, to also make it available in these more restrictive situations. 
+The first step to using Metacheck is to read in a manuscript. Metacheck converts PDF files with bibr or GROBID. If you have a manuscript in a different format, save a copy as a PDF (bibr can also convert DOC and DOCX files, but only on the Scienceverse platform or your own bibr server). You have two options to convert a PDF. First, you can use a local version of GROBID. We will explain this below, but it requires more technical knowledge, and sufficient space on your harddrive. Alternatively, you can use an online server. This is much simpler, and it is the approach we use by default in this manual. Nevertheless, you might prefer not to send your manuscript to an external server, or you might not be allowed to. We have developed Metacheck to always work locally, without an internet connection, to also make it available in these more restrictive situations.
 
-The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, Metacheck will use a [list of active servers](https://www.scienceverse.org/metacheck/convert.json) and choose the first available. By default, this is a GROBID server at Eindhoven University of Technology that is GDPR compliant.
+The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, `api_key` or `backend`, Metacheck sends the PDF to its own server on SURF Research Cloud in the Netherlands, which converts it with bibr when bibr is available and otherwise with GROBID on the same server, needs no API key, deletes the uploaded PDF once it is converted, and deletes the result an hour later. That server converts whole PDFs without figures, of at most 50 MB. If it cannot be reached, Metacheck uses a local GROBID server, then a local bibr server, and then the first available server in a [list of active servers](https://www.scienceverse.org/metacheck/convert.json). You can set another address for the SURF server with the `SURF_API_URL` environment variable.
 
 You can also supplement the reference section created by GROBID with information retrieved from CrossRef by setting `crossref_lookup = TRUE`. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. You can always add this information later with the `add_bib_match()` function.
 
@@ -41,7 +41,7 @@ You can set up your own local GROBID server following instructions from <https:/
 docker run --rm --init --ulimit core=0 -p 8070:8070 lfoppiano/grobid:0.9.0
 ```
 
-If you set the `api_url` to the local path <http://localhost:8070> (as illustrated below) the `convert()` function will default to the local GROBID server. Metacheck will by default use the local GROBID server if it is automatically detected.
+Set `method = "grobid"` and the `api_url` to the local path <http://localhost:8070> (as illustrated below) to convert with the local GROBID server. Metacheck only picks a local GROBID server by itself when the SURF server cannot be reached, so name it whenever the manuscript must stay on your computer.
 
 ```{r, eval = FALSE}
 json_file <- convert(file_path = pdf_file,
@@ -49,6 +49,8 @@ json_file <- convert(file_path = pdf_file,
                      method = "grobid",
                      api_url = "http://localhost:8070")
 ```
+
+If you run your own bibr server instead, name it in the same way: `convert(pdf_file, method = "bibr", api_url = "http://localhost:8000")`. `convert_bibr()`, the function `convert()` calls for bibr, also reads the address from the `BIBR_API_URL` environment variable, but `convert()` itself only skips the SURF server when `api_url`, `api_key` or `backend` is given. A bibr server that requires a token, as `bibr serve` does in production mode, gets it from `api_key` or the `BIBR_API_KEY` environment variable.
 
 ## Load from JSON or XML
 
@@ -68,7 +70,7 @@ paper_xml <- read(demofile("xml"))
 
 The functions `convert()` and `read()` also work on a folder of files, or a vector of paths, returning a list of JSON file paths or paper objects, respectively. Batch processing is especially useful for scientists who want to be able to examine a large number of manuscripts. For example, a metascientist might be interesting in examining the uptake of open science practices over time, and run Metacheck across all articles published in a scientific journal. As part of Metacheck, we have created a paper repository of more than 15.000 open access articles that you can read in through the function `papers_load()`. See [Using the Paper Database Corpora](papers-databases.qmd) for how to load the available corpora.
 
-When a folder contains both a `.json` and a `.xml` file for the same paper, `read()` uses the JSON and skips the duplicate XML.
+When a folder contains both a `.json` and a `.xml` file for the same paper, `read()` uses the JSON and skips the duplicate XML. Papers in a list that share a `paper_id` are renamed `"<paper_id>~2"`, `"<paper_id>~3"`, and so on, with a warning, when the list is made (`paperlist()`) or used (`module_run()`, `report()`), because results are joined by `paper_id` and papers with the same id would be mixed up. `read()` refuses a JSON file that is not bibr output (for example one without a `paper_id`), skipping it with a warning.
 
 ## The paper object
 

@@ -144,6 +144,16 @@ paper <- test_paper(url = "https://ldbase.org/projects/09609d82-c45f-4442-8c0c-d
 ldbase_links(paper)
 ```
 
+### Links that could not be checked
+
+A repository that is linked but cannot be retrieved is kept, as a repository that could not be checked, and is never counted as an empty repository or as one without a README. Its reason is recorded in `$gated_repos`. For the OSF, the reasons say whether the OSF did not answer (HTTP 503, for example during an outage), the project was not found (HTTP 404), was deleted or withdrawn (HTTP 410), or the rate limit was reached (HTTP 429). A failed OSF lookup is not stored in the cache, so a later run asks again. The summary and report name each repository that could not be checked, the summary table counts them in `repo_unchecked`, and the traffic light is not green while any could not be checked.
+
+Some links are recognised but lead to no single repository:
+
+- a link to a **GitHub account or organisation** (`https://github.com/OneZoom/`) instead of to one repository is reported as "links to a GitHub account, not to a specific repository"; a GitLab address with one path segment is reported the same way;
+- a **Dryad sharing link** (`datadryad.org/stash/share/...`), made for reviewers before publication, is followed to the dataset it leads to, and `dryad_links()` finds such links in the text. A sharing link that leads nowhere is reported as "private or expired Dryad sharing link";
+- an **OSF registration's licence** is looked up for the project it was made from, since that is where its files are listed from; a project that is closed or has no licence takes the registration's licence.
+
 ## Study grouping
 
 `repo_check` runs a **preliminary** classification and grouping pass over every file it finds:
@@ -205,46 +215,65 @@ Turn it off to leave archives as single rows and make no per-archive request at 
 module_run(paper, "repo_check", peek_zips = FALSE)
 ```
 
-This works for `.zip` only. `.7z`, `.rar` and `.tar.gz` keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. `repo_check` warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and `data_check` opens it after downloading, as before.
+A plain (uncompressed) `.tar` has no such directory either, but its files can be listed from one download: a `.tar` whose size the repository gives, up to 50 MB, is downloaded once, and its file names and sizes are read from that copy. The copy is kept for the session, so `data_check` takes the data and documentation files from it without downloading it again. A larger `.tar`, or one of unknown size, stays one row.
+
+`.7z`, `.rar` and `.tar.gz` keep no equivalent directory that can be read from the end of the file, so they would have to be downloaded whole, and some formats metacheck cannot read at all. `repo_check` warns when an archive is in one of these formats, because that limits how discoverable and reusable its contents are. An archive whose listing cannot be read for any other reason — a server that ignores range requests, for instance — is simply left as a single row, and `data_check` opens it after downloading, as before.
 
 ## Files that do not belong in a repository
 
 Some files end up in a repository because software creates them by itself, not because the authors meant to share them, and they hold nothing a reader can use. `repo_check` leaves these files out of its file list, after looking inside any zips, so they are not counted, not classified, and not checked for naming. `data_check` leaves them out too, so it no longer tries to read, for example, the `._` copy of a `.csv` file that a Mac adds to a zip as if it were data. In one LDbase zip, such files made up 993 of the 1,826 files listed.
 
-The files left out are:
+The files left out are of two kinds. The first kind should be removed:
 
 | Kind | Examples |
 |---|---|
-| operating system | macOS's `__MACOSX/` folder and the `._` copy of every file a Mac puts in a zip, `.DS_Store`; Windows's `Thumbs.db` and `desktop.ini`; recycle-bin and trash folders |
+| operating system | macOS's `__MACOSX/` folder and the `._` copy of every file a Mac puts in a zip, `.DS_Store`, `.TemporaryItems`; Windows's `Thumbs.db` and `desktop.ini`; recycle-bin and trash folders |
 | RStudio session files | the `.Rproj.user/` folder, which holds open tabs and unsaved edits |
+| R history | `.Rhistory`, the commands typed in an R session, which can hold file paths and passwords |
 | Jupyter checkpoints | the `.ipynb_checkpoints/` folder of automatic notebook copies |
 | compiled Python files | the `__pycache__/` folder and `.pyc` files, which Python recreates when the code runs |
 | open-document lock files | `~$report.docx` and `.~lock.report.odt#`, left while Word, Excel, PowerPoint or LibreOffice has a document open |
+| editor backups | `file~`, `.bak`, and Vim's `.swp` and `.swo` files |
+| temporary files | `.tmp` and `.temp` files a program did not remove |
 
-The list comes from GitHub's templates for files to keep out of a repository, and each kind was found in real repositories. Files that may still matter to someone, such as `.RData`, `.Rhistory`, backup copies, `.tmp` files and knitr caches, are kept.
+The second kind should only be kept on purpose:
 
-When any such files are found, the summary text says how many were left out and of which kinds, and the report adds a section, "Files that do not belong in the repository", listing each file and explaining how to keep them out (for example, creating zips on a Mac with `zip -r -X`, or adding a `.gitignore` file based on GitHub's templates). These files do not change the traffic light.
+| Kind | Examples |
+|---|---|
+| version control | `.git/`, `.svn/` and `.hg/` folders, which hold the project's history, including earlier versions of files and data that was later removed |
+| editor settings | `.idea/` and `.vscode/` folders, which can hold paths on the author's own computer |
+
+The list follows GitHub's templates for files to keep out of a repository and the rules TU/e's data managers check before a data package is archived, and each kind was found in real repositories. Files that may still matter to someone, such as `.RData` files and knitr caches, are kept. When `repo_check` lists a local folder, `local_files()` includes hidden files of these kinds (such as `.DS_Store`, `.Rhistory` and `.git/`), so they are found there too; other hidden files stay out.
+
+When any such files are found, the summary text says how many were left out and of which kinds, and the report adds a section, "Files that do not belong in the repository", listing each file and explaining how to keep them out (for example, creating zips on a Mac with `zip -r -X`, or adding a `.gitignore` file based on GitHub's templates). Files of the first kind make the traffic light red; files of the second kind make it at least yellow. They are returned in `$useless_files`, one row per file, with the `kind` and a `severity` of `"problem"` (first kind) or `"suggestion"` (second kind), so other modules can use them.
 
 ## A clean example and one with problems
 
-The demo paper links to three repositories, and running `repo_check` on it produces a **yellow** light — there are problems to address. The summary text reports exactly what:
+The demo paper links to several repositories, and running `repo_check` on it produces a **red** light: the repositories hold files that should be removed. Because the module visits the repositories online, its result changes when a repository changes (for example when a project is made private). The summary text reports exactly what it found when this chapter was built:
 
 ```{r}
 mo$traffic_light
 cat(mo$summary_text)
 ```
 
-Here the issues are a **missing README** and an **archive file** whose contents could not be examined. The per-paper summary table counts each file type — note `files_readme` is 0 (no README was shared) and `files_zip` is 1 (one archive):
+The light is red because of the **files that do not belong in a repository**: here the `__MACOSX` folder and the `._` files that a Mac adds when it creates a zip file. The summary also names the other problems, each of which alone would give a yellow light: links that could not be checked, repositories without a README, a file that could not be classified, and file names to fix. The per-paper summary table counts each of these (`repo_unchecked`, `files_readme`, `files_unknown`, `naming_issues`):
 
 ```{r}
 mo$summary_table |>
   knitr::kable()
 ```
 
-We can see the specific archive file that was flagged in the full file table:
+The files that were left out, and of which kind:
 
 ```{r}
-mo$table[mo$table$file_type %in% "archive", c("repo_name", "file_name")] |>
+mo$useless_files[, c("repo_url", "file_path", "kind")] |>
+  knitr::kable()
+```
+
+The links that could not be checked, with the reason:
+
+```{r}
+mo$gated_repos |>
   knitr::kable()
 ```
 
@@ -278,17 +307,19 @@ module_run(paper, "repo_check", model = "gpt-4o-mini", params = list(temperature
 
 | Light | Meaning |
 |---|---|
-| **green** | repositories were found; every one has a README; no archive files, unclassifiable files, or bad file names; no study/repository mismatch; and no closed OSF registrations |
-| **yellow** | at least one repository is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript's study roster disagrees with the repository's file grouping, or a registration points at a closed source project |
+| **green** | repositories were found and every one could be checked; every one has a README; no archive files, unclassifiable files, bad file names, or files that do not belong in a repository; no study/repository mismatch; and no closed OSF registrations |
+| **yellow** | at least one repository could not be checked or is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript's study roster disagrees with the repository's file grouping, a registration points at a closed source project, or version-control folders or editor settings were found |
+| **red** | the repositories hold files that do not belong in a repository and should be removed (see [above](#files-that-do-not-belong-in-a-repository)) |
 | **na** | no repository links were found in the paper at all |
 
 | Element | What it contains |
 |---|---|
 | `$table` | one row per file across all repositories: `repo_url`, `repo_name`, `file_name`, `file_path`, `file_url`, `file_location`, `file_size`, `file_type`, `data_type`, `doc_role`, `group`, `paper_id` |
-| `$summary_table` | per-paper aggregates: `repo_n`, `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch` |
+| `$summary_table` | per-paper aggregates: `repo_n`, `repo_unchecked` (repositories linked but not retrieved, so "no repository linked" and "a repository could not be checked" can be told apart), `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch` |
 | `$naming_issues` | full output of `check_file_naming()` — one row per issue, with severity |
 | `$roster_check` | the manuscript-vs-file study roster comparison (`roster`, `missing`, `extra`), or `NULL` if not applicable |
-| `$gated_repos` | repositories found but not listed (e.g. a GitHub repository too large for GitHub to list in one request, a private OSF component, or an LDbase link that could not be read), with the reason |
+| `$gated_repos` | repositories found but not listed (e.g. a GitHub repository too large for GitHub to list in one request, a private OSF component, an OSF link during an OSF outage, or an LDbase link that could not be read), with the reason |
+| `$useless_files` | files that do not belong in a repository: `paper_id`, `repo_url`, `file_path`, `kind`, `severity` |
 | `$repo_metadata` | one row per repository (not per file): `paper_id`, `repo_url`, `doi`, `license` |
 | `$group_no_evidence` | `TRUE` if study grouping had no evidence to work from |
 | `$report` | formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown |
