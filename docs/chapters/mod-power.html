@@ -496,10 +496,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A <strong>power analysis</strong> is a calculation researchers do, usually before collecting data, to work out how many participants they need to have a good chance of detecting an effect if it is really there. <code>power</code> searches a paper’s text for sentences that describe a power analysis.</p>
 </section><section id="what-it-checks" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">10.2</span> What it checks</h2>
-<p>The <code>power</code> module uses regular expressions to find sentences that describe a statistical <strong>power analysis</strong>, and classifies each as <em>a priori</em>, <em>sensitivity</em>, or <em>post-hoc</em>. When <a href="../chapters/llms.html">LLM support</a> is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.</p>
+<p>The <code>power</code> module uses regular expressions to find sentences that describe a statistical <strong>power analysis</strong>, and classifies each as <em>a priori</em>, <em>sensitivity</em>, <em>compromise</em>, or <em>post-hoc</em> (or as <em>unknown</em> when the sentence does not say which). When <a href="../chapters/llms.html">LLM support</a> is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.</p>
 <p>A priori power analyses are the useful kind; post-hoc (“observed”) power is rarely informative.</p>
 </section><section id="running-the-module" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">10.3</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module also runs on <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a>: upload a paper under <em>Run Metacheck on a Paper</em>, where it is one of the default checks under <em>Checks</em>. The <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below. On the website, the power check uses the server’s language model when the server has one; in the Docker installation, the model you chose when installing.</p>
+</div>
+</div>
 <p>Every module is run the same way, with <code>module_run(paper, "module_name")</code>. We use the built-in <code>demopaper()</code>, which contains a few power statements.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -608,7 +621,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="options-using-an-llm" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="options-using-an-llm">
 <span class="header-section-number">10.6</span> Options: using an LLM</h2>
 <p>The regular-expression behaviour above runs with no setup. To also <strong>extract structured details</strong> — the statistical test, sample size, alpha, power, and effect size — turn on <a href="../chapters/llms.html">LLM support</a>. The module reads the same switch (<code>llm_use()</code>) and model (<code>llm_model()</code>) described in the LLM chapter; there is no special module argument. When an LLM is enabled, the result table gains columns such as <code>statistical_test</code>, <code>sample_size</code>, <code>power</code>, <code>effect_size</code>, and <code>effect_size_metric</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The language model on the website and in the Docker installation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website on SURF Research Cloud</a>, the power check uses a small open-source Qwen model (<code>qwen3.5:4b</code>) that runs on the server itself. This can be slow, especially when several people use the server at the same time. That is a deliberate choice: the model runs on SURF’s servers in the Netherlands, so the paragraphs are never sent to an external AI provider, and the server stays GDPR compliant. In the <a href="../chapters/get-started.html#docker-installation">Docker installation</a>, the installer can set up the same model in Ollama on your own computer, so the paragraphs stay there, or use Mistral (EU) with your own API key.</p>
+</div>
+</div>
 <p>Below we run exactly the same call three ways — with no LLM, with a local Ollama model, and with a cloud model on Groq — on <code>demopaper()</code>, and compare what each returns. (The LLM outputs shown here were captured from real runs; running the LLM at build time would require Ollama or an API key, so the results are loaded from saved objects.)</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Captured with an earlier version of the module
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Ollama and Groq outputs below were captured in June 2026, with an earlier version of the <code>power</code> module. Since then the module has changed: it asks the model for structured answers, matches the model’s answers to known values (see <a href="#how-the-models-answers-are-matched-to-known-values">How the model’s answers are matched to known values</a> below), and leaves out a row for which the model gives no type of power analysis. Running the same calls today can therefore give other rows and other values than the tables below.</p>
+</div>
+</div>
 <section id="no-llm-default" class="level3" data-number="10.6.1"><h3 data-number="10.6.1" class="anchored" data-anchor-id="no-llm-default">
 <span class="header-section-number">10.6.1</span> No LLM (default)</h3>
 <div class="cell">
@@ -732,10 +771,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="discussing-the-difference" class="level3" data-number="10.6.4"><h3 data-number="10.6.4" class="anchored" data-anchor-id="discussing-the-difference">
 <span class="header-section-number">10.6.4</span> Discussing the difference</h3>
-<p>The two models behaved noticeably differently on the same input:</p>
+<p>In these runs with the earlier version of the module, the two models behaved noticeably differently on the same input:</p>
 <ul>
 <li>
-<strong>Recall vs.&nbsp;precision.</strong> The local <code>qwen3.5:9b</code> returned a single, clean row — the real sensitivity analysis. Groq’s smaller, faster <code>llama-3.1-8b-instant</code> returned three rows: it caught the same sensitivity analysis, but also flagged the paper’s abstract (a <strong>false positive</strong>, with every field <code>NA</code>) and a line of <code>pwr.t.test()</code> example code (extracting <code>software = R</code> and <code>statistical_test = t-test</code>).</li>
+<strong>Recall vs.&nbsp;precision.</strong> The local <code>qwen3.5:9b</code> returned a single, clean row — the real sensitivity analysis. Groq’s smaller, faster <code>llama-3.1-8b-instant</code> returned three rows: it caught the same sensitivity analysis, but also flagged the paper’s abstract (a <strong>false positive</strong>, with every field <code>NA</code>) and a line of <code>pwr.t.test()</code> example code (extracting <code>software = R</code> and <code>statistical_test = t-test</code>). The current version leaves out a row without a type of power analysis, so an empty row like the one for the abstract no longer appears, and it matches answers such as <code>R</code> and <code>t-test</code> to known values, keeping an answer that matches none as <code>"other"</code> with the model’s own words in <code>software_other</code> or <code>statistical_test_other</code>.</li>
 <li>
 <strong>Extraction detail.</strong> Both correctly pulled Cohen’s <em>d</em> = 0.5 and power = 0.8 for the sensitivity analysis. Neither marked any analysis as <code>complete</code>, because the demo paper does not report every required field.</li>
 <li>
@@ -747,7 +786,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The model answers four questions in its own words: the type of power analysis, the statistical test, the effect size measure, and the software. Metacheck then matches each answer to a list of known values, so <code>power_type</code>, <code>statistical_test</code>, <code>effect_size_metric</code> and <code>software</code> always hold one of those values. Earlier versions gave the model the fixed lists to choose from, but some providers (such as Groq) reject an answer outside the list, and one unexpected value then lost the whole power analysis. An answer that matches no known value becomes <code>"other"</code> (for the type of power analysis, <code>"unknown"</code>), and the model’s own words are kept in <code>statistical_test_other</code>, <code>effect_size_metric_other</code> or <code>software_other</code>. The software list holds the power-analysis and sample-size packages on CRAN, widely used packages whose title does not mention power (such as MBESS, faux and simglm), packages no longer on CRAN or from Bioconductor, and other programs such as G*Power, POWSIM, nQuery, GLIMMPSE, jamovi, JASP, SAS, Stata and SPSS.</p>
 </section><section id="paragraphs-the-model-could-not-check" class="level3" data-number="10.6.6"><h3 data-number="10.6.6" class="anchored" data-anchor-id="paragraphs-the-model-could-not-check">
 <span class="header-section-number">10.6.6</span> Paragraphs the model could not check</h3>
-<p>When the request for a paragraph fails, for example because the provider did not answer, that paragraph is not counted as having no power analysis. The summary text says how many paragraphs could not be checked, the traffic light is yellow instead of green or “not applicable”, and the summary table has a <code>power_unchecked</code> column with the number of such paragraphs per paper, so a run over many papers can find those papers and check them again.</p>
+<p>When the request for a paragraph fails, for example because the provider did not answer, that paragraph is not counted as having no power analysis. The summary text says how many paragraphs could not be checked, the traffic light is yellow instead of green or “not applicable” (a red light stays red), and the summary table has a <code>power_unchecked</code> column with the number of such paragraphs per paper, so a run over many papers can find those papers and check them again. When no paragraph at all could be checked, the summary text says that the check failed to run, which is not the same as finding no power analyses, and the traffic light is “not applicable”.</p>
 <p>Metacheck needs ellmer 0.4.2 or later for this module: with older versions, Groq rejects every structured request.</p>
 </section><section id="reproducibility" class="level3" data-number="10.6.7"><h3 data-number="10.6.7" class="anchored" data-anchor-id="reproducibility">
 <span class="header-section-number">10.6.7</span> Reproducibility</h3>

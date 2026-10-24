@@ -453,27 +453,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#turning-llm-support-on-and-off" id="toc-turning-llm-support-on-and-off" class="nav-link active" data-scroll-target="#turning-llm-support-on-and-off"><span class="header-section-number">6.1</span> Turning LLM support on and off</a></li>
+<li><a href="#without-r-the-website-and-the-docker-installation" id="toc-without-r-the-website-and-the-docker-installation" class="nav-link active" data-scroll-target="#without-r-the-website-and-the-docker-installation"><span class="header-section-number">6.1</span> Without R: the website and the Docker installation</a></li>
+  <li><a href="#turning-llm-support-on-and-off" id="toc-turning-llm-support-on-and-off" class="nav-link" data-scroll-target="#turning-llm-support-on-and-off"><span class="header-section-number">6.2</span> Turning LLM support on and off</a></li>
   <li>
-<a href="#choosing-a-model" id="toc-choosing-a-model" class="nav-link" data-scroll-target="#choosing-a-model"><span class="header-section-number">6.2</span> Choosing a model</a>
+<a href="#choosing-a-model" id="toc-choosing-a-model" class="nav-link" data-scroll-target="#choosing-a-model"><span class="header-section-number">6.3</span> Choosing a model</a>
   <ul class="collapse">
-<li><a href="#listing-available-models" id="toc-listing-available-models" class="nav-link" data-scroll-target="#listing-available-models"><span class="header-section-number">6.2.1</span> Listing available models</a></li>
-  <li><a href="#supported-providers" id="toc-supported-providers" class="nav-link" data-scroll-target="#supported-providers"><span class="header-section-number">6.2.2</span> Supported providers</a></li>
+<li><a href="#listing-available-models" id="toc-listing-available-models" class="nav-link" data-scroll-target="#listing-available-models"><span class="header-section-number">6.3.1</span> Listing available models</a></li>
+  <li><a href="#supported-providers" id="toc-supported-providers" class="nav-link" data-scroll-target="#supported-providers"><span class="header-section-number">6.3.2</span> Supported providers</a></li>
   </ul>
 </li>
-  <li><a href="#option-1-run-a-model-locally-with-ollama-recommended" id="toc-option-1-run-a-model-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#option-1-run-a-model-locally-with-ollama-recommended"><span class="header-section-number">6.3</span> Option 1: Run a model locally with Ollama (recommended)</a></li>
-  <li><a href="#option-2-use-a-cloud-api" id="toc-option-2-use-a-cloud-api" class="nav-link" data-scroll-target="#option-2-use-a-cloud-api"><span class="header-section-number">6.4</span> Option 2: Use a cloud API</a></li>
+  <li><a href="#option-1-run-a-model-locally-with-ollama-recommended" id="toc-option-1-run-a-model-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#option-1-run-a-model-locally-with-ollama-recommended"><span class="header-section-number">6.4</span> Option 1: Run a model locally with Ollama (recommended)</a></li>
+  <li><a href="#option-2-use-a-cloud-api" id="toc-option-2-use-a-cloud-api" class="nav-link" data-scroll-target="#option-2-use-a-cloud-api"><span class="header-section-number">6.5</span> Option 2: Use a cloud API</a></li>
   <li>
-<a href="#querying-papers-directly-with-llm" id="toc-querying-papers-directly-with-llm" class="nav-link" data-scroll-target="#querying-papers-directly-with-llm"><span class="header-section-number">6.5</span> Querying papers directly with <code>llm()</code></a>
+<a href="#querying-papers-directly-with-llm" id="toc-querying-papers-directly-with-llm" class="nav-link" data-scroll-target="#querying-papers-directly-with-llm"><span class="header-section-number">6.6</span> Querying papers directly with <code>llm()</code></a>
   <ul class="collapse">
-<li><a href="#free-text-vs.-structured-output" id="toc-free-text-vs.-structured-output" class="nav-link" data-scroll-target="#free-text-vs.-structured-output"><span class="header-section-number">6.5.1</span> Free text vs.&nbsp;structured output</a></li>
-  <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">6.5.2</span> A worked example: extracting power analyses</a></li>
-  <li><a href="#sending-a-whole-paper" id="toc-sending-a-whole-paper" class="nav-link" data-scroll-target="#sending-a-whole-paper"><span class="header-section-number">6.5.3</span> Sending a whole paper</a></li>
-  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">6.5.4</span> Rate limiting</a></li>
-  <li><a href="#request-timeout" id="toc-request-timeout" class="nav-link" data-scroll-target="#request-timeout"><span class="header-section-number">6.5.5</span> Request timeout</a></li>
-  <li><a href="#response-length" id="toc-response-length" class="nav-link" data-scroll-target="#response-length"><span class="header-section-number">6.5.6</span> Response length</a></li>
-  <li><a href="#reasoning-effort" id="toc-reasoning-effort" class="nav-link" data-scroll-target="#reasoning-effort"><span class="header-section-number">6.5.7</span> Reasoning effort</a></li>
-  <li><a href="#caching-responses" id="toc-caching-responses" class="nav-link" data-scroll-target="#caching-responses"><span class="header-section-number">6.5.8</span> Caching responses</a></li>
+<li><a href="#free-text-vs.-structured-output" id="toc-free-text-vs.-structured-output" class="nav-link" data-scroll-target="#free-text-vs.-structured-output"><span class="header-section-number">6.6.1</span> Free text vs.&nbsp;structured output</a></li>
+  <li><a href="#a-worked-example-extracting-power-analyses" id="toc-a-worked-example-extracting-power-analyses" class="nav-link" data-scroll-target="#a-worked-example-extracting-power-analyses"><span class="header-section-number">6.6.2</span> A worked example: extracting power analyses</a></li>
+  <li><a href="#sending-a-whole-paper" id="toc-sending-a-whole-paper" class="nav-link" data-scroll-target="#sending-a-whole-paper"><span class="header-section-number">6.6.3</span> Sending a whole paper</a></li>
+  <li><a href="#rate-limiting" id="toc-rate-limiting" class="nav-link" data-scroll-target="#rate-limiting"><span class="header-section-number">6.6.4</span> Rate limiting</a></li>
+  <li><a href="#request-timeout" id="toc-request-timeout" class="nav-link" data-scroll-target="#request-timeout"><span class="header-section-number">6.6.5</span> Request timeout</a></li>
+  <li><a href="#response-length" id="toc-response-length" class="nav-link" data-scroll-target="#response-length"><span class="header-section-number">6.6.6</span> Response length</a></li>
+  <li><a href="#reasoning-effort" id="toc-reasoning-effort" class="nav-link" data-scroll-target="#reasoning-effort"><span class="header-section-number">6.6.7</span> Reasoning effort</a></li>
+  <li><a href="#caching-responses" id="toc-caching-responses" class="nav-link" data-scroll-target="#caching-responses"><span class="header-section-number">6.6.8</span> Caching responses</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/llms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -496,7 +497,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Most of Metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do <em>more</em> when a large language model (LLM) is available — most notably the <a href="../chapters/mod-power.html">power</a> module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the <a href="../chapters/mod-prereg-check.html">prereg_check</a> module. Furthermore, you might want to use LLMs directly to categorize information retrieved through the text search, or extract information from papers.</p>
+</header><p>Most of Metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do <em>more</em> when a large language model (LLM) is available — most notably the <a href="../chapters/mod-power.html">power</a> module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-codebook-check.html">codebook_check</a> modules. Furthermore, you might want to use LLMs directly to categorize information retrieved through the text search, or extract information from papers.</p>
 <p>This chapter explains how LLM support works in Metacheck: how to turn it on, how to choose a model, how to run a model locally with Ollama or through a cloud API, and how to query papers directly with <code>llm()</code>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -511,9 +512,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>LLM use is <strong>entirely optional and opt-in</strong>. Metacheck restricts LLMs to <em>classification of existing text</em>, never evaluation of quality. We prioritise non-LLM methods, and the vast majority of modules work without any LLM. When you do use one, the recommended setup runs the model <strong>locally</strong> so no data leaves your computer.</p>
 </div>
 </div>
+<section id="without-r-the-website-and-the-docker-installation" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="without-r-the-website-and-the-docker-installation">
+<span class="header-section-number">6.1</span> Without R: the website and the Docker installation</h2>
+<p>You can also use a language model without setting one up in R. On <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website on SURF Research Cloud</a>, the power check uses a small open-source Qwen model (<code>qwen3.5:4b</code>) that runs on the server itself. This can be slow, especially when several people use the server at the same time. That is a deliberate choice: the model runs on SURF’s servers in the Netherlands, so the paragraphs are never sent to an external AI provider, and the server stays GDPR compliant.</p>
+<p>To run the model on your own computer without R, use the <a href="../chapters/get-started.html#docker-installation">Docker installation</a>: its installer can install <a href="../chapters/ollama.html">Ollama</a> with the same model, so the paragraphs stay on your computer, or use Mistral (EU) with your own API key. On the website and in the Docker installation, only the power check uses the language model; the other uses described in this chapter need R.</p>
 <p>Because the code in this chapter needs an LLM to be installed and configured, the examples below are shown but not executed when this book is built. You can run all of them yourself once you have set up either Ollama or a cloud API key, as described below.</p>
-<section id="turning-llm-support-on-and-off" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="turning-llm-support-on-and-off">
-<span class="header-section-number">6.1</span> Turning LLM support on and off</h2>
+</section><section id="turning-llm-support-on-and-off" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="turning-llm-support-on-and-off">
+<span class="header-section-number">6.2</span> Turning LLM support on and off</h2>
 <p>LLM support is controlled by a single global switch, <code>llm_use()</code>. It is <strong>off by default</strong>. Modules that can use an LLM check this switch and fall back to their regular-expression behaviour when it is off.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="op">)</span>        <span class="co"># check the current setting (FALSE by default)</span></span>
@@ -530,26 +535,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"power"</span><span class="op">)</span>   <span class="co"># also extracts structured details with the LLM</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="choosing-a-model" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="choosing-a-model">
-<span class="header-section-number">6.2</span> Choosing a model</h2>
+</section><section id="choosing-a-model" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="choosing-a-model">
+<span class="header-section-number">6.3</span> Choosing a model</h2>
 <p>The model is set with <code>llm_model()</code>. A model is named either as <code>"provider"</code> (use that provider’s default model) or <code>"provider/model"</code> (a specific model).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_model</span><span class="op">(</span><span class="op">)</span>                                 <span class="co"># show the model currently set</span></span>
-<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span>              <span class="co"># a specific local Ollama model</span></span>
+<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"ollama/qwen3.5:4b"</span><span class="op">)</span>              <span class="co"># a specific local Ollama model</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>                           <span class="co"># the default Groq cloud model</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/llama-3.3-70b-versatile"</span><span class="op">)</span>   <span class="co"># a specific Groq model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>When Metacheck starts, it checks for known API keys (for example <code>GROQ_API_KEY</code>) in your environment and sets a sensible default model automatically.</p>
-<section id="listing-available-models" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="listing-available-models">
-<span class="header-section-number">6.2.1</span> Listing available models</h3>
+<section id="listing-available-models" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="listing-available-models">
+<span class="header-section-number">6.3.1</span> Listing available models</h3>
 <p><code>llm_model_list()</code> returns the models Metacheck can see across all configured providers. Pass a provider name to narrow it down.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_model_list</span><span class="op">(</span><span class="op">)</span>           <span class="co"># all models from all configured providers</span></span>
 <span><span class="fu">llm_model_list</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>     <span class="co"># just Groq models</span></span>
 <span><span class="fu">llm_model_list</span><span class="op">(</span><span class="st">"ollama"</span><span class="op">)</span>   <span class="co"># just the models you have pulled locally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="supported-providers" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="supported-providers">
-<span class="header-section-number">6.2.2</span> Supported providers</h3>
+</section><section id="supported-providers" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="supported-providers">
+<span class="header-section-number">6.3.2</span> Supported providers</h3>
 <p>Metacheck uses <a href="https://ellmer.tidyverse.org/">ellmer</a> under the hood, so it supports any provider ellmer does, plus Groq and Ollama. The available provider platforms are:</p>
 <table class="caption-top table">
 <colgroup>
@@ -620,26 +625,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Other local-serving options.</td>
 </tr>
 </tbody>
-</table></section></section><section id="option-1-run-a-model-locally-with-ollama-recommended" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="option-1-run-a-model-locally-with-ollama-recommended">
-<span class="header-section-number">6.3</span> Option 1: Run a model locally with Ollama (recommended)</h2>
+</table></section></section><section id="option-1-run-a-model-locally-with-ollama-recommended" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="option-1-run-a-model-locally-with-ollama-recommended">
+<span class="header-section-number">6.4</span> Option 1: Run a model locally with Ollama (recommended)</h2>
 <p><a href="https://ollama.com">Ollama</a> is a free, open-source tool that runs AI models on your own computer. No API key, no account, no usage costs, and no data leaves your machine. The trade-off is speed: your computer does the work, so it is slower than a cloud API — especially the first time a model loads.</p>
 <p><strong>Setup, in brief:</strong></p>
 <ol type="1">
 <li><p>Download and install Ollama from <a href="https://ollama.com/download" class="uri">https://ollama.com/download</a>.</p></li>
 <li>
 <p>Pull a model from a terminal (not R). A small, capable starting model:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen2.5:3b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3.5:4b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Other useful models: <code>llama3.2</code> (a good general default) and <code>qwen2.5:7b</code> (more capable, needs more memory). You can see everything you have pulled with <code>ollama list</code>.</p>
 </li>
 <li><p>Point Metacheck at it in R:</p></li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"ollama/qwen2.5:3b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"ollama/qwen3.5:4b"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For a full walkthrough — system requirements, verifying the server is running, choosing a model size for your hardware, and troubleshooting — see the dedicated <a href="../chapters/ollama.html">Local AI with Ollama</a> chapter.</p>
-</section><section id="option-2-use-a-cloud-api" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
-<span class="header-section-number">6.4</span> Option 2: Use a cloud API</h2>
+</section><section id="option-2-use-a-cloud-api" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="option-2-use-a-cloud-api">
+<span class="header-section-number">6.5</span> Option 2: Use a cloud API</h2>
 <p>You can use any cloud model ellmer supports. This is faster than running locally but requires an account and API key with the provider, and <strong>sends text to an external service</strong> — keep this in mind for unpublished manuscripts.</p>
 <p>Get an API key from your provider (for example <a href="https://console.groq.com/keys" class="uri">https://console.groq.com/keys</a>) and add it to your <code>.Renviron</code> file (open it with <code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">GROQ_API_KEY</span><span class="op">=</span><span class="st">"your-key-here"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -648,8 +653,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq"</span><span class="op">)</span>   <span class="co"># or e.g. llm_model("groq/llama-3.3-70b-versatile")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="querying-papers-directly-with-llm" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="querying-papers-directly-with-llm">
-<span class="header-section-number">6.5</span> Querying papers directly with <code>llm()</code>
+</section><section id="querying-papers-directly-with-llm" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="querying-papers-directly-with-llm">
+<span class="header-section-number">6.6</span> Querying papers directly with <code>llm()</code>
 </h2>
 <p>Beyond the modules, you can send any text to an LLM with <code>llm()</code>. Narrow the text down first with <code>text_search()</code> so you only send relevant sentences (this also keeps the number of queries — and any costs — low).</p>
 <p>As an example, suppose we want to know whether a paper states any <strong>constraints on the generalizability</strong> of its findings. A plain text search for “generaliz” finds candidate sentences, but it cannot tell the difference between a sentence about <em>constraints on generality</em> and one that merely mentions a “generalized linear model”. That judgement is exactly the kind of classification an LLM can do. Here we take one paper from <code>psychsci</code>, find every sentence mentioning generalizability, and ask the model a yes/no question about each:</p>
@@ -691,8 +696,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<section id="free-text-vs.-structured-output" class="level3" data-number="6.5.1"><h3 data-number="6.5.1" class="anchored" data-anchor-id="free-text-vs.-structured-output">
-<span class="header-section-number">6.5.1</span> Free text vs.&nbsp;structured output</h3>
+<section id="free-text-vs.-structured-output" class="level3" data-number="6.6.1"><h3 data-number="6.6.1" class="anchored" data-anchor-id="free-text-vs.-structured-output">
+<span class="header-section-number">6.6.1</span> Free text vs.&nbsp;structured output</h3>
 <p>By default <code>llm()</code> returns free-text responses in an <code>answer</code> column. For reliable extraction, pass an ellmer <code>type</code> specification so the provider returns structured fields:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">type_spec</span> <span class="op">&lt;-</span> <span class="fu">ellmer</span><span class="fu">::</span><span class="fu"><a href="https://ellmer.tidyverse.org/reference/type_boolean.html">type_object</a></span><span class="op">(</span></span>
@@ -702,8 +707,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">llm</span><span class="op">(</span><span class="va">power_sentences</span>, <span class="st">"Extract power analysis details."</span>, type <span class="op">=</span> <span class="va">type_spec</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="a-worked-example-extracting-power-analyses" class="level3" data-number="6.5.2"><h3 data-number="6.5.2" class="anchored" data-anchor-id="a-worked-example-extracting-power-analyses">
-<span class="header-section-number">6.5.2</span> A worked example: extracting power analyses</h3>
+</section><section id="a-worked-example-extracting-power-analyses" class="level3" data-number="6.6.2"><h3 data-number="6.6.2" class="anchored" data-anchor-id="a-worked-example-extracting-power-analyses">
+<span class="header-section-number">6.6.2</span> A worked example: extracting power analyses</h3>
 <p>You can also ask for JSON directly in the prompt. Below we narrow the first ten <code>psychsci</code> papers to sentences that mention “power” and contain a number, then ask the model to return structured details as JSON:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">power</span> <span class="op">&lt;-</span> <span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">|&gt;</span></span>
@@ -891,8 +896,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section><section id="sending-a-whole-paper" class="level3" data-number="6.5.3"><h3 data-number="6.5.3" class="anchored" data-anchor-id="sending-a-whole-paper">
-<span class="header-section-number">6.5.3</span> Sending a whole paper</h3>
+</section><section id="sending-a-whole-paper" class="level3" data-number="6.6.3"><h3 data-number="6.6.3" class="anchored" data-anchor-id="sending-a-whole-paper">
+<span class="header-section-number">6.6.3</span> Sending a whole paper</h3>
 <p>So far we have sent individual sentences. You can also send an <strong>entire paper</strong> in one call by collapsing all of its sentences into a single string. For example, to ask about the sample size of the demo paper:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="fu">demofile</span><span class="op">(</span><span class="st">"json"</span><span class="op">)</span><span class="op">)</span></span>
@@ -920,31 +925,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Cloud providers like Groq have large context windows and process the prompt on their own fast hardware, so a whole-paper query returns in seconds — at the cost of sending the full manuscript to an external service.</p>
 <p>This is exactly why Metacheck’s design encourages narrowing the text with <code>text_search()</code> first: smaller, targeted queries are faster, fit inside a local model’s context window, and send less data. Reserve whole-paper prompts for short papers or cloud models.</p>
-</section><section id="rate-limiting" class="level3" data-number="6.5.4"><h3 data-number="6.5.4" class="anchored" data-anchor-id="rate-limiting">
-<span class="header-section-number">6.5.4</span> Rate limiting</h3>
+</section><section id="rate-limiting" class="level3" data-number="6.6.4"><h3 data-number="6.6.4" class="anchored" data-anchor-id="rate-limiting">
+<span class="header-section-number">6.6.4</span> Rate limiting</h3>
 <p><code>llm()</code> makes one query per row of text. To guard against runaway costs from a coding mistake, Metacheck caps the number of queries (default 30). Change the cap with <code>llm_max_calls()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="op">)</span>      <span class="co"># check current limit</span></span>
 <span><span class="fu">llm_max_calls</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>   <span class="co"># raise it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See <code>?llm</code> for the full set of arguments and details.</p>
-</section><section id="request-timeout" class="level3" data-number="6.5.5"><h3 data-number="6.5.5" class="anchored" data-anchor-id="request-timeout">
-<span class="header-section-number">6.5.5</span> Request timeout</h3>
+</section><section id="request-timeout" class="level3" data-number="6.6.5"><h3 data-number="6.6.5" class="anchored" data-anchor-id="request-timeout">
+<span class="header-section-number">6.6.5</span> Request timeout</h3>
 <p>Every single request <code>llm()</code> makes is bounded by a wall-clock timeout, set with <code>llm_timeout()</code> (default 180 seconds). Without it, a stuck or overloaded model — most often a local Ollama model under load, or a batch too large for the model to finish — blocks silently, with no log output and no progress, for as long as the underlying HTTP client is willing to wait, which can be hours. The timeout turns that invisible stall into a fast, visible, per-row failure instead, recorded the same way a provider error already is, so a large batch run fails fast rather than hanging.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_timeout</span><span class="op">(</span><span class="op">)</span>        <span class="co"># read the current timeout, in seconds</span></span>
 <span><span class="fu">llm_timeout</span><span class="op">(</span><span class="fl">120</span><span class="op">)</span>      <span class="co"># lower it, so a stuck call fails faster</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="response-length" class="level3" data-number="6.5.6"><h3 data-number="6.5.6" class="anchored" data-anchor-id="response-length">
-<span class="header-section-number">6.5.6</span> Response length</h3>
+</section><section id="response-length" class="level3" data-number="6.6.6"><h3 data-number="6.6.6" class="anchored" data-anchor-id="response-length">
+<span class="header-section-number">6.6.6</span> Response length</h3>
 <p>Every call to <code>llm()</code> needs some limit on how long the answer may be, because a provider that reaches the limit truncates the response without a clear error. Rather than repeating <code>params = list(max_tokens = ...)</code> at every call, set the default once for the session with <code>llm_max_tokens()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_max_tokens</span><span class="op">(</span><span class="op">)</span>       <span class="co"># read the current default</span></span>
 <span><span class="fu">llm_max_tokens</span><span class="op">(</span><span class="fl">8192</span><span class="op">)</span>   <span class="co"># raise it for the session</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>An explicit <code>max_tokens</code> passed to a single call still takes precedence. The setting matters most when a module asks one question about a great deal of material at once, such as <code>codebook_check</code> or <code>data_check</code> describing many columns in a single pass; that is the case most likely to need more room than the built-in default.</p>
-</section><section id="reasoning-effort" class="level3" data-number="6.5.7"><h3 data-number="6.5.7" class="anchored" data-anchor-id="reasoning-effort">
-<span class="header-section-number">6.5.7</span> Reasoning effort</h3>
+</section><section id="reasoning-effort" class="level3" data-number="6.6.7"><h3 data-number="6.6.7" class="anchored" data-anchor-id="reasoning-effort">
+<span class="header-section-number">6.6.7</span> Reasoning effort</h3>
 <p>Some models spend extra tokens “thinking” before answering. For the work Metacheck asks of a model this is mostly wasted: the questions are ones of reading and pattern-matching over material the prompt already supplies (name this variable’s label, list the scales in these sentences, group these files by study), not arithmetic, multi-step inference, or planning. Those extra tokens also come out of the same budget as the visible answer, which is a confirmed cause of truncated structured responses on <code>gpt-oss</code> models via Groq. Low reasoning effort is therefore the right default for this package rather than a compromise on quality.</p>
 <p>Set it with <code>llm_reasoning()</code>, which accepts <code>"low"</code>, <code>"medium"</code>, <code>"high"</code> or <code>"none"</code>:</p>
 <div class="cell">
@@ -988,9 +993,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>A model with no reasoning setting of any kind is left alone: Metacheck never sends an unsupported parameter, because providers differ in whether they ignore one quietly or reject the whole request.</p>
 <p>If you do want to inspect a model’s reasoning for a structured call (<code>type</code> provided), pass <code>capture_reasoning = TRUE</code> to <code>llm()</code>. This adds a <code>.reasoning</code> column holding the provider’s own chain-of-thought text for each row (or <code>NA</code> when the provider or call returned none). It is off by default, since most callers never look at it and skipping it costs nothing extra — every existing call is unaffected either way.</p>
-</section><section id="caching-responses" class="level3" data-number="6.5.8"><h3 data-number="6.5.8" class="anchored" data-anchor-id="caching-responses">
-<span class="header-section-number">6.5.8</span> Caching responses</h3>
-<p>Because <code>llm()</code> runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default and cached replays do not count against <code>llm_max_calls()</code>. The <a href="../chapters/caching.html">Caching and Reuse</a> chapter explains how it works, and how to inspect or clear it (<code>llm_cache()</code>, <code>llm_cache_clear()</code>).</p>
+</section><section id="caching-responses" class="level3" data-number="6.6.8"><h3 data-number="6.6.8" class="anchored" data-anchor-id="caching-responses">
+<span class="header-section-number">6.6.8</span> Caching responses</h3>
+<p>Because <code>llm()</code> runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default. Cached replays still count against <code>llm_max_calls()</code>, because the limit is checked before the cache is consulted. The <a href="../chapters/caching.html">Caching and Reuse</a> chapter explains how it works, and how to inspect or clear it (<code>llm_cache()</code>, <code>llm_cache_clear()</code>).</p>
 
 
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

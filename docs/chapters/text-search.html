@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="searching-a-paper" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="searching-a-paper">
 <span class="header-section-number">5.1</span> Searching a paper</h2>
-<p>You can access a parsed table of the full text of the paper via <code>paper$text</code>, but you may find it more convenient to use the function <code>text_search()</code>. The defaults return a data table of each sentence, with the section type, header, div, paragraph and sentence numbers, and file name. (The section type is a best guess from the headers, so may not always be accurate.)</p>
+<p>You can access a parsed table of the full text of the paper via <code>paper$text</code>, but you may find it more convenient to use the function <code>text_search()</code>. The defaults return a data table of each sentence, with its sentence, paragraph and section numbers, page number, paper id, and the header and type of its section. (The section type is a best guess from the headers, so may not always be accurate.)</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">text_search</span><span class="op">(</span><span class="va">paper</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -730,10 +730,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<p><code>return = "header"</code> returns the matching sentence(s) together with the header of the section they are in, and <code>return = "paper_id"</code> collapses all matches for a paper into a single row holding that paper’s entire body text — useful when you want to hand a whole paper to an LLM at once rather than searching sentence by sentence.</p>
+<p><code>return = "header"</code> returns the full text of every section (with its header) that contains a match, and <code>return = "paper_id"</code> collapses all matches for a paper into a single row holding that paper’s entire body text — useful when you want to hand a whole paper to an LLM at once rather than searching sentence by sentence.</p>
 <section id="regex-matches" class="level3" data-number="5.3.1"><h3 data-number="5.3.1" class="anchored" data-anchor-id="regex-matches">
 <span class="header-section-number">5.3.1</span> Regex matches</h3>
-<p>You can also return just the matched text from a regex search by setting <code>return = "match"</code>. The extra <code>...</code> arguments in <code>text_search()</code> are passed to <code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, so <code>perl = TRUE</code> allows you to use more complex regex, like below.</p>
+<p>You can also return just the matched text from a regex search by setting <code>return = "match"</code>. The arguments <code>perl</code>, <code>fixed</code>, and <code>ignore.case</code> of <code>text_search()</code> work as in <code><a href="https://rdrr.io/r/base/grep.html">grep()</a></code>, so <code>perl = TRUE</code> allows you to use more complex regex, like below.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"[a-zA-Z]\\S*\\s*(=|&lt;)\\s*[0-9\\.,-]*\\d"</span></span>
 <span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">text_search</span><span class="op">(</span><span class="va">paper</span>, <span class="va">pattern</span>, return <span class="op">=</span> <span class="st">"match"</span>, perl <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

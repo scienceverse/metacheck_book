@@ -814,7 +814,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>whether <strong>libraries are loaded in multiple places</strong> rather than in a single block near the top of the script; and</li>
 <li>whether the repository <strong>pins its R/package environment</strong> (<code>renv.lock</code>, a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> dump, or a <code>groundhog</code>/<code>checkpoint</code> date-pin call), and for Python code whether it lists its packages (such as a <code>requirements.txt</code>), so package versions do not silently drift between the original analysis and any later reproduction attempt.</li>
 </ul>
-<p>The module reports on <em>potential</em> problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in <em>Psychological Science</em>.</p>
+<p>The module reports on <em>potential</em> problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the module was tried out internally on papers published in <em>Psychological Science</em>, but has not been formally validated.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -831,7 +831,7 @@ Note
 </section><section id="languages-code_lang" class="level2" data-number="23.3"><h2 data-number="23.3" class="anchored" data-anchor-id="languages-code_lang">
 <span class="header-section-number">23.3</span> Languages: <code>code_lang()</code>
 </h2>
-<p>The module first labels every file with its language using <code>code_lang()</code>, which is name-based (by extension):</p>
+<p>The module first labels every file with its language using <code>code_lang()</code>, which is name-based (by extension), except for <code>.ipynb</code> notebooks and <code>.qmd</code> Quarto documents: these declare their language inside the file (the notebook’s kernel, the document’s engine), so once a copy has been downloaded the language is read from the file itself. An R notebook is then checked as R, and a Python <code>.qmd</code> as Python; a notebook that cannot be read is assumed to be Python.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -847,15 +847,13 @@ Note
 <tr class="odd">
 <td>R</td>
 <td>
-<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>
-</td>
+<code>.R</code>, <code>.Rmd</code>, and <code>.qmd</code> / <code>.ipynb</code> that declare R</td>
 <td>yes (parsed, commented, paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code>, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, libraries, loaded files)</td>
 </tr>
 <tr class="even">
 <td>Python</td>
 <td>
-<code>.py</code>, <code>.ipynb</code>
-</td>
+<code>.py</code>, and <code>.ipynb</code> / <code>.qmd</code> that declare Python</td>
 <td>yes (except parsing)</td>
 </tr>
 <tr class="odd">
@@ -890,11 +888,6 @@ Note
 <td><code>.jasp</code></td>
 <td><strong>listed only</strong></td>
 </tr>
-<tr class="odd">
-<td>jamovi</td>
-<td><code>.omv</code></td>
-<td><strong>listed only</strong></td>
-</tr>
 </tbody>
 </table>
 <p>A <code>.ipynb</code> notebook is JSON, not a plain script: its code cells are extracted from the <code>source</code> array of each cell (the same way <code>.Rmd</code>/<code>.qmd</code> are purled to R code below) before any text-based check runs. <code>.py</code> and <code>.m</code> are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but <em>running</em> the code stays out of scope (that is <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s job, and it runs R and Python code, not MATLAB).</p>
@@ -904,17 +897,38 @@ Note
 </div>
 <pre><code>analysis.R   clean.do  model.sas survey.sps study.jasp
        "R"    "Stata"      "SAS"     "SPSS"     "JASP"</code></pre>
-<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>import_jasp()</code> / <code>import_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
+<p>A <code>.jasp</code> or <code>.omv</code> file bundles a dataset <em>with</em> its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. A <code>.jasp</code> file is counted and listed for completeness but not opened here; a jamovi <code>.omv</code> file is not counted or listed by <code>code_check</code> at all (their data are read by <code>data_check</code>, and their analysis syntax recovered by <code>import_jasp()</code> / <code>import_omv()</code>). Only R-type files are <em>parsed</em> — the other text languages are checked for everything except parse errors.</p>
 </section><section id="reading-code-code_read-and-code_extract_r" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="reading-code-code_read-and-code_extract_r">
 <span class="header-section-number">23.4</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code>
 </h2>
-<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module detects an Rmd/qmd file by its leading <code>---</code> YAML fence and routes it through <code>code_extract_r()</code> automatically.</p>
+<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module recognises an Rmd/qmd file by its extension and routes it through <code>code_extract_r()</code> automatically (a <code>.qmd</code> that declares Python has its Python chunks extracted instead).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu">demofile</span><span class="op">(</span><span class="st">"qmd"</span><span class="op">)</span></span>
 <span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu">code_extract_r</span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span>   <span class="co"># R code only, prose stripped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="running-the-module" class="level2" data-number="23.5"><h2 data-number="23.5" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">23.5</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a> runs this module in three ways:</p>
+<ul>
+<li>
+<strong>Run Metacheck on a Repository:</strong> choose a folder or a .zip file, or paste a link to an online repository. The website runs <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code> on it, and can also run the R and Python code (<a href="../chapters/mod-reproducibility-check.html">Reproducibility Check</a>).</li>
+<li>
+<strong>Run Metacheck on a Paper:</strong> tick the module under <em>Checks</em> to run it on the repositories the paper links to, or tick <em>Also run the code in the paper’s repository</em>.</li>
+<li>The <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/">ResearchBox Check</a> does the same for a box on ResearchBox, and the <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/">TU/e Data Manager Check</a> checks a data package against TU/e’s archiving guidelines.</li>
+</ul>
+<p>A folder or .zip file you choose is uploaded to the server. To keep it on your own computer, use the <a href="../chapters/get-started.html#docker-installation">Docker installation</a>, which offers the same website. The website runs the modules with their default settings; to change them, run them in R as described in this chapter.</p>
+</div>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
@@ -1568,7 +1582,7 @@ Note
 </div>
 </section><section id="downloading-and-options" class="level2" data-number="23.8"><h2 data-number="23.8" class="anchored" data-anchor-id="downloading-and-options">
 <span class="header-section-number">23.8</span> Downloading and options</h2>
-<p><code>code_check</code> downloads the code files it will check (<code>download = TRUE</code>, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass <code>cache = TRUE</code>; otherwise they are discarded when the session ends. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, <code>max_download_size</code> — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
+<p><code>code_check</code> downloads the code files it will check (<code>download = TRUE</code>, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass <code>cache = TRUE</code>; otherwise they are discarded when the session ends. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, which skips each file larger than it, and <code>max_download_size</code>, a budget per repository that is filled with the smallest files first) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -1595,15 +1609,15 @@ Note
 <tbody>
 <tr class="odd">
 <td><strong>green</strong></td>
-<td>at least one file was analysed, no issues were found (missing files, no comments, absolute paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls, spread-out libraries, or a parse error), <strong>and</strong> the repository pins its R/package environment</td>
+<td>at least one file was analysed, no issues were found (missing files, no comments, absolute paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls, spread-out libraries, or a parse error), <strong>and</strong> the repository pins its R/package environment (for R code) and lists its Python packages (for Python code)</td>
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
-<td>at least one of the above issues, or no pinned environment was found</td>
+<td>at least one of the above issues, or no pinned environment or Python package list was found</td>
 </tr>
 <tr class="odd">
 <td><strong>na</strong></td>
-<td>no code files could be analysed (e.g.&nbsp;only JASP/jamovi files were found)</td>
+<td>no code files could be analysed (e.g.&nbsp;only JASP or jamovi files were found)</td>
 </tr>
 </tbody>
 </table>

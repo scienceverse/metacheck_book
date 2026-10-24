@@ -513,12 +513,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">C.1</span> Dataverse</h2>
 <p>Dataverse is not a single website but open-source software that many independent organisations each run on their own address — Harvard Dataverse, DataverseNL, and the DANS Data Stations are three examples. Because of this, <strong>each Dataverse installation issues its own token</strong>, and a token from one installation does nothing on another.</p>
 <p>Go to the installation’s own site and log in. Click your account name in the navigation bar, and choose <strong>API Token</strong> from the dropdown menu. This opens a page with a <strong>Create Token</strong> button (or <strong>Recreate Token</strong>, if you already have one). For Harvard Dataverse, for example, this account menu is reached from <a href="https://dataverse.harvard.edu" class="uri">https://dataverse.harvard.edu</a>.</p>
-<p>Because the token is tied to one installation, storing it also requires naming the installation. <code>dataverse_pat()</code> takes a <code>host</code>, so store it under a name of your own choosing that includes the host, and pass that host when you check it:</p>
-<pre><code>DATAVERSE_HARVARD_PAT="paste-your-token-here"</code></pre>
+<p>Because the token is tied to one installation, storing it also requires naming the installation. <code>dataverse_pat()</code> takes a <code>host</code>, and looks for the token under a name made from that host: <code>DATAVERSE_PAT_</code> followed by the host in capital letters, with every <code>.</code> (and any other character that is not a letter or digit) replaced by <code>_</code>. Store it under that name, and pass the host when you check it:</p>
+<pre><code>DATAVERSE_PAT_DATAVERSE_HARVARD_EDU="paste-your-token-here"</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">dataverse_pat</span><span class="op">(</span>host <span class="op">=</span> <span class="st">"dataverse.harvard.edu"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If you work with more than one Dataverse installation, add one line per installation, each with its own environment-variable name, and call <code>dataverse_pat()</code> with the matching <code>host</code> each time.</p>
+<p>If you work with more than one Dataverse installation, add one line per installation, each named after its own host in the same way (for example <code>DATAVERSE_PAT_DATAVERSE_NL</code> for <code>dataverse.nl</code>), and call <code>dataverse_pat()</code> with the matching <code>host</code> each time.</p>
 </section><section id="dryad" class="level2" data-number="C.2"><h2 data-number="C.2" class="anchored" data-anchor-id="dryad">
 <span class="header-section-number">C.2</span> Dryad</h2>
 <p>Dryad is a single service, at <a href="https://datadryad.org" class="uri">https://datadryad.org</a>. Unlike every other repository in this chapter, a token is <strong>not optional</strong>: Dryad answers file-download requests with an error unless a token is present, even for a dataset anyone can see on the website. Without a token, you can still see what a dataset contains — Dryad’s listing of a dataset’s files works without one — but you cannot retrieve any of the files themselves.</p>
@@ -556,16 +556,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  client_secret <span class="op">=</span> <span class="st">"paste-your-secret-here"</span></span>
 <span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Unlike the token functions elsewhere in this chapter, <code>dryad_auth()</code> is normally called directly in your script rather than stored in <code>.Renviron</code>, because it takes two values rather than one. Use whichever of <code>dryad_pat()</code> or <code>dryad_auth()</code> suits the job: <code>dryad_pat()</code> for a quick session under 10 hours; <code>dryad_auth()</code> for a script that will keep running past that, such as building a large corpus of downloaded datasets.</p>
+<p>This sets the account ID and secret for the current session only. To have them read every time R starts, store them in <code>.Renviron</code> instead, as two lines; Metacheck then uses them automatically, without a call to <code>dryad_auth()</code>:</p>
+<pre><code>DRYAD_CLIENT_ID="paste-your-api-account-id-here"
+DRYAD_CLIENT_SECRET="paste-your-secret-here"</code></pre>
+<p>When an account ID and secret are set, they are used instead of <code>DRYAD_PAT</code>. Use whichever of <code>dryad_pat()</code> or <code>dryad_auth()</code> suits the job: <code>dryad_pat()</code> for a quick session under 10 hours; <code>dryad_auth()</code> for a script that will keep running past that, such as building a large corpus of downloaded datasets.</p>
 </section></section><section id="figshare" class="level2" data-number="C.3"><h2 data-number="C.3" class="anchored" data-anchor-id="figshare">
 <span class="header-section-number">C.3</span> Figshare</h2>
-<p>Figshare is a single service at <a href="https://figshare.com" class="uri">https://figshare.com</a>, with several institutions — including the University of Leicester and DTU Data — running their own branded address on the same underlying service. A token is optional for reading public articles, where it only raises the rate limit; it is required to read a private article.</p>
+<p>Figshare is a single service at <a href="https://figshare.com" class="uri">https://figshare.com</a>, with several institutions — including the University of Leicester and DTU Data — running their own branded address on the same underlying service. A token is not needed for reading public articles, and does not raise any request limit there; it is required to read a private article.</p>
 <p>Create a token at <a href="https://figshare.com/account/applications" class="uri">https://figshare.com/account/applications</a>. Log in, open that page, and create a new personal token there.</p>
 <p>Store it as:</p>
 <pre><code>FIGSHARE_PAT="paste-your-token-here"</code></pre>
 <p>Check it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">figshare_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">figshare_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="tu.researchdata" class="level2" data-number="C.4"><h2 data-number="C.4" class="anchored" data-anchor-id="tu.researchdata">
 <span class="header-section-number">C.4</span> 4TU.ResearchData</h2>
@@ -575,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>RESEARCHDATA4TU_PAT="paste-your-token-here"</code></pre>
 <p>Check it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">researchdata4tu_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">researchdata4tu_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="gitlab" class="level2" data-number="C.5"><h2 data-number="C.5" class="anchored" data-anchor-id="gitlab">
 <span class="header-section-number">C.5</span> GitLab</h2>
@@ -585,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>GITLAB_PAT="paste-your-token-here"</code></pre>
 <p>Check it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">gitlab_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">gitlab_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="when-something-goes-wrong" class="level2" data-number="C.6"><h2 data-number="C.6" class="anchored" data-anchor-id="when-something-goes-wrong">
 <span class="header-section-number">C.6</span> When something goes wrong</h2>

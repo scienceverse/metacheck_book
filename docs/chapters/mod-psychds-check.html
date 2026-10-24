@@ -471,8 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#psych-ds-dataset_description.json" id="toc-psych-ds-dataset_description.json" class="nav-link" data-scroll-target="#psych-ds-dataset_description.json"><span class="header-section-number">27.8.1</span> Psych-DS (<code>dataset_description.json</code>)</a></li>
   <li><a href="#the-collection-collection.json" id="toc-the-collection-collection.json" class="nav-link" data-scroll-target="#the-collection-collection.json"><span class="header-section-number">27.8.2</span> The collection: <code>collection.json</code></a></li>
   <li><a href="#openscales-osd-scalescode.osd" id="toc-openscales-osd-scalescode.osd" class="nav-link" data-scroll-target="#openscales-osd-scalescode.osd"><span class="header-section-number">27.8.3</span> OpenScales OSD (<code>scales/&lt;code&gt;.osd</code>)</a></li>
-  <li><a href="#behaverse-trial-data-paradatainstrument.json" id="toc-behaverse-trial-data-paradatainstrument.json" class="nav-link" data-scroll-target="#behaverse-trial-data-paradatainstrument.json"><span class="header-section-number">27.8.4</span> Behaverse trial data (<code>paradata/&lt;instrument&gt;.json</code>)</a></li>
-  <li><a href="#ddi-codebook-2.5-the-manifest" id="toc-ddi-codebook-2.5-the-manifest" class="nav-link" data-scroll-target="#ddi-codebook-2.5-the-manifest"><span class="header-section-number">27.8.5</span> DDI-Codebook 2.5 (the manifest)</a></li>
+  <li><a href="#ddi-codebook-2.5-the-manifest" id="toc-ddi-codebook-2.5-the-manifest" class="nav-link" data-scroll-target="#ddi-codebook-2.5-the-manifest"><span class="header-section-number">27.8.4</span> DDI-Codebook 2.5 (the manifest)</a></li>
   </ul>
 </li>
   <li>
@@ -510,13 +509,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Development paused
+<span class="screen-reader-only">Warning</span>Conversion not yet available
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Development of this module is paused. Before <code>psychds_check</code>, <code>convert_psychds()</code>, <code>psychds_validate()</code>, <code>convert_codebook()</code>, and <code>convert_behaverse()</code> can move forward, the project first needs to settle on a metadata scheme to convert to and validate against — that decision isn’t made yet, so none of this is part of the package you can install, and the code in this chapter will not run.</p>
-<p>The chapter is published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.</p>
-<p>What <a href="../chapters/mod-data-check.html">data_check</a> already does on its own is the groundwork this module builds on: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout. The placement itself, and the conversion, are the parts still on hold.</p>
+<p>The <code>psychds_check</code> module is part of the package you install, and the examples that run it in this chapter work. It only <em>checks</em> a repository against Psych-DS. The functions that would act on the result do not exist yet: <code>convert_psychds()</code>, <code>psychds_validate()</code>, <code>convert_codebook()</code>, <code>convert_behaverse()</code>, and <code>data_catalog()</code>. Before they can move forward, the project first needs to settle on a metadata scheme to convert to and validate against, and that decision isn’t made yet, so the code in this chapter that calls them will not run.</p>
+<p>The sections about these functions are published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.</p>
+<p><code>psychds_check</code> builds on what <a href="../chapters/mod-data-check.html">data_check</a> does: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout.</p>
 </div>
 </div>
 <section id="what-it-checks" class="level2" data-number="27.1"><h2 data-number="27.1" class="anchored" data-anchor-id="what-it-checks">
@@ -525,8 +524,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>psychds_check</code> module compares a repository against this standard and reports the <strong>compliance gap</strong>: for every file, where it currently sits, where the Psych-DS layout says it should go, and what (if anything) is missing at the top level.</p>
 <p>It answers three questions:</p>
 <ul>
-<li>Are the <strong>required</strong> pieces present (a <code>dataset_description.json</code>, a <code>data/</code> directory)?</li>
-<li>Are the <strong>recommended</strong> pieces present (a README, a <code>CHANGES</code> file)?</li>
+<li>Are the <strong>required</strong> pieces present (a <code>dataset_description.json</code>, data files for a <code>data/</code> directory, and data columns that can be described in <code>variableMeasured</code>)?</li>
+<li>Are the <strong>recommended</strong> pieces present (a README, a <code>CHANGES</code> file, and codebook descriptions of the variables)?</li>
 <li>Which files are <strong>misplaced</strong> relative to the standard, and where should they move?</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -618,14 +617,14 @@ Note
 </table>
 </div>
 </div>
-<p>A <code>status</code> of <code>move</code> means the file is in the wrong place for a Psych-DS dataset — for example <code>study_data.csv</code> should move into <code>data/</code>, and <code>analysis.R</code> into <code>analysis/</code>. This gives the author a concrete to-do list rather than an abstract “does not comply”.</p>
+<p>A <code>status</code> of <code>move</code> means the file is in the wrong place for a Psych-DS dataset — for example <code>study_data.csv</code> should move into <code>data/</code>, and <code>analysis.R</code> into <code>analysis/</code>. A file already in place has the status <code>present</code>, and a file whose type has no Psych-DS location has the status <code>excluded</code>. The table also holds each file’s study <code>group</code>, and the columns <code>convert</code>, <code>original_target</code> and <code>referenced_by</code> that a converter would use. This gives the author a concrete to-do list rather than an abstract “does not comply”.</p>
 </section><section id="the-target-tree" class="level2" data-number="27.4"><h2 data-number="27.4" class="anchored" data-anchor-id="the-target-tree">
 <span class="header-section-number">27.4</span> The target tree</h2>
 <p>The most useful part of the report is the <strong>target tree</strong>: a drawing of the Psych-DS layout the repository <em>should</em> have, with the current files placed where they belong and the missing pieces marked. It turns the compliance table into a single picture you can act on.</p>
 <p>The tree uses colour and annotations to show three states:</p>
 <ul>
 <li>
-<strong>files in <span style="color:#c0392b">red</span></strong> with a <em>← missing</em> marker are required by Psych-DS but absent (for example <code>dataset_description.json</code> and <code>CHANGES</code>);</li>
+<strong>files in <span style="color:#c0392b">red</span></strong> with a <em>← missing</em> marker are absent: the required <code>dataset_description.json</code>, or the recommended <code>README</code> and <code>CHANGES</code>;</li>
 <li>
 <strong>files annotated <span style="color:#b9770e">(move from …)</span></strong> exist in the repository but need relocating into the standard folder — the annotation tells you exactly where they are now;</li>
 <li>
@@ -642,7 +641,7 @@ Note
 ├── <span style="color:#c0392b">dataset_description.json  ← missing</span>
 └── README.md
 </pre>
-<p>Reading this top to bottom is a complete migration plan: create the two missing metadata files, move the data file into <code>data/</code> (renamed to the Psych-DS <code>source-*</code> convention) and the script into <code>analysis/</code>, and the repository will comply. The <code>convert_psychds()</code> function performs exactly these steps automatically.</p>
+<p>Reading this top to bottom is a complete migration plan: create the two missing metadata files, move the data file into <code>data/</code> (renamed to the Psych-DS form <code>study-&lt;name&gt;_data.csv</code>, since Psych-DS requires at least one keyword before <code>_data.csv</code>) and the script into <code>analysis/</code>, and the repository will comply. The <code>convert_psychds()</code> function is designed to perform exactly these steps automatically, but is not yet available.</p>
 </section><section id="the-summary-counts" class="level2" data-number="27.5"><h2 data-number="27.5" class="anchored" data-anchor-id="the-summary-counts">
 <span class="header-section-number">27.5</span> The summary counts</h2>
 <div class="cell">
@@ -667,7 +666,7 @@ Note
 <th style="text-align: right;">misplaced_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">851e6393f2cd37</td>
+<td style="text-align: left;">b6f7d2b3b1f4b5</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -720,22 +719,25 @@ Note
 <tbody>
 <tr class="odd">
 <td><strong>green</strong></td>
-<td>the repository already follows the Psych-DS layout</td>
+<td>the repository already has a <code>dataset_description.json</code> and every other required element</td>
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
-<td>some elements are missing or files are misplaced</td>
+<td>the repository could be converted: it has data files with columns that can be described, but no <code>dataset_description.json</code>
+</td>
 </tr>
 <tr class="odd">
 <td><strong>red</strong></td>
-<td>required elements (like <code>data/</code> or the description file) are absent</td>
+<td>the repository cannot be converted yet: it has no data files, or none of its data columns could be read</td>
 </tr>
 <tr class="even">
 <td><strong>na</strong></td>
 <td>there were no files to assess</td>
 </tr>
 </tbody>
-</table></section><section id="from-gap-report-to-a-compliant-dataset-convert_psychds" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="from-gap-report-to-a-compliant-dataset-convert_psychds">
+</table>
+<p>Misplaced files and missing recommended elements are listed in the report, but do not change the light. On a list of papers the light is <code>info</code>; each paper’s own result is counted in the summary text.</p>
+</section><section id="from-gap-report-to-a-compliant-dataset-convert_psychds" class="level2" data-number="27.7"><h2 data-number="27.7" class="anchored" data-anchor-id="from-gap-report-to-a-compliant-dataset-convert_psychds">
 <span class="header-section-number">27.7</span> From gap report to a compliant dataset: <code>convert_psychds()</code>
 </h2>
 <p><code>psychds_check</code> tells you <em>what</em> is missing; the companion function <code>convert_psychds()</code> acts on it. Given the same repository, it writes out a Psych-DS-compliant copy — moving files into <code>data/</code>, <code>analysis/</code>, and so on, and generating the <code>dataset_description.json</code> metadata from the columns <code>data_check</code> extracted:</p>
@@ -832,11 +834,9 @@ Note
 <td>DDI MissingValues</td>
 </tr>
 <tr class="odd">
-<td>
-<code>metacheck:question</code> / <code>metacheck:universe</code>
-</td>
-<td>codebook question/filter</td>
-<td>DDI QuestionText / Universe</td>
+<td><code>metacheck:question</code></td>
+<td>codebook question</td>
+<td>DDI QuestionText</td>
 </tr>
 <tr class="even">
 <td>
@@ -859,12 +859,10 @@ Note
 <p>A multi-study output root is a <strong>collection</strong> of datasets, not itself a Psych-DS dataset, so it carries <em>no</em> root <code>dataset_description.json</code>. Instead it gets a <code>collection.json</code> — schema.org JSON-LD with <code>@type</code> <code>Collection</code> — whose <code>hasPart</code> indexes every part: each <code>study-&lt;group&gt;/</code> dataset (with its variable count), the root-level shared files, the paper full text, and the logs. It is deliberately <strong>not</strong> named <code>dataset_description.json</code>, so the Psych-DS validator (which only ever opens a file of that exact name) never validates the root — you validate each <code>study-*/</code> folder instead. This is why a multi-study convert is not run through <code>psychds_validate()</code> at the root: the root is correctly <em>not</em> a dataset.</p>
 </section><section id="openscales-osd-scalescode.osd" class="level3" data-number="27.8.3"><h3 data-number="27.8.3" class="anchored" data-anchor-id="openscales-osd-scalescode.osd">
 <span class="header-section-number">27.8.3</span> OpenScales OSD (<code>scales/&lt;code&gt;.osd</code>)</h3>
-<p>Every scale that <code>codebook_check</code> identifies is written as one OpenScales <strong>OSD</strong> file, flat at <code>scales/&lt;code&gt;.osd</code>. The <code>code</code> is a readable slug derived from the scale name (PANAS → <code>positive_and_negative_affect_schedule</code>) or, for an unnamed block, its column prefix. Each OSD records the scale’s provenance at one of four trust levels (<code>.osd_code_and_provenance()</code>): <code>dictionary</code> (matched a known instrument in Metacheck’s OpenScales-derived scale dictionary), <code>manuscript</code> (a named instrument from the paper), <code>self_generated</code> (an LLM-inferred construct label — <em>not</em> a recognised instrument), or <code>unnamed_block</code> (a coherent same-prefix rating block that could not be named). The <code>variableMeasured</code> entry for each of the scale’s columns cross-references its OSD <code>code</code>, so a reader can jump from a variable to its instrument definition. When a scale matches a dictionary instrument, its reference items (including which are reverse-keyed) are available via the <code>scale_meta</code> / <code>scale_items</code> datasets.</p>
-</section><section id="behaverse-trial-data-paradatainstrument.json" class="level3" data-number="27.8.4"><h3 data-number="27.8.4" class="anchored" data-anchor-id="behaverse-trial-data-paradatainstrument.json">
-<span class="header-section-number">27.8.4</span> Behaverse trial data (<code>paradata/&lt;instrument&gt;.json</code>)</h3>
-<p>Trial-level task data (E-Prime, Inquisit, jsPsych, native Behaverse) is not a rectangular dataset — it is one file per participant per block. <code>convert_psychds()</code> normalises all of it into the <strong>Behaverse Data Model</strong> <code>trial</code> schema (pinned v26.0608, shipped in <code>inst/schema/</code>), writing one <code>paradata/&lt;instrument&gt;.json</code> per instrument with the full response data merged across participants — nothing is deleted. Each file is a <code>TrialData</code> document: an <code>Instrument</code> descriptor plus a <code>Response</code> array, where every response carries the 13 required Behaverse fields (<code>response_id</code>, <code>study_name</code>, <code>agent_id</code>, <code>instrument_id</code>, <code>trial_index</code>, <code>stimulus_id</code>, …) and any optional paradata the source recorded (<code>response_time</code>, <code>correct</code>, <code>stimulus_onset</code>, …). Each source format has its own reader that maps its columns onto this vocabulary — Inquisit’s <code>latency</code> → <code>response_time</code>, jsPsych’s <code>rt</code> → <code>response_time</code>, E-Prime’s <code>&lt;obj&gt;.RT</code>, and so on (<code>convert_behaverse()</code>). The OSD scale file and the paradata file cross-reference each other on the canonical instrument id, so a questionnaire’s scale definition and its raw timing data point at each other.</p>
-</section><section id="ddi-codebook-2.5-the-manifest" class="level3" data-number="27.8.5"><h3 data-number="27.8.5" class="anchored" data-anchor-id="ddi-codebook-2.5-the-manifest">
-<span class="header-section-number">27.8.5</span> DDI-Codebook 2.5 (the manifest)</h3>
+<p>Every scale that <code>codebook_check</code> identifies is written as one OpenScales <strong>OSD</strong> file, flat at <code>scales/&lt;code&gt;.osd</code>. The <code>code</code> is a readable slug derived from the scale name (PANAS → <code>positive_and_negative_affect_schedule</code>) or, for an unnamed block, its column prefix. Each OSD records the scale’s provenance at one of four trust levels (<code>.osd_code_and_provenance()</code>): <code>dictionary</code> (matched a known instrument in Metacheck’s OpenScales-derived scale dictionary), <code>manuscript</code> (a named instrument from the paper), <code>self_generated</code> (an LLM-inferred construct label — <em>not</em> a recognised instrument), or <code>unnamed_block</code> (a coherent same-prefix rating block that could not be named). The <code>variableMeasured</code> entry for each of the scale’s columns cross-references its OSD <code>code</code>, so a reader can jump from a variable to its instrument definition. ### Behaverse trial data (<code>paradata/&lt;instrument&gt;.json</code>)</p>
+<p>Trial-level task data (E-Prime, Inquisit, jsPsych, native Behaverse) is not a rectangular dataset — it is one file per participant per block. <code>convert_psychds()</code> normalises all of it into the <strong>Behaverse Data Model</strong> <code>trial</code> schema (pinned v26.0608), writing one <code>paradata/&lt;instrument&gt;.json</code> per instrument with the full response data merged across participants — nothing is deleted. Each file is a <code>TrialData</code> document: an <code>Instrument</code> descriptor plus a <code>Response</code> array, where every response carries the 13 required Behaverse fields (<code>response_id</code>, <code>study_name</code>, <code>agent_id</code>, <code>instrument_id</code>, <code>trial_index</code>, <code>stimulus_id</code>, …) and any optional paradata the source recorded (<code>response_time</code>, <code>correct</code>, <code>stimulus_onset</code>, …). Each source format has its own reader that maps its columns onto this vocabulary — Inquisit’s <code>latency</code> → <code>response_time</code>, jsPsych’s <code>rt</code> → <code>response_time</code>, E-Prime’s <code>&lt;obj&gt;.RT</code>, and so on (<code>convert_behaverse()</code>). The OSD scale file and the paradata file cross-reference each other on the canonical instrument id, so a questionnaire’s scale definition and its raw timing data point at each other.</p>
+</section><section id="ddi-codebook-2.5-the-manifest" class="level3" data-number="27.8.4"><h3 data-number="27.8.4" class="anchored" data-anchor-id="ddi-codebook-2.5-the-manifest">
+<span class="header-section-number">27.8.4</span> DDI-Codebook 2.5 (the manifest)</h3>
 <p>The optional file manifest (<code>data_check</code>’s <code>manifest =</code> argument) is self-describing: its <code>provenance</code> block carries a <code>ddi_mapping</code> recording how each manifest field maps onto a <strong>DDI-Codebook 2.5</strong> element (<code>files[].file_name</code> → <code>fileDscr/fileTxt/fileName</code>, <code>files[].status</code> → <code>fileDscr/fileTxt/ProcStat</code>, and so on), alongside the metacheck/R version, platform, and production date needed to reproduce the archive.</p>
 </section></section><section id="building-a-whole-data-archive" class="level2" data-number="27.9"><h2 data-number="27.9" class="anchored" data-anchor-id="building-a-whole-data-archive">
 <span class="header-section-number">27.9</span> Building a whole data archive</h2>
@@ -941,7 +939,7 @@ Tip
 </tr>
 <tr class="even">
 <td><code>$table</code></td>
-<td>one row per file: <code>file_name</code>, <code>data_type</code>, <code>current_path</code>, <code>target_path</code>, <code>status</code>
+<td>one row per file: <code>file_name</code>, <code>data_type</code>, <code>group</code>, <code>current_path</code>, <code>target_path</code>, <code>status</code> (<code>move</code>, <code>present</code> or <code>excluded</code>), <code>convert</code>, <code>original_target</code>, <code>referenced_by</code>
 </td>
 </tr>
 <tr class="odd">

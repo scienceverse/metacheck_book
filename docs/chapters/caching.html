@@ -520,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <strong>LLM responses</strong> are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with <code>llm_cache()</code>; wipe with <code>llm_cache_clear()</code>.</li>
 <li>
-<strong>Downloaded repository files</strong>, <strong>repository listings</strong>, and <strong>peeked zip archives</strong> are <em>not</em> cached by default. <code>data_check</code>, <code>code_check</code>, and <code>repo_check</code> otherwise redo this work every run. Pass <code>cache = TRUE</code> (and, for listings, turn on <code>repo_info_cache()</code>) to keep it instead.</li>
+<strong>Downloaded repository files</strong>, <strong>repository listings</strong>, and <strong>peeked zip archives</strong> are <em>not</em> cached by default. <code>data_check</code>, <code>code_check</code>, and <code>repo_check</code> otherwise redo this work every run. Pass <code>cache = TRUE</code> to keep it instead.</li>
 <li>All four caches live in the current working directory, so a project’s cache sits with the project. See where most of them are with <code>metacheck_cache_info()</code>.</li>
 </ul>
 </div>
@@ -568,7 +568,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Because the folder names begin with a dot, they are hidden in most file browsers, and because they sit inside your project you may want to keep them out of version control. Metacheck does not write to your <code>.gitignore</code> for you, so add a line yourself if you use git:</p>
 <pre><code>.metacheck_*</code></pre>
-<p>You can move both caches somewhere else by setting one option, which is useful if you want a single shared cache across several projects:</p>
+<p>You can move all four caches somewhere else by setting one option, which is useful if you want a single shared cache across several projects:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>metacheck.cache.dir <span class="op">=</span> <span class="st">"~/metacheck_caches"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -617,12 +617,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You do not normally need to clear the cache to pick up a <em>changed</em> prompt or model: because those are part of the key, a change produces a fresh call automatically. Clearing is for reclaiming space or forcing a clean slate.</p>
 </section><section id="what-this-means-in-practice" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="what-this-means-in-practice">
 <span class="header-section-number">7.2.5</span> What this means in practice</h3>
-<p>Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module’s <em>non-LLM</em> code, or to regenerate a report, without watching your API bill climb. It also means the <a href="../chapters/llms.html"><code>llm_max_calls()</code></a> cap counts <em>actual</em> provider calls — cached replays do not consume it.</p>
+<p>Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module’s <em>non-LLM</em> code, or to regenerate a report, without watching your API bill climb. Note that the <a href="../chapters/llms.html"><code>llm_max_calls()</code></a> cap still counts cached replays: <code>llm()</code> checks the number of texts against the cap before it looks in the cache.</p>
 </section></section><section id="the-repository-file-download-cache" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="the-repository-file-download-cache">
 <span class="header-section-number">7.3</span> The repository-file download cache</h2>
 <section id="what-it-does" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="what-it-does">
 <span class="header-section-number">7.3.1</span> What it does</h3>
-<p>Modules that read file <em>contents</em> — <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-code-check.html">code_check</a> — need local copies of the files a repository shares. <code>repo_check</code> only <em>lists</em> the files on OSF, GitHub, Zenodo and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.</p>
+<p>Modules that read file <em>contents</em> — <a href="../chapters/mod-data-check.html">data_check</a> and <a href="../chapters/mod-code-check.html">code_check</a> — need local copies of the files a repository shares. <code>repo_check</code> only <em>lists</em> the files on the repositories a paper links to, such as OSF, GitHub, Zenodo, Dataverse, Figshare, Dryad, and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.</p>
 <p>Whether those copies survive the session is up to you, and by default they do not. With <code>cache = TRUE</code>, the files are kept in the cache folder and reused by later sessions as well, which is what makes a long archive-building run cheap to recover from after an interruption: the files already fetched are still on disk, and resuming skips straight past them.</p>
 </section><section id="how-entries-are-keyed" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="how-entries-are-keyed">
 <span class="header-section-number">7.3.2</span> How entries are keyed</h3>
@@ -676,17 +676,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Downloading a repository’s files is not the only repeated cost: <em>listing</em> what a repository contains — asking Dryad’s or Zenodo’s API “what files does this record have, and what do they weigh” — is a separate API call with its own cost and its own rate limit, paid by <code>repo_check</code> every time it runs, even for a repository whose files are already fully downloaded and cached.</p>
 <p>This matters most when a long run is interrupted and restarted: restarting re-issues every listing call again from scratch, which can exhaust a host’s quota (Dryad, in particular, applies a strict one) far faster than the real workload — listing each repository once — would ever need. The repository-listing cache exists specifically to make a restart free for anything already listed once.</p>
 <p>It is a separate cache from the repository-<em>file</em> cache described above: one caches what a host’s API said a repository contains, the other caches the files themselves once downloaded.</p>
-<p>Off by default, like the file-download cache. Turn it on with <code>repo_info_cache()</code>, and clear it with <code>repo_info_cache_clear()</code>:</p>
+<p>Off by default, like the file-download cache. Turn it on by passing <code>cache = TRUE</code> to <code>repo_check</code>, or to <code>code_check</code> or <code>data_check</code>, which pass it on to <code>repo_check</code> (the function <code>repo_info_cache()</code> does not currently turn it on). Clear it with <code>repo_info_cache_clear()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repo_info_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># is the cache on? (FALSE by default)</span></span>
-<span><span class="fu">repo_info_cache</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># reuse listings across restarts</span></span>
-<span><span class="fu">repo_info_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># delete every cached listing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>   <span class="co"># reuse listings across restarts</span></span>
+<span><span class="fu">repo_info_cache_clear</span><span class="op">(</span><span class="op">)</span>                         <span class="co"># delete every cached listing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A cached listing is not refreshed automatically — a published dataset’s metadata rarely changes once public, but if you know a paper’s repository has genuinely been updated, clear it explicitly rather than relying on the cache to notice.</p>
 </section><section id="the-zip-peek-cache" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="the-zip-peek-cache">
 <span class="header-section-number">7.5</span> The zip-peek cache</h2>
 <p>Looking inside a <code>.zip</code> without downloading it (the <code>peek_zips</code> behaviour described above) still costs an HTTP range request per zip. Like repository listings, a peeked zip’s contents rarely change once a repository is public, so repeated peeks of the same zip across restarts are also cached on disk, mirroring the repository-listing cache.</p>
-<p>Unlike the other three caches, there is no on/off toggle function — peeking is cached only when you explicitly pass <code>cache = TRUE</code> to the function doing the peeking (<code>zip_peek()</code>, or indirectly through <code>data_check</code>/<code>code_check</code>/<code>repo_check</code>’s own <code>cache</code> argument). To clear it:</p>
+<p>As with the repository-listing cache, there is no on/off toggle function — peeking is cached only when you explicitly pass <code>cache = TRUE</code> to the function doing the peeking (<code>zip_peek()</code>, or indirectly through <code>data_check</code>/<code>code_check</code>/<code>repo_check</code>’s own <code>cache</code> argument). To clear it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">zip_peek_cache_clear</span><span class="op">(</span><span class="op">)</span>   <span class="co"># delete every cached zip peek</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -698,7 +697,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>When you run several modules on a paper — or build an archive across a corpus — the four caches complement each other:</p>
 <ol type="1">
 <li>
-<code>repo_check</code> lists the repository’s files. With the repository-listing cache on, a restart reuses that listing instead of re-querying the host.</li>
+<code>repo_check</code> lists the repository’s files. With <code>cache = TRUE</code>, a restart reuses that listing instead of re-querying the host.</li>
 <li>If <code>repo_check</code> needs to look inside a <code>.zip</code> (<code>peek_zips = TRUE</code>, the default), that peek is itself cached when <code>cache = TRUE</code> is passed through.</li>
 <li>
 <code>data_check</code> / <code>code_check</code> download the files they need; a second module reading the same file in the same run reuses that copy. With <code>cache = TRUE</code> the copies are kept for later sessions as well.</li>
@@ -751,9 +750,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td>Repository listings</td>
 <td>on disk, cross-session</td>
-<td><strong>no</strong></td>
+<td>
+<strong>no</strong> (<code>cache = TRUE</code> to enable)</td>
 <td>host + repository id</td>
-<td><code>repo_info_cache()</code></td>
+<td>
+<code>cache</code> argument of <code>repo_check</code> / <code>code_check</code> / <code>data_check</code>
+</td>
 <td><code>repo_info_cache_clear()</code></td>
 </tr>
 <tr class="even">

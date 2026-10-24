@@ -514,6 +514,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The trade-off is that your computer does the work, so it will be slower — especially the first time, while the model loads into memory.</p>
 <section id="setup" class="level2" data-number="38.1"><h2 data-number="38.1" class="anchored" data-anchor-id="setup">
 <span class="header-section-number">38.1</span> Setup</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>With the Docker installation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The installer of the <a href="../chapters/get-started.html#docker-installation">Docker installation</a> can install Ollama for you, download the model of the power check (<code>qwen3.5:4b</code>), and set Ollama up as on Metacheck’s SURF server, so the website and the paper report app on your own computer use it. The steps below are for using Ollama from R.</p>
+</div>
+</div>
 <p>You need to repeat these step every time you want to use Ollama with Metacheck on a new machine.</p>
 <section id="what-you-need" class="level3" data-number="38.1.1"><h3 data-number="38.1.1" class="anchored" data-anchor-id="what-you-need">
 <span class="header-section-number">38.1.1</span> What you need</h3>
@@ -647,7 +660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Processing the full dataset takes considerably longer (and could take hours, depending on your hardware, the number of power related sentences detected, and model size).</p>
 </section></section><section id="running-regcheck-locally" class="level2" data-number="38.4"><h2 data-number="38.4" class="anchored" data-anchor-id="running-regcheck-locally">
 <span class="header-section-number">38.4</span> Running RegCheck locally</h2>
-<p>The <a href="../chapters/mod-reg-check.html">RegCheck module</a> compares a paper against its preregistration. By default it sends text to a hosted RegCheck app, but you can run the whole comparison <strong>on your own machine</strong> with Ollama, so no paper or preregistration text leaves your computer. This needs a one-time setup of a small RegCheck server (in addition to Ollama).</p>
+<p>The <a href="../chapters/mod-reg-check.html">RegCheck module</a> compares a paper against its preregistration. By default it runs the whole comparison <strong>on your own machine</strong> with Ollama, so no paper or preregistration text leaves your computer (setting <code>client</code> to <code>"groq"</code>, <code>"openai"</code> or <code>"deepseek"</code> sends the text to a hosted RegCheck app instead). This needs a one-time setup of a small RegCheck server (in addition to Ollama).</p>
 <p><strong>1. Pull the required Ollama models.</strong> RegCheck uses a fixed embedding model plus a language model of your choice. In a terminal:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull nomic-embed-text-v2-moe</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull llama3.2          <span class="co"># or llama3.1, mistral, qwen3.5:9b, etc.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

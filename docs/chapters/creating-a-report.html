@@ -530,7 +530,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>,</span>
 <span>       modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"stat_p_exact"</span>, <span class="st">"stat_p_nonsig"</span>, <span class="st">"marginal"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Use <code>module_list()</code> to see every built-in module, or <code>module_help("module_name")</code> for the details of one. Custom modules are given by file path instead of name (see <a href="../chapters/creating-modules.html">Creating Modules</a>).</p>
+<p>Use <code>module_list()</code> to see every built-in module, or <code>module_help("module_name")</code> for the details of one. A custom module is also given by name when you installed it with <code>module_install()</code>, or saved it as an <code>.R</code> file in your working directory or in a <code>modules/</code> folder there; any other custom module is given by its file path (see <a href="../chapters/creating-modules.html">Creating Modules</a>).</p>
 </section><section id="choosing-the-output-format" class="level3" data-number="36.2.2"><h3 data-number="36.2.2" class="anchored" data-anchor-id="choosing-the-output-format">
 <span class="header-section-number">36.2.2</span> Choosing the output format</h3>
 <p><code>report()</code> can write either a rendered <strong>HTML</strong> file or the intermediate <strong>Quarto</strong> source (<code>qmd</code>). The <code>qmd</code> option is useful when you want to edit the report before rendering, or render it yourself with different options:</p>
@@ -544,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>       output_file <span class="op">=</span> <span class="st">"demo_report.qmd"</span>,</span>
 <span>       output_format <span class="op">=</span> <span class="st">"qmd"</span><span class="op">)</span>    <span class="co"># write the Quarto source instead</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Rendering to HTML requires <a href="https://quarto.org">Quarto</a> to be installed. If rendering fails for any reason, <code>report()</code> falls back to saving the <code>qmd</code> source (and warns you), so you never lose the result of running the modules.</p>
+<p>Rendering to HTML requires <a href="https://quarto.org">Quarto</a> to be installed. If rendering fails for any reason, <code>report()</code> falls back to saving the source (and warns you): the <code>qmd</code> file, or an R Markdown (<code>.Rmd</code>) file for the static report types <code>"simple"</code>, <code>"simple_brief"</code> and <code>"checklist"</code> (see below). So you never lose the result of running the modules.</p>
 </section><section id="choosing-the-report-type" class="level3" data-number="36.2.3"><h3 data-number="36.2.3" class="anchored" data-anchor-id="choosing-the-report-type">
 <span class="header-section-number">36.2.3</span> Choosing the report type</h3>
 <p><code>report_type</code> sets how the report is laid out and how much it contains:</p>
@@ -585,7 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">paper</span>, report_type <span class="op">=</span> <span class="st">"checklist"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <strong>checklist</strong> report sorts every check of every module into six groups: to fix, to improve, decide by hand, for information, fine, and not applicable, with the number in each group at the top. Each check that needs work is a block that says what was found and what to do on separate lines, with its tables folded underneath. The checks that are fine or not applicable take one line each, and the explanation of how each module works is folded at the bottom. When <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> ran the code, it gets a section of its own after the results: it says how the scripts were run and how many ran to the end, lists in run order what happened to each script (ran to the end, stopped with an error, with the error itself, ran out of time, could not run because a package is missing, or was not run, with the reason), names other problems in the files such as <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, and says how many of the statistical tests reported in the paper were found in the output of the code. The report uses the colours and font of <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website on SURF Research Cloud</a>. How a module tells the checklist report what its checks are is explained in <a href="../chapters/creating-modules.html">Creating Modules</a>.</p>
+<p>The <strong>checklist</strong> report sorts every check of every module into six groups: to fix, to improve, decide by hand, for information, fine, and not applicable, with the number in each group except “for information” at the top. Each check that needs work is a block that says what was found and what to do on separate lines, with its tables folded underneath. The checks that are fine or not applicable take one line each, and the explanation of how each module works is folded at the bottom. When <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> ran the code, it gets a section of its own after the results: it says how the scripts were run and how many ran to the end, lists in run order what happened to each script (ran to the end, stopped with an error, with the error itself, ran out of time, could not run because a package is missing, or was not run, with the reason), names other problems in the files such as <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> calls, and says how many of the statistical tests reported in the paper were found in the output of the code. The report uses the colours and font of <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website on SURF Research Cloud</a>. How a module tells the checklist report what its checks are is explained in <a href="../chapters/creating-modules.html">Creating Modules</a>.</p>
 <p>A module can ask to stay in the brief report whatever its light. <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a> does this when it ran at least one script, so that a successful run is not left out and the report does not read as if the code was never checked.</p>
 </section></section><section id="checking-a-folder-instead-of-a-paper-report_repository" class="level2" data-number="36.3"><h2 data-number="36.3" class="anchored" data-anchor-id="checking-a-folder-instead-of-a-paper-report_repository">
 <span class="header-section-number">36.3</span> Checking a folder instead of a paper: <code>report_repository()</code>
@@ -629,6 +629,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>                  modules <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"repo_check"</span>, <span class="st">"data_check"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Only the folder you name is read. No links are followed and nothing is downloaded, so the whole thing works offline. Whether a language model is used follows your own <code>llm_use()</code> setting, exactly as when you run the modules individually.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a> checks a folder too: under <em>Run Metacheck on a Repository</em>, choose a folder or a .zip file, or paste a link to an online repository. It runs <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code> (not <code>codebook_check</code>), can also run the R and Python code (<a href="../chapters/mod-reproducibility-check.html">Reproducibility Check</a>), and gives the brief report; the <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/">ResearchBox Check</a> gives the checklist report. A folder you choose is uploaded to the server; the <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer.</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -765,7 +778,7 @@ table &lt;- structure(list("P-Value" = "p &gt; .05", Text = "There was no effect
 # display table -----------------------------------
 metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 <div class="callout callout-style-default callout-tip callout-titled" title="Learn More">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -774,7 +787,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The APA manual states: Report exact <em>p</em> values (e.g., <em>p</em> = .031) to two or three decimal places. However, report <em>p</em> values less than .001 as <em>p</em> &lt; .001. However, 2 decimals is too imprecise for many use-cases (e.g., a <em>p</em> value meta-analysis), so report <em>p</em> values with three digits.</p>
 <p>American Psychological Association (2020). <em>Publication manual of the American Psychological Association</em>, 7 edition. American Psychological Association.</p>
@@ -782,7 +795,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </div>
 </div>
 </details><div class="callout callout-style-default callout-note callout-titled" title="How It Works">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -791,7 +804,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>List any p-values reported with insufficient precision (e.g., p &lt; .05 or p = n.s.) or reported as exactly zero (e.g., p = .000).</p>
 <p>This module uses regular expressions to identify p-values. It will flag any values reported as p &gt; ? or p &lt; numbers greater than .001. It will also flag p-values reported as exactly zero (e.g., p = .000, p = 0.00), which are mathematically impossible — p-values are never exactly zero and should instead be reported as p &lt; .001.</p>
@@ -937,7 +950,7 @@ metacheck::report_table(table, c(0.1, 0.9), 2, FALSE)</code></pre>
 </tr>
 <tr class="even">
 <td>Check a folder of files, with no manuscript</td>
-<td><code>report_repository(path, output_file, output_format, modules)</code></td>
+<td><code>report_repository(path, output_file, output_format, report_type, modules, args)</code></td>
 </tr>
 <tr class="odd">
 <td>Run one module and inspect the result</td>

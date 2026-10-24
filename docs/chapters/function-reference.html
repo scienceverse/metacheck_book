@@ -834,7 +834,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This appendix lists every exported function in Metacheck, generated directly from the package’s roxygen documentation (the same source <code>?function_name</code> reads from). It is grouped by task rather than alphabetically, so functions used together stay together. Unlike a hand-written summary, this page is regenerated from source and cannot drift out of sync with the installed package’s actual exports.</p>
+<p>This appendix lists every exported function in Metacheck, generated directly from the package’s roxygen documentation (the same source <code>?function_name</code> reads from). It is grouped by task rather than alphabetically, so functions used together stay together. Unlike a hand-written summary, this page is regenerated from the package’s documentation, so it matches the package’s exports as of the last time it was regenerated, from metacheck’s development version.</p>
 <p>As of this build, that is <strong>280 functions</strong> across <strong>20 groups</strong>.</p>
 <section id="getting-a-paper-to-work-with" class="level2" data-number="E.1">
 <h2 data-number="E.1" class="anchored" data-anchor-id="getting-a-paper-to-work-with"><span class="header-section-number">E.1</span> Getting a paper to work with</h2>
@@ -1279,7 +1279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="st">"marginal"</span>, <span class="st">"ref_replication"</span>, <span class="st">"ref_retraction"</span>, <span class="st">"ref_pubpeer"</span>, <span class="st">"ref_summary"</span>),</span>
 <span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="at">output_file =</span> <span class="fu">paste0</span>(paper<span class="sc">$</span>paper_id, <span class="st">"_report."</span>, output_format),</span>
 <span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="at">output_format =</span> <span class="fu">c</span>(<span class="st">"html"</span>, <span class="st">"qmd"</span>),</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="at">report_type =</span> <span class="fu">c</span>(<span class="st">"full"</span>, <span class="st">"brief"</span>, <span class="st">"simple"</span>, <span class="st">"simple_brief"</span>, <span class="st">"checklist"</span>),</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="at">report_type =</span> <span class="fu">c</span>(<span class="st">"full"</span>, <span class="st">"simple"</span>),</span>
 <span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="at">args =</span> <span class="fu">list</span>()</span>
 <span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run specified modules on a paper and generate a report in quarto (qmd), html, or pdf format.</p>
@@ -1318,7 +1318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>path,</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="at">output_file =</span> <span class="cn">NULL</span>,</span>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="at">output_format =</span> <span class="fu">c</span>(<span class="st">"html"</span>, <span class="st">"qmd"</span>),</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="at">report_type =</span> <span class="fu">c</span>(<span class="st">"full"</span>, <span class="st">"brief"</span>, <span class="st">"simple"</span>, <span class="st">"simple_brief"</span>, <span class="st">"checklist"</span>),</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="at">report_type =</span> <span class="fu">c</span>(<span class="st">"full"</span>, <span class="st">"simple"</span>),</span>
 <span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="at">modules =</span> <span class="fu">c</span>(<span class="st">"repo_check"</span>, <span class="st">"code_check"</span>, <span class="st">"data_check"</span>, <span class="st">"codebook_check"</span>),</span>
 <span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="at">args =</span> <span class="fu">list</span>()</span>
 <span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

@@ -515,7 +515,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>convert()</code> defaults to a server at Eindhoven University of Technology that does not store your manuscript. See <a href="../chapters/reading-a-paper.html">Reading in a Paper</a> if you would rather run your own, fully local conversion server.</p>
+<p><code>convert()</code> defaults to Metacheck’s own server on SURF Research Cloud in the Netherlands, which deletes your PDF once it is converted, and the result an hour later. See <a href="../chapters/reading-a-paper.html">Reading in a Paper</a> if you would rather run your own, fully local conversion server.</p>
 </div>
 </div>
 </section><section id="step-2-run-one-check" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="step-2-run-one-check">
@@ -563,7 +563,7 @@ Note
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="op">(</span><span class="va">bad_paper</span>, output_file <span class="op">=</span> <span class="st">"bad_paper_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the <em>process</em> changes between the two papers — only what the report finds.</p>
+<p>This produces the same kind of report, but with several more red and yellow lights: a missing funding statement, p-values that do not match their own reported statistics, and more. Nothing about the <em>process</em> changes between the two papers — only what the report finds.</p>
 </section><section id="step-4-check-a-shared-repository" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="step-4-check-a-shared-repository">
 <span class="header-section-number">3.4</span> Step 4: Check a shared repository</h2>
 <p>So far we have checked what a paper <em>says</em>. Metacheck can also check what a paper’s authors actually <em>shared</em> — the data and code repository itself — independently of any manuscript. <code>report_repository()</code> is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way <code>report()</code> did in Step 3.</p>
@@ -581,6 +581,19 @@ Note
 <span>                  output_file <span class="op">=</span> <span class="st">"bad_repo_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Open <code>bad_repo_report.html</code>, and you will see a <strong>yellow</strong> light on the repository’s overall organisation: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper’s repository (<a href="https://github.com/Lakens/stroop_effect_paper" class="uri">https://github.com/Lakens/stroop_effect_paper</a>) and compare the result — it is organised into clearly labelled <code>data/</code>, <code>code/</code>, <code>output/</code>, and <code>documentation/</code> folders, with a complete codebook, which is exactly what this check is designed to reward.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a> can check the same repository without downloading it: paste <a href="https://github.com/Lakens/stroop_effect_paper_bad" class="uri">https://github.com/Lakens/stroop_effect_paper_bad</a> as the link under <em>Run Metacheck on a Repository</em>. It runs the file, code, and data checks (not the codebook check), and, unless you untick the option <em>Also run the R and Python code</em>, also runs the R code, to see whether it runs to the end (<a href="../chapters/mod-reproducibility-check.html">Reproducibility Check</a>).</p>
+</div>
+</div>
 </section><section id="what-you-have-just-done" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="what-you-have-just-done">
 <span class="header-section-number">3.5</span> What you have just done</h2>
 <p>In four short steps, you:</p>

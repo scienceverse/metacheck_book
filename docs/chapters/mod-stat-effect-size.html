@@ -488,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="what-it-checks" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">21.2</span> What it checks</h2>
 <p>The <code>stat_effect_size</code> module checks whether <strong>effect sizes are reported</strong> for <em>t</em>-tests and <em>F</em>-tests, and whether the reported effect size is <strong>coherent</strong> with the test statistic and degrees of freedom. Reporting a standardized effect size alongside a test is an APA Journal Article Reporting Standard, and it is what makes a result usable in a meta-analysis.</p>
-<p>The module looks for the common ways effect sizes are written, then recomputes what the effect size <em>should</em> be from the test statistic and degrees of freedom. It checks Cohen’s <em>d</em> and <em>g</em> for <em>t</em>-tests, and partial η² and partial ω² for <em>F</em>-tests. It flags two things: tests that report <strong>no</strong> effect size, and reported effect sizes that <strong>do not match</strong> the value implied by the test.</p>
+<p>The module looks for the common ways effect sizes are written, then recomputes what the effect size <em>should</em> be from the test statistic and degrees of freedom. It checks Cohen’s <em>d</em> and <em>g</em> for <em>t</em>-tests, and partial η² for <em>F</em>-tests. A reported ω² is not checked: when it is the only effect size reported with an <em>F</em>-test, the verdict is <code>indeterminate</code>. It flags two things: tests that report <strong>no</strong> effect size, and reported effect sizes that <strong>do not match</strong> the value implied by the test.</p>
 <p>This module is <strong>fully offline</strong>.</p>
 </section><section id="how-the-coherence-check-works-and-its-limits" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="how-the-coherence-check-works-and-its-limits">
 <span class="header-section-number">21.3</span> How the coherence check works (and its limits)</h2>
@@ -503,12 +503,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <strong><code>indeterminate</code></strong> — the module cannot recover an effect size to compare against (for example a Welch’s <em>t</em>-test with non-integer <em>df</em>, where the group sizes cannot be determined).</li>
 </ul>
-<p><em>F</em>-tests are a partial exception. When the numerator degrees of freedom is 1 (<code>df1 = 1</code>), partial η² is fixed by a single assumption-free formula, η²<sub>p</sub> = <em>F</em> / (<em>F</em> + <em>df2</em>), so a <code>no_match</code> there is an unambiguous arithmetic inconsistency rather than a design ambiguity.</p>
+<p><em>F</em>-tests are a partial exception. Partial η² is fixed by a single assumption-free formula, η²<sub>p</sub> = (<em>df1</em> × <em>F</em>) / (<em>df1</em> × <em>F</em> + <em>df2</em>), which for one numerator degree of freedom (<code>df1 = 1</code>) becomes <em>F</em> / (<em>F</em> + <em>df2</em>). A <code>no_match</code> for partial η² is therefore an unambiguous arithmetic inconsistency rather than a design ambiguity.</p>
 </section><section id="running-the-module" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">21.4</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module also runs on <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a>: upload a paper under <em>Run Metacheck on a Paper</em>, where it is one of the default checks under <em>Checks</em>. The <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.</p>
+</div>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Effect Sizes in t-tests and F-tests: We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes</p>
+<p>Effect Sizes in t-tests and F-tests: We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes.</p>
 <p>The <code>table</code> has one row per detected test. The columns most worth reading are the test text, any reported effect size, and the coherence verdict:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
@@ -518,7 +531,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes"</code></pre>
+<pre><code>#&gt; [1] "We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes."</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"test_text"</span>, <span class="st">"es"</span>, <span class="st">"d_coherence"</span>, <span class="st">"d_coherence_note"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -677,7 +690,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<p>Because <code>df1 = 1</code> leaves no room for an alternative design, this is not a “possible under some assumption” case — the reported numbers are simply inconsistent with the test statistics. This is exactly the kind of error the check exists to surface, and the kind a reader would otherwise have to recompute by hand.</p>
+<p>Because partial η² follows from the <em>F</em> value and its degrees of freedom alone, leaving no room for an alternative design, this is not a “possible under some assumption” case — the reported numbers are simply inconsistent with the test statistics. This is exactly the kind of error the check exists to surface, and the kind a reader would otherwise have to recompute by hand.</p>
 </section><section id="interpreting-the-result" class="level2" data-number="21.7"><h2 data-number="21.7" class="anchored" data-anchor-id="interpreting-the-result">
 <span class="header-section-number">21.7</span> Interpreting the result</h2>
 <p>The two verdicts call for very different responses:</p>

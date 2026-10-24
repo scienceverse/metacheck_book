@@ -482,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><section id="what-it-checks" class="level2" data-number="32.1"><h2 data-number="32.1" class="anchored" data-anchor-id="what-it-checks">
 <span class="header-section-number">32.1</span> What it checks</h2>
-<p>The <code>ref_retraction</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://retractionwatch.com/">Retraction Watch</a> database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.</p>
+<p>The <code>ref_retraction</code> module cross-references the paper’s <strong>cited references</strong> against the <a href="https://retractionwatch.com/">Retraction Watch</a> database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate. The database records retractions, but also corrections and expressions of concern; the report shows which applies to each flagged reference.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -493,11 +493,24 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module makes <strong>live network calls</strong> (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.</p>
+<p>This module runs <strong>offline</strong>: it matches references by DOI against a copy of the Retraction Watch database that ships with Metacheck, so the code below needs no internet connection. Only updating that copy with <code>rw_update()</code> (see <a href="#updating-the-database">Updating the database</a>) downloads data.</p>
 </div>
 </div>
 </section><section id="running-the-module" class="level2" data-number="32.2"><h2 data-number="32.2" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">32.2</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module also runs on <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a>: upload a paper under <em>Run Metacheck on a Paper</em>, and tick it under <em>Checks</em> (it is not one of the default checks). The <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.</p>
+</div>
+</div>
 <p><code>demopaper()</code> cites a reference that is in the Retraction Watch database.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -546,7 +559,7 @@ Note
 <p><code>ref_retraction</code> takes only the <code>paper</code> argument.</p>
 </section><section id="updating-the-database" class="level2" data-number="32.6"><h2 data-number="32.6" class="anchored" data-anchor-id="updating-the-database">
 <span class="header-section-number">32.6</span> Updating the database</h2>
-<p>The module matches references against a data frame called <code>retractionwatch</code> that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:</p>
+<p>The module matches references against a data frame that ships with Metacheck, which the function <code>retractionwatch()</code> (or its short form <code>rw()</code>) returns. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rw_date</span><span class="op">(</span><span class="op">)</span>     <span class="co"># the date the bundled database was last updated</span></span>
 <span><span class="fu">rw_update</span><span class="op">(</span><span class="op">)</span>   <span class="co"># download the newest version from Retraction Watch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

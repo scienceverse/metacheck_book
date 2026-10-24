@@ -511,10 +511,10 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For now, <code>ref_accuracy</code> is not among <code>report()</code>’s default modules and is not offered in the Metacheck apps. Its validation on nine PsyArXiv preprints found that most of the references it flagged were errors in reading the PDF, not errors in the paper. Run it yourself with <code>module_run(paper, "ref_accuracy")</code>, or add it to <code>report()</code>’s <code>modules</code>. The other reference modules still use the DOIs Crossref finds for references.</p>
+<p>For now, <code>ref_accuracy</code> is not among <code>report()</code>’s default modules and is not offered on <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a>. Its validation on nine PsyArXiv preprints found that most of the references it flagged were errors in reading the PDF, not errors in the paper. Run it yourself with <code>module_run(paper, "ref_accuracy")</code>, or add it to <code>report()</code>’s <code>modules</code>. The other reference modules still use the DOIs Crossref finds for references.</p>
 </div>
 </div>
-<p>Because this check needs to look things up online, the demo paper first needs that lookup done with <code>add_bib_match()</code>. Without that lookup (no <code>bib_match</code> table), the module reports “na”: the references were not looked up at Crossref, so their accuracy was not checked.</p>
+<p>Because this check needs to look things up online, it uses the paper’s <code>bib_match</code> table, which holds the result of that lookup. The demo paper already contains one; <code>add_bib_match()</code> looks the references up again, so the table is current. For a paper without that lookup (no <code>bib_match</code> table), the module reports “na”: the references were not looked up at Crossref, so their accuracy was not checked.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">add_bib_match</span><span class="op">(</span><span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"ref_accuracy"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Reference Accuracy: We checked the 4 references that supplied a DOI against the record that DOI points to, and found 2 incoherent references to check for parsing errors or mistakes. 0 references had no DOI and could not be checked. Incoherent references are mostly PDF parsing errors (we are working on improving reference parsing).</p>
@@ -663,7 +663,7 @@ Note
 </table>
 </div>
 </div>
-<p>The full <code>table</code> has one row per reference, with a <code>tier</code> column (<code>"provided"</code> for references that supplied their own DOI, <code>"none"</code> for references without one) and an <code>incoherent</code> flag, alongside the individual <code>*_mismatch</code> columns:</p>
+<p>The full <code>table</code> has one row per reference, with a <code>tier</code> column (<code>"provided"</code> for references that supplied their own DOI and CrossRef returned its record; <code>"unresolved"</code> for references that supplied a DOI CrossRef could not find, which are always flagged; <code>"crossref"</code> for references without a DOI for which CrossRef found one by title search, which are not flagged; <code>"none"</code> for references without any DOI) and an <code>incoherent</code> flag, alongside the individual <code>*_mismatch</code> columns:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">bib_id</span>, <span class="va">tier</span>, <span class="va">incoherent</span>,</span>
@@ -749,7 +749,7 @@ Note
 </div>
 </section><section id="how-a-reference-is-flagged" class="level2" data-number="34.5"><h2 data-number="34.5" class="anchored" data-anchor-id="how-a-reference-is-flagged">
 <span class="header-section-number">34.5</span> How a reference is flagged</h2>
-<p>For each checked reference the module compares five fields against the DOI’s record. Two of them are treated as <em>reliable</em> signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as <em>weaker</em> signals.</p>
+<p>For each checked reference the module compares five fields against the DOI’s record. Three of them are treated as <em>reliable</em> signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as <em>weaker</em> signals.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -789,7 +789,7 @@ Note
 </tr>
 </tbody>
 </table>
-<p>A reference is flagged when any reliable field mismatches, <strong>or</strong> when at least <code>min_mismatches</code> of the weaker fields (title, author) mismatch. By default <code>min_mismatches = 2</code>, so a lone title or author difference — which is usually a parsing artefact — is not enough on its own.</p>
+<p>A reference is flagged when any reliable field mismatches, <strong>or</strong> when at least <code>min_mismatches</code> of the weaker fields (title, author) mismatch. By default <code>min_mismatches = 1</code>, so a lone title or author difference is enough, even though it is often a parsing artefact; set <code>min_mismatches = 2</code> to require both to differ (see <a href="#parameters">Parameters</a>).</p>
 </section><section id="parameters" class="level2" data-number="34.6"><h2 data-number="34.6" class="anchored" data-anchor-id="parameters">
 <span class="header-section-number">34.6</span> Parameters</h2>
 <p><code>ref_accuracy</code> exposes the thresholds behind each check so you can tune the trade-off between catching more errors and raising fewer false alarms.</p>

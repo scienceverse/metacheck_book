@@ -489,7 +489,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module is <strong>not currently useful</strong>. It depends on the cross-references and bibliography that <a href="https://github.com/kermitt2/grobid">GROBID</a> extracts from the PDF, and that extraction is too low in quality for the check to be reliable: GROBID frequently fails to link in-text citations to their reference, and mis-parses parts of the reference list into spurious entries. In practice the overwhelming majority of the discrepancies this module reports are artefacts of that extraction rather than real inconsistencies in the paper.</p>
+<p>This module is <strong>not currently useful</strong>. It depends on the cross-references and bibliography extracted from the PDF — by bibr, which <code>convert()</code> uses by default for PDF files, or by <a href="https://github.com/kermitt2/grobid">GROBID</a> — and that extraction is too low in quality for the check to be reliable: the converter frequently fails to link in-text citations to their reference, and mis-parses parts of the reference list into spurious entries. In practice the overwhelming majority of the discrepancies this module reports are artefacts of that extraction rather than real inconsistencies in the paper.</p>
 <p>We are building a more accurate tool to convert PDFs to text, which should make this check dependable. Until then, treat its output as a measure of extraction quality rather than as a list of problems with the paper.</p>
 </div>
 </div>
@@ -527,12 +527,14 @@ Important
 <th style="text-align: left;">paper_id</th>
 <th style="text-align: right;">n_bib</th>
 <th style="text-align: right;">n_xrefs</th>
+<th style="text-align: right;">n_missing</th>
 <th style="text-align: right;">n_extra</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td style="text-align: left;">to_err_is_human</td>
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">4</td>
 </tr></tbody>
 </table>
@@ -590,9 +592,9 @@ Important
 <p>As the callout above warns, a flag here is much more likely to reflect imperfect PDF extraction than a real problem with the paper. The two most common failure modes are:</p>
 <ul>
 <li>
-<strong>Unlinked citations.</strong> GROBID detects an in-text citation but cannot attach it to a reference, so the citation is reported as <em>missing</em> even though the work is in the reference list. These dominate the “missing” flags.</li>
+<strong>Unlinked citations.</strong> The converter detects an in-text citation but cannot attach it to a reference, so the citation is reported as <em>missing</em> even though the work is in the reference list. These dominate the “missing” flags.</li>
 <li>
-<strong>Mis-parsed references.</strong> GROBID splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography “entry”. These appear as <em>extra</em> references that were never really in the paper.</li>
+<strong>Mis-parsed references.</strong> The converter splits a single reference across rows, or turns a running head, page number, or DOI fragment into its own bibliography “entry”. These appear as <em>extra</em> references that were never really in the paper.</li>
 </ul>
 <p>A genuinely uncited reference, or a citation to a work that is truly absent from the reference list, does occur — but it is the exception, and you can only confirm it by looking at the original PDF. Once the more accurate extraction tool is in place, this section will be revisited.</p>
 </section><section id="options" class="level2" data-number="30.5"><h2 data-number="30.5" class="anchored" data-anchor-id="options">

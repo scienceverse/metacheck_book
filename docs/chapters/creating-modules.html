@@ -517,7 +517,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you want to learn more about how to build a module, the information below should be helpful. But if you are mainly interested in using Metacheck, we recommend skipping the rest of this chapter.</p>
 <section id="how-to-create-a-metacheck-module" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="how-to-create-a-metacheck-module">
 <span class="header-section-number">9.1</span> How to create a Metacheck module</h2>
-<p>Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation.</p>
+<p>Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. <code>module_template("name")</code> writes the template below to <code>modules/name.R</code>, ready for you to edit.</p>
 <div class="cell">
 <pre><code>#' Module Title
 #'
@@ -566,9 +566,9 @@ module_name &lt;- function(paper, ...) {
   table &lt;- text_search(paper, pattern)
 
   ## summary_table ----
-  # must have id column as the id of each paper, one row per paper
+  # must have a paper_id column as the id of each paper, one row per paper
   # and further columns to be added to a master summary table
-  summary_table &lt;- dplyr::count(table, id, name = "n_significant")
+  summary_table &lt;- dplyr::count(table, paper_id, name = "n_significant")
 
   ## traffic light ----
   # displayed in reports, possible values:
@@ -598,7 +598,7 @@ module_name &lt;- function(paper, ...) {
   # use quarto / markdown for styling
   # https://quarto.org/docs/authoring/markdown-basics.html
   report_text &lt;- "This table shows all of the sentences where the paper used the word *significant*. "
-  report_table &lt;- table[, c("section", "text")]
+  report_table &lt;- table[, c("header", "text")]
   further_info &lt;- c(
     "For more opinions on the use of the word *significant*:",
     "* Motulsky, H. (2014). Opinion: Never use the word ‘significant’ in a scientific paper. Advances in regenerative biology, 1(1), 25155. doi: [10.3402/arb.v1.25155](https://doi.org/10.3402/arb.v1.25155)"
@@ -840,7 +840,7 @@ Important
 ℹ️ informational only;<br>
 ⬜️ not applicable;<br>
 ☠️️ check failed</p>
-<p>You will need to write some code to determine which traffic lights apply to your case. If you don’t include a traffic light, but do include a <code>table</code> in the returned list, the following rule will be applied for the traffic light. The failed traffic light will be automatically applied if your code produces an error.</p>
+<p>You will need to write some code to determine which traffic lights apply to your case. If you don’t include a traffic light in the returned list, <code>module_run()</code> sets it to <code>"info"</code>. If your code produces an error, <code>module_run()</code> stops with that error; when the module runs in <code>report()</code> or <code>report_module_run()</code>, the error is caught and the module gets the failed traffic light. The template uses the following rule:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co">## traffic light ----</span></span>
 <span>  <span class="co"># displayed in reports, possible values: </span></span>
@@ -879,7 +879,7 @@ Important
 <span>  <span class="co"># use quarto / markdown for styling</span></span>
 <span>  <span class="co"># https://quarto.org/docs/authoring/markdown-basics.html</span></span>
 <span>  <span class="va">report_text</span> <span class="op">&lt;-</span> <span class="st">"This table shows all of the sentences where the paper used the word *significant*. "</span></span>
-<span>  <span class="va">report_table</span> <span class="op">&lt;-</span> <span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"section"</span>, <span class="st">"text"</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">report_table</span> <span class="op">&lt;-</span> <span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"header"</span>, <span class="st">"text"</span><span class="op">)</span><span class="op">]</span></span>
 <span>  <span class="va">further_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"For more opinions on the use of the word *significant*:"</span>,</span>
 <span>    <span class="st">"* Motulsky, H. (2014). Opinion: Never use the word ‘significant’ in a scientific paper. Advances in regenerative biology, 1(1), 25155. doi: [10.3402/arb.v1.25155](https://doi.org/10.3402/arb.v1.25155)"</span></span>
@@ -1202,7 +1202,7 @@ Important
 <span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   paper_id       strains_mentioned</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                      &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 ce220d981bca5f                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 1 bf6a623c7c3401                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>On a paper that does not study animals — such as the bundled <code>demopaper()</code> — no strains are found and the traffic light is <code>"na"</code>, meaning the check simply does not apply:</p>
 <div class="cell">

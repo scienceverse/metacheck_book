@@ -579,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>All three return a list with <code>$traffic_light</code> (“green”, “yellow”, “red”, or “na”), <code>$summary_text</code>, and <code>$table</code> with row-level detail. See <code>vignette("stats", package = "metacheck")</code> for a fuller walkthrough of all five statistical-reporting modules using the <code>psychsci</code> corpus loaded above.</p>
+<p>All three return a list with <code>$traffic_light</code> (“green”, “yellow”, “red”, or “na”), <code>$summary_text</code>, and <code>$table</code> with row-level detail. See the chapters <a href="../chapters/mod-stat-check.html">StatCheck</a>, <a href="../chapters/mod-stat-p-exact.html">Exact p-Values</a>, <a href="../chapters/mod-stat-p-nonsig.html">Non-Significant p-Values</a>, and <a href="../chapters/mod-stat-effect-size.html">Effect Sizes</a> for a fuller walkthrough of the statistical-reporting modules.</p>
 <hr>
 <section id="stat_check-on-jdm" class="level3" data-number="8.4.1"><h3 data-number="8.4.1" class="anchored" data-anchor-id="stat_check-on-jdm">
 <span class="header-section-number">8.4.1</span> <code>stat_check</code> on JDM</h3>
@@ -625,9 +625,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">result_effect_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">plosmed</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result_nonsig</span><span class="op">$</span><span class="va">summary_text</span></span>
-<span><span class="co">#&gt; [1] "We found 2900 non-significant p values that should be checked for appropriate interpretation."</span></span>
+<span><span class="co">#&gt; [1] "We found 2609 non-significant p values that should be checked for appropriate interpretation."</span></span>
 <span><span class="va">result_effect_size</span><span class="op">$</span><span class="va">summary_text</span></span>
-<span><span class="co">#&gt; [1] "We found 54 t-tests and/or F-tests where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; [1] "We found 54 t-tests and/or F-tests where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We see that these modules identify some tests in a medical journal, but medical journals might also rely much more on other analyses than t-tests and F-tests. This highlights how we need to validate modules across domains, and clearly communicate the domain within which modules are validated.</p>
 

@@ -500,9 +500,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module is still under development and is not in the released version of Metacheck. It is in the development version, which you install from GitHub (see <a href="../chapters/get-started.html">Setting up Metacheck</a>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="st">"scienceverse/metacheck@dev"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This module has not been validated: its checks have unknown error rates, so evaluate its output carefully. Its identification of psychometric scales is experimental and switched off by default (see <a href="#identifying-psychometric-scales">Identifying psychometric scales</a>).</p>
 </div>
 </div>
 <section id="the-basics" class="level2" data-number="26.1"><h2 data-number="26.1" class="anchored" data-anchor-id="the-basics">
@@ -510,7 +508,7 @@ Warning
 <p>A <strong>codebook</strong> is a document that explains what each column in a dataset means — for example, that a column called <code>cond</code> holds a “condition: 0 = control, 1 = treatment”. The <code>codebook_check</code> module looks at the data columns a paper shares (using <a href="../chapters/mod-data-check.html"><code>data_check</code></a>’s results) and checks, column by column, whether each one is actually described somewhere in a codebook. A column with a matching description is <strong>labelled</strong>; a column with no description anywhere is <strong>unlabelled</strong>.</p>
 <p>Here is the module running on a small folder with one data file and a codebook that documents two of its three columns, built just for this example:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check_basics_demo"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check_basics_demo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span></span>
@@ -530,7 +528,7 @@ Warning
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We parsed 2 variable definitions from codebook/README files.
@@ -539,7 +537,7 @@ Warning
 </div>
 <p>Running a module always follows the same pattern: <code>module_run(paper, "module_name", ...)</code>. Assigning the result to a variable, here <code>mo</code>, lets you look at exactly which columns were and were not documented. The central piece of output is <code>mo$table</code>, with one row per data column and its documentation status:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"label_status"</span>, <span class="st">"label"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"label_status"</span>, <span class="st">"label"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -600,11 +598,24 @@ Note
 <p>This chapter runs offline against a small folder containing a data file and a codebook. If there is no manuscript at all, <code>report_repository("path/to/folder")</code> runs <code>codebook_check</code> together with <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code> on the folder in one step — see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a>.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a>, <code>codebook_check</code> is not part of <em>Run Metacheck on a Repository</em>, which runs <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code>. To run it there, upload a paper under <em>Run Metacheck on a Paper</em> and tick it under <em>Checks</em>: it then checks the repositories the paper links to. The <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer. For a folder without a paper, run it in R with <code>report_repository()</code>, as described below.</p>
+</div>
+</div>
 </section><section id="a-worked-example" class="level2" data-number="26.3"><h2 data-number="26.3" class="anchored" data-anchor-id="a-worked-example">
 <span class="header-section-number">26.3</span> A worked example</h2>
 <p>We create a study with a <code>codebook.csv</code> documenting two of its three columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check_demo"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check_demo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span></span>
@@ -620,14 +631,14 @@ Note
 <span>           <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo</span>, <span class="st">"codebook.csv"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
 <span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "red"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We parsed 2 variable definitions from codebook/README files.
@@ -638,7 +649,7 @@ Note
 <span class="header-section-number">26.4</span> The coverage table</h2>
 <p>The <code>table</code> gives one row per data column with its documentation status and, where matched, the label found:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"label_status"</span>, <span class="st">"label"</span>, <span class="st">"codebook_variable"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"label_status"</span>, <span class="st">"label"</span>, <span class="st">"codebook_variable"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -681,7 +692,7 @@ Note
 <p>Matching is not purely literal: names are normalised (case, separators, and simple stemming) so that <code>reaction_time</code> in the data matches <code>Reaction Time</code> in the codebook. This tolerance is important because codebooks and data files rarely use byte-identical names.</p>
 </section><section id="richer-variable-metadata" class="level2" data-number="26.5"><h2 data-number="26.5" class="anchored" data-anchor-id="richer-variable-metadata">
 <span class="header-section-number">26.5</span> Richer variable metadata</h2>
-<p>A good codebook records more than a one-line label. Following the <a href="https://ddialliance.org/">DDI</a> standard, <code>codebook_check</code> also captures four further per-variable properties whenever a source supplies them, and carries them onto the matched data columns:</p>
+<p>A good codebook records more than a one-line label. Following the <a href="https://ddialliance.org/">DDI</a> standard, <code>codebook_check</code> also captures three further per-variable properties whenever a source supplies them, and carries them onto the matched data columns:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -710,17 +721,12 @@ Note
 <td>QuestionText</td>
 <td>the question the respondent was asked</td>
 </tr>
-<tr class="even">
-<td><code>universe</code></td>
-<td>Universe</td>
-<td>the population / filter the variable applies to</td>
-</tr>
 </tbody>
 </table>
-<p>These come from <strong>two sources for free</strong>. From SPSS/Stata/SAS files, <code>codebook_check</code> reads the embedded <strong>value labels</strong> and <strong>declared missing values</strong> that haven attaches to each column — information most tools discard. From a text codebook, it parses a <em>“values”</em> / <em>“coding”</em> column (understanding common encodings like <code>1 = Male; 2 = Female</code> or <code>0: no | 1: yes</code>) and dedicated <em>question</em> and <em>universe</em> columns.</p>
+<p>These come from <strong>two sources for free</strong>. From SPSS/Stata/SAS files, <code>codebook_check</code> reads the embedded <strong>value labels</strong> and <strong>declared missing values</strong> that haven attaches to each column — information most tools discard. From a text codebook, it parses a <em>“values”</em> / <em>“coding”</em> column (understanding common encodings like <code>1 = Male; 2 = Female</code> or <code>0: no | 1: yes</code>) and a dedicated <em>question</em> column.</p>
 <p>Let’s document <code>sex</code> with a coding column and a question:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_values_demo"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_values_demo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">repo2</span>, <span class="st">"data"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span></span>
@@ -768,11 +774,11 @@ Note
 </div>
 </div>
 <p>The code list is stored as a compact JSON string (<code>{"1":"Male","2":"Female","-99":"Refused"}</code>); a code whose label reads as missingness (<code>Refused</code>, <code>N/A</code>, <code>Prefer not to answer</code>, …) is additionally recorded in <code>missing_values</code>, so a sentinel like <code>-99</code> is flagged as a missing code rather than a real value.</p>
-<p>All four properties are designed to be exported into the Psych-DS metadata by <code>convert_psychds()</code> (not yet available; see <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>): the code list becomes a schema.org <strong>code list</strong> (one <code>PropertyValue</code> per code), and the missing scheme, question, and universe become namespaced <code>metacheck:</code> fields, so they travel with the converted dataset.</p>
+<p>All three properties are designed to be exported into the Psych-DS metadata by <code>convert_psychds()</code> (not yet available; see <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>): the code list becomes a schema.org <strong>code list</strong> (one <code>PropertyValue</code> per code), and the missing scheme and question become namespaced <code>metacheck:</code> fields, so they travel with the converted dataset.</p>
 </section><section id="the-summary-counts" class="level2" data-number="26.6"><h2 data-number="26.6" class="anchored" data-anchor-id="the-summary-counts">
 <span class="header-section-number">26.6</span> The summary counts</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -809,7 +815,7 @@ Note
 <th style="text-align: right;">task_paper_only_n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td style="text-align: left;">40073785789c39</td>
+<td style="text-align: left;">4d8c765ef5460b</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">1</td>
@@ -878,31 +884,35 @@ Note
 <tbody>
 <tr class="odd">
 <td><strong>green</strong></td>
-<td>all (or nearly all) columns are documented</td>
+<td>every column is documented, no column has conflicting definitions, and no data value falls outside the values the codebook documents</td>
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
-<td>some columns are undocumented</td>
+<td>at least 80% of columns are documented (or the only problem is conflicting definitions), or the data hold values the codebook does not list</td>
 </tr>
 <tr class="odd">
 <td><strong>red</strong></td>
-<td>no codebook was found, or documentation coverage is very low</td>
+<td>no codebook was found, or fewer than 80% of columns are documented</td>
+</tr>
+<tr class="even">
+<td><strong>na</strong></td>
+<td>there were no data columns to check</td>
 </tr>
 </tbody>
 </table></section><section id="using-an-llm" class="level2" data-number="26.8"><h2 data-number="26.8" class="anchored" data-anchor-id="using-an-llm">
 <span class="header-section-number">26.8</span> Using an LLM</h2>
-<p>Many repositories document their variables in prose — a README paragraph, a methods section, or a non-tabular codebook — rather than a tidy <code>variable,description</code> table. With <code>llm_use(TRUE)</code>, <code>codebook_check</code> can read those unstructured sources and propose labels for otherwise unlabelled columns, marking them with the <strong>llm</strong> status so you can tell inferred labels from author-supplied ones. For large repositories the LLM calls are batched to stay within request limits.</p>
+<p>Many repositories document their variables in prose — a README paragraph, a methods section, or a non-tabular codebook — rather than a tidy <code>variable,description</code> table. With <code>llm_use(TRUE)</code>, <code>codebook_check</code> can read those unstructured sources and propose labels for otherwise unlabelled columns, marking them with the <strong>llm</strong> status so you can tell inferred labels from author-supplied ones. For large repositories the LLM calls are batched to stay within request limits. On Metacheck’s website and in the <a href="../chapters/get-started.html#docker-installation">Docker installation</a>, only the power check uses a language model, so this only happens when you run <code>codebook_check</code> in R.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
 <span>           local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>codebook_max_calls</code> argument (default <code>40</code>) caps how many LLM calls a single tier will make — the number of text blocks parsed from one unstructured codebook file, and the number of distinct survey layouts sent for scale identification. If a tier would need more than this, it is skipped rather than truncated, and the report says how many were needed; raise <code>codebook_max_calls</code> to include them.</p>
+<p>The <code>codebook_max_calls</code> argument (default <code>40</code>) caps how many LLM calls a single tier will make — the number of text blocks parsed from one unstructured codebook file, and the number of distinct survey layouts sent for scale identification (only with <code>extract_scales = TRUE</code>, see below). If a tier would need more than this, it is skipped rather than truncated, and the report says how many were needed; raise <code>codebook_max_calls</code> to include them.</p>
 <p>See the <a href="../chapters/llms.html">LLMs</a> chapter for model configuration.</p>
 </section><section id="identifying-psychometric-scales" class="level2" data-number="26.9"><h2 data-number="26.9" class="anchored" data-anchor-id="identifying-psychometric-scales">
 <span class="header-section-number">26.9</span> Identifying psychometric scales</h2>
-<p>With an LLM enabled, <code>codebook_check</code> also tries to recognise the <strong>psychometric scales</strong> in the data. It looks for blocks of Likert-type items — runs of adjacent integer columns (3–11 response options) that share a variable-name prefix, five items or more — and asks the model which published instrument each block is (PANAS, the Rosenberg Self-Esteem Scale, and so on), using the item wording from the codebook where available and the variable-name prefix otherwise.</p>
+<p>With <code>extract_scales = TRUE</code>, <code>codebook_check</code> also tries to recognise the <strong>psychometric scales</strong> (and behavioural tasks) in the data. This part of the module is experimental and has not been validated, so it is switched off by default. It looks for blocks of Likert-type items — runs of adjacent integer columns (3–11 response options) that share a variable-name prefix, five items or more — and works out which published instrument each block is (PANAS, the Rosenberg Self-Esteem Scale, and so on). Without a language model, a block is named when its variable-name prefix matches an instrument in Metacheck’s scale dictionary. With an LLM enabled, the model is also asked to name each block from the paper’s text and the item wording from the codebook, and, as a last resort, to describe what an unnamed block measures.</p>
 <p>Each identified scale is recorded in two new columns of the <code>$table</code>:</p>
 <ul>
 <li>
@@ -916,7 +926,7 @@ Note
 <li>document the item wording in a codebook or embedded value labels — the item text is what identifies a scale;</li>
 <li>state the scale name and reference, the response options, and any reverse-coded items.</li>
 </ul>
-<p>Without an LLM, the columns are still present but empty, and the report notes that identification was skipped.</p>
+<p>With <code>extract_scales = FALSE</code> (the default), the <code>scale</code> and <code>scale_confidence</code> columns are still present but empty, and the report has no Scales section. With <code>extract_scales = TRUE</code> but no LLM, the report notes that naming scales from the manuscript needs an LLM, while the dictionary still names instruments whose abbreviation matches a known scale.</p>
 <section id="how-scales-are-recorded-and-why" class="level3" data-number="26.9.1"><h3 data-number="26.9.1" class="anchored" data-anchor-id="how-scales-are-recorded-and-why">
 <span class="header-section-number">26.9.1</span> How scales are recorded (and why)</h3>
 <p>No metadata standard metacheck writes to has a first-class “scale” concept. <a href="https://psych-ds.github.io/">Psych-DS</a> describes each variable in isolation, and schema.org — its foundation — has no property for grouping variables into a construct. The closest existing concept is DDI Codebook’s variable group with <code>type="analysis"</code> (“variables combined into the same index”), but that is a separate XML format psychologists rarely use.</p>
@@ -925,19 +935,22 @@ Note
 <li>the scale <strong>name</strong> goes in schema.org’s own <a href="https://schema.org/measurementTechnique"><code>measurementTechnique</code></a> property — its intended use is exactly to name the instrument a variable was measured with;</li>
 <li>the <strong>grouping</strong> (which variables belong to the scale, and the confidence) goes in a namespaced <code>metacheck:scale</code> / <code>metacheck:scales</code> extension, since schema.org has no native grouping and Psych-DS tolerates namespaced JSON-LD.</li>
 </ul>
-<p><code>convert_psychds()</code> and <code>convert_codebook()</code> will both emit these, so the scale information travels with the converted dataset; neither is available yet. What does work today is that the <a href="../chapters/mod-data-validate.html">data-quality checks</a> reuse the identified names, labelling their careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix.</p>
+<p><code>convert_psychds()</code> and <code>convert_codebook()</code> will both emit these, so the scale information travels with the converted dataset; neither is available yet. When the identified names are available to <code>data_check</code>, the <a href="../chapters/mod-data-validate.html">data-quality checks</a> reuse them, labelling their careless-responding findings with the real scale (e.g.&nbsp;“PANAS”) instead of a bare column prefix; usually they are not, because <code>codebook_check</code> runs after <code>data_check</code> (see <a href="../chapters/mod-data-validate.html#codebook-labels">Codebook labels</a>).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># extract_scales = TRUE switches scale identification on; the LLM is optional</span></span>
+<span><span class="co"># and adds naming from the paper's text</span></span>
+<span><span class="fu">llm_use</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">llm_model</span><span class="op">(</span><span class="st">"groq/openai/gpt-oss-20b"</span><span class="op">)</span></span>
 <span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="fu">test_paper</span><span class="op">(</span><span class="op">)</span>, <span class="st">"codebook_check"</span>,</span>
-<span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                 local_path <span class="op">=</span> <span class="va">repo</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                 extract_scales <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># the identified scales, one row per (column, scale)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">cc</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">cc</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"column_name"</span>, <span class="st">"scale"</span>, <span class="st">"scale_confidence"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="openscales-osd-export-and-provenance" class="level3" data-number="26.9.2"><h3 data-number="26.9.2" class="anchored" data-anchor-id="openscales-osd-export-and-provenance">
 <span class="header-section-number">26.9.2</span> OpenScales OSD export and provenance</h3>
-<p>Beyond the two <code>$table</code> columns, <code>codebook_check</code> also assembles a ready-to-write <strong>OpenScales OSD</strong> object for each named scale, returned in <code>$scales_osd</code>. <code>convert_psychds()</code> writes these out as <code>scales/&lt;code&gt;.osd</code> files in the converted dataset (see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter). The <code>code</code> is a readable slug from the scale name (PANAS → <code>positive_and_negative_affect_schedule</code>) or, for an unnamed block, its column prefix.</p>
+<p>Beyond the two <code>$table</code> columns, <code>codebook_check</code> also assembles a ready-to-write <strong>OpenScales OSD</strong> object for each named scale, returned in <code>$scales_osd</code>. <code>convert_psychds()</code> is designed to write these out as <code>scales/&lt;code&gt;.osd</code> files in the converted dataset, but is not yet available (see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter). The <code>code</code> is a readable slug from the scale name (PANAS → <code>positive_and_negative_affect_schedule</code>) or, for an unnamed block, its column prefix.</p>
 <p>Each OSD records <strong>where the scale identification came from</strong>, at one of four honestly-labelled trust levels — this matters because a scale identified from a curated dictionary is far more reliable than one a language model inferred from item wording:</p>
 <table class="caption-top table">
 <colgroup>
@@ -971,15 +984,10 @@ Note
 </tr>
 </tbody>
 </table>
-<p>When a scale matches a dictionary instrument (<code>matched</code> or <code>task_matched</code>), Metacheck can also cross-reference the published original — how many items it should have and which are reverse-keyed — via the packaged <code>scale_meta</code> / <code>scale_items</code> / <code>scale_scoring</code> datasets, so a detected block can be compared against the reference instrument.</p>
 <p>Data files with embedded scale metadata are handled too: a <strong>JASP</strong> (<code>.jasp</code>) or <strong>jamovi</strong> (<code>.omv</code>) file carries haven-style value labels just like a <code>.sav</code>, so <code>codebook_check</code> harvests those labels directly, and their bundled analyses are recovered separately (see the JASP/jamovi handling in <a href="../chapters/mod-data-check.html">Data Check</a>).</p>
 </section></section><section id="what-you-get-back" class="level2" data-number="26.10"><h2 data-number="26.10" class="anchored" data-anchor-id="what-you-get-back">
 <span class="header-section-number">26.10</span> What you get back</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead><tr class="header">
 <th>Element</th>
 <th>What it contains</th>
@@ -1001,9 +1009,21 @@ Note
 </tr>
 <tr class="even">
 <td><code>$table</code></td>
-<td>one row per column: <code>column_name</code>, <code>label</code>, <code>label_status</code>, <code>codebook_variable</code>, <code>value_labels</code>, <code>missing_values</code>, <code>question</code>, <code>universe</code>, <code>scale</code>, <code>scale_confidence</code>, …</td>
+<td>one row per column: <code>column_name</code>, <code>label</code>, <code>label_status</code>, <code>codebook_variable</code>, <code>value_labels</code>, <code>missing_values</code>, <code>question</code>, <code>scale</code>, <code>scale_confidence</code>, <code>scale_source</code>, …</td>
 </tr>
 <tr class="odd">
+<td><code>$codebook_vars</code></td>
+<td>the variable definitions found in the codebook(s)</td>
+</tr>
+<tr class="even">
+<td><code>$scale_violations</code></td>
+<td>one row per column holding values its codebook does not list (the check for values outside a rating scale, see <a href="../chapters/mod-data-validate.html">Data Quality Checks</a>)</td>
+</tr>
+<tr class="odd">
+<td><code>$scales_osd</code></td>
+<td>the identified scales in OpenScales OSD form (only with <code>extract_scales = TRUE</code>)</td>
+</tr>
+<tr class="even">
 <td><code>$report</code></td>
 <td>formatted report of documented vs.&nbsp;undocumented columns, plus identified scales and improvement advice</td>
 </tr>

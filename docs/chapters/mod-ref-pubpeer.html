@@ -499,6 +499,19 @@ Note
 </div>
 </section><section id="running-the-module" class="level2" data-number="31.2"><h2 data-number="31.2" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">31.2</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This module also runs on <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a>: upload a paper under <em>Run Metacheck on a Paper</em>, and tick it under <em>Checks</em> (it is not one of the default checks, because it contacts an online service). The <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.</p>
+</div>
+</div>
 <p><code>demopaper()</code> cites a reference that has PubPeer comments.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -544,13 +557,13 @@ Note
 </div>
 </section><section id="interpreting-the-result" class="level2" data-number="31.4"><h2 data-number="31.4" class="anchored" data-anchor-id="interpreting-the-result">
 <span class="header-section-number">31.4</span> Interpreting the result</h2>
-<p>A <code>green</code>/empty result means none of the cited references had PubPeer comments. A flagged result does <strong>not</strong> mean a citation is bad — it means there is a discussion you may want to read. Follow the <code>url</code> to the PubPeer thread and judge the comments in context.</p>
+<p>When none of the cited references has PubPeer comments, the traffic light is <code>na</code> (not applicable) and the table is empty; when some do, the traffic light is <code>info</code>. If PubPeer cannot be reached, the traffic light is <code>fail</code> and the references were not checked. A flagged result does <strong>not</strong> mean a citation is bad — it means there is a discussion you may want to read. Follow the <code>url</code> to the PubPeer thread and judge the comments in context.</p>
 </section><section id="options" class="level2" data-number="31.5"><h2 data-number="31.5" class="anchored" data-anchor-id="options">
 <span class="header-section-number">31.5</span> Options</h2>
 <p><code>ref_pubpeer</code> takes only the <code>paper</code> argument.</p>
 </section><section id="notes" class="level2" data-number="31.6"><h2 data-number="31.6" class="anchored" data-anchor-id="notes">
 <span class="header-section-number">31.6</span> Notes</h2>
-<p>In the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.</p>
+<p>On Metacheck’s website, the PubPeer check is not one of the default checks: you choose it, because it sends the cited DOIs to an external service.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

@@ -567,6 +567,20 @@ Note
 </div>
 </section><section id="running-the-module" class="level2" data-number="29.3"><h2 data-number="29.3" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">29.3</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a> runs this module with the code run: tick <em>Also run the R and Python code</em> under <em>Run Metacheck on a Repository</em> (a folder, a .zip file, or a link to an online repository; it is ticked there by default), or <em>Also run the code in the paper’s repository</em> under <em>Run Metacheck on a Paper</em>. The <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/">ResearchBox Check</a> and the <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/">TU/e Data Manager Check</a> offer it too. The server first installs the R and Python packages the code needs, and then runs each script for at most 5 minutes, in a closed sandbox without internet access.</p>
+<p>The <a href="../chapters/get-started.html#docker-installation">Docker installation</a> offers the same website on your own computer. There, the code runs inside the Docker container, which is not a closed sandbox: the code can use the internet, but it cannot reach the files on your computer.</p>
+</div>
+</div>
 <p>The default is the static phase — it does not run anything. This example reads every repository <code>demopaper()</code> links to, so (like the rest of this chapter) it needs those repositories to be reachable; the output below is shown rather than run live, so the chapter does not depend on every linked repository’s uptime at render time:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -980,7 +994,7 @@ Tip
 <pre><code>Warning message:
 reproducibility_check(sandbox = "docker"): this paper declared R version
 4.3.1, but docker_use_declared_version = FALSE (the default), so the run
-uses the pre-built metacheck_r image's own R version instead, for speed.
+uses the pre-built metacheck_r_large image's own R version instead, for speed.
 Set docker_use_declared_version = TRUE to match the paper's declared
 version exactly -- slower, since every dependency then installs from
 scratch rather than using the pre-built image.</code></pre>
@@ -1335,6 +1349,15 @@ Note
 <td>plain-text bulleted summary, as one text also when the paper has R and Python code</td>
 </tr>
 <tr class="even">
+<td><code>$checklist_section</code></td>
+<td>(only when <code>execute = TRUE</code>) the section the checklist report (<code>report_type = "checklist"</code>) shows for this check: how the scripts were run, what happened to each script in run order, other problems in the files, and how many of the paper’s reported tests were found in the output of the code</td>
+</tr>
+<tr class="odd">
+<td><code>$brief</code></td>
+<td>
+<code>TRUE</code> when code was run and at least one script ran to the end, stopped with an error, or ran out of time; the brief report then keeps this check whatever its light</td>
+</tr>
+<tr class="even">
 <td><code>$sandbox</code></td>
 <td>(only present when <code>keep_sandbox = TRUE</code>) the path to the materialised throwaway directory — see below</td>
 </tr>
@@ -1459,7 +1482,7 @@ Warning
 <p><code>download</code>, <code>skip_types</code>, and <code>peek_zips</code> are also part of the key the LLM response cache uses for <code>data_check</code>’s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.</p>
 </div>
 </div>
-<p><code>keep_sandbox = TRUE</code> is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (<code>data/</code> for the Psych-DS layout, or a copy of the whole package for the package layout), <code>output/</code> (anything a script’s write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/<code>.spv</code>/<code>.smcl</code>/<code>.out</code> file — a <code>statistical_output/</code> folder with the structured results documents. This is also what <a href="../chapters/mod-psychds-check.html">convert_psychds()</a> looks for when building an archive: pass <code>keep_sandbox = TRUE</code> if you want its <code>statistical_output/</code> folder included, since <code>convert_psychds()</code> does not run <code>reproducibility_check</code> itself and has no other way to obtain it.</p>
+<p><code>keep_sandbox = TRUE</code> is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (<code>data/</code> for the Psych-DS layout, or a copy of the whole package for the package layout), <code>output/</code> (anything a script’s write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/<code>.spv</code>/<code>.smcl</code>/<code>.out</code> file — a <code>statistical_output/</code> folder with the structured results documents. <code>convert_psychds()</code>, which is meant to put this folder into a Psych-DS archive, is not yet available in the released version or in <code>dev</code>; see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</p>
 </section><section id="notes-and-limitations" class="level2" data-number="29.17"><h2 data-number="29.17" class="anchored" data-anchor-id="notes-and-limitations">
 <span class="header-section-number">29.17</span> Notes and limitations</h2>
 <p>Honest limits worth keeping in mind:</p>

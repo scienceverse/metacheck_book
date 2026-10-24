@@ -510,8 +510,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">37.1</span> Overview</h2>
 <p>Metacheck has two modules that work together to check research code:</p>
 <ul>
-<li><p><strong><code>repo_check</code></strong> lists all files in a repository and checks for basic organisational quality: is there a README? Are there unextracted zip files? How many code, data, and other files are there?</p></li>
-<li><p><strong><code>code_check</code></strong> reads the actual code files and checks them for four best-practice issues: comments, absolute file paths, grouped library loading, and missing data files.</p></li>
+<li><p><strong><code>repo_check</code></strong> lists all files in a repository and checks for basic organisational quality: is there a README? Are there archives whose contents cannot be listed? Do the file names follow good practice, and are there files that do not belong in a repository? How many code, data, and other files are there?</p></li>
+<li><p><strong><code>code_check</code></strong> reads the actual code files and checks them for best-practice issues: comments, absolute file paths, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> and <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls, grouped library loading, missing data files, code that cannot be parsed, and whether the package versions are recorded.</p></li>
 </ul>
 <p>Normally both modules fetch files automatically from online repositories (OSF, GitHub, GitLab, ResearchBox, Zenodo, Dataverse, Figshare, Dryad, and several others — see <a href="../chapters/mod-repo-check.html">Repository Check</a> for the full list) by following links found in a paper. This vignette shows how to point them at a <strong>local folder</strong> instead — useful when:</p>
 <ul>
@@ -530,6 +530,19 @@ Tip
 </div>
 <div class="callout-body-container callout-body">
 <p>If you just want a report on a folder — no manuscript involved — <code><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository()</a></code> wraps the pattern this chapter walks through by hand: give it a path, and it runs <code>repo_check</code>, <code>code_check</code>, <code>data_check</code>, and <code>codebook_check</code> on it and writes a report named after the folder. See <a href="#downloading-osf-files-to-check-locally">Downloading OSF files to check locally</a> below for an example, and <a href="../chapters/creating-a-report.html">Creating a Report</a> for the full function reference.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a> checks a local folder too: under <em>Run Metacheck on a Repository</em>, choose the folder or a .zip file, and it runs <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code>, and can also run the R and Python code. The folder is then uploaded to the server, which deletes it once it has been read. To keep files on your own computer, for example files sent to you for review, use the <a href="../chapters/get-started.html#docker-installation">Docker installation</a>, which offers the same website locally.</p>
 </div>
 </div>
 <hr></section><section id="before-you-start" class="level2" data-number="37.2"><h2 data-number="37.2" class="anchored" data-anchor-id="before-you-start">
@@ -555,7 +568,7 @@ Tip
 </tbody>
 </table>
 <p>Both forward slashes <code>/</code> and backslashes <code>\\</code> work on Windows inside R.</p>
-<p>When you provide a local path, the folder is treated as a repository in exactly the same way as an OSF project or GitHub repo. Each folder gets its own row in the summary tables and its own traffic light.</p>
+<p>When you provide a local path, the folder is treated as a repository in exactly the same way as an OSF project or GitHub repo. Each folder is a repository of its own, named by its path in the <code>repo_url</code> column of the file table. The summary table has one row per paper, however many folders you check, and the module gives one traffic light for all of them together.</p>
 <hr></section><section id="part-1-repo_check-on-local-files" class="level2" data-number="37.3"><h2 data-number="37.3" class="anchored" data-anchor-id="part-1-repo_check-on-local-files">
 <span class="header-section-number">37.3</span> Part 1: <code>repo_check</code> on local files</h2>
 <section id="what-repo_check-checks" class="level3" data-number="37.3.1"><h3 data-number="37.3.1" class="anchored" data-anchor-id="what-repo_check-checks">
@@ -567,11 +580,16 @@ Tip
 <li>
 <strong>Check for a README</strong> — a README file is good practice and helps others understand the contents of a folder</li>
 <li>
-<strong>Flag zip archives</strong> — if the folder contains <code>.zip</code> or other archive files, <code>repo_check</code> will flag them because their contents cannot be inspected</li>
+<strong>Look inside zip archives</strong> — the files inside a <code>.zip</code> file are listed in place of the archive. Other archive formats, such as <code>.7z</code>, <code>.rar</code> or <code>.tar.gz</code>, cannot be listed this way, so <code>repo_check</code> flags them and recommends <code>.zip</code>
+</li>
+<li>
+<strong>Check file names</strong> — for example names or paths that are too long, or characters that cause problems on some computers</li>
+<li>
+<strong>Flag files that do not belong in a repository</strong> — files that software creates by itself, such as <code>.DS_Store</code>, <code>.Rhistory</code> or editor backups, and version-control or editor folders such as <code>.git/</code>. They are left out of the file list and named in the report</li>
 <li>
 <strong>Report counts</strong> — how many code files, data files, and so on</li>
 </ul>
-<p>The traffic light is <code>"green"</code> when a README is present and there are no unextracted archives, and <code>"yellow"</code> otherwise.</p>
+<p>The traffic light is <code>"red"</code> when the folder holds files that software creates by itself (such as <code>.DS_Store</code> or <code>.Rhistory</code>). It is <code>"green"</code> when every repository has a README, no archive is left that could not be listed, every file could be classified, no file name breaks a naming rule, there are no version-control or editor folders, every repository could be read, and (when there is a manuscript) the studies it names match how the files are grouped. Otherwise it is <code>"yellow"</code>.</p>
 </section><section id="checking-a-single-folder" class="level3" data-number="37.3.2"><h3 data-number="37.3.2" class="anchored" data-anchor-id="checking-a-single-folder">
 <span class="header-section-number">37.3.2</span> Checking a single folder</h3>
 <div class="cell">
@@ -581,10 +599,10 @@ Tip
 <span><span class="co"># Plain-text summary</span></span>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">summary_text</span></span>
 <span></span>
-<span><span class="co"># Summary counts (one row per folder)</span></span>
+<span><span class="co"># Summary counts (one row per paper)</span></span>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">summary_table</span></span>
 <span></span>
-<span><span class="co"># "green" or "yellow"</span></span>
+<span><span class="co"># "green", "yellow" or "red"</span></span>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">traffic_light</span></span>
 <span></span>
 <span><span class="co"># Full file list — one row per file, with file_type and file_size columns</span></span>
@@ -595,12 +613,12 @@ Tip
 <p><strong>Note on cloud-sync folders (OneDrive, iCloud, Dropbox):</strong> If the folder is stored online and files have not been downloaded locally, the check will be slow because each code file triggers a download when it is read. Before running, right-click the folder in your file browser and choose <strong>“Always keep on this device”</strong> (OneDrive) or <strong>“Download Now”</strong> (iCloud) to make all files available locally first.</p>
 </blockquote>
 <p>A typical <code>$summary_text</code> when the folder is missing a README might look like:</p>
-<pre><code>We found 8 files in 1 repository.
-We found 0 README files and 1 repository without READMEs.</code></pre>
-<p>And <code>$summary_table</code> will have columns: <code>repo_n</code>, <code>files_n</code>, <code>files_code</code>, <code>files_data</code>, <code>files_readme</code>, <code>files_zip</code>.</p>
+<pre><code>- We found 8 files in 1 repository.
+- We found 0 README files and 1 repository without READMEs.</code></pre>
+<p>And <code>$summary_table</code> will have columns: <code>paper_id</code>, <code>repo_n</code>, <code>repo_unchecked</code>, <code>files_n</code>, <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, <code>files_zip</code>, <code>files_unknown</code>, <code>naming_issues</code>, <code>roster_mismatch</code>.</p>
 </section><section id="checking-multiple-folders" class="level3" data-number="37.3.3"><h3 data-number="37.3.3" class="anchored" data-anchor-id="checking-multiple-folders">
 <span class="header-section-number">37.3.3</span> Checking multiple folders</h3>
-<p>Pass a vector of paths to check several folders at once. Each is treated as a separate repository, so you get one summary row per folder:</p>
+<p>Pass a vector of paths to check several folders at once. Each is treated as a separate repository. The summary table still has one row, for the one paper, with <code>repo_n</code> counting the folders; the file table names each file’s folder in <code>repo_url</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"C:/projects/study_1_power_analysis"</span>,</span>
@@ -610,27 +628,36 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span></span>
 <span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"repo_check"</span>, local_path <span class="op">=</span> <span class="va">paths</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Three rows — one per folder</span></span>
+<span><span class="co"># One row, with repo_n = 3</span></span>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">summary_table</span></span>
 <span></span>
 <span><span class="co"># All files from all three folders, with repo_url identifying the source</span></span>
-<span><span class="va">repo</span><span class="op">$</span><span class="va">table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">repo</span><span class="op">$</span><span class="va">table</span></span>
+<span></span>
+<span><span class="co"># Number of files of each type (code, data, readme, ...) per folder</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">repo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">repo_url</span>, <span class="va">repo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This is a quick way to compare whether several projects all have READMEs and no stray zip files before you submit or share them.</p>
+<p>This is a quick way to compare whether several projects all have READMEs and no archives that cannot be listed before you submit or share them.</p>
 <hr></section></section><section id="part-2-code_check-on-local-files" class="level2" data-number="37.4"><h2 data-number="37.4" class="anchored" data-anchor-id="part-2-code_check-on-local-files">
 <span class="header-section-number">37.4</span> Part 2: <code>code_check</code> on local files</h2>
 <section id="what-code_check-checks" class="level3" data-number="37.4.1"><h3 data-number="37.4.1" class="anchored" data-anchor-id="what-code_check-checks">
 <span class="header-section-number">37.4.1</span> What <code>code_check</code> checks</h3>
-<p><code>code_check</code> builds on <code>repo_check</code>: it first runs the file inventory, then reads every code file (R, Rmd, Qmd, SAS, SPSS, Stata) and checks for:</p>
+<p><code>code_check</code> builds on <code>repo_check</code>: it first runs the file inventory, then reads every code file (R, Rmd, Qmd, Python and Jupyter notebooks, SAS, SPSS, Stata, Mplus, and MATLAB; JASP files are counted but not read) and checks for:</p>
 <ul>
 <li>
 <strong>Comments</strong> — is the code explained? A file with no comment lines at all is flagged.</li>
 <li>
 <strong>Absolute paths</strong> — paths like <code>C:/myname/files/data.csv</code> only work on one specific computer and will break for anyone else trying to reproduce the analysis.</li>
 <li>
+<strong><code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> and <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> calls</strong> — <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> ties the script to one computer’s folders, and <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> installs software on the computer of whoever runs the script, without asking.</li>
+<li>
 <strong>Library loading</strong> — are all <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> / <code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls grouped together near the top of the script, or are they scattered throughout?</li>
 <li>
 <strong>Missing data files</strong> — if the script loads <code>read.csv("data.csv")</code> but <code>data.csv</code> is not in the folder, that is flagged.</li>
+<li>
+<strong>Parsing</strong> — can the R code (<code>.R</code>, <code>.Rmd</code>, <code>.qmd</code>) be read without syntax errors?</li>
+<li>
+<strong>Recorded package versions</strong> — is there an <code>renv.lock</code> file, a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> record, or a <code>groundhog</code>/<code>checkpoint</code> call for R code, and a package list such as <code>requirements.txt</code> for Python code?</li>
 </ul></section><section id="checking-your-own-code" class="level3" data-number="37.4.2"><h3 data-number="37.4.2" class="anchored" data-anchor-id="checking-your-own-code">
 <span class="header-section-number">37.4.2</span> Checking your own code</h3>
 <p>You have finished a project and want to review the quality of your scripts before sharing:</p>
@@ -644,14 +671,14 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span><span class="co"># One row per code file with detailed metrics</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">table</span></span>
 <span></span>
-<span><span class="co"># "green" (no issues), "yellow" (some issues), or "na" (no code files found)</span></span>
+<span><span class="co"># "green" (no issues), "yellow" (some issues), or "na" (no code files read)</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">traffic_light</span></span>
 <span></span>
 <span><span class="co"># Full formatted report</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">report</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote class="blockquote">
-<p><strong>Note on cloud-sync folders:</strong> If your files are on OneDrive, iCloud, or another cloud-sync service and are not fully downloaded, you will see the message <em>“If folders are stored online, the check might be slow as all files need to be downloaded.”</em> In that case, right-click the folder and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) before running the check.</p>
+<p><strong>Note on cloud-sync folders:</strong> If your files are on OneDrive, iCloud, or another cloud-sync service and are not fully downloaded, the check will be slow, because every file has to be downloaded when it is read; Metacheck does not warn you about this. Right-click the folder and choose “Always keep on this device” (OneDrive) or “Download Now” (iCloud) before running the check.</p>
 </blockquote>
 </section><section id="checking-multiple-projects" class="level3" data-number="37.4.3"><h3 data-number="37.4.3" class="anchored" data-anchor-id="checking-multiple-projects">
 <span class="header-section-number">37.4.3</span> Checking multiple projects</h3>
@@ -686,7 +713,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </div>
 </section><section id="code-hosted-on-an-unsupported-repository" class="level3" data-number="37.4.5"><h3 data-number="37.4.5" class="anchored" data-anchor-id="code-hosted-on-an-unsupported-repository">
 <span class="header-section-number">37.4.5</span> Code hosted on an unsupported repository</h3>
-<p>Metacheck currently retrieves files automatically from <strong>OSF, GitHub, ResearchBox, and Zenodo</strong>. Many other services exist that are not yet supported. If the paper links to one of these, download the files manually and point <code>code_check</code> at the downloaded folder.</p>
+<p>Metacheck currently retrieves files automatically from <strong>OSF, GitHub, GitLab, ResearchBox, PsychArchives and other DSpace repositories, Zenodo, Dataverse, Figshare, Dryad, ReShare, 4TU.ResearchData, Mendeley Data, DataONE, and LDbase</strong>. Other services, such as Bitbucket or Google Drive, are not supported. If the paper links to one of these, download the files manually and point <code>code_check</code> at the downloaded folder.</p>
 <p>The workflow is the same for all of them:</p>
 <ol type="1">
 <li>Go to the link in the paper</li>
@@ -696,9 +723,9 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Author shared code on GitLab — you downloaded or cloned it locally</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Author shared code on Bitbucket — you downloaded or cloned it locally</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/test_paper.html">test_paper</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"code_check"</span>,</span>
-<span>                     local_path <span class="op">=</span> <span class="st">"C:/downloads/lee_2023_gitlab_code"</span><span class="op">)</span></span>
+<span>                     local_path <span class="op">=</span> <span class="st">"C:/downloads/lee_2023_bitbucket_code"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">summary_text</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -716,14 +743,17 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <span><span class="co"># Online files have a URL in repo_url; local files have the folder path</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">repo_url</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>repo_check</code> reports on each repository separately, so you can see at a glance whether the README and zip issues are in the online repo or the local folder:</p>
+<p><code>repo_check</code> treats the online repository and the local folder as two repositories. The summary table counts both in one row for the paper, and the <code>repo_url</code> column of the file table shows which files, README files, and archives are in the online repo and which in the local folder:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">repo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/module_run.html">module_run</a></span><span class="op">(</span><span class="va">paper</span>, <span class="st">"repo_check"</span>,</span>
 <span>                   local_path <span class="op">=</span> <span class="st">"C:/peer_review/garcia_2024_extra_scripts"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># One row per repository — the OSF project and the local folder</span></span>
+<span><span class="co"># One row for the paper, with repo_n = 2 (the OSF project and the local folder)</span></span>
 <span><span class="va">repo</span><span class="op">$</span><span class="va">summary_table</span></span>
-<span><span class="va">repo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">repo</span><span class="op">$</span><span class="va">traffic_light</span></span>
+<span></span>
+<span><span class="co"># Number of files of each type per repository</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">repo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">repo_url</span>, <span class="va">repo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">file_type</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr></section><section id="part-4-running-repo_check-and-code_check-as-a-two-step-pipeline" class="level2" data-number="37.6"><h2 data-number="37.6" class="anchored" data-anchor-id="part-4-running-repo_check-and-code_check-as-a-two-step-pipeline">
 <span class="header-section-number">37.6</span> Part 4: Running <code>repo_check</code> and <code>code_check</code> as a two-step pipeline</h2>
@@ -763,25 +793,24 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <tr class="odd">
 <td><code>$traffic_light</code></td>
 <td>
-<code>"green"</code> (README present, no zips), <code>"yellow"</code> (issues), or <code>"na"</code> (no repos)</td>
+<code>"green"</code> (no issues), <code>"yellow"</code> (issues, such as a missing README or an archive that cannot be listed), <code>"red"</code> (files that software creates by itself, such as <code>.DS_Store</code>), or <code>"na"</code> (no repos)</td>
 </tr>
 <tr class="even">
 <td><code>$summary_text</code></td>
-<td>Plain-text summary: file counts, README status, zip files</td>
+<td>Plain-text summary: file counts, README status, archives, file names, files that do not belong</td>
 </tr>
 <tr class="odd">
 <td><code>$summary_table</code></td>
-<td>One row per folder: <code>repo_n</code>, <code>files_n</code>, <code>files_code</code>, <code>files_data</code>, <code>files_readme</code>, <code>files_zip</code>
+<td>One row per paper: <code>paper_id</code>, <code>repo_n</code>, <code>repo_unchecked</code>, <code>files_n</code>, <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, <code>files_zip</code>, <code>files_unknown</code>, <code>naming_issues</code>, <code>roster_mismatch</code>
 </td>
 </tr>
 <tr class="even">
 <td><code>$table</code></td>
-<td>One row per file: <code>repo_url</code>, <code>file_name</code>, <code>file_url</code>, <code>file_location</code>, <code>file_size</code>, <code>file_type</code>
-</td>
+<td>One row per file, with columns including <code>paper_id</code>, <code>repo_url</code>, <code>file_name</code>, <code>file_path</code>, <code>file_url</code>, <code>file_location</code>, <code>file_size</code>, <code>file_type</code>, and <code>group</code> (the study a file belongs to)</td>
 </tr>
 <tr class="odd">
 <td><code>$report</code></td>
-<td>Formatted report explaining any README or zip issues</td>
+<td>Formatted report explaining any README, archive, file-name, or other issues</td>
 </tr>
 </tbody>
 </table></section><section id="code_check-output" class="level3" data-number="37.7.2"><h3 data-number="37.7.2" class="anchored" data-anchor-id="code_check-output">
@@ -799,15 +828,15 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 <tr class="odd">
 <td><code>$traffic_light</code></td>
 <td>
-<code>"green"</code> (no issues), <code>"yellow"</code> (issues found), or <code>"na"</code> (no code files)</td>
+<code>"green"</code> (no issues), <code>"yellow"</code> (issues found), or <code>"na"</code> (no code files read)</td>
 </tr>
 <tr class="even">
 <td><code>$summary_text</code></td>
-<td>Plain-text summary of all four checks across all files</td>
+<td>Plain-text summary of all checks across all files</td>
 </tr>
 <tr class="odd">
 <td><code>$summary_table</code></td>
-<td>Counts: <code>code_n</code>, <code>code_checked</code>, <code>code_abs_path</code>, <code>code_missing_files</code>, <code>code_min_comments</code>, <code>code_parse_errors</code>
+<td>One row per paper: <code>paper_id</code>, <code>code_n</code>, <code>code_checked</code>, <code>code_abs_path</code>, <code>code_setwd</code>, <code>code_install_packages</code>, <code>code_missing_files</code>, <code>code_min_comments</code>, <code>code_parse_errors</code>, <code>code_packages_n</code>, <code>code_version_pinned</code>
 </td>
 </tr>
 <tr class="even">
@@ -841,7 +870,7 @@ We found 0 README files and 1 repository without READMEs.</code></pre>
 </tr>
 <tr class="odd">
 <td><code>language</code></td>
-<td>Detected language: R, SAS, SPSS, or Stata</td>
+<td>Detected language: R, Python, SAS, SPSS, Stata, Mplus, MATLAB, or JASP</td>
 </tr>
 <tr class="even">
 <td><code>percentage_comment</code></td>

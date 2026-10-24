@@ -492,7 +492,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The modules it summarises make <strong>live network calls</strong>, so an internet connection is needed.</p>
+<p>Of the modules it summarises, only <a href="../chapters/mod-ref-pubpeer.html">ref_pubpeer</a> makes <strong>live network calls</strong> (to PubPeer), so the example below needs an internet connection. <a href="../chapters/mod-ref-retraction.html">ref_retraction</a> and <a href="../chapters/mod-ref-replication.html">ref_replication</a> run offline on databases that ship with Metacheck, and <a href="../chapters/mod-ref-accuracy.html">ref_accuracy</a> reads the CrossRef records already stored in the paper’s <code>bib_match</code> table.</p>
 </div>
 </div>
 </section><section id="running-the-module" class="level2" data-number="35.2"><h2 data-number="35.2" class="anchored" data-anchor-id="running-the-module">
@@ -578,7 +578,7 @@ Note
 </table>
 </div>
 </div>
-<p>A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.</p>
+<p>A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication (or reproduction), or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.</p>
 </section><section id="interpreting-the-result" class="level2" data-number="35.3"><h2 data-number="35.3" class="anchored" data-anchor-id="interpreting-the-result">
 <span class="header-section-number">35.3</span> Interpreting the result</h2>
 <p><code>ref_summary</code> inherits everything from the modules it summarises, so the same cautions apply: a filled-in cell is a prompt to look, not a verdict. Its value is convenience — instead of reading four separate tables, you scan one. The summary itself is informational (<code>info</code>); the underlying modules carry the traffic lights.</p>

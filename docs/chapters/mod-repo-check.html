@@ -638,6 +638,27 @@ Note
 </div>
 </section><section id="running-the-module" class="level2" data-number="22.3"><h2 data-number="22.3" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">22.3</span> Running the module</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Without R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website</a> runs this module in three ways:</p>
+<ul>
+<li>
+<strong>Run Metacheck on a Repository:</strong> choose a folder or a .zip file, or paste a link to an online repository. The website runs <code>repo_check</code>, <code>code_check</code>, and <code>data_check</code> on it, and can also run the R and Python code (<a href="../chapters/mod-reproducibility-check.html">Reproducibility Check</a>).</li>
+<li>
+<strong>Run Metacheck on a Paper:</strong> tick the module under <em>Checks</em> to run it on the repositories the paper links to, or tick <em>Also run the code in the paper’s repository</em>.</li>
+<li>The <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/">ResearchBox Check</a> does the same for a box on ResearchBox, and the <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/">TU/e Data Manager Check</a> checks a data package against TU/e’s archiving guidelines.</li>
+</ul>
+<p>A folder or .zip file you choose is uploaded to the server. To keep it on your own computer, use the <a href="../chapters/get-started.html#docker-installation">Docker installation</a>, which offers the same website. The website runs the modules with their default settings; to change them, run them in R as described in this chapter.</p>
+</div>
+</div>
 <p><code>demopaper()</code> links to several repositories.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
@@ -738,7 +759,8 @@ Note
 </section><section id="running-on-many-papers" class="level2" data-number="22.4"><h2 data-number="22.4" class="anchored" data-anchor-id="running-on-many-papers">
 <span class="header-section-number">22.4</span> Running on many papers</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"repo_check"</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">psychsci</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="st">"repo_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="repositories-it-searches" class="level2" data-number="22.5"><h2 data-number="22.5" class="anchored" data-anchor-id="repositories-it-searches">
@@ -909,7 +931,7 @@ Note
 <p><code>repo_check</code> runs a <strong>preliminary</strong> classification and grouping pass over every file it finds:</p>
 <ul>
 <li>
-<code>data_classify_files()</code> labels each file’s <code>data_type</code> (data, code, readme, archive, documentation, output, …) from its name/path/extension;</li>
+<code>data_classify_files()</code> labels each file’s <code>data_type</code> (data, code, documentation, materials, output, or unknown) from its name/path/extension;</li>
 <li>
 <code>.data_doc_role()</code> further labels documentation-type files (<code>readme</code>, <code>license</code>, <code>codebook</code>, …);</li>
 <li>
@@ -1287,7 +1309,7 @@ Note
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
-<td>at least one repository could not be checked or is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript’s study roster disagrees with the repository’s file grouping, a registration points at a closed source project, or version-control folders or editor settings were found</td>
+<td>at least one repository could not be checked or is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript’s study roster disagrees with the repository’s file grouping, a registration points at a closed source project of which no copy of the files exists, or version-control folders or editor settings were found</td>
 </tr>
 <tr class="odd">
 <td><strong>red</strong></td>
