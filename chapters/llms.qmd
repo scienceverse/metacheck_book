@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-Most of Metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do *more* when a large language model (LLM) is available — most notably the [power](mod-power.qmd) module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the [prereg_check](mod-prereg-check.qmd) module. Furthermore, you might want to use LLMs directly to categorize information retrieved through the text search, or extract information from papers. 
+Most of Metacheck works entirely with regular expressions and R code, and needs no AI at all. A few modules can do *more* when a large language model (LLM) is available — most notably the [power](mod-power.qmd) module, which can read sentences about power analyses and extract structured details (test, sample size, alpha, power, effect size), and the [data_check](mod-data-check.qmd) and [codebook_check](mod-codebook-check.qmd) modules. Furthermore, you might want to use LLMs directly to categorize information retrieved through the text search, or extract information from papers. 
 
 This chapter explains how LLM support works in Metacheck: how to turn it on, how to choose a model, how to run a model locally with Ollama or through a cloud API, and how to query papers directly with `llm()`.
 
@@ -23,6 +23,12 @@ This chapter explains how LLM support works in Metacheck: how to turn it on, how
 
 LLM use is **entirely optional and opt-in**. Metacheck restricts LLMs to *classification of existing text*, never evaluation of quality. We prioritise non-LLM methods, and the vast majority of modules work without any LLM. When you do use one, the recommended setup runs the model **locally** so no data leaves your computer.
 :::
+
+## Without R: the website and the Docker installation
+
+You can also use a language model without setting one up in R. On [Metacheck's website on SURF Research Cloud](https://metacheckserve.metacheck.src.surf-hosted.nl/), the power check uses a small open-source Qwen model (`qwen3.5:4b`) that runs on the server itself. This can be slow, especially when several people use the server at the same time. That is a deliberate choice: the model runs on SURF's servers in the Netherlands, so the paragraphs are never sent to an external AI provider, and the server stays GDPR compliant.
+
+To run the model on your own computer without R, use the [Docker installation](get-started.qmd#docker-installation): its installer can install [Ollama](ollama.qmd) with the same model, so the paragraphs stay on your computer, or use Mistral (EU) with your own API key. On the website and in the Docker installation, only the power check uses the language model; the other uses described in this chapter need R.
 
 Because the code in this chapter needs an LLM to be installed and configured, the examples below are shown but not executed when this book is built. You can run all of them yourself once you have set up either Ollama or a cloud API key, as described below.
 
@@ -57,7 +63,7 @@ The model is set with `llm_model()`. A model is named either as `"provider"` (us
 ```{r}
 #| eval: false
 llm_model()                                 # show the model currently set
-llm_model("ollama/qwen2.5:3b")              # a specific local Ollama model
+llm_model("ollama/qwen3.5:4b")              # a specific local Ollama model
 llm_model("groq")                           # the default Groq cloud model
 llm_model("groq/llama-3.3-70b-versatile")   # a specific Groq model
 ```
@@ -102,7 +108,7 @@ Metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it sup
 2. Pull a model from a terminal (not R). A small, capable starting model:
 
    ``` bash
-   ollama pull qwen2.5:3b
+   ollama pull qwen3.5:4b
    ```
 
    Other useful models: `llama3.2` (a good general default) and `qwen2.5:7b` (more capable, needs more memory). You can see everything you have pulled with `ollama list`.
@@ -111,7 +117,7 @@ Metacheck uses [ellmer](https://ellmer.tidyverse.org/) under the hood, so it sup
 ```{r}
 #| eval: false
 llm_use(TRUE)
-llm_model("ollama/qwen2.5:3b")
+llm_model("ollama/qwen3.5:4b")
 ```
 
 For a full walkthrough — system requirements, verifying the server is running, choosing a model size for your hardware, and troubleshooting — see the dedicated [Local AI with Ollama](ollama.qmd) chapter.
@@ -358,4 +364,4 @@ If you do want to inspect a model's reasoning for a structured call (`type` prov
 
 ### Caching responses
 
-Because `llm()` runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default and cached replays do not count against `llm_max_calls()`. The [Caching and Reuse](caching.qmd) chapter explains how it works, and how to inspect or clear it (`llm_cache()`, `llm_cache_clear()`).
+Because `llm()` runs at temperature 0, its answers are reproducible, and Metacheck stores them on disk so re-running a report on the same paper replays the answers instead of re-billing the provider. The cache is on by default. Cached replays still count against `llm_max_calls()`, because the limit is checked before the cache is consulted. The [Caching and Reuse](caching.qmd) chapter explains how it works, and how to inspect or clear it (`llm_cache()`, `llm_cache_clear()`).

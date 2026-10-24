@@ -34,21 +34,14 @@ The whole process has two steps:
 ## Before you start
 
 You need R (version 4.3.0 or newer) and, ideally, RStudio. You also need the
-metacheck package. The functions in this chapter are part of the development
-version, so install that rather than the stable release. The Setting up
-Metacheck chapter explains this in full; the short version is that the
-development version is not available as a pre-compiled binary from
-R-universe, so install it directly from GitHub, which builds the package from
-source and therefore needs a compiler (Rtools on Windows, the Xcode
-command-line tools on macOS, the standard development tools on Linux):
+metacheck package. The [Setting up Metacheck](get-started.qmd) chapter
+explains how to install it in full; the short version is that you install it
+from the scienceverse R-universe, with one command:
 
 ``` r
-install.packages("pak")
-pak::pkg_install("scienceverse/metacheck@dev")
+install.packages("metacheck",
+  repos = c("https://scienceverse.r-universe.dev", "https://cloud.r-project.org"))
 ```
-
-A source install keeps the name `metacheck`, so you load it with
-`library(metacheck)`.
 
 You can type commands into the **console**, which is the panel in RStudio where
 R shows its output and waits for you to type, or in a new R file, where you can copy paste lines of code, and run them individually, or all together. When this chapter shows a line
@@ -213,17 +206,35 @@ You can download a single project, using the code from the `osf_id` column
 in the table `projects` created above:
 
 ```{r}
-# just one project, by its code
+# first create the folder the download goes into
+dir.create("how_many_registered_studies_are_published")
+
+# then download just one project, by its code
 osf_file_download("8uqfb", download_to = "how_many_registered_studies_are_published")
 ```
 
 The name you specify is the folder the download goes into, so make sure the name
-is meaningful. Inside it, the project gets a folder named after its OSF ID, and
+is meaningful. Create this folder yourself before the first download, as in the
+code above (if the folder already exists, `dir.create()` only gives a warning
+saying so, which does no harm). Inside it, the project gets a folder named after its OSF ID, and
 each component gets a folder named after the component's title with its own OSF
 ID appended, so that two components sharing a title cannot collide and every
 folder can be traced back to the component it came from. If you enter an ID that
 does not exist, or one that has been deleted from the OSF, Metacheck will
 provide a warning.
+
+::: {.callout-important}
+## Create the download folder before the first download
+
+If the folder named in `download_to` does not exist yet, `osf_file_download()`
+creates it, but then writes the project straight into it, without the folder
+named after the OSF ID. Running the same command again then finds the folder,
+creates the OSF-ID folder inside it, and downloads the whole project a second
+time into that. Creating the folder first, with `dir.create()`, avoids this:
+the project always goes into its OSF-ID folder, and a second run with the same
+folder finds what is already there. Every example in this chapter therefore
+creates the folder first.
+:::
 
 ### While you are at it, why not check the repository?
 
@@ -232,7 +243,7 @@ look at what you actually shared, because you are about to archive it somewhere
 permanent, and it is much easier to fix a missing README or an undocumented
 column now than after the files have a DOI.
 
-Metacheck is designed to assist researchers though automated checks. One way it can do this is by asking users to upload a paper, and it will check if improvements can be made to how research is reported. But in the 0.2.0 version of metacheck, a range of new modules exist that allow users to check data and code in a folder, and automatically suggests improvements to the repository, data, and code. 
+Metacheck is designed to assist researchers though automated checks. One way it can do this is by asking users to upload a paper, and it will check if improvements can be made to how research is reported. But Metacheck also has a range of modules that allow users to check data and code in a folder, and automatically suggest improvements to the repository, data, and code.
 
 One line checks the folder you just downloaded:
 
@@ -262,6 +273,7 @@ on Zenodo cannot be deleted, so look at this report before you upload anything.
 To download every project the account contains, give the user ID directly:
 
 ```{r}
+dir.create("my_osf_archive")
 result <- osf_file_download("pct7w", download_to = "my_osf_archive")
 ```
 
@@ -270,9 +282,11 @@ this function exists to download a repository in full.
 
 The arguments you may want to change:
 
-- `download_to` is the folder to save into. It is created if it does not exist.
-  In this example the files go into the R working directory, in a new folder
-  called `my_osf_archive`.
+- `download_to` is the folder to save into. It is created if it does not exist,
+  but create it yourself before the first download, as described above, so
+  that each project goes into a folder named after its OSF ID. In this example
+  the files go into the R working directory, in a new folder called
+  `my_osf_archive`.
 - `mode` decides how much work is done before downloading. See the next
   section; the default is right for archiving your own account.
 - `max_file_size` and `max_download_size` are largest single file and largest
@@ -294,8 +308,10 @@ The arguments you may want to change:
 ::: {.callout-tip}
 ## Running it again
 
-Each project is saved in a folder named after it, and running the same command
-again reuses that folder, so nothing is duplicated into a second folder. Whether
+Each project is saved in a folder named after its OSF ID, and running the same
+command again reuses that folder, so nothing is duplicated into a second
+folder. This holds as long as you created the download folder before the first
+run, as described above. Whether
 the second run does less work depends on the mode. In `mode = "select"` it does:
 files already on disk at the size the OSF reports are not fetched again, so an
 interrupted download can simply be repeated and only what is missing is
@@ -324,6 +340,7 @@ those, so one line selects them:
 
 ```{r}
 # download your private projects (as the OSF will no longer host them)
+dir.create("my_private_osf_archive")
 projects |>
   subset(public == FALSE) |>
   osf_file_download(download_to = "my_private_osf_archive")
@@ -356,6 +373,7 @@ The code below makes these almost 2000 API calls, and subsequently downloads onl
 
 ```{r}
 # only files under 1 MB, each verified against its reported size
+dir.create("Many_Labs_2")
 osf_file_download("8cd4r", download_to = "Many_Labs_2",
                     mode = "select", max_file_size = 1)
 ```
@@ -517,7 +535,9 @@ the end of the file.
 
 **The download stops part way, or many files fail.** Usually the OSF rate limit.
 Set an OSF token if you have not, and run the same command again with the same
-`download_to`. The folder is reused either way. In `mode = "select"` files
+`download_to`. The folder is reused either way, as long as you created it
+before the first download; if you did not, the second run downloads
+everything again into a new folder named after the OSF ID inside it. In `mode = "select"` files
 already on disk at the right size are not fetched twice, so only the missing
 ones are downloaded; in the default `mode = "all"` every archive is fetched
 again, because that mode never listed the files and so cannot tell what is

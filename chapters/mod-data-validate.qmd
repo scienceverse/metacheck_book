@@ -13,17 +13,12 @@ llm_use(FALSE)
 ```
 
 ::: callout-warning
-These checks are still under development and are not in the released version of Metacheck. They are in the development version, which you install from GitHub (see [Setting up Metacheck](get-started.qmd)):
-
-```r
-install.packages("pak")
-pak::pkg_install("scienceverse/metacheck@dev")
-```
+These checks are part of `data_check`, which has not been validated: they have unknown error rates, so evaluate their output carefully.
 :::
 
 ## The basics
 
-This chapter does not describe a module you run on its own. These data-quality checks used to be a separate module (`data_validate`, plus a second one called `excel_check` for spreadsheet formatting), but both have since been **merged into [`data_check`](mod-data-check.qmd)**: there is no `module_run(paper, "data_validate")` anymore, because `data_check` now runs these checks automatically, on every column it reads. This chapter exists to document those checks in detail, separately from the rest of what `data_check` does.
+This chapter does not describe a module you run on its own. These data-quality checks used to be a separate module (`data_validate`, plus a second one called `excel_check` for spreadsheet formatting), but both have since been **merged into [`data_check`](mod-data-check.qmd)**: there is no `module_run(paper, "data_validate")` anymore, because `data_check` now runs these checks automatically, on every column it reads. This chapter exists to document those checks in detail, separately from the rest of what `data_check` does. Because they are part of `data_check`, these checks also run wherever `data_check` runs, including on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) and in the [Docker installation](get-started.qmd#docker-installation), which use the development version (see [Data Check](mod-data-check.qmd)).
 
 So the simplest way to see these checks run is the same call used for `data_check` itself, pointed at a folder with a planted problem — here a category typed two different ways:
 
@@ -428,12 +423,12 @@ module_run(test_paper(), "data_check", local_path = repo,
 
 | Light | Meaning |
 |---|---|
-| **green** | columns were checked and no issues were found. The light is also green when tabular data files were found but none could be read as a usable table, so that no column was checked; the summary text then says so |
-| **yellow** | fewer than a quarter of columns were flagged, or only careless-responding respondents, spreadsheet-formatting issues or space-separated `.csv` files were found |
+| **green** | columns were checked and no issues were found |
+| **yellow** | fewer than a quarter of columns were flagged, or only careless-responding respondents, spreadsheet-formatting issues, space-separated `.csv` files or R workspaces named `.rds` were found. The light is also yellow when tabular data files were found but none could be read as a usable table, so that no column was checked |
 | **red** | a quarter or more of columns were flagged |
-| **na** | no tabular data file was found, and there were no spreadsheet-formatting or space-separated `.csv` findings either |
+| **na** | no tabular data file was found, and there were no spreadsheet-formatting, space-separated `.csv` or R-workspace findings either |
 
-Spreadsheet-formatting and space-separated `.csv` findings are file-level, not column-level, so they are never counted in the quarter-of-columns red threshold — a workbook with a colour-coded cell does not turn the whole result red the way a quarter of columns being flagged would. If **no** columns could be validated at all (no readable tabular data) but a spreadsheet file *was* found with formatting problems, or a `.csv` separated by spaces, the result is `yellow`, not `na` — there is a real, actionable finding to report even though nothing could be checked at the column level. The light shown is the worse of this light and the one for reading the files, described in the [Data Check](mod-data-check.qmd) chapter.
+Spreadsheet-formatting, space-separated `.csv` and R-workspace (`.rds`) findings are file-level, not column-level, so they are never counted in the quarter-of-columns red threshold — a workbook with a colour-coded cell does not turn the whole result red the way a quarter of columns being flagged would. If **no** columns could be validated at all (no readable tabular data) but a spreadsheet file *was* found with formatting problems, or a `.csv` separated by spaces, the result is `yellow`, not `na` — there is a real, actionable finding to report even though nothing could be checked at the column level. The light shown is the worse of this light and the one for reading the files, described in the [Data Check](mod-data-check.qmd) chapter.
 
 ## Options
 
@@ -458,7 +453,7 @@ These are elements of what `data_check` returns. The [Data Check](mod-data-check
 
 `spreadsheet_file_n` counts every spreadsheet file examined (`.xlsx`/`.xls`/`.ods`/`.fods`), whether or not it had any issues; `spreadsheet_flagged_file_n` counts how many of those had at least one formatting finding.
 
-When no file could be read as a usable table, the column checks do not run: `$table` has no rows, `$findings` holds only the spreadsheet-formatting and space-separated `.csv` findings (if any), and `$demographics`, `$qualtrics` and `$careless` are not returned. The summary, report and traffic light are returned as usual.
+When no file could be read as a usable table, the column checks do not run: `$table` has no rows, `$findings` holds only the spreadsheet-formatting, space-separated `.csv` and R-workspace findings (if any), and `$demographics`, `$qualtrics` and `$careless` are not returned. The summary, report and traffic light are returned as usual.
 
 ## Related
 

@@ -20,7 +20,7 @@ The `ref_summary` module does not run a check of its own. Instead it **collects 
 Because it summarises the output of those modules, `ref_summary` must run **after** them, in the same report. On its own it has nothing to summarise.
 
 ::: callout-note
-The modules it summarises make **live network calls**, so an internet connection is needed.
+Of the modules it summarises, only [ref_pubpeer](mod-ref-pubpeer.qmd) makes **live network calls** (to PubPeer), so the example below needs an internet connection. [ref_retraction](mod-ref-retraction.qmd) and [ref_replication](mod-ref-replication.qmd) run offline on databases that ship with Metacheck, and [ref_accuracy](mod-ref-accuracy.qmd) reads the CrossRef records already stored in the paper's `bib_match` table.
 :::
 
 ## Running the module
@@ -49,7 +49,7 @@ mo$table[, c("bib_id", "accuracy_mismatch", "pubpeer",
   knitr::kable()
 ```
 
-A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication outcome, or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.
+A reference is interesting when any of these columns is filled in: a reported accuracy mismatch, a PubPeer comment, a replication (or reproduction), or a Retraction Watch entry. Follow up those references using the dedicated chapter for whichever column flagged it.
 
 ## Interpreting the result
 

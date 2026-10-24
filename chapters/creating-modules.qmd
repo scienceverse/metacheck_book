@@ -24,11 +24,15 @@ If you want to learn more about how to build a module, the information below sho
 
 ## How to create a Metacheck module
 
-Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. 
+Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. `module_template("name")` writes the template below to `modules/name.R`, ready for you to edit.
 
 ```{r, echo = FALSE, comment = ""}
 code_lines <- system.file("templates/_module.R", package = "metacheck") |>
-  readLines()
+  readLines() |>
+  # text_search() returns paper_id and header columns, not id and section
+  gsub("must have id column", "must have a paper_id column", x = _, fixed = TRUE) |>
+  gsub("dplyr::count(table, id,", "dplyr::count(table, paper_id,", x = _, fixed = TRUE) |>
+  gsub('table[, c("section", "text")]', 'table[, c("header", "text")]', x = _, fixed = TRUE)
 cat(paste0(code_lines, collapse = "\n"))
 ```
 
@@ -306,7 +310,7 @@ The traffic lights are used in single-paper reports to give a quick visual overv
 `r emojis$tl_na`️ not applicable;  
 `r emojis$tl_fail`️ check failed
 
-You will need to write some code to determine which traffic lights apply to your case. If you don't include a traffic light, but do include a `table` in the returned list, the following rule will be applied for the traffic light. The failed traffic light will be automatically applied if your code produces an error. 
+You will need to write some code to determine which traffic lights apply to your case. If you don't include a traffic light in the returned list, `module_run()` sets it to `"info"`. If your code produces an error, `module_run()` stops with that error; when the module runs in `report()` or `report_module_run()`, the error is caught and the module gets the failed traffic light. The template uses the following rule:
 
 ```{r, eval = FALSE}
   ## traffic light ----
@@ -352,7 +356,7 @@ The `report` should be a character vector, with one or more item. Use [quarto / 
   # use quarto / markdown for styling
   # https://quarto.org/docs/authoring/markdown-basics.html
   report_text <- "This table shows all of the sentences where the paper used the word *significant*. "
-  report_table <- table[, c("section", "text")]
+  report_table <- table[, c("header", "text")]
   further_info <- c(
     "For more opinions on the use of the word *significant*:",
     "* Motulsky, H. (2014). Opinion: Never use the word ‘significant’ in a scientific paper. Advances in regenerative biology, 1(1), 25155. doi: [10.3402/arb.v1.25155](https://doi.org/10.3402/arb.v1.25155)"

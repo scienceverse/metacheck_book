@@ -47,7 +47,7 @@ The `code_check` module analyses the **code files** shared with a paper. Buildin
 - whether **libraries are loaded in multiple places** rather than in a single block near the top of the script; and
 - whether the repository **pins its R/package environment** (`renv.lock`, a `sessionInfo()` dump, or a `groundhog`/`checkpoint` date-pin call), and for Python code whether it lists its packages (such as a `requirements.txt`), so package versions do not silently drift between the original analysis and any later reproduction attempt.
 
-The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the package was validated internally on papers published in *Psychological Science*.
+The module reports on *potential* problems. An absolute path or a missing file is not always an error — but it is usually worth a second look if you want the analysis to be reproducible. The checks are regular-expression based, so they can miss things or produce false positives on unusual scripts; the module was tried out internally on papers published in *Psychological Science*, but has not been formally validated.
 
 ::: callout-note
 This module makes **live network calls** to retrieve and inspect code files from the linked repositories. You need an internet connection to run the code below.
@@ -55,19 +55,18 @@ This module makes **live network calls** to retrieve and inspect code files from
 
 ## Languages: `code_lang()`
 
-The module first labels every file with its language using `code_lang()`, which is name-based (by extension):
+The module first labels every file with its language using `code_lang()`, which is name-based (by extension), except for `.ipynb` notebooks and `.qmd` Quarto documents: these declare their language inside the file (the notebook's kernel, the document's engine), so once a copy has been downloaded the language is read from the file itself. An R notebook is then checked as R, and a Python `.qmd` as Python; a notebook that cannot be read is assumed to be Python.
 
 | Language | Extensions | Analysed? |
 |---|---|---|
-| R | `.R`, `.Rmd`, `.qmd` | yes (parsed, commented, paths, `setwd()`, `install.packages()`, libraries, loaded files) |
-| Python | `.py`, `.ipynb` | yes (except parsing) |
+| R | `.R`, `.Rmd`, and `.qmd` / `.ipynb` that declare R | yes (parsed, commented, paths, `setwd()`, `install.packages()`, libraries, loaded files) |
+| Python | `.py`, and `.ipynb` / `.qmd` that declare Python | yes (except parsing) |
 | SAS | `.sas` | yes (except parsing) |
 | SPSS | `.sps` | yes (except parsing) |
 | Stata | `.do`, `.ado` | yes (except parsing) |
 | Mplus | `.inp` | yes (except parsing) |
 | MATLAB | `.m` | yes (except parsing) |
 | JASP | `.jasp` | **listed only** |
-| jamovi | `.omv` | **listed only** |
 
 A `.ipynb` notebook is JSON, not a plain script: its code cells are extracted from the `source` array of each cell (the same way `.Rmd`/`.qmd` are purled to R code below) before any text-based check runs. `.py` and `.m` are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but *running* the code stays out of scope (that is [reproducibility_check](mod-reproducibility-check.qmd)'s job, and it runs R and Python code, not MATLAB).
 
@@ -83,11 +82,11 @@ analysis.R   clean.do  model.sas survey.sps study.jasp
        "R"    "Stata"      "SAS"     "SPSS"     "JASP"
 ```
 
-A `.jasp` or `.omv` file bundles a dataset *with* its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. These files are counted and listed for completeness but not opened here (their data are read by `data_check`, and their analysis syntax recovered by `import_jasp()` / `import_omv()`). Only R-type files are *parsed* — the other text languages are checked for everything except parse errors.
+A `.jasp` or `.omv` file bundles a dataset *with* its analyses, but it is a binary (zip) archive, so none of the text-based checks apply. A `.jasp` file is counted and listed for completeness but not opened here; a jamovi `.omv` file is not counted or listed by `code_check` at all (their data are read by `data_check`, and their analysis syntax recovered by `import_jasp()` / `import_omv()`). Only R-type files are *parsed* — the other text languages are checked for everything except parse errors.
 
 ## Reading code: `code_read()` and `code_extract_r()`
 
-Code is read with `code_read()`, which guesses the file encoding (`readr::guess_encoding()`), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, `code_extract_r()` first purls the document (`knitr::purl`) down to just its R code, so prose and chunk options are not mistaken for code. The module detects an Rmd/qmd file by its leading `---` YAML fence and routes it through `code_extract_r()` automatically.
+Code is read with `code_read()`, which guesses the file encoding (`readr::guess_encoding()`), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, `code_extract_r()` first purls the document (`knitr::purl`) down to just its R code, so prose and chunk options are not mistaken for code. The module recognises an Rmd/qmd file by its extension and routes it through `code_extract_r()` automatically (a `.qmd` that declares Python has its Python chunks extracted instead).
 
 ```{r}
 #| eval: false
@@ -96,6 +95,17 @@ code_text <- code_extract_r(file_path)   # R code only, prose stripped
 ```
 
 ## Running the module
+
+::: {.callout-note}
+## Without R
+[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) runs this module in three ways:
+
+- **Run Metacheck on a Repository:** choose a folder or a .zip file, or paste a link to an online repository. The website runs `repo_check`, `code_check`, and `data_check` on it, and can also run the R and Python code ([Reproducibility Check](mod-reproducibility-check.qmd)).
+- **Run Metacheck on a Paper:** tick the module under *Checks* to run it on the repositories the paper links to, or tick *Also run the code in the paper's repository*.
+- The [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) does the same for a box on ResearchBox, and the [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) checks a data package against TU/e's archiving guidelines.
+
+A folder or .zip file you choose is uploaded to the server. To keep it on your own computer, use the [Docker installation](get-started.qmd#docker-installation), which offers the same website. The website runs the modules with their default settings; to change them, run them in R as described in this chapter.
+:::
 
 ```{r}
 paper <- demopaper()
@@ -217,7 +227,7 @@ mo$table[, c("file_name", "code_abs_path", "loaded_files_missing", "parse_error"
 
 ## Downloading and options
 
-`code_check` downloads the code files it will check (`download = TRUE`, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass `cache = TRUE`; otherwise they are discarded when the session ends. It shares `data_check`'s size caps (`max_file_size`, `max_download_size` — an upfront, all-or-nothing gate per repository) and the persistent-cache switch (`cache`, default `FALSE`). It also shares `repo_check`'s local-file options:
+`code_check` downloads the code files it will check (`download = TRUE`, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass `cache = TRUE`; otherwise they are discarded when the session ends. It shares `data_check`'s size caps (`max_file_size`, which skips each file larger than it, and `max_download_size`, a budget per repository that is filled with the smallest files first) and the persistent-cache switch (`cache`, default `FALSE`). It also shares `repo_check`'s local-file options:
 
 ```{r}
 #| eval: false
@@ -241,9 +251,9 @@ module_run(paper, "code_check", manifest = "path/to/manifest/dir")
 
 | Light | Meaning |
 |---|---|
-| **green** | at least one file was analysed, no issues were found (missing files, no comments, absolute paths, `setwd()` calls, `install.packages()` calls, spread-out libraries, or a parse error), **and** the repository pins its R/package environment |
-| **yellow** | at least one of the above issues, or no pinned environment was found |
-| **na** | no code files could be analysed (e.g. only JASP/jamovi files were found) |
+| **green** | at least one file was analysed, no issues were found (missing files, no comments, absolute paths, `setwd()` calls, `install.packages()` calls, spread-out libraries, or a parse error), **and** the repository pins its R/package environment (for R code) and lists its Python packages (for Python code) |
+| **yellow** | at least one of the above issues, or no pinned environment or Python package list was found |
+| **na** | no code files could be analysed (e.g. only JASP or jamovi files were found) |
 
 | Element | What it contains |
 |---|---|

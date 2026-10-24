@@ -19,6 +19,11 @@ The trade-off is that your computer does the work, so it will be slower — espe
 
 ## Setup
 
+::: {.callout-note}
+## With the Docker installation
+The installer of the [Docker installation](get-started.qmd#docker-installation) can install Ollama for you, download the model of the power check (`qwen3.5:4b`), and set Ollama up as on Metacheck's SURF server, so the website and the paper report app on your own computer use it. The steps below are for using Ollama from R.
+:::
+
 You need to repeat these step every time you want to use Ollama with Metacheck on a new machine.
 
 ### What you need
@@ -191,7 +196,7 @@ Processing the full dataset takes considerably longer (and could take hours, dep
 
 ## Running RegCheck locally
 
-The [RegCheck module](mod-reg-check.qmd) compares a paper against its preregistration. By default it sends text to a hosted RegCheck app, but you can run the whole comparison **on your own machine** with Ollama, so no paper or preregistration text leaves your computer. This needs a one-time setup of a small RegCheck server (in addition to Ollama).
+The [RegCheck module](mod-reg-check.qmd) compares a paper against its preregistration. By default it runs the whole comparison **on your own machine** with Ollama, so no paper or preregistration text leaves your computer (setting `client` to `"groq"`, `"openai"` or `"deepseek"` sends the text to a hosted RegCheck app instead). This needs a one-time setup of a small RegCheck server (in addition to Ollama).
 
 **1. Pull the required Ollama models.** RegCheck uses a fixed embedding model plus a language model of your choice. In a terminal:
 

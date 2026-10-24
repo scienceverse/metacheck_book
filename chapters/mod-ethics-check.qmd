@@ -42,6 +42,11 @@ This module is **fully offline** — it uses only regular expressions, so all th
 
 ## Running the module
 
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, where it is one of the default checks under *Checks*. The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.
+:::
+
 The module only flags a *missing* statement when a paper appears to involve **live data collection** (so re-analyses of existing data are not penalised). We run it across the first ten papers of the `psychsci` corpus (see [Using the Paper Database Corpora](papers-databases.qmd)).
 
 ```{r}

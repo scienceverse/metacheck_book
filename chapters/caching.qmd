@@ -22,7 +22,7 @@ This chapter explains what each cache stores, where it lives, how entries are ke
 ## The short version
 
 - **LLM responses** are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with `llm_cache()`; wipe with `llm_cache_clear()`.
-- **Downloaded repository files**, **repository listings**, and **peeked zip archives** are *not* cached by default. `data_check`, `code_check`, and `repo_check` otherwise redo this work every run. Pass `cache = TRUE` (and, for listings, turn on `repo_info_cache()`) to keep it instead.
+- **Downloaded repository files**, **repository listings**, and **peeked zip archives** are *not* cached by default. `data_check`, `code_check`, and `repo_check` otherwise redo this work every run. Pass `cache = TRUE` to keep it instead.
 - All four caches live in the current working directory, so a project's cache sits with the project. See where most of them are with `metacheck_cache_info()`.
 :::
 
@@ -50,7 +50,7 @@ Because the folder names begin with a dot, they are hidden in most file browsers
 .metacheck_*
 ```
 
-You can move both caches somewhere else by setting one option, which is useful if you want a single shared cache across several projects:
+You can move all four caches somewhere else by setting one option, which is useful if you want a single shared cache across several projects:
 
 ```{r}
 #| eval: false
@@ -114,13 +114,13 @@ You do not normally need to clear the cache to pick up a *changed* prompt or mod
 
 ### What this means in practice
 
-Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module's *non-LLM* code, or to regenerate a report, without watching your API bill climb. It also means the [`llm_max_calls()`](llms.qmd) cap counts *actual* provider calls — cached replays do not consume it.
+Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module's *non-LLM* code, or to regenerate a report, without watching your API bill climb. Note that the [`llm_max_calls()`](llms.qmd) cap still counts cached replays: `llm()` checks the number of texts against the cap before it looks in the cache.
 
 ## The repository-file download cache
 
 ### What it does
 
-Modules that read file *contents* — [data_check](mod-data-check.qmd) and [code_check](mod-code-check.qmd) — need local copies of the files a repository shares. `repo_check` only *lists* the files on OSF, GitHub, Zenodo and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.
+Modules that read file *contents* — [data_check](mod-data-check.qmd) and [code_check](mod-code-check.qmd) — need local copies of the files a repository shares. `repo_check` only *lists* the files on the repositories a paper links to, such as OSF, GitHub, Zenodo, Dataverse, Figshare, Dryad, and PsychArchives (it does not fetch them). When a content-reading module needs a file, it is downloaded once and read from there, and every later read within the same run reuses that copy instead of downloading again.
 
 Whether those copies survive the session is up to you, and by default they do not. With `cache = TRUE`, the files are kept in the cache folder and reused by later sessions as well, which is what makes a long archive-building run cheap to recover from after an interruption: the files already fetched are still on disk, and resuming skips straight past them.
 
@@ -191,13 +191,12 @@ This matters most when a long run is interrupted and restarted: restarting re-is
 
 It is a separate cache from the repository-*file* cache described above: one caches what a host's API said a repository contains, the other caches the files themselves once downloaded.
 
-Off by default, like the file-download cache. Turn it on with `repo_info_cache()`, and clear it with `repo_info_cache_clear()`:
+Off by default, like the file-download cache. Turn it on by passing `cache = TRUE` to `repo_check`, or to `code_check` or `data_check`, which pass it on to `repo_check` (the function `repo_info_cache()` does not currently turn it on). Clear it with `repo_info_cache_clear()`:
 
 ```{r}
 #| eval: false
-repo_info_cache()          # is the cache on? (FALSE by default)
-repo_info_cache(TRUE)      # reuse listings across restarts
-repo_info_cache_clear()    # delete every cached listing
+module_run(paper, "repo_check", cache = TRUE)   # reuse listings across restarts
+repo_info_cache_clear()                         # delete every cached listing
 ```
 
 A cached listing is not refreshed automatically — a published dataset's metadata rarely changes once public, but if you know a paper's repository has genuinely been updated, clear it explicitly rather than relying on the cache to notice.
@@ -206,7 +205,7 @@ A cached listing is not refreshed automatically — a published dataset's metada
 
 Looking inside a `.zip` without downloading it (the `peek_zips` behaviour described above) still costs an HTTP range request per zip. Like repository listings, a peeked zip's contents rarely change once a repository is public, so repeated peeks of the same zip across restarts are also cached on disk, mirroring the repository-listing cache.
 
-Unlike the other three caches, there is no on/off toggle function — peeking is cached only when you explicitly pass `cache = TRUE` to the function doing the peeking (`zip_peek()`, or indirectly through `data_check`/`code_check`/`repo_check`'s own `cache` argument). To clear it:
+As with the repository-listing cache, there is no on/off toggle function — peeking is cached only when you explicitly pass `cache = TRUE` to the function doing the peeking (`zip_peek()`, or indirectly through `data_check`/`code_check`/`repo_check`'s own `cache` argument). To clear it:
 
 ```{r}
 #| eval: false
@@ -221,7 +220,7 @@ zip_peek_cache_clear()   # delete every cached zip peek
 
 When you run several modules on a paper — or build an archive across a corpus — the four caches complement each other:
 
-1. `repo_check` lists the repository's files. With the repository-listing cache on, a restart reuses that listing instead of re-querying the host.
+1. `repo_check` lists the repository's files. With `cache = TRUE`, a restart reuses that listing instead of re-querying the host.
 2. If `repo_check` needs to look inside a `.zip` (`peek_zips = TRUE`, the default), that peek is itself cached when `cache = TRUE` is passed through.
 3. `data_check` / `code_check` download the files they need; a second module reading the same file in the same run reuses that copy. With `cache = TRUE` the copies are kept for later sessions as well.
 4. When an LLM is enabled, `data_check`, `codebook_check`, and other LLM-using modules send text to `llm()`, whose answers are stored in the **LLM response cache**.
@@ -239,7 +238,7 @@ One module, [funding_check](mod-funding-check.qmd), builds a list of organisatio
 |---|---|---|---|---|---|
 | LLM responses | on disk, cross-session | yes | model + prompt + text + type + params | `llm_cache()` | `llm_cache_clear()` |
 | Repository files | on disk, cross-session | **no** (`cache = TRUE` to enable) | repo URL + relative path | `cache` argument of `data_check` / `code_check` | `repo_cache_clear()` |
-| Repository listings | on disk, cross-session | **no** | host + repository id | `repo_info_cache()` | `repo_info_cache_clear()` |
+| Repository listings | on disk, cross-session | **no** (`cache = TRUE` to enable) | host + repository id | `cache` argument of `repo_check` / `code_check` / `data_check` | `repo_info_cache_clear()` |
 | Peeked zip archives | on disk, cross-session | **no** (`cache = TRUE` to enable) | zip URL | `cache` argument of the peeking function | `zip_peek_cache_clear()` |
 | Funding synonyms | in memory, per session | yes | — | — | ends with the session |
 

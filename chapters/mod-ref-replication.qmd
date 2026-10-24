@@ -13,13 +13,18 @@ library(metacheck)
 
 ## What it checks
 
-The `ref_replication` module cross-references the paper's **cited references** against the [FLoRA](https://forrt.org/) replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications, and can report the replication's outcome.
+The `ref_replication` module cross-references the paper's **cited references** against the [FLoRA](https://forrt.org/) replication database. If you cite an original study that has since been the subject of a replication attempt, that is highly relevant context — especially if the replication failed. The module flags cited originals that have known replications (or reproductions), and can report the replication's outcome. A replication that the paper already cites is not flagged.
 
 ::: callout-note
-This module makes **live network calls** to the FLoRA replication database. You need an internet connection to run the code below.
+This module runs **offline**: it matches references by DOI against a copy of the FLoRA database that ships with Metacheck, so the code below needs no internet connection. Only updating that copy with `FLoRA_update()` (see [Updating the database](#updating-the-database)) downloads data.
 :::
 
 ## Running the module
+
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, and tick it under *Checks* (it is not one of the default checks). The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.
+:::
 
 `demopaper()` cites an original study that has a recorded replication.
 
@@ -68,7 +73,7 @@ A match means a replication of a cited study exists in the database — it is an
 
 ## Updating the database
 
-The module matches references against a data frame called `FLoRA` that ships with Metacheck. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:
+The module matches references against a data frame that ships with Metacheck, which the function `FLoRA()` returns. The FLoRA replication database grows as new replications are recorded, so the bundled copy gradually goes out of date. Two functions help you manage it:
 
 ```{r}
 #| eval: false

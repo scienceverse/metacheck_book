@@ -13,12 +13,7 @@ llm_use(FALSE)
 ```
 
 ::: callout-warning
-This module is still under development and is not in the released version of Metacheck. It is in the development version, which you install from GitHub (see [Setting up Metacheck](get-started.qmd)):
-
-```r
-install.packages("pak")
-pak::pkg_install("scienceverse/metacheck@dev")
-```
+This module has not been validated: its checks have unknown error rates, so evaluate its output carefully.
 :::
 
 ## The basics
@@ -61,12 +56,23 @@ The `data_check` module is the foundation for all of Metacheck's data-oriented c
 1. **Classifies every file** into a semantic type: tabular *data*, *code*, *documentation* (README, codebook, supplemental material, licence), *materials* (images/audio/video/stimuli, software), *output*, or *unknown*. Within *documentation*, a separate `doc_role` column distinguishes a README from a codebook from other supplemental material.
 2. **Reads each readable tabular data file** and describes every column along several independent **facets** — how it is stored, its measurement level, what it measures, how it functions, and its unit — together with basic **summary statistics**.
 3. **Runs data-quality checks** on those columns and on the raw workbook of every spreadsheet, and checks whether any `.csv` file is separated by spaces instead of commas, described in [Data Quality Checks](mod-data-validate.qmd). These were formerly two separate modules, `data_validate` and `excel_check`; both are now part of `data_check`.
-4. **Makes the extracted columns and read data frames available** to the other data modules — `codebook_check` builds on `data_check`'s output rather than re-reading the files, and `psychds_check` and `convert_psychds()` are designed to use its classification and study grouping to build a Psych-DS archive once that module's own development resumes (see [Psych-DS Check](mod-psychds-check.qmd)).
+4. **Makes the extracted columns and read data frames available** to the other data modules — `codebook_check` builds on `data_check`'s output rather than re-reading the files, `psychds_check` uses its classification and study grouping to compare the repository with the Psych-DS layout, and `convert_psychds()` (not yet available) is designed to use them to build a Psych-DS archive (see [Psych-DS Check](mod-psychds-check.qmd)).
 
 On its own, `data_check` gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.
 
 ::: callout-note
 This chapter runs entirely offline. We build small example repositories in a temporary folder and point `data_check` at them with `local_path`. The same calls work against a real downloaded repository — see the [Local Files](local-files.qmd) chapter. If you have no manuscript at all, `report_repository("path/to/folder")` runs `data_check` together with `repo_check`, `code_check`, and `codebook_check` on the folder in one step — see [Getting Started](get-started.qmd#starting-from-a-manuscript-or-from-a-folder).
+:::
+
+::: {.callout-note}
+## Without R
+[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) runs this module in three ways:
+
+- **Run Metacheck on a Repository:** choose a folder or a .zip file, or paste a link to an online repository. The website runs `repo_check`, `code_check`, and `data_check` on it, and can also run the R and Python code ([Reproducibility Check](mod-reproducibility-check.qmd)).
+- **Run Metacheck on a Paper:** tick the module under *Checks* to run it on the repositories the paper links to, or tick *Also run the code in the paper's repository*.
+- The [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) does the same for a box on ResearchBox, and the [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) checks a data package against TU/e's archiving guidelines.
+
+A folder or .zip file you choose is uploaded to the server. To keep it on your own computer, use the [Docker installation](get-started.qmd#docker-installation), which offers the same website. The website runs the modules with their default settings; to change them, run them in R as described in this chapter.
 :::
 
 ## A worked example
@@ -149,7 +155,7 @@ data_classify_files(c("data.csv", "analysis.R", "README.md",
 
 ### Tabular vs raw: `data_format()`
 
-For files classified as `data`, `data_check` records a second field, `data_format`, which is `"tabular"` or `"raw"`. This is decided by the exported helper `data_format()` against a list of raw extensions (EEG/physiological, neuroimaging, motion capture, array formats, eye-tracking, audio/video, and generic binaries/documents). Only `tabular` files are read for column extraction; `raw` data files are classified and listed but never parsed as a table. Unknown extensions fall back to `tabular`.
+For files classified as `data`, `data_check` records a second field, `data_format`, which is `"tabular"` or `"raw"`. This is decided by the exported helper `data_format()` against a list of raw extensions (EEG/physiological, neuroimaging, motion capture, array formats, eye-tracking, audio/video, and generic binaries/documents). Only `tabular` files are read for column extraction; `raw` data files are classified and listed but never parsed as a table. Unknown extensions fall back to `raw`, since Metacheck has no reader for an unrecognised format.
 
 ```{r}
 #| eval: false
@@ -238,14 +244,14 @@ Alongside the facets, `data_col_stats()` computes a one-row block of statistics 
 
 ## Study groups
 
-A single repository often bundles several studies (Experiment 1, Study 2a, a pilot). `data_check` assigns every analysable file a **study group** (`ex1`, `ex2a`, `pilot1`, …, or `shared`) so a multi-study repository can be split into self-contained Psych-DS datasets (by `convert_psychds()`, not yet available). This is done by `data_group_llm()`, but — despite the name — it is **deterministic wherever the evidence allows**, and only falls back to the model for files nothing else can place. Four passes run in order, each more specific overriding the last:
+A single repository often bundles several studies (Experiment 1, Study 2a, a pilot). `data_check` assigns every analysable file a **study group** (`ex1`, `ex2a`, `pilot1`, …) so a multi-study repository can be split into self-contained Psych-DS datasets (by `convert_psychds()`, not yet available). This is done by `data_group_llm()`, but — despite the name — it is **deterministic wherever the evidence allows**, and only falls back to the model for files nothing else can place. Four passes run in order, each more specific overriding the last:
 
 1. **By source repository** (`.data_group_from_repo()`): a paper that links several repositories with *different* files is multi-study, one study per repository. Repositories whose file sets overlap ≥90% (Jaccard) are treated as mirrors of one study, not two.
 2. **By path** (`.data_group_from_path()`): a filename or folder that names its study outright — `Experiment 1/`, `study2a_data.csv`, even smashed-together names like `…experiment1creplication…` — is grouped by a regex that reads such names more reliably than a small LLM.
 3. **By code reference** (`.data_code_refs()`): a script names the data it reads and writes (`read_csv("raw/x.csv")`), which is *hard evidence* that the script and those files belong to the same study. This rescues data files whose own path only names a processing stage (`raw/`, `processed/`).
 4. **By LLM** (only when `llm_use(TRUE)`): the last resort, seeing only files the deterministic passes could not place. When those placed everything — the common multi-repo case — no call is made at all.
 
-Two guards make the result trustworthy. `data_study_roster()` reads the manuscript for the studies it *names* ("Experiment 1, 2a, 3") — the authoritative list — and relabels slot-named groups to the authors' labels when the counts match; `.data_group_check_roster()` reports any disagreement rather than guessing. And a **data file is never `shared`**: data always belongs to a study, so any data file the passes left `shared` falls back to its repository's study or to the sole study. Without an LLM, files that no deterministic pass can place stay `NA` (unknown), and subgrouping cannot be detected.
+Two guards make the result trustworthy. `data_study_roster()` reads the manuscript for the studies it *names* ("Experiment 1, 2a, 3") — the authoritative list — and relabels slot-named groups to the authors' labels when the counts match; `.data_group_check_roster()` reports any disagreement rather than guessing. And **every file belongs to exactly one study**: there is no `shared` group. A file that no pass placed falls back to its repository's study, then to the sole study when there is only one, then to `ex1` when no study was found at all, and otherwise to the first study. Only collection-level files, such as a top-level README, `ro-crate-metadata.json` or LICENSE, stay ungrouped. When no evidence anywhere names a study, every file ends up in `ex1`, and `psychds_check` notes that subgrouping could not be detected.
 
 ## Reading files: format tolerance
 
@@ -286,14 +292,14 @@ Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved re
 | `$table` | one row per column, with the facets, `sample_values`, `utf8_repaired`, `needs_package`, and summary statistics |
 | `$structure` | one row per file, with `data_type`, `data_format`, `group`, `tabular_usable` / `non_tabular_reason`, and `source_file` (see below) |
 | `$previews` | the full data frames that were read |
-| `$gated_repos` | repositories found but not listable (size-gated GitHub, private OSF) |
+| `$gated_repos` | repositories found but not listable, taken from `repo_check` (for example a private OSF component, an OSF link during an outage, or a GitHub repository too large for GitHub to list) |
 | `$manifest_path` | path to a written JSON manifest, when one was requested |
 
 Files with the same name in different folders (for example a `log.csv` in each of 22 scan folders) are all read and checked. Each file has a `source_file` name that is unique within the run: the file name when no other file has it, so nothing changes for most repositories; otherwise its path in the repository (`scan1/log.csv`); and where even that repeats, the repository's name in front. The tables in `$previews`, the column table, the findings and `codebook_check`'s labels use this name.
 
 The findings of the data-quality checks are in `$findings`, described in [Data Quality Checks](mod-data-validate.qmd). When no file could be read as a table (a repository with only code, documents or images, or with data files that are not usable tables), `data_check` still returns its summary, report and traffic light; `$table` then has no rows, and any spreadsheet-formatting or space-separated `.csv` findings are in `$findings`.
 
-The `$structure` and `$previews` elements are what the downstream modules consume, which is why you rarely need to run `data_check` on its own beforehand — running `codebook_check` triggers it automatically and reuses the result, and `psychds_check` and `convert_psychds()` are designed to do the same once that module's own development resumes.
+The `$structure` and `$previews` elements are what the downstream modules consume, which is why you rarely need to run `data_check` on its own beforehand — running `codebook_check` or `psychds_check` triggers it automatically and reuses the result, and `convert_psychds()` (not yet available) is designed to do the same.
 
 ## Downloading files
 
@@ -318,12 +324,12 @@ By default (`cache = FALSE`) downloads go to a temporary directory discarded whe
 
 ### Size caps
 
-Two caps bound how much is downloaded per repository, and they work as an **upfront, all-or-nothing gate**:
+Two caps bound how much is downloaded per repository:
 
-- **`max_file_size`** (default **100 MB**): if any single file in a repository exceeds this, the whole repository is refused (nothing downloaded), with a message naming the size to lift it.
-- **`max_download_size`** (default **500 MB**): if a repository's *total* exceeds this, the whole repository is refused.
+- **`max_file_size`** (default **100 MB**): a file larger than this is skipped; the rest of the repository is still downloaded.
+- **`max_download_size`** (default **500 MB**): a budget for the repository's *total*. Files already in the cache count towards it, and the smallest missing files are added until the next one would exceed the budget, so a larger repository is downloaded in part, and the same files every run.
 
-Set either to `Inf` for no cap. A file whose size cannot be determined at all also causes its repository to be skipped, so nothing huge is ever fetched blind. Every skip is reported inline (`$gated_repos`), so you can raise the relevant cap and re-run.
+Set either to `Inf` for no cap. A file whose size cannot be determined at all is not downloaded, so nothing huge is ever fetched blind; the other files of its repository still are. Every skip is reported in the summary text, with the argument to raise, and recorded in the manifest (see below), so you can raise the relevant cap and re-run.
 
 Some hosts sit behind an Amazon web firewall that, after many requests in a short time, answers with a check meant for a web browser instead of the file, so the file's size cannot be read and it cannot be downloaded. Metacheck then gives a warning, once per host in each R session, naming the host and saying to try again later. Such files used to be left out without any message.
 
@@ -360,9 +366,9 @@ module_run(paper, "data_check", download = "none", manifest = "manifests")
 
 ## Using an LLM
 
-With `llm_use(TRUE)`, `data_check` adds things the rules cannot do reliably. The LLM path is layered *on top of* the rules — it only fills gaps, never overrides a confident rule:
+With `llm_use(TRUE)`, `data_check` adds things the rules cannot do reliably. (On Metacheck's website and in the [Docker installation](get-started.qmd#docker-installation), only the power check uses a language model, so this only happens when you run `data_check` in R.) The LLM path is layered *on top of* the rules — it only fills gaps, never overrides a confident rule:
 
-- **File types** for files the rules left `other` (`.llm_classify_batched()` classifies into `codebook`/`software`/`output`/`supplemental`/`asset`/`other`).
+- **File types** for files the rules left `unknown` (`.llm_classify_batched()` classifies into `documentation`/`materials`/`output`/`unknown`).
 - **Concepts for cryptically-named columns** — the rules only tag a concept when the name gives it away, so a reaction time called `q3` stays blank; the LLM fills it in.
 - **Refined measurement levels** for ambiguous integer columns (nominal vs ordinal vs ratio).
 - **Study groups** for files no deterministic pass could place (see above).
@@ -393,4 +399,4 @@ See the [LLMs](llms.qmd) chapter for how to configure a model.
 
 - [Data Quality Checks](mod-data-validate.qmd) describes the automated data-quality checks that `data_check` runs on the columns it extracts, including spreadsheet-formatting checks (colour coding, merged cells, empty rows/columns) for `.xlsx`/`.xls`/`.ods`/`.fods` files.
 - [Codebook Check](mod-codebook-check.qmd) checks whether the columns are documented.
-- [Psych-DS Check](mod-psychds-check.qmd) describes checking a repository against the Psych-DS standard, and hosts `convert_psychds()` and the schema reference. Neither is available yet.
+- [Psych-DS Check](mod-psychds-check.qmd) describes checking a repository against the Psych-DS standard with `psychds_check`, and hosts `convert_psychds()` and the schema reference; `convert_psychds()` is not available yet.

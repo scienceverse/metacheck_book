@@ -124,7 +124,7 @@ result |> zenodo_upload()
 Or point at a specific folder. In the example repository, a folder called 'Non-Anonymous Data' is downloaded alongside the main public folder. This folder can't be shared. So we only select the folder with data that can be shared for upload to Zenodo. 
 
 ```{r}
-zenodo_upload("how_many_registered_studies_are_published/An_Inception_Cohort_Study_Quantifying_How_Many_Registered_Studies_are_Published_8uqfb")
+zenodo_upload("how_many_registered_studies_are_published/8uqfb/An_Inception_Cohort_Study_Quantifying_How_Many_Registered_Studies_are_Published_8uqfb")
 ```
 
 Before anything is sent, you will see a summary of how many folders and files
@@ -233,7 +233,7 @@ Both archives store the same `Study/` folder at the top, which is what makes it 
 
 Files are sorted into six categories: `data`, `code`, `materials`,
 `documentation`, `output`, and `unknown`. These are the same categories, worked
-out by the same function, that the `repo_check()` function in Metacheck uses to classify files. The parameter `split_materials` says which of those categories to put in their own archive. It defaults to `"materials"`. You can change it. Set `split_materials = NULL` when the project is small enough that splitting only makes it harder to use:
+out by the same function (`data_classify_files()`), that the `repo_check` module in Metacheck uses to classify files. The parameter `split_materials` says which of those categories to put in their own archive. It defaults to `"materials"`. You can change it. Set `split_materials = NULL` when the project is small enough that splitting only makes it harder to use:
 
 ```{r}
 result |> zenodo_upload(split_materials = NULL)
@@ -396,6 +396,8 @@ projects <- osf_user_projects("pct7w")
 projects
 
 # 2. download the private ones -- everything, no size limits, the fast way
+#    (create the download folder first, see the OSF chapter)
+dir.create("my_osf_archive")
 result <- osf_file_download(
   subset(projects, public == FALSE),
   download_to = "my_osf_archive"

@@ -25,6 +25,11 @@ This module makes **live network calls** to PubPeer (matching references by DOI)
 
 ## Running the module
 
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, and tick it under *Checks* (it is not one of the default checks, because it contacts an online service). The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.
+:::
+
 `demopaper()` cites a reference that has PubPeer comments.
 
 ```{r}
@@ -51,7 +56,7 @@ mo$summary_table
 
 ## Interpreting the result
 
-A `green`/empty result means none of the cited references had PubPeer comments. A flagged result does **not** mean a citation is bad — it means there is a discussion you may want to read. Follow the `url` to the PubPeer thread and judge the comments in context.
+When none of the cited references has PubPeer comments, the traffic light is `na` (not applicable) and the table is empty; when some do, the traffic light is `info`. If PubPeer cannot be reached, the traffic light is `fail` and the references were not checked. A flagged result does **not** mean a citation is bad — it means there is a discussion you may want to read. Follow the `url` to the PubPeer thread and judge the comments in context.
 
 ## Options
 
@@ -59,4 +64,4 @@ A `green`/empty result means none of the cited references had PubPeer comments. 
 
 ## Notes
 
-In the Shiny app, querying PubPeer is an opt-in checkbox, because it sends the cited DOIs to an external service.
+On Metacheck's website, the PubPeer check is not one of the default checks: you choose it, because it sends the cited DOIs to an external service.

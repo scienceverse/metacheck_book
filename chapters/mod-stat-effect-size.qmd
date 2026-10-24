@@ -20,7 +20,7 @@ An **effect size** is a number that says how big a result is, not just whether i
 
 The `stat_effect_size` module checks whether **effect sizes are reported** for *t*-tests and *F*-tests, and whether the reported effect size is **coherent** with the test statistic and degrees of freedom. Reporting a standardized effect size alongside a test is an APA Journal Article Reporting Standard, and it is what makes a result usable in a meta-analysis.
 
-The module looks for the common ways effect sizes are written, then recomputes what the effect size *should* be from the test statistic and degrees of freedom. It checks Cohen's *d* and *g* for *t*-tests, and partial η² and partial ω² for *F*-tests. It flags two things: tests that report **no** effect size, and reported effect sizes that **do not match** the value implied by the test.
+The module looks for the common ways effect sizes are written, then recomputes what the effect size *should* be from the test statistic and degrees of freedom. It checks Cohen's *d* and *g* for *t*-tests, and partial η² for *F*-tests. A reported ω² is not checked: when it is the only effect size reported with an *F*-test, the verdict is `indeterminate`. It flags two things: tests that report **no** effect size, and reported effect sizes that **do not match** the value implied by the test.
 
 This module is **fully offline**.
 
@@ -36,9 +36,14 @@ The verdicts you will see are:
 - **`no_match`** — the reported value does not match *any* tested design. This is the strong signal: the number is hard to reconcile with the test statistic under any assumption.
 - **`indeterminate`** — the module cannot recover an effect size to compare against (for example a Welch's *t*-test with non-integer *df*, where the group sizes cannot be determined).
 
-*F*-tests are a partial exception. When the numerator degrees of freedom is 1 (`df1 = 1`), partial η² is fixed by a single assumption-free formula, η²~p~ = *F* / (*F* + *df2*), so a `no_match` there is an unambiguous arithmetic inconsistency rather than a design ambiguity.
+*F*-tests are a partial exception. Partial η² is fixed by a single assumption-free formula, η²~p~ = (*df1* × *F*) / (*df1* × *F* + *df2*), which for one numerator degree of freedom (`df1 = 1`) becomes *F* / (*F* + *df2*). A `no_match` for partial η² is therefore an unambiguous arithmetic inconsistency rather than a design ambiguity.
 
 ## Running the module
+
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, where it is one of the default checks under *Checks*. The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.
+:::
 
 ```{r}
 #| results: asis
@@ -90,7 +95,7 @@ mo$table |>
   knitr::kable()
 ```
 
-Because `df1 = 1` leaves no room for an alternative design, this is not a "possible under some assumption" case — the reported numbers are simply inconsistent with the test statistics. This is exactly the kind of error the check exists to surface, and the kind a reader would otherwise have to recompute by hand.
+Because partial η² follows from the *F* value and its degrees of freedom alone, leaving no room for an alternative design, this is not a "possible under some assumption" case — the reported numbers are simply inconsistent with the test statistics. This is exactly the kind of error the check exists to surface, and the kind a reader would otherwise have to recompute by hand.
 
 ## Interpreting the result
 

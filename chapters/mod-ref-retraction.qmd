@@ -13,13 +13,18 @@ library(metacheck)
 
 ## What it checks
 
-The `ref_retraction` module cross-references the paper's **cited references** against the [Retraction Watch](https://retractionwatch.com/) database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate.
+The `ref_retraction` module cross-references the paper's **cited references** against the [Retraction Watch](https://retractionwatch.com/) database. Citing a retracted article — usually unknowingly — is a common and avoidable problem. The module flags any cited reference that appears in the Retraction Watch database so you can check whether the citation is still appropriate. The database records retractions, but also corrections and expressions of concern; the report shows which applies to each flagged reference.
 
 ::: callout-note
-This module makes **live network calls** (matching references by DOI against Crossref and Retraction Watch). You need an internet connection to run the code below.
+This module runs **offline**: it matches references by DOI against a copy of the Retraction Watch database that ships with Metacheck, so the code below needs no internet connection. Only updating that copy with `rw_update()` (see [Updating the database](#updating-the-database)) downloads data.
 :::
 
 ## Running the module
+
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, and tick it under *Checks* (it is not one of the default checks). The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.
+:::
 
 `demopaper()` cites a reference that is in the Retraction Watch database.
 
@@ -55,7 +60,7 @@ A flagged reference is not automatically a mistake — retractions happen for ma
 
 ## Updating the database
 
-The module matches references against a data frame called `retractionwatch` that ships with Metacheck. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:
+The module matches references against a data frame that ships with Metacheck, which the function `retractionwatch()` (or its short form `rw()`) returns. New retractions are recorded constantly, so the bundled copy gradually goes out of date. Two functions help you manage it:
 
 ```{r}
 #| eval: false

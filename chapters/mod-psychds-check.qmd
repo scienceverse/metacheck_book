@@ -13,13 +13,13 @@ llm_use(FALSE)
 ```
 
 ::: callout-warning
-## Development paused
+## Conversion not yet available
 
-Development of this module is paused. Before `psychds_check`, `convert_psychds()`, `psychds_validate()`, `convert_codebook()`, and `convert_behaverse()` can move forward, the project first needs to settle on a metadata scheme to convert to and validate against — that decision isn't made yet, so none of this is part of the package you can install, and the code in this chapter will not run.
+The `psychds_check` module is part of the package you install, and the examples that run it in this chapter work. It only *checks* a repository against Psych-DS. The functions that would act on the result do not exist yet: `convert_psychds()`, `psychds_validate()`, `convert_codebook()`, `convert_behaverse()`, and `data_catalog()`. Before they can move forward, the project first needs to settle on a metadata scheme to convert to and validate against, and that decision isn't made yet, so the code in this chapter that calls them will not run.
 
-The chapter is published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.
+The sections about these functions are published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.
 
-What [data_check](mod-data-check.qmd) already does on its own is the groundwork this module builds on: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout. The placement itself, and the conversion, are the parts still on hold.
+`psychds_check` builds on what [data_check](mod-data-check.qmd) does: it classifies every file by type and assigns each one to a study group, which is what decides where a file belongs in a Psych-DS layout.
 :::
 
 ## What it checks
@@ -30,8 +30,8 @@ The `psychds_check` module compares a repository against this standard and repor
 
 It answers three questions:
 
-- Are the **required** pieces present (a `dataset_description.json`, a `data/` directory)?
-- Are the **recommended** pieces present (a README, a `CHANGES` file)?
+- Are the **required** pieces present (a `dataset_description.json`, data files for a `data/` directory, and data columns that can be described in `variableMeasured`)?
+- Are the **recommended** pieces present (a README, a `CHANGES` file, and codebook descriptions of the variables)?
 - Which files are **misplaced** relative to the standard, and where should they move?
 
 ::: callout-note
@@ -68,7 +68,7 @@ mo$table[, c("file_name", "data_type", "current_path", "target_path", "status")]
   knitr::kable()
 ```
 
-A `status` of `move` means the file is in the wrong place for a Psych-DS dataset — for example `study_data.csv` should move into `data/`, and `analysis.R` into `analysis/`. This gives the author a concrete to-do list rather than an abstract "does not comply".
+A `status` of `move` means the file is in the wrong place for a Psych-DS dataset — for example `study_data.csv` should move into `data/`, and `analysis.R` into `analysis/`. A file already in place has the status `present`, and a file whose type has no Psych-DS location has the status `excluded`. The table also holds each file's study `group`, and the columns `convert`, `original_target` and `referenced_by` that a converter would use. This gives the author a concrete to-do list rather than an abstract "does not comply".
 
 ## The target tree
 
@@ -76,7 +76,7 @@ The most useful part of the report is the **target tree**: a drawing of the Psyc
 
 The tree uses colour and annotations to show three states:
 
-- **files in <span style="color:#c0392b">red</span>** with a *← missing* marker are required by Psych-DS but absent (for example `dataset_description.json` and `CHANGES`);
+- **files in <span style="color:#c0392b">red</span>** with a *← missing* marker are absent: the required `dataset_description.json`, or the recommended `README` and `CHANGES`;
 - **files annotated <span style="color:#b9770e">(move from ...)</span>** exist in the repository but need relocating into the standard folder — the annotation tells you exactly where they are now;
 - **plain files** are already in the right place.
 
@@ -88,7 +88,7 @@ tree_html <- grep("<pre", mo$report, value = TRUE)
 cat(tree_html)
 ```
 
-Reading this top to bottom is a complete migration plan: create the two missing metadata files, move the data file into `data/` (renamed to the Psych-DS `source-*` convention) and the script into `analysis/`, and the repository will comply. The `convert_psychds()` function performs exactly these steps automatically.
+Reading this top to bottom is a complete migration plan: create the two missing metadata files, move the data file into `data/` (renamed to the Psych-DS form `study-<name>_data.csv`, since Psych-DS requires at least one keyword before `_data.csv`) and the script into `analysis/`, and the repository will comply. The `convert_psychds()` function is designed to perform exactly these steps automatically, but is not yet available.
 
 ## The summary counts
 
@@ -109,10 +109,12 @@ On a list of papers, each paper is checked against Psych-DS from its own files, 
 
 | Light | Meaning |
 |---|---|
-| **green** | the repository already follows the Psych-DS layout |
-| **yellow** | some elements are missing or files are misplaced |
-| **red** | required elements (like `data/` or the description file) are absent |
+| **green** | the repository already has a `dataset_description.json` and every other required element |
+| **yellow** | the repository could be converted: it has data files with columns that can be described, but no `dataset_description.json` |
+| **red** | the repository cannot be converted yet: it has no data files, or none of its data columns could be read |
 | **na** | there were no files to assess |
+
+Misplaced files and missing recommended elements are listed in the report, but do not change the light. On a list of papers the light is `info`; each paper's own result is counted in the summary text.
 
 ## From gap report to a compliant dataset: `convert_psychds()`
 
@@ -158,7 +160,7 @@ Each entry is a schema.org `PropertyValue` built by the converter from `data_che
 | `metacheck:role` | role facet | DDI VariableRole |
 | `metacheck:codeList` | decoded value labels | DDI CodeList (one `PropertyValue` per code → label) |
 | `metacheck:missingValues` | declared missing scheme | DDI MissingValues |
-| `metacheck:question` / `metacheck:universe` | codebook question/filter | DDI QuestionText / Universe |
+| `metacheck:question` | codebook question | DDI QuestionText |
 | `minValue`/`maxValue`/`metacheck:statistics` | `data_col_stats()` | schema.org numeric bounds + a stats block |
 | `valuePattern` | sample values | observed category pattern |
 
@@ -170,11 +172,10 @@ A multi-study output root is a **collection** of datasets, not itself a Psych-DS
 
 ### OpenScales OSD (`scales/<code>.osd`)
 
-Every scale that `codebook_check` identifies is written as one OpenScales **OSD** file, flat at `scales/<code>.osd`. The `code` is a readable slug derived from the scale name (PANAS → `positive_and_negative_affect_schedule`) or, for an unnamed block, its column prefix. Each OSD records the scale's provenance at one of four trust levels (`.osd_code_and_provenance()`): `dictionary` (matched a known instrument in Metacheck's OpenScales-derived scale dictionary), `manuscript` (a named instrument from the paper), `self_generated` (an LLM-inferred construct label — *not* a recognised instrument), or `unnamed_block` (a coherent same-prefix rating block that could not be named). The `variableMeasured` entry for each of the scale's columns cross-references its OSD `code`, so a reader can jump from a variable to its instrument definition. When a scale matches a dictionary instrument, its reference items (including which are reverse-keyed) are available via the `scale_meta` / `scale_items` datasets.
-
+Every scale that `codebook_check` identifies is written as one OpenScales **OSD** file, flat at `scales/<code>.osd`. The `code` is a readable slug derived from the scale name (PANAS → `positive_and_negative_affect_schedule`) or, for an unnamed block, its column prefix. Each OSD records the scale's provenance at one of four trust levels (`.osd_code_and_provenance()`): `dictionary` (matched a known instrument in Metacheck's OpenScales-derived scale dictionary), `manuscript` (a named instrument from the paper), `self_generated` (an LLM-inferred construct label — *not* a recognised instrument), or `unnamed_block` (a coherent same-prefix rating block that could not be named). The `variableMeasured` entry for each of the scale's columns cross-references its OSD `code`, so a reader can jump from a variable to its instrument definition.
 ### Behaverse trial data (`paradata/<instrument>.json`)
 
-Trial-level task data (E-Prime, Inquisit, jsPsych, native Behaverse) is not a rectangular dataset — it is one file per participant per block. `convert_psychds()` normalises all of it into the **Behaverse Data Model** `trial` schema (pinned v26.0608, shipped in `inst/schema/`), writing one `paradata/<instrument>.json` per instrument with the full response data merged across participants — nothing is deleted. Each file is a `TrialData` document: an `Instrument` descriptor plus a `Response` array, where every response carries the 13 required Behaverse fields (`response_id`, `study_name`, `agent_id`, `instrument_id`, `trial_index`, `stimulus_id`, …) and any optional paradata the source recorded (`response_time`, `correct`, `stimulus_onset`, …). Each source format has its own reader that maps its columns onto this vocabulary — Inquisit's `latency` → `response_time`, jsPsych's `rt` → `response_time`, E-Prime's `<obj>.RT`, and so on (`convert_behaverse()`). The OSD scale file and the paradata file cross-reference each other on the canonical instrument id, so a questionnaire's scale definition and its raw timing data point at each other.
+Trial-level task data (E-Prime, Inquisit, jsPsych, native Behaverse) is not a rectangular dataset — it is one file per participant per block. `convert_psychds()` normalises all of it into the **Behaverse Data Model** `trial` schema (pinned v26.0608), writing one `paradata/<instrument>.json` per instrument with the full response data merged across participants — nothing is deleted. Each file is a `TrialData` document: an `Instrument` descriptor plus a `Response` array, where every response carries the 13 required Behaverse fields (`response_id`, `study_name`, `agent_id`, `instrument_id`, `trial_index`, `stimulus_id`, …) and any optional paradata the source recorded (`response_time`, `correct`, `stimulus_onset`, …). Each source format has its own reader that maps its columns onto this vocabulary — Inquisit's `latency` → `response_time`, jsPsych's `rt` → `response_time`, E-Prime's `<obj>.RT`, and so on (`convert_behaverse()`). The OSD scale file and the paradata file cross-reference each other on the canonical instrument id, so a questionnaire's scale definition and its raw timing data point at each other.
 
 ### DDI-Codebook 2.5 (the manifest)
 
@@ -228,7 +229,7 @@ For a large corpus, first run `data_check` with `download = "none"` and `manifes
 | `$traffic_light` | `green` / `yellow` / `red` / `na` |
 | `$summary_text` | plain-text compliance summary |
 | `$summary_table` | the required/recommended/misplaced counts above |
-| `$table` | one row per file: `file_name`, `data_type`, `current_path`, `target_path`, `status` |
+| `$table` | one row per file: `file_name`, `data_type`, `group`, `current_path`, `target_path`, `status` (`move`, `present` or `excluded`), `convert`, `original_target`, `referenced_by` |
 | `$report` | formatted report, including the target directory tree with missing pieces marked |
 
 ## Related

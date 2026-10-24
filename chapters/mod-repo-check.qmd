@@ -58,6 +58,17 @@ This module makes **live network calls** to the linked repositories. You need an
 
 ## Running the module
 
+::: {.callout-note}
+## Without R
+[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) runs this module in three ways:
+
+- **Run Metacheck on a Repository:** choose a folder or a .zip file, or paste a link to an online repository. The website runs `repo_check`, `code_check`, and `data_check` on it, and can also run the R and Python code ([Reproducibility Check](mod-reproducibility-check.qmd)).
+- **Run Metacheck on a Paper:** tick the module under *Checks* to run it on the repositories the paper links to, or tick *Also run the code in the paper's repository*.
+- The [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) does the same for a box on ResearchBox, and the [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) checks a data package against TU/e's archiving guidelines.
+
+A folder or .zip file you choose is uploaded to the server. To keep it on your own computer, use the [Docker installation](get-started.qmd#docker-installation), which offers the same website. The website runs the modules with their default settings; to change them, run them in R as described in this chapter.
+:::
+
 `demopaper()` links to several repositories.
 
 ```{r}
@@ -79,6 +90,7 @@ mo$table[, c("repo_name", "file_name", "file_type", "file_size")] |>
 
 ```{r}
 #| eval: false
+psychsci <- papers_load("psychsci", cache = TRUE)
 mo <- module_run(psychsci[1:10], "repo_check")
 mo$summary_table
 ```
@@ -158,7 +170,7 @@ Some links are recognised but lead to no single repository:
 
 `repo_check` runs a **preliminary** classification and grouping pass over every file it finds:
 
-- `data_classify_files()` labels each file's `data_type` (data, code, readme, archive, documentation, output, …) from its name/path/extension;
+- `data_classify_files()` labels each file's `data_type` (data, code, documentation, materials, output, or unknown) from its name/path/extension;
 - `.data_doc_role()` further labels documentation-type files (`readme`, `license`, `codebook`, …);
 - `data_group_llm()` assigns each file to a study `group`, using deterministic path/repo-split rules first and falling back to an LLM (`llm_use(TRUE)`) only when those are ambiguous — see the [LLMs](llms.qmd) chapter. Root-level files that are collection-wide by nature (a top-level README, `ro-crate-metadata.json`, or LICENSE) are excluded from grouping, since they don't belong to any one study.
 
@@ -308,7 +320,7 @@ module_run(paper, "repo_check", model = "gpt-4o-mini", params = list(temperature
 | Light | Meaning |
 |---|---|
 | **green** | repositories were found and every one could be checked; every one has a README; no archive files, unclassifiable files, bad file names, or files that do not belong in a repository; no study/repository mismatch; and no closed OSF registrations |
-| **yellow** | at least one repository could not be checked or is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript's study roster disagrees with the repository's file grouping, a registration points at a closed source project, or version-control folders or editor settings were found |
+| **yellow** | at least one repository could not be checked or is missing a README, an archive file was found, files could not be classified, real naming problems were found, the manuscript's study roster disagrees with the repository's file grouping, a registration points at a closed source project of which no copy of the files exists, or version-control folders or editor settings were found |
 | **red** | the repositories hold files that do not belong in a repository and should be removed (see [above](#files-that-do-not-belong-in-a-repository)) |
 | **na** | no repository links were found in the paper at all |
 

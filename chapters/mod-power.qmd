@@ -18,11 +18,16 @@ A **power analysis** is a calculation researchers do, usually before collecting 
 
 ## What it checks
 
-The `power` module uses regular expressions to find sentences that describe a statistical **power analysis**, and classifies each as *a priori*, *sensitivity*, or *post-hoc*. When [LLM support](llms.qmd) is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.
+The `power` module uses regular expressions to find sentences that describe a statistical **power analysis**, and classifies each as *a priori*, *sensitivity*, *compromise*, or *post-hoc* (or as *unknown* when the sentence does not say which). When [LLM support](llms.qmd) is turned on, it additionally reads each power sentence and extracts structured details — the statistical test, planned sample size, alpha level, desired power, and effect size — and checks whether the analysis is fully reported.
 
 A priori power analyses are the useful kind; post-hoc ("observed") power is rarely informative.
 
 ## Running the module
+
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, where it is one of the default checks under *Checks*. The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below. On the website, the power check uses the server's language model when the server has one; in the Docker installation, the model you chose when installing.
+:::
 
 Every module is run the same way, with `module_run(paper, "module_name")`. We use the built-in `demopaper()`, which contains a few power statements.
 
@@ -68,7 +73,17 @@ The `power_type` column tells you which statements are a priori (worth keeping) 
 
 The regular-expression behaviour above runs with no setup. To also **extract structured details** — the statistical test, sample size, alpha, power, and effect size — turn on [LLM support](llms.qmd). The module reads the same switch (`llm_use()`) and model (`llm_model()`) described in the LLM chapter; there is no special module argument. When an LLM is enabled, the result table gains columns such as `statistical_test`, `sample_size`, `power`, `effect_size`, and `effect_size_metric`.
 
+::: {.callout-note}
+## The language model on the website and in the Docker installation
+On [Metacheck's website on SURF Research Cloud](https://metacheckserve.metacheck.src.surf-hosted.nl/), the power check uses a small open-source Qwen model (`qwen3.5:4b`) that runs on the server itself. This can be slow, especially when several people use the server at the same time. That is a deliberate choice: the model runs on SURF's servers in the Netherlands, so the paragraphs are never sent to an external AI provider, and the server stays GDPR compliant. In the [Docker installation](get-started.qmd#docker-installation), the installer can set up the same model in Ollama on your own computer, so the paragraphs stay there, or use Mistral (EU) with your own API key.
+:::
+
 Below we run exactly the same call three ways — with no LLM, with a local Ollama model, and with a cloud model on Groq — on `demopaper()`, and compare what each returns. (The LLM outputs shown here were captured from real runs; running the LLM at build time would require Ollama or an API key, so the results are loaded from saved objects.)
+
+::: callout-warning
+## Captured with an earlier version of the module
+The Ollama and Groq outputs below were captured in June 2026, with an earlier version of the `power` module. Since then the module has changed: it asks the model for structured answers, matches the model's answers to known values (see [How the model's answers are matched to known values](#how-the-models-answers-are-matched-to-known-values) below), and leaves out a row for which the model gives no type of power analysis. Running the same calls today can therefore give other rows and other values than the tables below.
+:::
 
 ### No LLM (default)
 
@@ -124,9 +139,9 @@ groq_power$table[, c("power_type", "statistical_test", "sample_size",
 
 ### Discussing the difference
 
-The two models behaved noticeably differently on the same input:
+In these runs with the earlier version of the module, the two models behaved noticeably differently on the same input:
 
-- **Recall vs. precision.** The local `qwen3.5:9b` returned a single, clean row — the real sensitivity analysis. Groq's smaller, faster `llama-3.1-8b-instant` returned three rows: it caught the same sensitivity analysis, but also flagged the paper's abstract (a **false positive**, with every field `NA`) and a line of `pwr.t.test()` example code (extracting `software = R` and `statistical_test = t-test`).
+- **Recall vs. precision.** The local `qwen3.5:9b` returned a single, clean row — the real sensitivity analysis. Groq's smaller, faster `llama-3.1-8b-instant` returned three rows: it caught the same sensitivity analysis, but also flagged the paper's abstract (a **false positive**, with every field `NA`) and a line of `pwr.t.test()` example code (extracting `software = R` and `statistical_test = t-test`). The current version leaves out a row without a type of power analysis, so an empty row like the one for the abstract no longer appears, and it matches answers such as `R` and `t-test` to known values, keeping an answer that matches none as `"other"` with the model's own words in `software_other` or `statistical_test_other`.
 - **Extraction detail.** Both correctly pulled Cohen's *d* = 0.5 and power = 0.8 for the sensitivity analysis. Neither marked any analysis as `complete`, because the demo paper does not report every required field.
 - **Speed vs. privacy.** Groq returned in ~11 s versus ~105 s locally, but the local run kept the manuscript on the machine. For unpublished work, the slower local model is usually the right trade-off.
 
@@ -138,7 +153,7 @@ The model answers four questions in its own words: the type of power analysis, t
 
 ### Paragraphs the model could not check
 
-When the request for a paragraph fails, for example because the provider did not answer, that paragraph is not counted as having no power analysis. The summary text says how many paragraphs could not be checked, the traffic light is yellow instead of green or "not applicable", and the summary table has a `power_unchecked` column with the number of such paragraphs per paper, so a run over many papers can find those papers and check them again.
+When the request for a paragraph fails, for example because the provider did not answer, that paragraph is not counted as having no power analysis. The summary text says how many paragraphs could not be checked, the traffic light is yellow instead of green or "not applicable" (a red light stays red), and the summary table has a `power_unchecked` column with the number of such paragraphs per paper, so a run over many papers can find those papers and check them again. When no paragraph at all could be checked, the summary text says that the check failed to run, which is not the same as finding no power analyses, and the traffic light is "not applicable".
 
 Metacheck needs ellmer 0.4.2 or later for this module: with older versions, Groq rejects every structured request.
 

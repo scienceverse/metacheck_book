@@ -19,22 +19,13 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-::: callout-warning
-This chapter needs the **development version** of metacheck, since `import_jasp()`, `import_omv()`, `import_spv()`, and the three `export_*_html()` functions are recent, not-yet-released additions. Install it from GitHub (see [Setting up Metacheck](get-started.qmd)):
-
-```r
-install.packages("pak")
-pak::pkg_install("scienceverse/metacheck@dev")
-```
-:::
-
 ## Overview
 
 Metacheck is an R based tool, but it would be useful to load data, code, and output files from common statistical software packages. This would allow the reproducibility_check module to take the output, and check it against the values reported in the manuscript. In psychology, SPSS, JASP, and Jamovi are commonly used. JASP and Jamovi have made the extremely sensible design choice that a .jasp or .omv file contain the data, code, and output. This means that sharing those files guarantees complete reproducibility of the analysis by design. 
 
 Three statistics packages each save their own binary archive format. There are, as far as we are aware, no existing functions in R that can read in a .spv (SPSS), .jasp (JASP), or .omv (Jamovi) file. Therefore we have made functions that can read in these files, and export the output to a html file. This makes it easier for people who want to re-use data to access the files, which improves the interoperability of these file-types. 
 
-Each format is a single archive that bundles the **data**, its **variable metadata** (measurement level, value labels), and the **analyses** that were run against it — which is exactly why [reproducibility_check](mod-reproducibility-check.qmd) treats a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself. The importers described in this chapter are available now, independently of that module.
+Each format is a single archive that bundles the **analyses** that were run and their results; a `.jasp` or `.omv` file also bundles the **data** and its **variable metadata** (measurement level, value labels) — which is exactly why [reproducibility_check](mod-reproducibility-check.qmd) treats a self-contained `.jasp`/`.omv`/`.spv` file as reproducible "for free": no code needs to be executed, because the results are already stored inside the file itself. The importers described in this chapter are available now, independently of that module.
 
 There is exactly **one import function per format**:
 
@@ -68,7 +59,7 @@ dim(jasp$data)
 head(jasp$data)
 ```
 
-`import_jasp()` returns a list with four elements:
+`import_jasp()` returns a list with five elements:
 
 | Element | Contents |
 |---|---|
@@ -197,6 +188,7 @@ head(chart$data)
 | `spv_chart_type` | `$data` columns | What it represents |
 |---|---|---|
 | `"point"` | `x`, `y` | A scatterplot's plotted points (e.g. `Curve Fit`, a Q-Q plot) |
+| `"interval"` | `x`, `y` | A bar chart or histogram: one row per case, with `y` that case's contribution to the bar at `x` (`export_spv_html()` adds up `y` per `x` to draw the bars) |
 | `"boxplot"` | `category`, `value` | A box plot's raw per-case values, grouped by category |
 
 A `"point"` chart also carries any **fitted trend line SPSS itself already computed** — the exact formula, not something metacheck estimates:
@@ -208,7 +200,7 @@ attr(chart$data, "spv_chart_fits")
 `stat_results_long()` and `stat_output_json()` skip chart entries automatically (a chart's `x`/`y` or `category`/`value` columns are plotted points, not statistics to extract), so passing `import_spv()`'s output straight through the usual pipeline is always safe, chart-bearing file or not.
 
 ::: callout-note
-`.spv`'s chart format has no public specification and no PSPP implementation to port from — it was reverse-engineered from real files found on [Zenodo](https://zenodo.org/) and [Figshare](https://figshare.com/). Two chart mark types are currently supported (`<point>` and `<schema>`/box plot, above); others (bar charts, line charts) are recognised but not yet decoded, and are silently skipped rather than causing an error. Across a sample of real `.spv` files with charts, roughly 60% of individual charts decode successfully with the two supported types.
+`.spv`'s chart format has no public specification and no PSPP implementation to port from — it was reverse-engineered from real files found on [Zenodo](https://zenodo.org/) and [Figshare](https://figshare.com/). Three chart mark types are currently supported (`<point>`, `<interval>` for bar charts and histograms, and `<schema>` for box plots, above); others are recognised but not yet decoded, and are silently skipped rather than causing an error. Across a sample of real `.spv` files with charts, roughly 60% of individual charts decoded successfully when only point charts and box plots were supported; bar charts and histograms were added later.
 :::
 
 ---
@@ -260,7 +252,7 @@ export_spv_html("example-chart.spv", out = "example-chart-output.html")
 <iframe src="example-chart-output.html" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
 ```
 
-Not every chart in a `.spv` file can be rendered this way yet — see the note in [Part 3](#spv-charts) on which mark types are currently supported. A chart that cannot be decoded is skipped, with the rest of the file's tables (and any other decodable charts) still exported normally.
+Not every chart in a `.spv` file can be rendered this way yet — see the note in [Part 3](#spv-charts) on which mark types are currently supported. A chart that cannot be decoded is skipped, and a decoded chart that cannot be drawn is replaced by the note "(This chart could not be drawn.)"; the rest of the file's tables (and any other decodable charts) are still exported normally.
 
 ---
 
@@ -305,7 +297,7 @@ export_stata_smcl_html("analysis.smcl", out = "analysis.html")
 ::: {.callout-note}
 ## These two are not reached by `read_stat_tables()`
 
-`read_stat_tables()` dispatches on the file extension and handles `.jasp`, `.omv`, `.spv` and `.ipynb`. It does not recognise `.out` or `.smcl`, so call `import_mplus_output()` or `import_stata_smcl()` directly for those. Both return the same table-list shape, so everything downstream works identically once you have the tables.
+`read_stat_tables()` handles `.jasp`, `.omv`, `.spv` and `.ipynb`: it recognises a notebook by its extension, and the other three by what is inside their zip archive. A `.out` or `.smcl` file is not a zip archive, so `read_stat_tables()` returns an empty list for it; call `import_mplus_output()` or `import_stata_smcl()` directly for those. Both return the same table-list shape, so everything downstream works identically once you have the tables.
 :::
 
 ---

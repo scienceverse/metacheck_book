@@ -23,12 +23,15 @@ library(metacheck)
 Metacheck has two modules that work together to check research code:
 
 - **`repo_check`** lists all files in a repository and checks for basic
-  organisational quality: is there a README? Are there unextracted zip files?
-  How many code, data, and other files are there?
+  organisational quality: is there a README? Are there archives whose contents
+  cannot be listed? Do the file names follow good practice, and are there files
+  that do not belong in a repository? How many code, data, and other files are
+  there?
 
-- **`code_check`** reads the actual code files and checks them for four
-  best-practice issues: comments, absolute file paths, grouped library loading,
-  and missing data files.
+- **`code_check`** reads the actual code files and checks them for
+  best-practice issues: comments, absolute file paths, `setwd()` and
+  `install.packages()` calls, grouped library loading, missing data files,
+  code that cannot be parsed, and whether the package versions are recorded.
 
 Normally both modules fetch files automatically from online repositories (OSF,
 GitHub, GitLab, ResearchBox, Zenodo, Dataverse, Figshare, Dryad, and several
@@ -43,6 +46,11 @@ following links found in a paper. This vignette shows how to point them at a
 
 ::: callout-tip
 If you just want a report on a folder — no manuscript involved — `report_repository()` wraps the pattern this chapter walks through by hand: give it a path, and it runs `repo_check`, `code_check`, `data_check`, and `codebook_check` on it and writes a report named after the folder. See [Downloading OSF files to check locally](#downloading-osf-files-to-check-locally) below for an example, and [Creating a Report](creating-a-report.qmd) for the full function reference.
+:::
+
+::: {.callout-note}
+## Without R
+[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) checks a local folder too: under *Run Metacheck on a Repository*, choose the folder or a .zip file, and it runs `repo_check`, `code_check`, and `data_check`, and can also run the R and Python code. The folder is then uploaded to the server, which deletes it once it has been read. To keep files on your own computer, for example files sent to you for review, use the [Docker installation](get-started.qmd#docker-installation), which offers the same website locally.
 :::
 
 ---
@@ -63,8 +71,10 @@ library(metacheck)
 Both forward slashes `/` and backslashes `\\` work on Windows inside R.
 
 When you provide a local path, the folder is treated as a repository in
-exactly the same way as an OSF project or GitHub repo. Each folder gets its
-own row in the summary tables and its own traffic light.
+exactly the same way as an OSF project or GitHub repo. Each folder is a
+repository of its own, named by its path in the `repo_url` column of the file
+table. The summary table has one row per paper, however many folders you
+check, and the module gives one traffic light for all of them together.
 
 ---
 
@@ -77,12 +87,25 @@ For each folder you provide, `repo_check` will:
 - **List all files** and classify them by type (code, data, archive, readme, ...)
 - **Check for a README** — a README file is good practice and helps others
   understand the contents of a folder
-- **Flag zip archives** — if the folder contains `.zip` or other archive files,
-  `repo_check` will flag them because their contents cannot be inspected
+- **Look inside zip archives** — the files inside a `.zip` file are listed in
+  place of the archive. Other archive formats, such as `.7z`, `.rar` or
+  `.tar.gz`, cannot be listed this way, so `repo_check` flags them and
+  recommends `.zip`
+- **Check file names** — for example names or paths that are too long, or
+  characters that cause problems on some computers
+- **Flag files that do not belong in a repository** — files that software
+  creates by itself, such as `.DS_Store`, `.Rhistory` or editor backups, and
+  version-control or editor folders such as `.git/`. They are left out of the
+  file list and named in the report
 - **Report counts** — how many code files, data files, and so on
 
-The traffic light is `"green"` when a README is present and there are no
-unextracted archives, and `"yellow"` otherwise.
+The traffic light is `"red"` when the folder holds files that software creates
+by itself (such as `.DS_Store` or `.Rhistory`). It is `"green"` when every
+repository has a README, no archive is left that could not be listed, every
+file could be classified, no file name breaks a naming rule, there are no
+version-control or editor folders, every repository could be read, and (when
+there is a manuscript) the studies it names match how the files are grouped.
+Otherwise it is `"yellow"`.
 
 ### Checking a single folder
 
@@ -93,10 +116,10 @@ repo <- module_run(test_paper(), "repo_check",
 # Plain-text summary
 repo$summary_text
 
-# Summary counts (one row per folder)
+# Summary counts (one row per paper)
 repo$summary_table
 
-# "green" or "yellow"
+# "green", "yellow" or "red"
 repo$traffic_light
 
 # Full file list — one row per file, with file_type and file_size columns
@@ -119,17 +142,20 @@ the local files are checked.
 A typical `$summary_text` when the folder is missing a README might look like:
 
 ```
-We found 8 files in 1 repository.
-We found 0 README files and 1 repository without READMEs.
+- We found 8 files in 1 repository.
+- We found 0 README files and 1 repository without READMEs.
 ```
 
-And `$summary_table` will have columns: `repo_n`, `files_n`, `files_code`,
-`files_data`, `files_readme`, `files_zip`.
+And `$summary_table` will have columns: `paper_id`, `repo_n`,
+`repo_unchecked`, `files_n`, `files_data`, `files_code`, `files_readme`,
+`files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch`.
 
 ### Checking multiple folders
 
 Pass a vector of paths to check several folders at once. Each is treated as a
-separate repository, so you get one summary row per folder:
+separate repository. The summary table still has one row, for the one paper,
+with `repo_n` counting the folders; the file table names each file's folder in
+`repo_url`:
 
 ```{r}
 paths <- c(
@@ -140,15 +166,18 @@ paths <- c(
 
 repo <- module_run(test_paper(), "repo_check", local_path = paths)
 
-# Three rows — one per folder
+# One row, with repo_n = 3
 repo$summary_table
 
 # All files from all three folders, with repo_url identifying the source
 repo$table
+
+# Number of files of each type (code, data, readme, ...) per folder
+table(repo$table$repo_url, repo$table$file_type)
 ```
 
 This is a quick way to compare whether several projects all have READMEs and
-no stray zip files before you submit or share them.
+no archives that cannot be listed before you submit or share them.
 
 ---
 
@@ -157,17 +186,26 @@ no stray zip files before you submit or share them.
 ### What `code_check` checks
 
 `code_check` builds on `repo_check`: it first runs the file inventory, then
-reads every code file (R, Rmd, Qmd, SAS, SPSS, Stata) and checks for:
+reads every code file (R, Rmd, Qmd, Python and Jupyter notebooks, SAS, SPSS,
+Stata, Mplus, and MATLAB; JASP files are counted but not read) and checks for:
 
 - **Comments** — is the code explained? A file with no comment lines at all
   is flagged.
 - **Absolute paths** — paths like `C:/myname/files/data.csv` only work on
   one specific computer and will break for anyone else trying to reproduce
   the analysis.
+- **`setwd()` and `install.packages()` calls** — `setwd()` ties the script to
+  one computer's folders, and `install.packages()` installs software on the
+  computer of whoever runs the script, without asking.
 - **Library loading** — are all `library()` / `require()` calls grouped
   together near the top of the script, or are they scattered throughout?
 - **Missing data files** — if the script loads `read.csv("data.csv")` but
   `data.csv` is not in the folder, that is flagged.
+- **Parsing** — can the R code (`.R`, `.Rmd`, `.qmd`) be read without syntax
+  errors?
+- **Recorded package versions** — is there an `renv.lock` file, a
+  `sessionInfo()` record, or a `groundhog`/`checkpoint` call for R code, and a
+  package list such as `requirements.txt` for Python code?
 
 ### Checking your own code
 
@@ -184,7 +222,7 @@ result$summary_text
 # One row per code file with detailed metrics
 result$table
 
-# "green" (no issues), "yellow" (some issues), or "na" (no code files found)
+# "green" (no issues), "yellow" (some issues), or "na" (no code files read)
 result$traffic_light
 
 # Full formatted report
@@ -192,9 +230,9 @@ result$report
 ```
 
 > **Note on cloud-sync folders:** If your files are on OneDrive, iCloud, or
-> another cloud-sync service and are not fully downloaded, you will see the
-> message *"If folders are stored online, the check might be slow as all files
-> need to be downloaded."* In that case, right-click the folder and choose
+> another cloud-sync service and are not fully downloaded, the check will be
+> slow, because every file has to be downloaded when it is read; Metacheck
+> does not warn you about this. Right-click the folder and choose
 > "Always keep on this device" (OneDrive) or "Download Now" (iCloud) before
 > running the check.
 
@@ -238,7 +276,9 @@ result$report   # copy this into your review
 ### Code hosted on an unsupported repository
 
 Metacheck currently retrieves files automatically from **OSF, GitHub,
-ResearchBox, and Zenodo**. Many other services exist that are not yet
+GitLab, ResearchBox, PsychArchives and other DSpace repositories, Zenodo,
+Dataverse, Figshare, Dryad, ReShare, 4TU.ResearchData, Mendeley Data, DataONE,
+and LDbase**. Other services, such as Bitbucket or Google Drive, are not
 supported. If the paper links to one of these, download the files manually
 and point `code_check` at the downloaded folder.
 
@@ -250,9 +290,9 @@ The workflow is the same for all of them:
 4. Run `code_check`
 
 ```{r}
-# Author shared code on GitLab — you downloaded or cloned it locally
+# Author shared code on Bitbucket — you downloaded or cloned it locally
 result <- module_run(test_paper(), "code_check",
-                     local_path = "C:/downloads/lee_2023_gitlab_code")
+                     local_path = "C:/downloads/lee_2023_bitbucket_code")
 
 result$summary_text
 result$traffic_light
@@ -278,16 +318,21 @@ result <- module_run(paper, "code_check",
 unique(result$table$repo_url)
 ```
 
-`repo_check` reports on each repository separately, so you can see at a glance
-whether the README and zip issues are in the online repo or the local folder:
+`repo_check` treats the online repository and the local folder as two
+repositories. The summary table counts both in one row for the paper, and the
+`repo_url` column of the file table shows which files, README files, and
+archives are in the online repo and which in the local folder:
 
 ```{r}
 repo <- module_run(paper, "repo_check",
                    local_path = "C:/peer_review/garcia_2024_extra_scripts")
 
-# One row per repository — the OSF project and the local folder
+# One row for the paper, with repo_n = 2 (the OSF project and the local folder)
 repo$summary_table
 repo$traffic_light
+
+# Number of files of each type per repository
+table(repo$table$repo_url, repo$table$file_type)
 ```
 
 ---
@@ -329,19 +374,19 @@ file downloads happen once (during `code_check`), not twice.
 
 | Element | What it contains |
 |---|---|
-| `$traffic_light` | `"green"` (README present, no zips), `"yellow"` (issues), or `"na"` (no repos) |
-| `$summary_text` | Plain-text summary: file counts, README status, zip files |
-| `$summary_table` | One row per folder: `repo_n`, `files_n`, `files_code`, `files_data`, `files_readme`, `files_zip` |
-| `$table` | One row per file: `repo_url`, `file_name`, `file_url`, `file_location`, `file_size`, `file_type` |
-| `$report` | Formatted report explaining any README or zip issues |
+| `$traffic_light` | `"green"` (no issues), `"yellow"` (issues, such as a missing README or an archive that cannot be listed), `"red"` (files that software creates by itself, such as `.DS_Store`), or `"na"` (no repos) |
+| `$summary_text` | Plain-text summary: file counts, README status, archives, file names, files that do not belong |
+| `$summary_table` | One row per paper: `paper_id`, `repo_n`, `repo_unchecked`, `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch` |
+| `$table` | One row per file, with columns including `paper_id`, `repo_url`, `file_name`, `file_path`, `file_url`, `file_location`, `file_size`, `file_type`, and `group` (the study a file belongs to) |
+| `$report` | Formatted report explaining any README, archive, file-name, or other issues |
 
 ### `code_check` output
 
 | Element | What it contains |
 |---|---|
-| `$traffic_light` | `"green"` (no issues), `"yellow"` (issues found), or `"na"` (no code files) |
-| `$summary_text` | Plain-text summary of all four checks across all files |
-| `$summary_table` | Counts: `code_n`, `code_checked`, `code_abs_path`, `code_missing_files`, `code_min_comments`, `code_parse_errors` |
+| `$traffic_light` | `"green"` (no issues), `"yellow"` (issues found), or `"na"` (no code files read) |
+| `$summary_text` | Plain-text summary of all checks across all files |
+| `$summary_table` | One row per paper: `paper_id`, `code_n`, `code_checked`, `code_abs_path`, `code_setwd`, `code_install_packages`, `code_missing_files`, `code_min_comments`, `code_parse_errors`, `code_packages_n`, `code_version_pinned` |
 | `$table` | One row per code file with detailed metrics (see below) |
 | `$report` | Full formatted report suitable for pasting into a review |
 
@@ -351,7 +396,7 @@ Key columns in `code_check`'s `$table`:
 |---|---|
 | `file_name` | Script filename |
 | `repo_url` | Which folder (or online repo) the file came from |
-| `language` | Detected language: R, SAS, SPSS, or Stata |
+| `language` | Detected language: R, Python, SAS, SPSS, Stata, Mplus, MATLAB, or JASP |
 | `percentage_comment` | Share of non-blank lines that are comments (0 = no comments at all) |
 | `loaded_files_missing` | Number of data files the script tries to load that are not in the folder |
 | `loaded_files_missing_names` | The names of those missing files |

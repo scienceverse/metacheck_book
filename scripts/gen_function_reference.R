@@ -1,13 +1,15 @@
 ## Generates chapters/function-reference.qmd from the package's .Rd files.
 ## Source of truth: man/*.Rd (roxygen2-generated). Run from the metacheck_book repo root,
-## with a sibling ../metacheck-new checkout providing NAMESPACE + man/.
+## with a sibling ../metacheck-new checkout providing NAMESPACE + man/, or set
+## METACHECK_PKG_DIR to another checkout. Use a clean checkout of the branch the
+## book documents (dev): uncommitted changes in it end up in the book.
 ##
 ## When metacheck gains or loses an exported function, this script's family
 ## sanity check will stop() rather than silently render an incomplete page:
 ## add the new name to the right family list below (or a new family, if it
 ## does not fit an existing one), then re-run.
 
-pkg_dir  <- "../metacheck-new"
+pkg_dir  <- Sys.getenv("METACHECK_PKG_DIR", "../metacheck-new")
 man_dir  <- file.path(pkg_dir, "man")
 ns_file  <- file.path(pkg_dir, "NAMESPACE")
 
@@ -275,8 +277,9 @@ lines <- c(
   "from the package's roxygen documentation (the same source `?function_name`",
   "reads from). It is grouped by task rather than alphabetically, so functions",
   "used together stay together. Unlike a hand-written summary, this page is",
-  "regenerated from source and cannot drift out of sync with the installed",
-  "package's actual exports.",
+  "regenerated from the package's documentation, so it matches the package's",
+  "exports as of the last time it was regenerated, from metacheck's",
+  "development version.",
   "",
   paste0("As of this build, that is **", length(public), " functions** across **",
          length(families), " groups**."),

@@ -50,17 +50,17 @@ Dataverse is not a single website but open-source software that many independent
 
 Go to the installation's own site and log in. Click your account name in the navigation bar, and choose **API Token** from the dropdown menu. This opens a page with a **Create Token** button (or **Recreate Token**, if you already have one). For Harvard Dataverse, for example, this account menu is reached from <https://dataverse.harvard.edu>.
 
-Because the token is tied to one installation, storing it also requires naming the installation. `dataverse_pat()` takes a `host`, so store it under a name of your own choosing that includes the host, and pass that host when you check it:
+Because the token is tied to one installation, storing it also requires naming the installation. `dataverse_pat()` takes a `host`, and looks for the token under a name made from that host: `DATAVERSE_PAT_` followed by the host in capital letters, with every `.` (and any other character that is not a letter or digit) replaced by `_`. Store it under that name, and pass the host when you check it:
 
 ```
-DATAVERSE_HARVARD_PAT="paste-your-token-here"
+DATAVERSE_PAT_DATAVERSE_HARVARD_EDU="paste-your-token-here"
 ```
 
 ```{r}
 dataverse_pat(host = "dataverse.harvard.edu")
 ```
 
-If you work with more than one Dataverse installation, add one line per installation, each with its own environment-variable name, and call `dataverse_pat()` with the matching `host` each time.
+If you work with more than one Dataverse installation, add one line per installation, each named after its own host in the same way (for example `DATAVERSE_PAT_DATAVERSE_NL` for `dataverse.nl`), and call `dataverse_pat()` with the matching `host` each time.
 
 ## Dryad
 
@@ -103,11 +103,18 @@ dryad_auth(
 )
 ```
 
-Unlike the token functions elsewhere in this chapter, `dryad_auth()` is normally called directly in your script rather than stored in `.Renviron`, because it takes two values rather than one. Use whichever of `dryad_pat()` or `dryad_auth()` suits the job: `dryad_pat()` for a quick session under 10 hours; `dryad_auth()` for a script that will keep running past that, such as building a large corpus of downloaded datasets.
+This sets the account ID and secret for the current session only. To have them read every time R starts, store them in `.Renviron` instead, as two lines; Metacheck then uses them automatically, without a call to `dryad_auth()`:
+
+```
+DRYAD_CLIENT_ID="paste-your-api-account-id-here"
+DRYAD_CLIENT_SECRET="paste-your-secret-here"
+```
+
+When an account ID and secret are set, they are used instead of `DRYAD_PAT`. Use whichever of `dryad_pat()` or `dryad_auth()` suits the job: `dryad_pat()` for a quick session under 10 hours; `dryad_auth()` for a script that will keep running past that, such as building a large corpus of downloaded datasets.
 
 ## Figshare
 
-Figshare is a single service at <https://figshare.com>, with several institutions — including the University of Leicester and DTU Data — running their own branded address on the same underlying service. A token is optional for reading public articles, where it only raises the rate limit; it is required to read a private article.
+Figshare is a single service at <https://figshare.com>, with several institutions — including the University of Leicester and DTU Data — running their own branded address on the same underlying service. A token is not needed for reading public articles, and does not raise any request limit there; it is required to read a private article.
 
 Create a token at <https://figshare.com/account/applications>. Log in, open that page, and create a new personal token there.
 

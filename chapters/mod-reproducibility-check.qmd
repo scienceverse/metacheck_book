@@ -65,6 +65,13 @@ This module builds on `code_check`, `psychds_check`, and `data_check`, and inher
 
 ## Running the module
 
+::: {.callout-note}
+## Without R
+[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) runs this module with the code run: tick *Also run the R and Python code* under *Run Metacheck on a Repository* (a folder, a .zip file, or a link to an online repository; it is ticked there by default), or *Also run the code in the paper's repository* under *Run Metacheck on a Paper*. The [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) and the [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) offer it too. The server first installs the R and Python packages the code needs, and then runs each script for at most 5 minutes, in a closed sandbox without internet access.
+
+The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. There, the code runs inside the Docker container, which is not a closed sandbox: the code can use the internet, but it cannot reach the files on your computer.
+:::
+
 The default is the static phase — it does not run anything. This example reads every repository `demopaper()` links to, so (like the rest of this chapter) it needs those repositories to be reachable; the output below is shown rather than run live, so the chapter does not depend on every linked repository's uptime at render time:
 
 ```{r}
@@ -370,7 +377,7 @@ By default (`docker_use_declared_version = FALSE`), the module always uses the p
 Warning message:
 reproducibility_check(sandbox = "docker"): this paper declared R version
 4.3.1, but docker_use_declared_version = FALSE (the default), so the run
-uses the pre-built metacheck_r image's own R version instead, for speed.
+uses the pre-built metacheck_r_large image's own R version instead, for speed.
 Set docker_use_declared_version = TRUE to match the paper's declared
 version exactly -- slower, since every dependency then installs from
 scratch rather than using the pre-built image.
@@ -620,6 +627,8 @@ R code and Python code each get their own light by these rules, and the paper ge
 | `$modifications` | per-file modification detail: `file_name`, `change_type`, `detail` — path rewrites (`path_rewrite`, listed even when `execute = FALSE`), and, when executed, `setwd()` or `os.chdir()` removal (`setwd_removed`), font substitution (`font_replaced`, R only), and added `library()` calls (`library_injected`, R only). Empty when nothing needed modifying |
 | `$report` | formatted report sections, including per-script output and the self-reproducible JASP/jamovi results; the R sections come first, then a "Python code" section when there is Python code |
 | `$summary_text` | plain-text bulleted summary, as one text also when the paper has R and Python code |
+| `$checklist_section` | (only when `execute = TRUE`) the section the checklist report (`report_type = "checklist"`) shows for this check: how the scripts were run, what happened to each script in run order, other problems in the files, and how many of the paper's reported tests were found in the output of the code |
+| `$brief` | `TRUE` when code was run and at least one script ran to the end, stopped with an error, or ran out of time; the brief report then keeps this check whatever its light |
 | `$sandbox` | (only present when `keep_sandbox = TRUE`) the path to the materialised throwaway directory — see below |
 
 ## Options
@@ -648,7 +657,7 @@ R code and Python code each get their own light by these rules, and the paper ge
 `download`, `skip_types`, and `peek_zips` are also part of the key the LLM response cache uses for `data_check`'s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.
 :::
 
-`keep_sandbox = TRUE` is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (`data/` for the Psych-DS layout, or a copy of the whole package for the package layout), `output/` (anything a script's write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/`.spv`/`.smcl`/`.out` file — a `statistical_output/` folder with the structured results documents. This is also what [convert_psychds()](mod-psychds-check.qmd) looks for when building an archive: pass `keep_sandbox = TRUE` if you want its `statistical_output/` folder included, since `convert_psychds()` does not run `reproducibility_check` itself and has no other way to obtain it.
+`keep_sandbox = TRUE` is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (`data/` for the Psych-DS layout, or a copy of the whole package for the package layout), `output/` (anything a script's write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/`.spv`/`.smcl`/`.out` file — a `statistical_output/` folder with the structured results documents. `convert_psychds()`, which is meant to put this folder into a Psych-DS archive, is not yet available in the released version or in `dev`; see the [Psych-DS Check](mod-psychds-check.qmd) chapter.
 
 ## Notes and limitations
 

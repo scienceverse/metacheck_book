@@ -22,6 +22,11 @@ This module is **fully offline** — it uses only regular expressions, so all th
 
 ## Running the module
 
+::: {.callout-note}
+## Without R
+This module also runs on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/): upload a paper under *Run Metacheck on a Paper*, where it is one of the default checks under *Checks*. The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. The website runs the module with its default settings; to change them, run it in R as below.
+:::
+
 ```{r}
 #| results: asis
 paper <- demopaper()
@@ -87,11 +92,11 @@ The module looks for six families of phrasing, each describing a result as nearl
 | `border… significant` | borderline significant, bordering on significance |
 | `close to … significant` | close to significant, close to being significant |
 
-Under the hood these are a single regular expression. You can always inspect the exact pattern the installed module uses with `module_info()`:
+Under the hood these are a single regular expression. You can always inspect the exact pattern the installed module uses by opening the module's file:
 
 ```{r}
 #| eval: false
-module_info("marginal")
+file.show(system.file("modules", "marginal.R", package = "metacheck"))
 ```
 
 The regex itself is:

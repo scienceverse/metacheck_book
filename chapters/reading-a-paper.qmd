@@ -19,14 +19,13 @@ The first step to using Metacheck is to read in a manuscript. Metacheck converts
 
 The function `convert()` can read PDF files and save them in [JSON format](https://www.scienceverse.org/schema/paper.json). This requires an internet connection and takes a few seconds per paper. The conversion process needs to be done only once and the converted file can be saved for later use. If you don't supply an `api_url`, `api_key` or `backend`, Metacheck sends the PDF to its own server on SURF Research Cloud in the Netherlands, which converts it with bibr when bibr is available and otherwise with GROBID on the same server, needs no API key, deletes the uploaded PDF once it is converted, and deletes the result an hour later. That server converts whole PDFs without figures, of at most 50 MB. If it cannot be reached, Metacheck uses a local GROBID server, then a local bibr server, and then the first available server in a [list of active servers](https://www.scienceverse.org/metacheck/convert.json). You can set another address for the SURF server with the `SURF_API_URL` environment variable.
 
-You can also supplement the reference section created by GROBID with information retrieved from CrossRef by setting `crossref_lookup = TRUE`. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. You can always add this information later with the `add_bib_match()` function.
-
 ```{r, eval = FALSE}
 pdf_file <- demofile("pdf")
 json_file <- convert(file_path = pdf_file,
-                     save_path = "converted",
-                     crossref_lookup = TRUE)
+                     save_path = "converted")
 ```
+
+You can also supplement the reference list with information retrieved from CrossRef. This can increase the accuracy of the information in the reference list. Retrieving this information also requires an internet connection, and can take some time. Add it after you have read the paper in (see below) with the `add_bib_match()` function: `paper <- add_bib_match(paper)`. The argument `crossref_lookup = TRUE` of `convert()` does the same, but only when the PDF is converted with GROBID (`method = "grobid"`) or when you convert a GROBID XML file; with the default SURF server it has no effect.
 
 ```{r, include = FALSE}
 # doesn't require a call to the grobid server
@@ -35,10 +34,10 @@ json_file <- demofile("json")
 
 ## Local conversion through GROBID in Docker
 
-You can set up your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.0 if you run it in your system terminal.
+You can set up your own local GROBID server following instructions from <https://grobid.readthedocs.io/>. The easiest way is to use Docker. The following code installs GROBID 0.9.1 (the official image, without deep-learning models; it needs about 4 GB of memory) if you run it in your system terminal.
 
 ``` bash
-docker run --rm --init --ulimit core=0 -p 8070:8070 lfoppiano/grobid:0.9.0
+docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.9.1-crf
 ```
 
 Set `method = "grobid"` and the `api_url` to the local path <http://localhost:8070> (as illustrated below) to convert with the local GROBID server. Metacheck only picks a local GROBID server by itself when the SURF server cannot be reached, so name it whenever the manuscript must stay on your computer.
@@ -201,7 +200,7 @@ head(paper$eq) |>
 
 **bib_match**
 
-When you convert with `crossref_lookup = TRUE` (or run a reference module), Metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by `bib_id`:
+When you run `add_bib_match()`, or convert with GROBID and `crossref_lookup = TRUE` (or run a reference module), Metacheck matches each reference against services like CrossRef and stores the retrieved metadata here, keyed by `bib_id`:
 
 ```{r}
 paper$bib_match[, c("bib_id", "service", "doi", "title")] |>

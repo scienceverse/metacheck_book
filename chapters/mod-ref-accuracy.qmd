@@ -18,10 +18,10 @@ psychsci <- papers_load("psychsci", cache = TRUE)
 Every reference in a paper's bibliography can carry a **DOI** — a permanent identifying code that points to the official record of that work online. `ref_accuracy` looks up each reference's DOI and checks whether the title, authors, journal, and year the paper printed for that reference actually match the official record.
 
 ::: callout-note
-For now, `ref_accuracy` is not among `report()`'s default modules and is not offered in the Metacheck apps. Its validation on nine PsyArXiv preprints found that most of the references it flagged were errors in reading the PDF, not errors in the paper. Run it yourself with `module_run(paper, "ref_accuracy")`, or add it to `report()`'s `modules`. The other reference modules still use the DOIs Crossref finds for references.
+For now, `ref_accuracy` is not among `report()`'s default modules and is not offered on [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/). Its validation on nine PsyArXiv preprints found that most of the references it flagged were errors in reading the PDF, not errors in the paper. Run it yourself with `module_run(paper, "ref_accuracy")`, or add it to `report()`'s `modules`. The other reference modules still use the DOIs Crossref finds for references.
 :::
 
-Because this check needs to look things up online, the demo paper first needs that lookup done with `add_bib_match()`. Without that lookup (no `bib_match` table), the module reports "na": the references were not looked up at Crossref, so their accuracy was not checked.
+Because this check needs to look things up online, it uses the paper's `bib_match` table, which holds the result of that lookup. The demo paper already contains one; `add_bib_match()` looks the references up again, so the table is current. For a paper without that lookup (no `bib_match` table), the module reports "na": the references were not looked up at Crossref, so their accuracy was not checked.
 
 ```{r}
 #| results: asis
@@ -74,7 +74,7 @@ mo$summary_table |>
   knitr::kable()
 ```
 
-The full `table` has one row per reference, with a `tier` column (`"provided"` for references that supplied their own DOI, `"none"` for references without one) and an `incoherent` flag, alongside the individual `*_mismatch` columns:
+The full `table` has one row per reference, with a `tier` column (`"provided"` for references that supplied their own DOI and CrossRef returned its record; `"unresolved"` for references that supplied a DOI CrossRef could not find, which are always flagged; `"crossref"` for references without a DOI for which CrossRef found one by title search, which are not flagged; `"none"` for references without any DOI) and an `incoherent` flag, alongside the individual `*_mismatch` columns:
 
 ```{r}
 mo$table |>
@@ -95,7 +95,7 @@ mo$summary_table
 
 ## How a reference is flagged
 
-For each checked reference the module compares five fields against the DOI's record. Two of them are treated as *reliable* signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as *weaker* signals.
+For each checked reference the module compares five fields against the DOI's record. Three of them are treated as *reliable* signals and flag a reference on their own; the other two are more often disturbed by imperfect PDF parsing and are treated as *weaker* signals.
 
 | Field | Signal | Notes |
 |---|---|---|
@@ -105,7 +105,7 @@ For each checked reference the module compares five fields against the DOI's rec
 | Title | weaker | character similarity, ignoring case/punctuation/footnotes |
 | Author | weaker | leading surnames only; diacritics ignored |
 
-A reference is flagged when any reliable field mismatches, **or** when at least `min_mismatches` of the weaker fields (title, author) mismatch. By default `min_mismatches = 2`, so a lone title or author difference — which is usually a parsing artefact — is not enough on its own.
+A reference is flagged when any reliable field mismatches, **or** when at least `min_mismatches` of the weaker fields (title, author) mismatch. By default `min_mismatches = 1`, so a lone title or author difference is enough, even though it is often a parsing artefact; set `min_mismatches = 2` to require both to differ (see [Parameters](#parameters)).
 
 ## Parameters
 

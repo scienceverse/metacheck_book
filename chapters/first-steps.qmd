@@ -59,7 +59,7 @@ paper <- read(good_paper_file)
 `convert()` sends the PDF to a free conversion server and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can `read()` the saved file directly, without converting again.
 
 ::: callout-note
-`convert()` defaults to a server at Eindhoven University of Technology that does not store your manuscript. See [Reading in a Paper](reading-a-paper.qmd) if you would rather run your own, fully local conversion server.
+`convert()` defaults to Metacheck's own server on SURF Research Cloud in the Netherlands, which deletes your PDF once it is converted, and the result an hour later. See [Reading in a Paper](reading-a-paper.qmd) if you would rather run your own, fully local conversion server.
 :::
 
 ## Step 2: Run one check
@@ -129,7 +129,7 @@ You already have the bad paper read in from Step 2 as `bad_paper`, so running th
 report(bad_paper, output_file = "bad_paper_report.html")
 ```
 
-This produces the same kind of report, but with several more red and yellow lights: a missing ethics statement, a missing funding statement, an unwarranted causal claim, p-values that do not match their own reported statistics, and more. Nothing about the *process* changes between the two papers — only what the report finds.
+This produces the same kind of report, but with several more red and yellow lights: a missing funding statement, p-values that do not match their own reported statistics, and more. Nothing about the *process* changes between the two papers — only what the report finds.
 
 ## Step 4: Check a shared repository
 
@@ -155,6 +155,11 @@ report_repository("bad_repo/stroop_effect_paper_bad-main",
 ```
 
 Open `bad_repo_report.html`, and you will see a **yellow** light on the repository's overall organisation: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper's repository (<https://github.com/Lakens/stroop_effect_paper>) and compare the result — it is organised into clearly labelled `data/`, `code/`, `output/`, and `documentation/` folders, with a complete codebook, which is exactly what this check is designed to reward.
+
+::: {.callout-note}
+## Without R
+[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) can check the same repository without downloading it: paste <https://github.com/Lakens/stroop_effect_paper_bad> as the link under *Run Metacheck on a Repository*. It runs the file, code, and data checks (not the codebook check), and, unless you untick the option *Also run the R and Python code*, also runs the R code, to see whether it runs to the end ([Reproducibility Check](mod-reproducibility-check.qmd)).
+:::
 
 ## What you have just done
 
