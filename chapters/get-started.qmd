@@ -22,6 +22,7 @@ library(metacheck)
 |---|---|---|
 | [Metacheck's website on SURF Research Cloud](#the-easiest-way-to-get-started) | A web browser; nothing to install. | Checking a paper or a repository now and then. The server's capacity is shared by everyone, so it is not meant for many papers. |
 | [Docker installation](#docker-installation) | Docker on your own computer: a computer with 8 GB of memory for the lightest installation, or 16 GB to also convert PDFs on your own computer. No R. | The same website on your own computer: for checking many papers, for example in a metascience project, and, with PDFs converted on your own computer, for manuscripts you may not share. |
+| [Your own server on SURF Research Cloud](#your-own-server-on-surf-research-cloud) | Access to SURF Research Cloud, which researchers at Dutch research institutions can get through their institution or a free NWO grant. Nothing to install on your computer. | The same website on a server of your own, with more powerful hardware than the shared server: for many papers, for a research group, or with bibr and a graphics card. |
 | [Metacheck in R](#installing-in-r) | R and RStudio. | Everything Metacheck can do: all modules and their settings, your own modules, and analyses across many papers. |
 
 ## The easiest way to get started
@@ -191,6 +192,43 @@ The installer writes your choices to the file `.env` in the `metacheck` folder. 
 ### Running the code of a repository
 
 The website can run the R and Python code of a repository, and compare its results with the paper. In the Docker installation, the code runs inside the Docker container; this needs no extra installation. The R and Python packages the code needs and Metacheck does not include are downloaded while the check runs, so it needs an internet connection and takes longer when a repository uses many packages. Unlike the closed sandbox on the SURF server, the container is not closed off: the code can use the internet. It cannot reach the files on your computer.
+
+## Your own server on SURF Research Cloud
+
+Metacheck's website on SURF Research Cloud is not only a shared server: the software that builds it is a building block of SURF Research Cloud, so you can run your own copy of it there. Your own server can have more processors and memory than the shared one, and a graphics card, which bibr needs and which makes the language model much faster.
+
+### What SURF Research Cloud is
+
+[SURF](https://www.surf.nl/en) is the cooperative of the Dutch universities, universities of applied sciences, university medical centres and research institutes, and provides their national computing infrastructure. [SURF Research Cloud](https://www.surf.nl/en/services/compute/surf-research-cloud) is a portal where you build a virtual research environment yourself. The idea behind it:
+
+- **You build the environment you need, when you need it.** You choose a ready-made *catalog item* from a catalogue, choose the size of the computer (a *flavour*: the number of processors, the memory, and optionally a graphics card), and the portal creates a *workspace*: a virtual computer in SURF's data centres in the Netherlands, with the software already installed.
+- **The environment is described by scripts.** A catalog item is a set of human-readable scripts that build the environment the same way each time. So you can delete a workspace when you no longer need it and build an identical one later, and anyone can see exactly what was installed.
+- **You pay only for what runs.** A workspace uses computing time (counted in processor hours, or graphics card hours) only while it runs; a paused workspace uses none, and keeps its configuration and data. A workspace itself is temporary: what should outlive it, such as files you want to keep, goes on a separate *storage volume*.
+- **You work together in a collaboration.** Access is arranged through SURF Research Access Management (SRAM): you log in with your institution's account, and you can give colleagues access to your workspaces, also at other institutions and in other countries.
+
+### Metacheck's building blocks
+
+The scripts that build Metacheck's server are open source, in [scienceverse/surf-research-cloud](https://github.com/scienceverse/surf-research-cloud). They provide two *components*, which can be combined in a catalog item:
+
+- **metacheck:** the website, the web interface and the paper report app, exactly as on Metacheck's shared server, optionally with GROBID, LibreOffice for Word files, and a small language model on the workspace itself.
+- **bibr:** [bibr](https://github.com/scienceverse/bibr), Scienceverse's own pipeline for extracting the text, structure and references of scientific papers, and an alternative to GROBID. It converts PDF and Word files into the bibr JSON that Metacheck reads, in more detail than GROBID, and serves a language model that a metacheck workspace can use too. It needs a workspace with a graphics card (an A10) and a storage volume of at least 150 GB. A metacheck workspace in the same collaboration reaches it over SURF's private network.
+
+The repository's [README](https://github.com/scienceverse/surf-research-cloud#readme) describes the catalog items ("metacheck server", "bibr server", and "metacheck + bibr" on one workspace), every setting, and how to add the components to your own collaboration's catalogue.
+
+### Getting started
+
+1. **Get a budget.** Check with your institution's IT or research support whether it already has [direct access](https://www.surf.nl/en/direct-access-to-compute-services) to SURF's compute services, through a contract with SURF. If not, apply for a free [NWO small compute grant](https://www.surf.nl/en/small-compute-applications-nwo) for SURF Research Cloud: it is meant for small projects and pilots, is granted within about two weeks, and lasts up to a year; it pays for SURF's own HPC Cloud, the computers Research Cloud runs on in the Netherlands. The [overview of access routes](https://www.surf.nl/en/access-to-compute-services) explains the options.
+2. **Log in** to the [SURF Research Cloud portal](https://portal.live.surfresearchcloud.nl/) with your institution's account. Your budget appears there as a *wallet*, which workspaces are paid from; if you have none, request one with the portal's "Request" button and the number of your contract or grant. You work in a *collaboration*, with the colleagues you invite.
+3. **Get Metacheck's catalog item.** If the Metacheck team offers its catalog item "on request", a member of your collaboration with developer rights can request it in the portal. Otherwise, a developer can build a catalog item from Metacheck's components, following the README. The Metacheck team can help: [metacheck@scienceverse.org](mailto:metacheck@scienceverse.org).
+4. **Create the workspace.** Choose the catalog item and a flavour; the portal shows how much each flavour costs per day. As an indication: Metacheck's shared server runs on 4 processors and 32 GB of memory, which costs 96 processor hours a day, and a workspace with an A10 graphics card for bibr costs 24 graphics card hours a day. Attach a storage volume, so the use counts and reports outlive the workspace; you can attach it when you create the workspace, or later while the workspace is paused. Set the expiry date: on that date SURF deletes the workspace (after an e-mail three days before), and you can change it while the workspace runs.
+5. **Open your website** at the address the portal shows, of the form `https://<workspace>.<collaboration>.src.surf-hosted.nl/`.
+
+More information:
+
+- [SURF Research Cloud](https://www.surf.nl/en/services/compute/surf-research-cloud), SURF's page about the service, with a two-minute video
+- [SURF's documentation of Research Cloud](https://servicedesk.surf.nl/wiki/spaces/WIKI/pages/9798172/SURF+Research+Cloud), from first steps (getting a budget, starting a workspace) to building catalog items
+- [SURF's rates](https://www.surf.nl/files/2026-09/surf-diensten-en-tarieven-2027.pdf) (in Dutch)
+- [Introduction to SURF Research Cloud](https://www.surf.nl/en/agenda/introduction-to-surf-research-cloud-dec-2026), SURF's training, on 10 December 2026
 
 ## Large language models
 

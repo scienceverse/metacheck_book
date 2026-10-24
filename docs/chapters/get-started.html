@@ -474,8 +474,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#running-the-code-of-a-repository" id="toc-running-the-code-of-a-repository" class="nav-link" data-scroll-target="#running-the-code-of-a-repository"><span class="header-section-number">2.4.5</span> Running the code of a repository</a></li>
   </ul>
 </li>
-  <li><a href="#large-language-models" id="toc-large-language-models" class="nav-link" data-scroll-target="#large-language-models"><span class="header-section-number">2.5</span> Large language models</a></li>
-  <li><a href="#api-keys-and-tokens-for-online-repositories" id="toc-api-keys-and-tokens-for-online-repositories" class="nav-link" data-scroll-target="#api-keys-and-tokens-for-online-repositories"><span class="header-section-number">2.6</span> API keys and tokens for online repositories</a></li>
+  <li>
+<a href="#your-own-server-on-surf-research-cloud" id="toc-your-own-server-on-surf-research-cloud" class="nav-link" data-scroll-target="#your-own-server-on-surf-research-cloud"><span class="header-section-number">2.5</span> Your own server on SURF Research Cloud</a>
+  <ul class="collapse">
+<li><a href="#what-surf-research-cloud-is" id="toc-what-surf-research-cloud-is" class="nav-link" data-scroll-target="#what-surf-research-cloud-is"><span class="header-section-number">2.5.1</span> What SURF Research Cloud is</a></li>
+  <li><a href="#metachecks-building-blocks" id="toc-metachecks-building-blocks" class="nav-link" data-scroll-target="#metachecks-building-blocks"><span class="header-section-number">2.5.2</span> Metacheck’s building blocks</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><span class="header-section-number">2.5.3</span> Getting started</a></li>
+  </ul>
+</li>
+  <li><a href="#large-language-models" id="toc-large-language-models" class="nav-link" data-scroll-target="#large-language-models"><span class="header-section-number">2.6</span> Large language models</a></li>
+  <li><a href="#api-keys-and-tokens-for-online-repositories" id="toc-api-keys-and-tokens-for-online-repositories" class="nav-link" data-scroll-target="#api-keys-and-tokens-for-online-repositories"><span class="header-section-number">2.7</span> API keys and tokens for online repositories</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/get-started.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -516,6 +524,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>The same website on your own computer: for checking many papers, for example in a metascience project, and, with PDFs converted on your own computer, for manuscripts you may not share.</td>
 </tr>
 <tr class="odd">
+<td><a href="#your-own-server-on-surf-research-cloud">Your own server on SURF Research Cloud</a></td>
+<td>Access to SURF Research Cloud, which researchers at Dutch research institutions can get through their institution or a free NWO grant. Nothing to install on your computer.</td>
+<td>The same website on a server of your own, with more powerful hardware than the shared server: for many papers, for a research group, or with bibr and a graphics card.</td>
+</tr>
+<tr class="even">
 <td><a href="#installing-in-r">Metacheck in R</a></td>
 <td>R and RStudio.</td>
 <td>Everything Metacheck can do: all modules and their settings, your own modules, and analyses across many papers.</td>
@@ -713,12 +726,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="running-the-code-of-a-repository" class="level3" data-number="2.4.5"><h3 data-number="2.4.5" class="anchored" data-anchor-id="running-the-code-of-a-repository">
 <span class="header-section-number">2.4.5</span> Running the code of a repository</h3>
 <p>The website can run the R and Python code of a repository, and compare its results with the paper. In the Docker installation, the code runs inside the Docker container; this needs no extra installation. The R and Python packages the code needs and Metacheck does not include are downloaded while the check runs, so it needs an internet connection and takes longer when a repository uses many packages. Unlike the closed sandbox on the SURF server, the container is not closed off: the code can use the internet. It cannot reach the files on your computer.</p>
-</section></section><section id="large-language-models" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="large-language-models">
-<span class="header-section-number">2.5</span> Large language models</h2>
+</section></section><section id="your-own-server-on-surf-research-cloud" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="your-own-server-on-surf-research-cloud">
+<span class="header-section-number">2.5</span> Your own server on SURF Research Cloud</h2>
+<p>Metacheck’s website on SURF Research Cloud is not only a shared server: the software that builds it is a building block of SURF Research Cloud, so you can run your own copy of it there. Your own server can have more processors and memory than the shared one, and a graphics card, which bibr needs and which makes the language model much faster.</p>
+<section id="what-surf-research-cloud-is" class="level3" data-number="2.5.1"><h3 data-number="2.5.1" class="anchored" data-anchor-id="what-surf-research-cloud-is">
+<span class="header-section-number">2.5.1</span> What SURF Research Cloud is</h3>
+<p><a href="https://www.surf.nl/en">SURF</a> is the cooperative of the Dutch universities, universities of applied sciences, university medical centres and research institutes, and provides their national computing infrastructure. <a href="https://www.surf.nl/en/services/compute/surf-research-cloud">SURF Research Cloud</a> is a portal where you build a virtual research environment yourself. The idea behind it:</p>
+<ul>
+<li>
+<strong>You build the environment you need, when you need it.</strong> You choose a ready-made <em>catalog item</em> from a catalogue, choose the size of the computer (a <em>flavour</em>: the number of processors, the memory, and optionally a graphics card), and the portal creates a <em>workspace</em>: a virtual computer in SURF’s data centres in the Netherlands, with the software already installed.</li>
+<li>
+<strong>The environment is described by scripts.</strong> A catalog item is a set of human-readable scripts that build the environment the same way each time. So you can delete a workspace when you no longer need it and build an identical one later, and anyone can see exactly what was installed.</li>
+<li>
+<strong>You pay only for what runs.</strong> A workspace uses computing time (counted in processor hours, or graphics card hours) only while it runs; a paused workspace uses none, and keeps its configuration and data. A workspace itself is temporary: what should outlive it, such as files you want to keep, goes on a separate <em>storage volume</em>.</li>
+<li>
+<strong>You work together in a collaboration.</strong> Access is arranged through SURF Research Access Management (SRAM): you log in with your institution’s account, and you can give colleagues access to your workspaces, also at other institutions and in other countries.</li>
+</ul></section><section id="metachecks-building-blocks" class="level3" data-number="2.5.2"><h3 data-number="2.5.2" class="anchored" data-anchor-id="metachecks-building-blocks">
+<span class="header-section-number">2.5.2</span> Metacheck’s building blocks</h3>
+<p>The scripts that build Metacheck’s server are open source, in <a href="https://github.com/scienceverse/surf-research-cloud">scienceverse/surf-research-cloud</a>. They provide two <em>components</em>, which can be combined in a catalog item:</p>
+<ul>
+<li>
+<strong>metacheck:</strong> the website, the web interface and the paper report app, exactly as on Metacheck’s shared server, optionally with GROBID, LibreOffice for Word files, and a small language model on the workspace itself.</li>
+<li>
+<strong>bibr:</strong> <a href="https://github.com/scienceverse/bibr">bibr</a>, Scienceverse’s own pipeline for extracting the text, structure and references of scientific papers, and an alternative to GROBID. It converts PDF and Word files into the bibr JSON that Metacheck reads, in more detail than GROBID, and serves a language model that a metacheck workspace can use too. It needs a workspace with a graphics card (an A10) and a storage volume of at least 150 GB. A metacheck workspace in the same collaboration reaches it over SURF’s private network.</li>
+</ul>
+<p>The repository’s <a href="https://github.com/scienceverse/surf-research-cloud#readme">README</a> describes the catalog items (“metacheck server”, “bibr server”, and “metacheck + bibr” on one workspace), every setting, and how to add the components to your own collaboration’s catalogue.</p>
+</section><section id="getting-started" class="level3" data-number="2.5.3"><h3 data-number="2.5.3" class="anchored" data-anchor-id="getting-started">
+<span class="header-section-number">2.5.3</span> Getting started</h3>
+<ol type="1">
+<li>
+<strong>Get a budget.</strong> Check with your institution’s IT or research support whether it already has <a href="https://www.surf.nl/en/direct-access-to-compute-services">direct access</a> to SURF’s compute services, through a contract with SURF. If not, apply for a free <a href="https://www.surf.nl/en/small-compute-applications-nwo">NWO small compute grant</a> for SURF Research Cloud: it is meant for small projects and pilots, is granted within about two weeks, and lasts up to a year; it pays for SURF’s own HPC Cloud, the computers Research Cloud runs on in the Netherlands. The <a href="https://www.surf.nl/en/access-to-compute-services">overview of access routes</a> explains the options.</li>
+<li>
+<strong>Log in</strong> to the <a href="https://portal.live.surfresearchcloud.nl/">SURF Research Cloud portal</a> with your institution’s account. Your budget appears there as a <em>wallet</em>, which workspaces are paid from; if you have none, request one with the portal’s “Request” button and the number of your contract or grant. You work in a <em>collaboration</em>, with the colleagues you invite.</li>
+<li>
+<strong>Get Metacheck’s catalog item.</strong> If the Metacheck team offers its catalog item “on request”, a member of your collaboration with developer rights can request it in the portal. Otherwise, a developer can build a catalog item from Metacheck’s components, following the README. The Metacheck team can help: <a href="mailto:metacheck@scienceverse.org">metacheck@scienceverse.org</a>.</li>
+<li>
+<strong>Create the workspace.</strong> Choose the catalog item and a flavour; the portal shows how much each flavour costs per day. As an indication: Metacheck’s shared server runs on 4 processors and 32 GB of memory, which costs 96 processor hours a day, and a workspace with an A10 graphics card for bibr costs 24 graphics card hours a day. Attach a storage volume, so the use counts and reports outlive the workspace; you can attach it when you create the workspace, or later while the workspace is paused. Set the expiry date: on that date SURF deletes the workspace (after an e-mail three days before), and you can change it while the workspace runs.</li>
+<li>
+<strong>Open your website</strong> at the address the portal shows, of the form <code>https://&lt;workspace&gt;.&lt;collaboration&gt;.src.surf-hosted.nl/</code>.</li>
+</ol>
+<p>More information:</p>
+<ul>
+<li>
+<a href="https://www.surf.nl/en/services/compute/surf-research-cloud">SURF Research Cloud</a>, SURF’s page about the service, with a two-minute video</li>
+<li>
+<a href="https://servicedesk.surf.nl/wiki/spaces/WIKI/pages/9798172/SURF+Research+Cloud">SURF’s documentation of Research Cloud</a>, from first steps (getting a budget, starting a workspace) to building catalog items</li>
+<li>
+<a href="https://www.surf.nl/files/2026-09/surf-diensten-en-tarieven-2027.pdf">SURF’s rates</a> (in Dutch)</li>
+<li>
+<a href="https://www.surf.nl/en/agenda/introduction-to-surf-research-cloud-dec-2026">Introduction to SURF Research Cloud</a>, SURF’s training, on 10 December 2026</li>
+</ul></section></section><section id="large-language-models" class="level2" data-number="2.6"><h2 data-number="2.6" class="anchored" data-anchor-id="large-language-models">
+<span class="header-section-number">2.6</span> Large language models</h2>
 <p>A few modules (notably <a href="../chapters/mod-power.html">power</a>, <a href="../chapters/mod-data-check.html">data_check</a>, and <a href="../chapters/mod-codebook-check.html">codebook_check</a>) can use a large language model to extract structured information from text. LLM use is <strong>entirely optional and opt-in</strong>, and the vast majority of modules work without any LLM. For how to turn LLM support on, choose a model, run one locally with Ollama, or use a cloud API, see <a href="../chapters/llms.html">Using Large Language Models</a>.</p>
 <p>You can also use a language model without R. On <a href="https://metacheckserve.metacheck.src.surf-hosted.nl/">Metacheck’s website on SURF Research Cloud</a>, the power check uses a small open-source Qwen model (<code>qwen3.5:4b</code>) that runs on the server itself. This can be slow, especially when several people use the server at the same time. That is a deliberate choice: the model runs on SURF’s servers in the Netherlands, so the paragraphs are never sent to an external AI provider, and the server stays GDPR compliant. In the <a href="#docker-installation">Docker installation</a>, the installer can set up the same model in Ollama on your own computer, so the paragraphs stay there, or use Mistral (EU) with your own API key. On the website and in the Docker installation, only the power check uses the language model.</p>
-</section><section id="api-keys-and-tokens-for-online-repositories" class="level2" data-number="2.6"><h2 data-number="2.6" class="anchored" data-anchor-id="api-keys-and-tokens-for-online-repositories">
-<span class="header-section-number">2.6</span> API keys and tokens for online repositories</h2>
+</section><section id="api-keys-and-tokens-for-online-repositories" class="level2" data-number="2.7"><h2 data-number="2.7" class="anchored" data-anchor-id="api-keys-and-tokens-for-online-repositories">
+<span class="header-section-number">2.7</span> API keys and tokens for online repositories</h2>
 <p>The <a href="../chapters/mod-repo-check.html">repo_check</a> module and related functions can read files directly from repositories such as OSF, Zenodo, Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab. For most of these an access token is optional and only raises how many requests you may make per hour, or gives you access to your own private material — the one exception is Dryad, where a token is required even to download files from a fully public dataset.</p>
 <p>Each service issues its own token, which you store once in a file called <code>.Renviron</code> so R finds it automatically every time it starts. Step-by-step instructions, with screenshots, exist for <a href="../chapters/archiving-osf.html">OSF</a> and <a href="../chapters/uploading-to-zenodo.html">Zenodo</a>; for Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab, see <a href="../chapters/repository-tokens.html">Getting API Tokens for Other Repositories</a>. LLM provider API keys (OpenAI, Anthropic, Groq, and so on) are a separate matter, covered in <a href="../chapters/llms.html">Using Large Language Models</a>.</p>
 
