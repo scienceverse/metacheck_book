@@ -55,7 +55,7 @@ subset(mo$summary_table, marginal > 0) |>
 
 ## A clean example and one with problems
 
-A paper with no such phrasing returns a green traffic light and an empty table:
+A paper with no such phrasing has nothing to check, so it returns the traffic light "na" (not applicable) and an empty table:
 
 ```{r}
 clean <- test_paper("The effect was significant, t(28) = 2.40, p = .02, d = 0.45.")

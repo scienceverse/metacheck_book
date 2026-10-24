@@ -191,7 +191,7 @@ This matters most when a long run is interrupted and restarted: restarting re-is
 
 It is a separate cache from the repository-*file* cache described above: one caches what a host's API said a repository contains, the other caches the files themselves once downloaded.
 
-Off by default, like the file-download cache. Turn it on by passing `cache = TRUE` to `repo_check`, or to `code_check` or `data_check`, which pass it on to `repo_check` (the function `repo_info_cache()` does not currently turn it on). Clear it with `repo_info_cache_clear()`:
+Off by default, like the file-download cache. Turn it on by passing `cache = TRUE` to `repo_check`, or to `code_check` or `data_check`, which pass it on to `repo_check`. Clear it with `repo_info_cache_clear()`:
 
 ```{r}
 #| eval: false
