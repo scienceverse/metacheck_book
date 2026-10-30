@@ -1,6 +1,6 @@
 ---
-title: "Introducing metacheck"
-subtitle: "An Automated Tool to Check for Best Practices in Scientific Articles"
+title: "Introducing Metacheck"
+subtitle: "An Automated Tool to Check for Best Practices in Scientific Articles and Data Repositories"
 vignette: >
   %\VignetteIndexEntry{Introducing metacheck}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,17 +13,25 @@ Metascientific research reveals substantial opportunities to improve how scienti
 
 Despite the growing availability of best practices, their adoption remains slow [@sharpe_why_2013]. While scientists are responsible for staying informed, time constraints and the rapid pace of new developments pose significant challenges. Peer reviewers face similarly have a lack of time, and may overlook the absence of best practices. Checklists have been proposed to promote adherence, but in practice they have limited impact [@dexter2017narrative], as researchers might be unaware of them, and even when used, evaluating adherence still requires considerable expertise.
 
-## A Solution
+## Metacheck as a Solution
 
 Human factors research suggests that automation, where researchers stay in the loop, can offer a partial solution to automatically check if best practices are followed. For example, algorithms could detect passages that describe an a priori power analysis, and whether researchers check whether it is fully reported and specifies the alpha level, desired power, the effect size metric, and a justification for the effect size [@lakens_justification_2022].
 
-Algorithms are also useful for automating straightforward but time consuming tasks. For example, a reviewer could manually check if all p-values in a manuscript are reported exactly (e.g., p = 0.007 instead of p \< .05), and check whether authors unknowingly cite retracted papers . However, these tasks can be easily automated (as is for example done by the reference manager [Zotero](https://www.zotero.org/blog/retracted-item-notifications/)).
+Algorithms are also useful for automating straightforward but time consuming tasks. For example, a reviewer could manually check if all p-values in a manuscript are reported exactly (e.g., p = 0.007 instead of p \< .05), and check whether authors unknowingly cite retracted papers . However, these tasks can be easily automated (as is for example done by the reference manager [Zotero](https://www.zotero.org/blog/retracted-item-notifications/)). Furthermore, we can automate many tasks through API's, for example by checking the files in data repositories. 
 
-Recent progress in machine learning and artificial intelligence has made it increasingly viable to implement automated checks with sufficient accuracy, supporting broader adoption and adherence to best practices in scientific manuscripts. For example, the GROBID machine learning library [@GROBID] can turn scientific PDFs into structured text files from which specific content can be extracted. While many automated checks for best practices will require only simple text matching based on regular expression, more complex text extraction is possible by using large language models (LLMs).
+Recent progress in machine learning and artificial intelligence has made it increasingly viable to implement automated checks with sufficient accuracy, supporting broader adoption and adherence to best practices in scientific manuscripts. For example, the GROBID machine learning library [@GROBID] can turn scientific PDFs into structured text files from which specific content can be extracted. Recently, Jakub Werner developed [bibr](https://github.com/scienceverse/bibr) which uses small language models to convert papers to structured .json files. While many automated checks for best practices will require only simple text matching based on regular expression, more complex text extraction is possible by using large language models (LLMs).
+
+![Metacheck Logo, a green hexagon with METACHECK in art deco font](https://scienceverse.github.io/metacheck/logo.png){style="float:right; width: 10em;" fig-alt="metacheck Logo, a green hexagon with METACHECK in art deco font"}
+
+Metacheck is modular, with each module focused on a specific practice that the scientific community wants to improve, and for which automation is viable. This modularity allows the tool to be extended and customized by the community, enabling the development of specialized modules tailored to the standards and best practices of different scientific fields. It can also offer an overarching platform to integrate existing tools (e.g., checks for retracted articles, Statcheck, etc).
+
+The automated checks can be performed as part of an individual or metascientific workflow. In the individual workflow, an author or editor can run selected modules on a single paper and receive a report highlighting potential areas for improvement and explanations or links to further resources. In the metascientific workflow, a single module can be run on a batch of hundreds of papers, producing tabular data that can be used to address metascientific questions, such as how prevalent a practice is in a specific field. For the individual workflow our philosophy is that error rates can be higher than in the meta-scientific workflow, as the user will check whether to implement each recommendation or not. For a tool to be used in a metascientific workflow, the module needs to be shown to have low error rates when run on manually coded ground truth files.
+
+There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. Future modules could be developed to check reporting practices across disciplines, check for mis-citations, develop checks for meta-analyses and systematic reviews, etc. We see great potential for new modules; the only limitation is your own creativity and your engineering skills. Reach out to the team if you are interested in developing new modules. We are excited to continue developing Metacheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore Metacheck on GitHub: <https://github.com/scienceverse/metacheck>. If you want to contribute to new Metacheck modules, validate existing modules in your own scientific discipline, or explore the use of Metacheck for metascientific projects, reach out to [Lisa DeBruine](mailto:lisa.debruine@glasgow.ac.uk?subject=metacheck) or [Daniel Lakens](mailto:d.lakens@tue.nl?subject=metacheck).
 
 ## Our Values
 
-The values below guide our priorities and decision-making for all Scienceverse projects, including Metacheck.
+Our team has agreed upon a set of values for developing automated tools. The goal of these values is to develop tools that will improve science, while mitigating the risk of misuse.
 
 **Quality Control:** The knowledge, data, code and software we create will be verified for accuracy, using publicly available methods and measures, such that users have enough context to interpret the results.
 
@@ -43,26 +51,12 @@ The values below guide our priorities and decision-making for all Scienceverse p
 
 **Fair Recognition and Reward:** Contributions to knowledge, data, code, and software will be uniquely and persistently identified, and benefit a diverse range of contributors.
 
-## Metacheck
-
-![Metacheck Logo, a green hexagon with METACHECK in art deco font](https://scienceverse.github.io/metacheck/logo.png){style="float:right; width: 10em;" fig-alt="metacheck Logo, a green hexagon with METACHECK in art deco font"}
-
-Metacheck is modular, with each module focused on a specific practice that the scientific community wants to improve, and for which automation is viable. This modularity allows the tool to be extended and customized by the community, enabling the development of specialized modules tailored to the standards and best practices of different scientific fields. It can also offer an overarching platform to integrate existing tools (e.g., checks for retracted articles, Statcheck, etc).
-
-The automated checks can be performed as part of an individual or metascientific workflow. In the individual workflow, an author or editor can run selected modules on a single paper and receive a report highlighting potential areas for improvement and explanations or links to further resources. In the metascientific workflow, a single module can be run on a batch of hundreds of papers, producing tabular data that can be used to address metascientific questions, such as how prevalent a practice is in a specific field. For the individual workflow our philosophy is that error rates can be higher than in the meta-scientific workflow, as the user will check whether to implement each recommendation or not. For a tool to be used in a metascientific workflow, the module needs to be shown to have low error rates when run on manually coded ground truth files.
-
-## Future Plans
-
-There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. Future modules could be developed to check if open data and materials are Findable, Accessible, Interoperable, and Reusable (FAIR) [@wilkinson_fair], to perform checks on specific types of articles (e.g., meta-analyses), check journal-specific reporting guidelines, check for mis-citations, develop checks for meta-analyses and systematic reviews, etc. We see great potential for new modules; the only limitation is your own creativity and your engineering skills.
-
-We are excited to continue developing Metacheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore Metacheck on GitHub: <https://github.com/scienceverse/metacheck>. If you want to contribute to new Metacheck modules, validate existing modules in your own scientific discipline, or explore the use of Metacheck for metascientific projects, reach out to [Lisa DeBruine](mailto:lisa.debruine@glasgow.ac.uk?subject=metacheck) or [Daniel Lakens](mailto:d.lakens@tue.nl?subject=metacheck).
-
 ## Metacheck Team
 
-Metacheck is developed by a collaborative team of researchers, consisting of Lisa DeBruine (developer and maintainer, UofG), Daniël Lakens (developer, TU/e), Cristian Mesquida (postdoctoral researcher, TU/e), Jakub Werner (RA, TUE), Lavinia Ion (RA, TU/e), Hadeel Khawatmy (RA, TU/e), Levi Baruch (RA, TU/e), Mink Veltman (RA, TU/e) René Bekkers (collaborator and PI of Transparency Check, VUE), and Max Littel (RA, VUE).
-
-Metacheck was initially developed by Lisa and Daniël in 2024 during Lisa’s visiting professorship at the Eindhoven Artificial Intelligence Systems Institute (EAISI).
+Metacheck is developed by a collaborative team of researchers, consisting of Lisa DeBruine (developer and maintainer, UofG), Daniël Lakens (developer and maintainer, TU/e), Cristian Mesquida (postdoctoral researcher, TU/e), Jakub Werner (RA, TUE), René Bekkers (collaborator and PI of Transparency Check, VU Amsterdam), and Max Littel (RA, VU Amsterdam). Past contributors include Lavinia Ion (RA, TU/e), Hadeel Khawatmy (RA, TU/e), Levi Baruch (RA, TU/e), and Mink Veltman (RA, TU/e). Metacheck was initially developed by Lisa and Daniël in 2024 during Lisa’s visiting professorship at the Eindhoven Artificial Intelligence Systems Institute (EAISI).
 
 ![The faces of the Metacheck team](../images/team.png){fig-alt="The faces of the Metacheck team"}
 
-Metacheck is partly financed by the Dutch Research Council (NWO) via VICI grant VI.C.241.013 to Daniel Lakens, the Thematic Digital Competence Centre Social Sciences & Humanities grant ICT.001.TDCC.018 awarded to René Bekkers and Daniel Lakens, and the Ammodo Science Award 2023 for the Social Sciences awarded to Daniel Lakens.
+## Funding
+
+Metacheck is financed by the Dutch Research Council (NWO) via VICI grant VI.C.241.013 to Daniel Lakens, the Thematic Digital Competence Centre Social Sciences & Humanities grant ICT.001.TDCC.018 awarded to René Bekkers and Daniel Lakens, a SURF Small Compute fund EINF-21162 to Daniel Lakens, and the Ammodo Science Award 2023 for the Social Sciences awarded to Daniel Lakens.

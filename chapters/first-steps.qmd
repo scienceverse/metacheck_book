@@ -1,5 +1,5 @@
 ---
-title: "Your First Check"
+title: "Your First Metacheck"
 vignette: >
   %\VignetteIndexEntry{Your First Check}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 library(metacheck)
 ```
 
-This chapter does not explain anything about how Metacheck works. It just walks through the four things you will do most often, using two short example papers, so that you have something working before you read about how any of it works. If you have never used R before, that is fine: every line below is explained, and you can copy and paste each code chunk into the R console one at a time.
+This chapter walks you through the four things you will do most often with Metacheck, using two short example papers, so that you have a working example before you read a month in depth overview of how the modules work. If you have never used R before, that is fine: every line below is explained, and you can copy and paste each code chunk into the R console one at a time.
 
 We will use two small manuscripts, both about the same simple study (whether people are slower to name the ink color of a word when the word itself names a different color — the "Stroop effect"):
 
@@ -25,7 +25,7 @@ We will use two small manuscripts, both about the same simple study (whether peo
 
 Metacheck works with PDF files. The function `convert()` turns a PDF into a structured format Metacheck can read, and `read()` loads that structured format into R as a **paper object** — everything Metacheck does, in every later chapter, starts from a paper object like this one.
 
-Since our example papers live on GitHub, we first download the PDF with `download.file()`, a base R function that needs no extra packages:
+Since our example papers are stored on GitHub, we first download the PDF with `download.file()`, a base R function that needs no extra packages:
 
 ```{r}
 #| eval: false
@@ -43,7 +43,7 @@ download.file(
 good_paper_file <- "../converted/good_paper.json"
 ```
 
-Now convert the PDF and read it in:
+Now we convert the PDF and read it in with the Metacheck convert function:
 
 ```{r}
 #| eval: false
@@ -56,7 +56,7 @@ paper <- read(json_file)
 paper <- read(good_paper_file)
 ```
 
-`convert()` sends the PDF to a free conversion server and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can `read()` the saved file directly, without converting again.
+`convert()` sends the PDF to a free conversion server that runs GROBID and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can `read()` the saved file directly, without converting again.
 
 ::: callout-note
 `convert()` defaults to Metacheck's own server on SURF Research Cloud in the Netherlands, which deletes your PDF once it is converted, and the result an hour later. See [Reading in a Paper](reading-a-paper.qmd) if you would rather run your own, fully local conversion server.
@@ -64,14 +64,14 @@ paper <- read(good_paper_file)
 
 ## Step 2: Run one check
 
-Metacheck organises its checks into **modules**. Each module looks for one specific thing. `module_run()` runs a single module on a paper object. Just printing the result shows a short report:
+Metacheck organises its checks into **modules**. Each module offers an automated check for one specific thing. `module_run()` runs a single module on a paper object. Just printing the result shows a short report:
 
 ```{r}
 #| results: asis
 module_run(paper, "stat_effect_size")
 ```
 
-`stat_effect_size` checks whether a reported statistical test (like a *t*-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module gives a **traffic light** — green (no issues found), yellow (worth a closer look), red (a likely problem), or "na" (nothing for this module to check) — plus a short summary. The good paper reports *t*(130) = 18.04 together with Cohen's *d~z~* = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.
+`stat_effect_size` checks whether a reported statistical test (like a *t*-test) is accompanied by an effect size, and whether that effect size is consistent with the test. Every module gives a **traffic light** — green (no issues found), yellow (worth a closer look), red (a likely problem), or "na" (nothing for this module to check) — plus a short summary. The good paper reports *t*(130) = 18.04 together with Cohen's *d~z~* = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.
 
 Now download the bad paper's PDF the same way as in Step 1, and run the same check on it:
 
@@ -95,7 +95,7 @@ bad_paper <- read("../converted/bad_paper.json")
 module_run(bad_paper, "stat_effect_size")
 ```
 
-This comes back red: it reports the same *t*-test, *t*(130) = 18.04, but with a Cohen's *d~z~* of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.
+This comes back as a red traffic light, which indicates something is wrong: it reports the same *t*-test, *t*(130) = 18.04, but with a Cohen's *d~z~* of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.
 
 ### Getting specific pieces of information out
 
@@ -133,7 +133,7 @@ This produces the same kind of report, but with several more red and yellow ligh
 
 ## Step 4: Check a shared repository
 
-So far we have checked what a paper *says*. Metacheck can also check what a paper's authors actually *shared* — the data and code repository itself — independently of any manuscript. `report_repository()` is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way `report()` did in Step 3.
+So far we have checked the content of a paper. Metacheck can also check data and code in repositories. `report_repository()` is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way `report()` did in Step 3.
 
 Download the bad paper's repository as a zip file (the same "Download ZIP" button you would click on GitHub) and unpack it:
 
@@ -167,7 +167,7 @@ In four short steps, you:
 
 1. Read a PDF into R as a paper object (`convert()` + `read()`).
 2. Ran a single check on it (`module_run()`).
-3. Generated a full, shareable report from a paper (`report()`).
-4. Generated a full, shareable report from a shared repository, with no manuscript involved (`report_repository()`).
+3. Generated a full report from a paper (`report()`).
+4. Generated a full report from a shared repository, with no manuscript involved (`report_repository()`).
 
-These four functions cover the large majority of what you will do with Metacheck day to day. The rest of this book goes through every module in detail — one chapter per module — documenting everything the R package can do with it: every argument, every option, what the output table and report actually contain, and how to interpret what it finds. Start with the [Modules](mod-power.qmd) part of this book, or jump straight to a chapter that interests you.
+These four functions cover the large majority of what you will do with Metacheck day to day if you want to improve the reporting practices in your own work. Metacheck can also be run on a large collection of papers, and generate a dataframe that contains the results across the set of papers. This metascience use-case is explain in a dedicated section in each chapter of a module. The rest of this book goes through every module in detail — one chapter per module — documenting everything the R package can do with it: every argument, every option, what the output table and report actually contain, and how to interpret what it finds. Currently, these chapters are largely written by AI, with some light editing. If the Metacheck team has more time, and the software is more stable, we will revisit all chapters and manually update them. Start with the [Modules](mod-power.qmd) part of this book, or jump straight to a chapter that interests you. 

@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Lakens">
-<meta name="dcterms.date" content="2026-10-24">
-<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<meta name="dcterms.date" content="2026-10-30">
+<meta name="description" content="A guide to Metacheck, a module based tool written in R for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
 
 <title>The Metacheck Manual</title>
 <style>
@@ -137,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -149,7 +149,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/first-steps.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -455,7 +455,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    <p>A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.</p>
+    <p>A guide to Metacheck, a module based tool written in R for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.</p>
   </div>
 </div>
 
@@ -472,7 +472,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 24, 2026</p>
+      <p class="date">October 30, 2026</p>
     </div>
   </div>
   
@@ -486,19 +486,18 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="welcome" class="level1 unnumbered">
 <h1 class="unnumbered">Welcome</h1>
-<p>This is the online book for <a href="https://scienceverse.github.io/metacheck/"><strong>metacheck</strong></a>, an R package that provides extendable and integrated tools for automated checks of research outputs for best practices.</p>
-<p>Inspired by practices in software development — where automated checks (e.g., CRAN checks for R packages) identify issues before release — Metacheck screens scientific manuscripts to flag potential issues or areas for improvement, and guides researchers in adopting best practices. It can also assist with processing large numbers of papers for metascientific enquiry.</p>
-<p>These checks are meant to <strong>assist, not replace, human expertise</strong>. Metacheck can identify incorrect citations, add missing DOIs, cross-reference citations against Retraction Watch, PubPeer, and the FLoRA replication database, and flag commonly misreported aspects such as power analyses. Actioning this advice is always up to a human who can interpret it in context.</p>
+<p>This is the online book for <a href="https://scienceverse.github.io/metacheck/"><strong>metacheck</strong></a>, an R based tool that offers automated checks of best practices for research outputs such as scientific manuscripts and data repositories.</p>
+<p>Metacheck screens scientific manuscripts or data repositories and flags potential issues for improvement. It is intended to assist researchers in in adopting best practices. It is an open source module based tool, which allows anyone to create automated checks. These checks are meant to <strong>assist, not replace, human expertise</strong>. Metacheck can currently check reporting guidelines (such as statements about COI’s, funding, and ethics approval), statistical reporting (such as <em>p</em> values, power analyses, or effect sizes following <em>t</em>-tests and <em>F</em>-tests), information related to references (such as PubPeer comments, or replications in the FLORA database), but it also examines the structure of repositories, data, code, and codebooks for adherence to FAIR principles. It can even perform computational reproducibility checks.</p>
 <section id="how-this-book-is-organised" class="level2">
 <h2 class="anchored" data-anchor-id="how-this-book-is-organised">How this book is organised</h2>
 <ul>
-<li><strong>Getting Started</strong> — a conceptual overview of Metacheck and how to set it up, reading papers in, searching their text, using large language models, the paper database corpora, and writing your own modules.</li>
-<li><strong>Modules</strong> — a chapter for each built-in module, with worked examples on real papers: power analyses, preregistration retrieval and comparison (RegCheck), ethics approval, marginal significance, statistical reporting checks, repository and code checks, and reference checks against PubPeer, Retraction Watch, and the replication database.</li>
+<li><strong>Getting Started</strong> — a simple overview of the different ways to get started with Metacheck.</li>
+<li><strong>Modules</strong> — a chapter for each built-in module, with worked examples on real papers.</li>
 <li><strong>Using Metacheck Locally</strong> — running everything on your own machine without sending data anywhere: checking local files, and running AI models (and RegCheck) locally with Ollama.</li>
 <li><strong>Appendices</strong> — reference material: the OSF registration schemas and a function reference for new users.</li>
 </ul>
-<p>The values that guide all Scienceverse projects, including Metacheck, are described in the <a href="./chapters/intro.html">Introduction</a>.</p>
-<p>You can contact the Metacheck team at <a href="mailto:metacheck.scienceverse@gmail.com">metacheck.scienceverse@gmail.com</a>.</p>
+<p>As developers, we adhere to a set of values that guide the development of Metacheck, as described in the <a href="./chapters/intro.html">Introduction</a>.</p>
+<p>You can contact the Metacheck team at <a href="mailto:d.lakens@tue.nl">D.Lakens@tue.nl</a>.</p>
 
 
 </section>
@@ -909,8 +908,8 @@ ul.task-list li input[type="checkbox"] {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapters/intro.html" class="pagination-link" aria-label="Introducing metacheck">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapters/intro.html" class="pagination-link" aria-label="Introducing Metacheck">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

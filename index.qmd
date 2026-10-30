@@ -1,18 +1,16 @@
 # Welcome {.unnumbered}
 
-This is the online book for [**metacheck**](https://scienceverse.github.io/metacheck/), an R package that provides extendable and integrated tools for automated checks of research outputs for best practices.
+This is the online book for [**metacheck**](https://scienceverse.github.io/metacheck/), an R based tool that offers automated checks of best practices for research outputs such as scientific manuscripts and data repositories.
 
-Inspired by practices in software development — where automated checks (e.g., CRAN checks for R packages) identify issues before release — Metacheck screens scientific manuscripts to flag potential issues or areas for improvement, and guides researchers in adopting best practices. It can also assist with processing large numbers of papers for metascientific enquiry.
-
-These checks are meant to **assist, not replace, human expertise**. Metacheck can identify incorrect citations, add missing DOIs, cross-reference citations against Retraction Watch, PubPeer, and the FLoRA replication database, and flag commonly misreported aspects such as power analyses. Actioning this advice is always up to a human who can interpret it in context.
+Metacheck screens scientific manuscripts or data repositories and flags potential issues for improvement. It is intended to assist researchers in in adopting best practices. It is an open source module based tool, which allows anyone to create automated checks. These checks are meant to **assist, not replace, human expertise**. Metacheck can currently check reporting guidelines (such as statements about COI's, funding, and ethics approval), statistical reporting (such as *p* values, power analyses, or effect sizes following *t*-tests and *F*-tests), information related to references (such as PubPeer comments, or replications in the FLORA database), but it also examines the structure of repositories, data, code, and codebooks for adherence to FAIR principles. It can even perform computational reproducibility checks. 
 
 ## How this book is organised
 
-- **Getting Started** — a conceptual overview of Metacheck and how to set it up, reading papers in, searching their text, using large language models, the paper database corpora, and writing your own modules.
-- **Modules** — a chapter for each built-in module, with worked examples on real papers: power analyses, preregistration retrieval and comparison (RegCheck), ethics approval, marginal significance, statistical reporting checks, repository and code checks, and reference checks against PubPeer, Retraction Watch, and the replication database.
+- **Getting Started** — a simple overview of the different ways to get started with Metacheck.
+- **Modules** — a chapter for each built-in module, with worked examples on real papers.
 - **Using Metacheck Locally** — running everything on your own machine without sending data anywhere: checking local files, and running AI models (and RegCheck) locally with Ollama.
 - **Appendices** — reference material: the OSF registration schemas and a function reference for new users.
 
-The values that guide all Scienceverse projects, including Metacheck, are described in the [Introduction](chapters/intro.qmd).
+As developers, we adhere to a set of values that guide the development of Metacheck, as described in the [Introduction](chapters/intro.qmd).
 
-You can contact the Metacheck team at [metacheck.scienceverse@gmail.com](mailto:metacheck.scienceverse@gmail.com).
+You can contact the Metacheck team at [D.Lakens@tue.nl](mailto:d.lakens@tue.nl).

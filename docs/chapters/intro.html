@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<meta name="description" content="A guide to Metacheck, a module based tool written in R for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
 
-<title>1&nbsp; Introducing metacheck – The Metacheck Manual</title>
+<title>1&nbsp; Introducing Metacheck – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -106,7 +106,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -156,7 +156,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -168,7 +168,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/first-steps.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -457,21 +457,20 @@ div.csl-indent {
    
   <ul>
   <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem"><span class="header-section-number">1.1</span> The Problem</a></li>
-  <li><a href="#a-solution" id="toc-a-solution" class="nav-link" data-scroll-target="#a-solution"><span class="header-section-number">1.2</span> A Solution</a></li>
+  <li><a href="#metacheck-as-a-solution" id="toc-metacheck-as-a-solution" class="nav-link" data-scroll-target="#metacheck-as-a-solution"><span class="header-section-number">1.2</span> Metacheck as a Solution</a></li>
   <li><a href="#our-values" id="toc-our-values" class="nav-link" data-scroll-target="#our-values"><span class="header-section-number">1.3</span> Our Values</a></li>
-  <li><a href="#metacheck" id="toc-metacheck" class="nav-link" data-scroll-target="#metacheck"><span class="header-section-number">1.4</span> Metacheck</a></li>
-  <li><a href="#future-plans" id="toc-future-plans" class="nav-link" data-scroll-target="#future-plans"><span class="header-section-number">1.5</span> Future Plans</a></li>
-  <li><a href="#metacheck-team" id="toc-metacheck-team" class="nav-link" data-scroll-target="#metacheck-team"><span class="header-section-number">1.6</span> Metacheck Team</a></li>
+  <li><a href="#metacheck-team" id="toc-metacheck-team" class="nav-link" data-scroll-target="#metacheck-team"><span class="header-section-number">1.4</span> Metacheck Team</a></li>
+  <li><a href="#funding" id="toc-funding" class="nav-link" data-scroll-target="#funding"><span class="header-section-number">1.5</span> Funding</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></h1>
-<p class="subtitle lead">An Automated Tool to Check for Best Practices in Scientific Articles</p>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></h1>
+<p class="subtitle lead">An Automated Tool to Check for Best Practices in Scientific Articles and Data Repositories</p>
 </div>
 
 
@@ -493,15 +492,24 @@ div.csl-indent {
 <p>Metascientific research reveals substantial opportunities to improve how scientists design studies, report results, and implement open science practices. For example, researchers often use invalid and unreliable measures <span class="citation" data-cites="goos2024assessing">(<a href="#ref-goos2024assessing" role="doc-biblioref">Goos et al., 2024</a>)</span>, misinterpret non-significant results <span class="citation" data-cites="aczel2018quantifying">(<a href="#ref-aczel2018quantifying" role="doc-biblioref">Aczel et al., 2018</a>)</span>, write insufficiently specific preregistrations <span class="citation" data-cites="van2024potential">(<a href="#ref-van2024potential" role="doc-biblioref"><span class="nocase">Akker et al.</span>, 2024</a>)</span>, make mistakes in power analyses <span class="citation" data-cites="thibault2024evaluation">(<a href="#ref-thibault2024evaluation" role="doc-biblioref">Thibault et al., 2024</a>)</span>, and misuse Bayes factors <span class="citation" data-cites="tendeiro2024diagnosing">(<a href="#ref-tendeiro2024diagnosing" role="doc-biblioref">Tendeiro et al., 2024</a>)</span>.</p>
 <p>Despite the growing availability of best practices, their adoption remains slow <span class="citation" data-cites="sharpe_why_2013">(<a href="#ref-sharpe_why_2013" role="doc-biblioref">Sharpe, 2013</a>)</span>. While scientists are responsible for staying informed, time constraints and the rapid pace of new developments pose significant challenges. Peer reviewers face similarly have a lack of time, and may overlook the absence of best practices. Checklists have been proposed to promote adherence, but in practice they have limited impact <span class="citation" data-cites="dexter2017narrative">(<a href="#ref-dexter2017narrative" role="doc-biblioref">Dexter &amp; Shafer, 2017</a>)</span>, as researchers might be unaware of them, and even when used, evaluating adherence still requires considerable expertise.</p>
 </section>
-<section id="a-solution" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="a-solution"><span class="header-section-number">1.2</span> A Solution</h2>
+<section id="metacheck-as-a-solution" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="metacheck-as-a-solution"><span class="header-section-number">1.2</span> Metacheck as a Solution</h2>
 <p>Human factors research suggests that automation, where researchers stay in the loop, can offer a partial solution to automatically check if best practices are followed. For example, algorithms could detect passages that describe an a priori power analysis, and whether researchers check whether it is fully reported and specifies the alpha level, desired power, the effect size metric, and a justification for the effect size <span class="citation" data-cites="lakens_justification_2022">(<a href="#ref-lakens_justification_2022" role="doc-biblioref">Lakens, 2022</a>)</span>.</p>
-<p>Algorithms are also useful for automating straightforward but time consuming tasks. For example, a reviewer could manually check if all p-values in a manuscript are reported exactly (e.g., p = 0.007 instead of p &lt; .05), and check whether authors unknowingly cite retracted papers . However, these tasks can be easily automated (as is for example done by the reference manager <a href="https://www.zotero.org/blog/retracted-item-notifications/">Zotero</a>).</p>
-<p>Recent progress in machine learning and artificial intelligence has made it increasingly viable to implement automated checks with sufficient accuracy, supporting broader adoption and adherence to best practices in scientific manuscripts. For example, the GROBID machine learning library <span class="citation" data-cites="GROBID">(<a href="#ref-GROBID" role="doc-biblioref"><em>GROBID</em>, 2008--2025</a>)</span> can turn scientific PDFs into structured text files from which specific content can be extracted. While many automated checks for best practices will require only simple text matching based on regular expression, more complex text extraction is possible by using large language models (LLMs).</p>
+<p>Algorithms are also useful for automating straightforward but time consuming tasks. For example, a reviewer could manually check if all p-values in a manuscript are reported exactly (e.g., p = 0.007 instead of p &lt; .05), and check whether authors unknowingly cite retracted papers . However, these tasks can be easily automated (as is for example done by the reference manager <a href="https://www.zotero.org/blog/retracted-item-notifications/">Zotero</a>). Furthermore, we can automate many tasks through API’s, for example by checking the files in data repositories.</p>
+<p>Recent progress in machine learning and artificial intelligence has made it increasingly viable to implement automated checks with sufficient accuracy, supporting broader adoption and adherence to best practices in scientific manuscripts. For example, the GROBID machine learning library <span class="citation" data-cites="GROBID">(<a href="#ref-GROBID" role="doc-biblioref"><em>GROBID</em>, 2008--2025</a>)</span> can turn scientific PDFs into structured text files from which specific content can be extracted. Recently, Jakub Werner developed <a href="https://github.com/scienceverse/bibr">bibr</a> which uses small language models to convert papers to structured .json files. While many automated checks for best practices will require only simple text matching based on regular expression, more complex text extraction is possible by using large language models (LLMs).</p>
+<div class="quarto-figure quarto-figure-center" style="float:right; width: 10em;">
+<figure class="figure">
+<p><img src="https://scienceverse.github.io/metacheck/logo.png" class="img-fluid figure-img" alt="metacheck Logo, a green hexagon with METACHECK in art deco font"></p>
+<figcaption>Metacheck Logo, a green hexagon with METACHECK in art deco font</figcaption>
+</figure>
+</div>
+<p>Metacheck is modular, with each module focused on a specific practice that the scientific community wants to improve, and for which automation is viable. This modularity allows the tool to be extended and customized by the community, enabling the development of specialized modules tailored to the standards and best practices of different scientific fields. It can also offer an overarching platform to integrate existing tools (e.g., checks for retracted articles, Statcheck, etc).</p>
+<p>The automated checks can be performed as part of an individual or metascientific workflow. In the individual workflow, an author or editor can run selected modules on a single paper and receive a report highlighting potential areas for improvement and explanations or links to further resources. In the metascientific workflow, a single module can be run on a batch of hundreds of papers, producing tabular data that can be used to address metascientific questions, such as how prevalent a practice is in a specific field. For the individual workflow our philosophy is that error rates can be higher than in the meta-scientific workflow, as the user will check whether to implement each recommendation or not. For a tool to be used in a metascientific workflow, the module needs to be shown to have low error rates when run on manually coded ground truth files.</p>
+<p>There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. Future modules could be developed to check reporting practices across disciplines, check for mis-citations, develop checks for meta-analyses and systematic reviews, etc. We see great potential for new modules; the only limitation is your own creativity and your engineering skills. Reach out to the team if you are interested in developing new modules. We are excited to continue developing Metacheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore Metacheck on GitHub: <a href="https://github.com/scienceverse/metacheck" class="uri">https://github.com/scienceverse/metacheck</a>. If you want to contribute to new Metacheck modules, validate existing modules in your own scientific discipline, or explore the use of Metacheck for metascientific projects, reach out to <a href="mailto:lisa.debruine@glasgow.ac.uk?subject=metacheck">Lisa DeBruine</a> or <a href="mailto:d.lakens@tue.nl?subject=metacheck">Daniel Lakens</a>.</p>
 </section>
 <section id="our-values" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="our-values"><span class="header-section-number">1.3</span> Our Values</h2>
-<p>The values below guide our priorities and decision-making for all Scienceverse projects, including Metacheck.</p>
+<p>Our team has agreed upon a set of values for developing automated tools. The goal of these values is to develop tools that will improve science, while mitigating the risk of misuse.</p>
 <p><strong>Quality Control:</strong> The knowledge, data, code and software we create will be verified for accuracy, using publicly available methods and measures, such that users have enough context to interpret the results.</p>
 <p><strong>Transparency:</strong> We are committed to open source software and open access datasets for validation.</p>
 <p><strong>AI Optional:</strong> The use of large language models (LLMs) will be restricted to classification of existing text, not evaluation of the quality of practice. The use of LLMs will always be opt-in and transparently declared. We will prioritise non-LLM functions where possible, and limit use to cases where it provides substantial benefits that cannot be realised with other methods, such as regular expressions.</p>
@@ -512,33 +520,19 @@ div.csl-indent {
 <p><strong>Sustainability:</strong> We are committed to the long-term viability of our work. We will actively protect and future-proof our work through technical maintenance, governance structures and strategic planning to make it a durable and relevant public good.</p>
 <p><strong>Fair Recognition and Reward:</strong> Contributions to knowledge, data, code, and software will be uniquely and persistently identified, and benefit a diverse range of contributors.</p>
 </section>
-<section id="metacheck" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="metacheck"><span class="header-section-number">1.4</span> Metacheck</h2>
-<div class="quarto-figure quarto-figure-center" style="float:right; width: 10em;">
-<figure class="figure">
-<p><img src="https://scienceverse.github.io/metacheck/logo.png" class="img-fluid figure-img" alt="metacheck Logo, a green hexagon with METACHECK in art deco font"></p>
-<figcaption>Metacheck Logo, a green hexagon with METACHECK in art deco font</figcaption>
-</figure>
-</div>
-<p>Metacheck is modular, with each module focused on a specific practice that the scientific community wants to improve, and for which automation is viable. This modularity allows the tool to be extended and customized by the community, enabling the development of specialized modules tailored to the standards and best practices of different scientific fields. It can also offer an overarching platform to integrate existing tools (e.g., checks for retracted articles, Statcheck, etc).</p>
-<p>The automated checks can be performed as part of an individual or metascientific workflow. In the individual workflow, an author or editor can run selected modules on a single paper and receive a report highlighting potential areas for improvement and explanations or links to further resources. In the metascientific workflow, a single module can be run on a batch of hundreds of papers, producing tabular data that can be used to address metascientific questions, such as how prevalent a practice is in a specific field. For the individual workflow our philosophy is that error rates can be higher than in the meta-scientific workflow, as the user will check whether to implement each recommendation or not. For a tool to be used in a metascientific workflow, the module needs to be shown to have low error rates when run on manually coded ground truth files.</p>
-</section>
-<section id="future-plans" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="future-plans"><span class="header-section-number">1.5</span> Future Plans</h2>
-<p>There are more possible modules than our team can create, and we welcome anyone who wants to collaborate with us on building and validating new modules. Future modules could be developed to check if open data and materials are Findable, Accessible, Interoperable, and Reusable (FAIR) <span class="citation" data-cites="wilkinson_fair">(<a href="#ref-wilkinson_fair" role="doc-biblioref"><span class="nocase">Wilkinson et al.</span>, 2016</a>)</span>, to perform checks on specific types of articles (e.g., meta-analyses), check journal-specific reporting guidelines, check for mis-citations, develop checks for meta-analyses and systematic reviews, etc. We see great potential for new modules; the only limitation is your own creativity and your engineering skills.</p>
-<p>We are excited to continue developing Metacheck in close collaboration with the broader scientific community and welcome feedback, suggestions, and contributions. You can explore Metacheck on GitHub: <a href="https://github.com/scienceverse/metacheck" class="uri">https://github.com/scienceverse/metacheck</a>. If you want to contribute to new Metacheck modules, validate existing modules in your own scientific discipline, or explore the use of Metacheck for metascientific projects, reach out to <a href="mailto:lisa.debruine@glasgow.ac.uk?subject=metacheck">Lisa DeBruine</a> or <a href="mailto:d.lakens@tue.nl?subject=metacheck">Daniel Lakens</a>.</p>
-</section>
-<section id="metacheck-team" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="metacheck-team"><span class="header-section-number">1.6</span> Metacheck Team</h2>
-<p>Metacheck is developed by a collaborative team of researchers, consisting of Lisa DeBruine (developer and maintainer, UofG), Daniël Lakens (developer, TU/e), Cristian Mesquida (postdoctoral researcher, TU/e), Jakub Werner (RA, TUE), Lavinia Ion (RA, TU/e), Hadeel Khawatmy (RA, TU/e), Levi Baruch (RA, TU/e), Mink Veltman (RA, TU/e) René Bekkers (collaborator and PI of Transparency Check, VUE), and Max Littel (RA, VUE).</p>
-<p>Metacheck was initially developed by Lisa and Daniël in 2024 during Lisa’s visiting professorship at the Eindhoven Artificial Intelligence Systems Institute (EAISI).</p>
+<section id="metacheck-team" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="metacheck-team"><span class="header-section-number">1.4</span> Metacheck Team</h2>
+<p>Metacheck is developed by a collaborative team of researchers, consisting of Lisa DeBruine (developer and maintainer, UofG), Daniël Lakens (developer and maintainer, TU/e), Cristian Mesquida (postdoctoral researcher, TU/e), Jakub Werner (RA, TUE), René Bekkers (collaborator and PI of Transparency Check, VU Amsterdam), and Max Littel (RA, VU Amsterdam). Past contributors include Lavinia Ion (RA, TU/e), Hadeel Khawatmy (RA, TU/e), Levi Baruch (RA, TU/e), and Mink Veltman (RA, TU/e). Metacheck was initially developed by Lisa and Daniël in 2024 during Lisa’s visiting professorship at the Eindhoven Artificial Intelligence Systems Institute (EAISI).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/team.png" class="img-fluid figure-img" alt="The faces of the Metacheck team"></p>
 <figcaption>The faces of the Metacheck team</figcaption>
 </figure>
 </div>
-<p>Metacheck is partly financed by the Dutch Research Council (NWO) via VICI grant VI.C.241.013 to Daniel Lakens, the Thematic Digital Competence Centre Social Sciences &amp; Humanities grant ICT.001.TDCC.018 awarded to René Bekkers and Daniel Lakens, and the Ammodo Science Award 2023 for the Social Sciences awarded to Daniel Lakens.</p>
+</section>
+<section id="funding" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="funding"><span class="header-section-number">1.5</span> Funding</h2>
+<p>Metacheck is financed by the Dutch Research Council (NWO) via VICI grant VI.C.241.013 to Daniel Lakens, the Thematic Digital Competence Centre Social Sciences &amp; Humanities grant ICT.001.TDCC.018 awarded to René Bekkers and Daniel Lakens, a SURF Small Compute fund EINF-21162 to Daniel Lakens, and the Ammodo Science Award 2023 for the Social Sciences awarded to Daniel Lakens.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
@@ -568,9 +562,6 @@ Tendeiro, J. N., Kiers, H. A., Hoekstra, R., Wong, T. K., &amp; Morey, R. D. (20
 </div>
 <div id="ref-thibault2024evaluation" class="csl-entry" role="listitem">
 Thibault, R. T., Zavalis, E. A., Malički, M., &amp; Pedder, H. (2024). An evaluation of reproducibility and errors in published sample size calculations performed using g* power. <em>medRxiv</em>, 2024–2007.
-</div>
-<div id="ref-wilkinson_fair" class="csl-entry" role="listitem">
-<span class="nocase">Wilkinson, M. D., Dumontier, M., Aalbersberg, Ij. J., Appleton, G., Axton, M., Baak, A., Blomberg, N., Boiten, J.-W., da Silva Santos, L. B., Bourne, P. E., Bouwman, J., Brookes, A. J., Clark, T., Crosas, M., Dillo, I., Dumon, O., Edmunds, S., Evelo, C. T., Finkers, R., … Mons, B.</span> (2016). The <span>FAIR Guiding Principles</span> for scientific data management and stewardship. <em>Scientific Data</em>, <em>3</em>(1), 1–9. <a href="https://doi.org/10.1038/sdata.2016.18">https://doi.org/10.1038/sdata.2016.18</a>
 </div>
 </div>
 </section>

@@ -11,38 +11,171 @@ knitr::opts_chunk$set(collapse = FALSE, comment = "#>")
 library(metacheck)
 ```
 
-## The basics
+When authors share their data and analysis code, the idea is that anyone should be able to run that code on that data and get the results reported in the paper. But sharing data and code in a way that results are reproducible is difficult, and researchers have often not received training in how to share data and code. As a consequence, there are often basic mistakes in public repositories that stand in the way of computationally reproducible results. Automated checks can help researchers identify and fix these mistakes, such as not sharing all files that are loaded in code, using absolute instead of relative filepaths, using values that are not computed in the code that is shared, changing file names so they no longer match the code, or not loading all libraries. 
 
-A paper reports some code and some data were used to produce its results. `reproducibility_check` asks the most direct question you can ask about that: can the shared code actually be run on the shared data, and when it is run, do the numbers it produces match the numbers the paper reports? This is the single most complex module in Metacheck, so this section only introduces the simplest possible way to use it — the rest of this chapter covers everything else it can do, including actually running the code.
+Checking whether data and code is reproducible is tedious. It also often requires repeated back and forths between the person performing the checks, and the researchers sharing data and code. Ideally, checks do not just focus on whether code runs, but also whether all results in a manuscript are reproduced by the code, but this takes a lot of time. 
 
-By default, the module does **not** run any code at all. It only looks at the code and data and works out, without executing anything, how a reproduction attempt would likely go — whether each script can even be parsed, whether the files it reads are present, and what order the scripts would need to run in:
+Metacheck's `reproducibility_check` module attempts to perform all these checks automatically. When it succeeds, researchers and/or reviewers, data managers, or editors know that data and code is shared in a reproducible manner, and they do not need to perform manual checks. This saves everyone time, and leads to data and code repositories that are more useful for science. Our reproducibility check module is completely code-based. It uses no AI (although modules it builds on, such as `data_check`, can optionally use a large language model, by setting `llm_use(TRUE)`, to better understand the files in a repository, such as which files belong to which study), and it can run locally on your computer without sending information to an external server.
+
+This chapter starts with the module at work on two versions of the same small study: one where every reported result can be reproduced, and one where several cannot. The sections after the example describe each step of the check in detail.
+
+## Computationally reproducing a simple Stroop experiment
+
+Both papers analyse the same classroom data from Daniël Lakens's introduction to psychology and technology course. Students named the ink color of words that matched the color (the word "red" printed in red) and of words that did not (the word "red" printed in green), and reported the time they needed in seconds. Both papers report four results: the mean and standard deviation of the reaction times in each condition, the correlation between the reaction times in the two conditions, a paired *t*-test for the Stroop effect, and a comparison of the Stroop effect between the students tested in 2013 and in 2014.
+
+- The **good** paper, <https://github.com/Lakens/stroop_effect_paper>, computes every reported number in its analysis code. The manuscript is a Quarto document, so the text prints these numbers directly from the analysis.
+- The **bad** paper, <https://github.com/Lakens/stroop_effect_paper_bad>, has several common mistakes deliberately built in. The results were typed into the text by hand, the shared data contain a value the authors removed before their own analysis without saying so, some reported results are not computed by the code at all, and the code stops with an error before it reaches the last analysis.
+
+## Running the code locally, or using our server on SURF
+
+The reproducibility check runs code that other people wrote. That is not without risk. A script can delete files, read files that have nothing to do with the project, or send information over the internet, by accident or on purpose. By default, `execute = TRUE` runs each script in a separate R process on your own computer. This prevents a script that crashes from taking your own R session down with it, but the script can still reach every file on your computer, and the internet. That is fine for the two repositories in this chapter, which we made ourselves, but not for code from a repository you have not created, as a bad actor might insert problematic code.
+
+For such code, add `sandbox = "docker"`. [Docker](https://www.docker.com/) is a program that runs software in a *container*: a closed environment on your computer, separated from the rest of the system. Metacheck runs every script in its own container, and has set up these containers so that the code can do as little harm as possible:
+
+- The container has no internet connection while the code runs. Only the step before it, which installs the packages the code needs, is connected to the internet, and in that step none of the paper's own code runs.
+- The code runs on a copy of the repository's files, in a temporary folder. That folder is the only place on your computer it can write to, and the files on the rest of your computer are not visible inside the container.
+- The code runs as an ordinary user without administrator rights, cannot obtain extra rights, and can start only a limited number of processes.
+- Each script is stopped after a time limit, 10 minutes by default.
+
+No sandbox makes running unknown code completely safe: a flaw in Docker itself could in principle still be exploited. But these settings close off the usual ways in which a script can do damage. [Two ways to run the code](#two-ways-to-run-the-code) below lists the exact settings, and compares them with running code without Docker.
+
+Running the check in Docker takes some preparation, and disk space. You need Docker Desktop (on Windows and macOS) or Docker Engine (on Linux), and the space Docker Desktop itself needs. The first time you run the check, Docker downloads Metacheck's image for R code: R, Quarto, and the roughly 750 R packages that occurred in a scan of thousands of R files shared with psychology papers, together about 4.9 GB. Python code runs in a second image of about 2.7 GB. Because most packages a paper needs are already in the image, they do not have to be installed again for every paper, which makes the check much faster (but at the expense of a large docker image that you install once). [The pre-built Docker image](#the-pre-built-docker-image-and-why-it-exists) below explains how it was built.
+
+If you do not use R, the [Docker installation](get-started.qmd#docker-installation) runs Metacheck's website on your own computer, with the same checks. It needs about 1.7 GB of disk space and a computer with 8 GB of memory, plus Docker. There, the code of a repository runs inside Metacheck's own container: it cannot reach the files on your computer, but unlike in the sandbox described above, it can use the internet. The packages the code needs are downloaded while the check runs. Running the check on your own computer also means that an unpublished manuscript never leaves it, which matters for editors and reviewers who may not upload a submission to an external server.
+
+The easiest way to try the check is our server on SURF Research Cloud, which runs on the servers of SURF, the cooperative of the Dutch universities, in the Netherlands. You need nothing but a web browser. On [Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/), upload a PDF under *Run Metacheck on a Paper* and tick *Also run the code in the paper's repository*, or, under *Run Metacheck on a Repository*, choose a folder or a .zip file, or paste a link to an online repository such as GitHub or OSF; there, running the code is ticked by default. The [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) and the [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) run the check too. The server already has the most common R and Python packages. It first installs any other packages the code needs from CRAN or PyPI, but not packages from GitHub or other links, and then runs each script for at most 5 minutes, in a closed sandbox without internet access. Uploaded files are deleted as soon as they have been read, and the report is kept on the server for one hour, so save it if you want to keep it.
+
+The server's capacity is shared by everyone who uses it, so it is meant for checking a paper or a repository now and then. If you want to check many papers, run Metacheck on your own computer, or [build your own server on SURF Research Cloud](get-started.qmd#your-own-server-on-surf-research-cloud), which researchers at Dutch institutions can do through their institution or with a free NWO grant. The [Setting up Metacheck](get-started.qmd) chapter describes all these options.
+
+## Running the check in R
+
+We illustrate the module in R. Metacheck reads a paper from its PDF. We download both PDFs from GitHub, and `convert()` turns each into a structured file that `read()` loads into R. If you want to follow along in the Metacheck website, download the two papers from [here](https://raw.githubusercontent.com/Lakens/stroop_effect_paper/main/output/analysis.pdf) and [here](https://raw.githubusercontent.com/Lakens/stroop_effect_paper_bad/main/analysis.pdf). 
 
 ```{r}
 #| eval: false
-paper <- demopaper()
-mo <- module_run(paper, "reproducibility_check")
-mo$traffic_light
-#> [1] "yellow"
-cat(mo$summary_text)
-#>
-#> -  We assessed 6 R code files for reproducibility (static analysis; no code was run).
-#> -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).
-#> -  25 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).
-#> -  2 referenced inputs unavailable (0 withheld due to size).
-#> -  6 installable dependencies detected.
+download.file(
+  "https://raw.githubusercontent.com/Lakens/stroop_effect_paper/main/output/analysis.pdf",
+  destfile = "good_paper.pdf", mode = "wb"
+)
+download.file(
+  "https://raw.githubusercontent.com/Lakens/stroop_effect_paper_bad/main/analysis.pdf",
+  destfile = "bad_paper.pdf", mode = "wb"
+)
+paper <- read(convert(file_path = "good_paper.pdf", save_path = "."))
+bad_paper <- read(convert(file_path = "bad_paper.pdf", save_path = "."))
 ```
 
-This example is shown rather than run live in this chapter, because it needs to download every repository the demo paper links to, and this book does not want to depend on that being reachable every time it is built. Running a module always works the same way: `module_run(paper, "module_name")`.
+```{r}
+#| include: false
+#| message: false
+#| warning: false
+# a local copy of the converted papers is used here, so this page does not
+# depend on the conversion server when it is built
+paper <- read("../converted/good_paper.json")
+bad_paper <- read("../converted/bad_paper.json")
+```
 
-Assigning the result to a variable, `mo` above, lets you look at individual pieces instead of only the summary. The most central piece of output here is `mo$table`, which has one row per code file and records what the static check found, including a `runnable` column:
+Both papers link to their repository. The [repo_check](mod-repo-check.qmd) module in Metacheck supports over 270 data repositories, and can automatically download files from these repositories.
+
+Running the module is a single line. By default, `reproducibility_check` only inspects the code without running it. `execute = TRUE` is needed to actually run the full computational reproducibility check:
 
 ```{r}
-#| eval: false
-mo$table[, c("file_name", "parses", "run_order", "runnable")] |>
+#| message: false
+#| warning: false
+mo_good <- module_run(paper, "reproducibility_check", execute = TRUE)
+mo_good$traffic_light
+```
+
+```{r}
+cat(mo_good$summary_text)
+```
+
+The light is green: every script ran without an error, and every result reported in the manuscript was among the results the code produced when it ran. `mo_good$table` lists each script and what happened when it was run:
+
+```{r}
+mo_good$table[, c("file_name", "outcome")]
+```
+
+`clean_data.R` turns the raw data file into the processed data file, and `analysis.qmd` is the manuscript, whose code chunks contain the analysis. The repository also contains `renv/activate.R`, a script the `renv` package adds to a project to set up its package library. The module does not check the contents of this folder, because it knows it is not part of the analysis.
+
+`mo_good$match_table` shows, for each result reported in the paper, whether it was found in the output of the code, and in which analysis:
+
+```{r}
+mo_good$match_table[, c("reported", "found", "confidence", "analysis")] |>
   knitr::kable()
 ```
 
-A `runnable` column of `TRUE` is a cautious signal, not a guarantee: it means the file parses, every input it reads could be located, and it can be placed in a sensible run order — nothing more, because none of this has actually executed the code yet. `runnable = FALSE` does not necessarily mean the code is broken; it means the static check could not confirm everything is in place without running it. Crucially, this simple static call never tells you whether the paper's reported numbers actually reproduce — that requires opting in to actually running the code, which is a deliberate, separate step (`execute = TRUE`) covered later in this chapter, along with how to run it safely in an isolated container. Even a fully successful execution only shows that the *numbers* reproduce; it says nothing about whether the original analysis was conceptually the right one to run.
+A result is not compared as single numbers, but as a whole: the *t*-value, the degrees of freedom, and the *p*-value of one test have to appear together in the output of one analysis. Any single number will sooner or later turn up somewhere in a large output by coincidence, but several numbers of one test appearing together in one analysis will not.
+
+::: callout-tip
+## Making your own results findable
+
+The module can only find a result if the code produces it while it runs, in a form the module recognises. In the good paper, every reported number is computed in a code chunk, and the text of the manuscript only rounds these values. A number that is computed only inside the text, by an inline R expression in Quarto or R Markdown, is not part of the code that is run, so it cannot be found.
+
+The module recognises the results of test functions such as `t.test()` and `cor.test()`, of summaries such as `sapply(stroop_data[, c("congruent", "incongruent")], mean)`, and of effect sizes from the `effectsize` package, also when they are stored in a variable (`ttest_result <- t.test(...)`). A number computed by hand, such as a Cohen's *d* computed as `mean(diff) / sd(diff)`, is found when the code prints it, but not when it is only stored in a variable.
+:::
+
+A green light means that the numbers in the paper follow from the shared code and data. It does not mean that the analysis was the right one to perform.
+
+Now let's see what the module returns if we run it on the bad paper:
+
+```{r}
+#| message: false
+#| warning: false
+mo_bad <- module_run(bad_paper, "reproducibility_check", execute = TRUE)
+mo_bad$traffic_light
+```
+
+```{r}
+cat(mo_bad$summary_text)
+```
+
+The light is red, because the analysis code stopped with an error:
+
+```{r}
+mo_bad$table[, c("file_name", "outcome")]
+cat(mo_bad$run_results$error)
+```
+
+The code compares the Stroop effect between the two years using a column `stroop_effect`, but no line of the code creates that column. The authors presumably created it in their R console while they worked, so the code ran on their own computer, but it cannot run for anyone else. This is one of the most common reasons shared code fails.
+
+Before the code was run, the module also changed one line of it. `mo_bad$modifications` lists every change:
+
+```{r}
+mods <- mo_bad$modifications
+mods[mods$change_type == "setwd_removed", c("change_type", "detail")]
+```
+
+The code starts with `setwd("C:/Users/dlakens/Desktop/stroop_study")`, which sets the folder R works in to a folder that only exists on the author's computer. The module skips this line, and reports that it did, because it would stop the code on any other computer.
+
+Now the comparison between the paper and the output:
+
+```{r}
+mo_bad$match_table[, c("reported", "found", "confidence", "analysis")] |>
+  knitr::kable()
+```
+
+Only the mean and standard deviation of the congruent condition were found. Each of the other results is missing for a different reason:
+
+- **The incongruent mean and standard deviation** (*M* = 23.0, *SD* = 4.78) are not in the output. The output contains the statistics the code did compute:
+
+  ```{r}
+  mo_bad$stat_output[[1]]$long[, c("analysis", "statistic", "value")]
+  ```
+
+  The incongruent mean is 22.08, with a standard deviation of 11.64. The reason is in the data. One participant has a reaction time of -99 in the incongruent condition:
+
+  ```{r}
+  bad_data <- read.csv("https://raw.githubusercontent.com/Lakens/stroop_effect_paper_bad/main/stroop.csv")
+  summary(bad_data$Incongruent)
+  ```
+
+  -99 is a code for a missing value, not a reaction time. The authors removed this participant before computing the results in their paper, but the code they shared does not, so it analyses -99 as if it were a reaction time.
+- **The paired *t*-test**, *t*(130) = 18.04, is not found for the same reason: the shared code analyses all 132 participants, including the -99, and gets *t*(131) = 6.77. The reported *p* = .25 and Cohen's *d~z~* = 0.25 would not have matched in any case, because neither is consistent with a *t*-value of 18.04 (the [StatCheck](mod-stat-check.qmd) and [Effect Sizes](mod-stat-effect-size.qmd) modules flag both from the text alone).
+- **The correlation**, *r* = 0.37, is reported, but no line of the code computes it.
+- **The comparison between the years**, *t*(120.37) = -0.42, *p* = .673, has exactly the numbers the good paper reports, so it is probably correct. But the code stopped with an error before it reached this test, so it cannot be verified from what the authors shared.
+
+The three *p*-values about accuracy (*p* = .07, *p* = .34, and *p* = .000) are not in the table at all. The module only checks a *p*-value that is reported together with its test statistic. Had they been checked, they would not have been found either: the repository contains no accuracy data.
 
 ## What it checks
 
@@ -55,22 +188,11 @@ The module works in two phases, and you choose how far to go:
 
 Both phases cover R code and Python code. Most of this chapter describes R; [Python code](#python-code) below describes where Python is handled differently.
 
-::: callout-important
-Executing downloaded code runs it — somewhere. It is off by default and is a deliberate, opt-in action (`execute = TRUE`). How much risk that carries depends entirely on `sandbox`, a second argument covered in detail in [Two ways to run the code](#two-ways-to-run-the-code) below: the default (`sandbox = "process"`) only isolates a *crash*, not the filesystem or network, so code could still delete files or reach the internet; `sandbox = "docker"` is a real containment boundary (no network, read-only filesystem, non-root user) and is what you should reach for when running code you do not personally trust.
-:::
-
 ::: callout-note
 This module builds on `code_check`, `psychds_check`, and `data_check`, and inherits their **live network calls** to retrieve the repository files. You need an internet connection to run the code below.
 :::
 
-## Running the module
-
-::: {.callout-note}
-## Without R
-[Metacheck's website](https://metacheckserve.metacheck.src.surf-hosted.nl/) runs this module with the code run: tick *Also run the R and Python code* under *Run Metacheck on a Repository* (a folder, a .zip file, or a link to an online repository; it is ticked there by default), or *Also run the code in the paper's repository* under *Run Metacheck on a Paper*. The [ResearchBox Check](https://metacheckserve.metacheck.src.surf-hosted.nl/researchbox/) and the [TU/e Data Manager Check](https://metacheckserve.metacheck.src.surf-hosted.nl/datamanager/) offer it too. The server first installs the R and Python packages the code needs, and then runs each script for at most 5 minutes, in a closed sandbox without internet access.
-
-The [Docker installation](get-started.qmd#docker-installation) offers the same website on your own computer. There, the code runs inside the Docker container, which is not a closed sandbox: the code can use the internet, but it cannot reach the files on your computer.
-:::
+## The static phase, without running code
 
 The default is the static phase — it does not run anything. This example reads every repository `demopaper()` links to, so (like the rest of this chapter) it needs those repositories to be reachable; the output below is shown rather than run live, so the chapter does not depend on every linked repository's uptime at render time:
 
@@ -297,8 +419,6 @@ The two options carry genuinely different risk, and the difference is worth unde
 | Runs as | your own user account | a fixed non-root user (uid 1000) inside the container |
 | Requires | the `callr` package (only when the paper has R code); for Python code, the `processx` package and a Python interpreter (`python`, or else `python3`) | Docker installed and running, plus the `processx` package |
 | Speed | fast — no container overhead | pre-built image (see below) makes this close to the process backend for most papers |
-
-`sandbox = "process"` isolating only a *crash* is worth restating plainly: `callr` runs the script in a separate R process (and a Python script runs in a separate `python` process) so that a segfault or a fatal error does not take down your own R session, but that subprocess is still the same operating-system user, the same filesystem, and the same network as the R session that launched it. Nothing stops a malicious or merely careless script from calling `unlink()` on files far outside the sandbox, or `system()`-ing out to install something, or exfiltrating data over the network. If you are running code from a repository you have not personally reviewed, `sandbox = "docker"` is the option that actually delivers on the word "sandbox".
 
 `sandbox = "docker"` achieves real containment with these `docker run` flags, applied to every script individually during the run phase:
 
@@ -569,7 +689,7 @@ The final question — the one reproducibility is really about — is whether th
 
 A reported statistical test is not a single number; it is a multi-component statement, for example *"M = 1.93, SD = 0.76, W = 183.5, p = .791, rb = -0.16"*. Metacheck's text extractor records each of those numbers in the paper's `$eq` table, grouped so that the numbers from one reported test stay together. `match_reported_output()` **recomposes** each reported test from its components, then checks whether those component values **co-occur in a single analysis of the extracted output**.
 
-Matching whole tests, rather than lone numbers, is what makes the check trustworthy: any single value will coincidentally appear somewhere in a large enough set of output numbers, but several components of one test agreeing *at once* is essentially never accidental.
+As the example at the start of this chapter showed, matching whole tests, rather than lone numbers, prevents a value from being found by coincidence.
 
 Inside the module, this comparison is made once, after both the R and the Python code have run, so it uses the output of both languages together with any self-reproducible output. A printed scipy result names its values `statistic` and `pvalue`, which say nothing about the kind of test, so the kind is taken from the result's class name: `TtestResult` gives a t-statistic, `F_onewayResult` an F-statistic, `PearsonRResult` Pearson's r, and `Chi2ContingencyResult` a chi-squared statistic with its degrees of freedom (`dof`). `spearmanr()` and `kendalltau()` return the same class, so their coefficient is left without a type.
 
@@ -646,7 +766,7 @@ R code and Python code each get their own light by these rules, and the paper ge
 | `keep_sandbox` | `FALSE` | keep the throwaway run directory and return its path as `$sandbox`, to inspect exactly what ran |
 | `workers` | `1` | when `paper` is a paperlist and `sandbox = "docker"`, run this many papers' checks concurrently — see [Batch mode](#batch-mode) |
 | `results_dir` | `NULL` | with `workers > 1`, write each paper's result to `<paper_id>.rds` in this directory as soon as that paper finishes |
-| `local_path`, `local_only` | | run against local files without online repository lookups |
+| `local_path`, `local_only` | | `local_path` adds the files in a local folder; `local_only = TRUE` skips the online repository lookups. With a paper, `local_path` alone does not replace the repository the paper links to: that repository is still downloaded, and its scripts run alongside the local ones, so a local and an online version of the same script can both run. Give both to run only the local files |
 | `model`, `params` | | passed through to the upstream modules' LLM calls (`data_check`, `psychds_check`), only used when `llm_use(TRUE)` |
 | `cache` | `FALSE` | forwarded to the internal `data_check`/`code_check` runs: keep downloaded files in the persistent on-disk cache and reuse them on later runs |
 | `download`, `skip_types`, `peek_zips`, `max_file_size`, `max_download_size` | (same as `data_check`'s own defaults) | forwarded to the internal `data_check` run — see the [Data Check](mod-data-check.qmd) chapter for what each one controls |
@@ -672,4 +792,6 @@ Honest limits worth keeping in mind:
 - `sandbox = "process"` genuinely does run downloaded code on your own machine with your own user's filesystem and network access. If you are not confident in a paper's code, use `sandbox = "docker"` instead — the two are not equivalent safety-wise, only equivalent in what they check.
 - The pre-built R Docker image is built for one specific R version at a time; if a paper's own declared version matters to you specifically (not just "some recent R"), use `docker_use_declared_version = TRUE` and accept the slower, from-scratch install.
 
-If you want to extend the checks, or help harden the execution and matching phases, reach out to the Metacheck development team.
+## Open for feedback
+
+Making this software was a challenge. We have validated the code by running it on more than 3000 scientific papers, with hundreds of folders of data and code, across dozens of data repositories. But there will be bugs. Software this complex, that tries to process the almost infinite ways in which researchers can share data and code, is bound to run into bugs. When thousands of people try this out, for some it will fail on their very first try (while for many others, it will run fine). If you find a bug, please raise an issue on [Metacheck's GitHub page](https://github.com/scienceverse/metacheck/issues). You need to share the data or code files that lead to the problem with us, or we can't fix the problem. If you can't share the data and code, you can ask an AI agent to analyze the problem, which might be enough to solve it as well. If the tool lacks features you would like to have, let us know, and we will do our best to build them in.

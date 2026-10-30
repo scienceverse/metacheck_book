@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.9.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="A guide to Metacheck, an R package providing a module based tool for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
-<title>3&nbsp; Your First Check – The Metacheck Manual</title>
+<meta name="description" content="A guide to Metacheck, a module based tool written in R for checking scientific manuscripts and data repositories for best practices using text search, R code, and optional LLM queries.">
+<title>3&nbsp; Your First Metacheck – The Metacheck Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/first-steps.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/first-steps.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Metacheck</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing metacheck</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducing Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -167,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/first-steps.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Metacheck</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -466,9 +466,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/first-steps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/first-steps.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span></a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/intro.html">Getting Started</a></li><li class="breadcrumb-item"><a href="../chapters/first-steps.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Metacheck</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Check</span>
+<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Your First Metacheck</span>
 </h1>
 </div>
 
@@ -483,7 +483,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>This chapter does not explain anything about how Metacheck works. It just walks through the four things you will do most often, using two short example papers, so that you have something working before you read about how any of it works. If you have never used R before, that is fine: every line below is explained, and you can copy and paste each code chunk into the R console one at a time.</p>
+</header><p>This chapter walks you through the four things you will do most often with Metacheck, using two short example papers, so that you have a working example before you read a month in depth overview of how the modules work. If you have never used R before, that is fine: every line below is explained, and you can copy and paste each code chunk into the R console one at a time.</p>
 <p>We will use two small manuscripts, both about the same simple study (whether people are slower to name the ink color of a word when the word itself names a different color — the “Stroop effect”):</p>
 <ul>
 <li>A <strong>good</strong> paper: <a href="https://github.com/Lakens/stroop_effect_paper" class="uri">https://github.com/Lakens/stroop_effect_paper</a>, which reports its statistics correctly and shares its data and code openly.</li>
@@ -492,19 +492,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-read-in-a-paper" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="step-1-read-in-a-paper">
 <span class="header-section-number">3.1</span> Step 1: Read in a paper</h2>
 <p>Metacheck works with PDF files. The function <code>convert()</code> turns a PDF into a structured format Metacheck can read, and <code>read()</code> loads that structured format into R as a <strong>paper object</strong> — everything Metacheck does, in every later chapter, starts from a paper object like this one.</p>
-<p>Since our example papers live on GitHub, we first download the PDF with <code><a href="https://rdrr.io/r/utils/download.file.html">download.file()</a></code>, a base R function that needs no extra packages:</p>
+<p>Since our example papers are stored on GitHub, we first download the PDF with <code><a href="https://rdrr.io/r/utils/download.file.html">download.file()</a></code>, a base R function that needs no extra packages:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
 <span>  <span class="st">"https://raw.githubusercontent.com/Lakens/stroop_effect_paper/main/output/analysis.pdf"</span>,</span>
 <span>  destfile <span class="op">=</span> <span class="st">"good_paper.pdf"</span>, mode <span class="op">=</span> <span class="st">"wb"</span></span>
 <span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Now convert the PDF and read it in:</p>
+<p>Now we convert the PDF and read it in with the Metacheck convert function:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">json_file</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"good_paper.pdf"</span>, save_path <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="va">json_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>convert()</code> sends the PDF to a free conversion server and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can <code>read()</code> the saved file directly, without converting again.</p>
+<p><code>convert()</code> sends the PDF to a free conversion server that runs GROBID and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can <code>read()</code> the saved file directly, without converting again.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -520,10 +520,10 @@ Note
 </div>
 </section><section id="step-2-run-one-check" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="step-2-run-one-check">
 <span class="header-section-number">3.2</span> Step 2: Run one check</h2>
-<p>Metacheck organises its checks into <strong>modules</strong>. Each module looks for one specific thing. <code>module_run()</code> runs a single module on a paper object. Just printing the result shows a short report:</p>
+<p>Metacheck organises its checks into <strong>modules</strong>. Each module offers an automated check for one specific thing. <code>module_run()</code> runs a single module on a paper object. Just printing the result shows a short report:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Effect Sizes in t-tests and F-tests: All detected t-tests and F-tests had an effect size reported in the same sentence.</p>
-<p><code>stat_effect_size</code> checks whether a reported statistical test (like a <em>t</em>-test) is accompanied by an effect size, and whether that effect size is actually consistent with the test. Every module gives a <strong>traffic light</strong> — green (no issues found), yellow (worth a closer look), red (a likely problem), or “na” (nothing for this module to check) — plus a short summary. The good paper reports <em>t</em>(130) = 18.04 together with Cohen’s <em>d<sub>z</sub></em> = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.</p>
+<p><code>stat_effect_size</code> checks whether a reported statistical test (like a <em>t</em>-test) is accompanied by an effect size, and whether that effect size is consistent with the test. Every module gives a <strong>traffic light</strong> — green (no issues found), yellow (worth a closer look), red (a likely problem), or “na” (nothing for this module to check) — plus a short summary. The good paper reports <em>t</em>(130) = 18.04 together with Cohen’s <em>d<sub>z</sub></em> = 1.58, and that effect size is indeed what you would expect from a test statistic that size — hence the green light above.</p>
 <p>Now download the bad paper’s PDF the same way as in Step 1, and run the same check on it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
@@ -535,7 +535,7 @@ Note
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">bad_paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Effect Sizes in t-tests and F-tests: All effect sizes were reported, but some appear inconsistent with the test statistic. This can be because the effect size is not clearly labeled (e.g., d, instead of d_rm), because the effect sizes is not reported with enough precisions (e.g., 0.3 instead of 0.32), or because the effect size is incorrectly reported.</p>
-<p>This comes back red: it reports the same <em>t</em>-test, <em>t</em>(130) = 18.04, but with a Cohen’s <em>d<sub>z</sub></em> of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.</p>
+<p>This comes back as a red traffic light, which indicates something is wrong: it reports the same <em>t</em>-test, <em>t</em>(130) = 18.04, but with a Cohen’s <em>d<sub>z</sub></em> of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.</p>
 <section id="getting-specific-pieces-of-information-out" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="getting-specific-pieces-of-information-out">
 <span class="header-section-number">3.2.1</span> Getting specific pieces of information out</h3>
 <p>Printing the result is useful for reading, but if you want to use a piece of it elsewhere — say, to check many papers automatically — assign the result to a variable first, and then pull out just the part you need with <code>$</code>:</p>
@@ -566,7 +566,7 @@ Note
 <p>This produces the same kind of report, but with several more red and yellow lights: a missing funding statement, p-values that do not match their own reported statistics, and more. Nothing about the <em>process</em> changes between the two papers — only what the report finds.</p>
 </section><section id="step-4-check-a-shared-repository" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="step-4-check-a-shared-repository">
 <span class="header-section-number">3.4</span> Step 4: Check a shared repository</h2>
-<p>So far we have checked what a paper <em>says</em>. Metacheck can also check what a paper’s authors actually <em>shared</em> — the data and code repository itself — independently of any manuscript. <code>report_repository()</code> is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way <code>report()</code> did in Step 3.</p>
+<p>So far we have checked the content of a paper. Metacheck can also check data and code in repositories. <code>report_repository()</code> is the function for this: give it a folder, and it runs every repository-oriented check (file organisation, the code, the data, and the codebook) and writes a report, the same way <code>report()</code> did in Step 3.</p>
 <p>Download the bad paper’s repository as a zip file (the same “Download ZIP” button you would click on GitHub) and unpack it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span></span>
@@ -600,10 +600,10 @@ Note
 <ol type="1">
 <li>Read a PDF into R as a paper object (<code>convert()</code> + <code>read()</code>).</li>
 <li>Ran a single check on it (<code>module_run()</code>).</li>
-<li>Generated a full, shareable report from a paper (<code>report()</code>).</li>
-<li>Generated a full, shareable report from a shared repository, with no manuscript involved (<code>report_repository()</code>).</li>
+<li>Generated a full report from a paper (<code>report()</code>).</li>
+<li>Generated a full report from a shared repository, with no manuscript involved (<code>report_repository()</code>).</li>
 </ol>
-<p>These four functions cover the large majority of what you will do with Metacheck day to day. The rest of this book goes through every module in detail — one chapter per module — documenting everything the R package can do with it: every argument, every option, what the output table and report actually contain, and how to interpret what it finds. Start with the <a href="../chapters/mod-power.html">Modules</a> part of this book, or jump straight to a chapter that interests you.</p>
+<p>These four functions cover the large majority of what you will do with Metacheck day to day if you want to improve the reporting practices in your own work. Metacheck can also be run on a large collection of papers, and generate a dataframe that contains the results across the set of papers. This metascience use-case is explain in a dedicated section in each chapter of a module. The rest of this book goes through every module in detail — one chapter per module — documenting everything the R package can do with it: every argument, every option, what the output table and report actually contain, and how to interpret what it finds. Currently, these chapters are largely written by AI, with some light editing. If the Metacheck team has more time, and the software is more stable, we will revisit all chapters and manually update them. Start with the <a href="../chapters/mod-power.html">Modules</a> part of this book, or jump straight to a chapter that interests you.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
