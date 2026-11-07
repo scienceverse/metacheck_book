@@ -704,9 +704,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Metacheck is designed to assist researchers though automated checks. One way it can do this is by asking users to upload a paper, and it will check if improvements can be made to how research is reported. But Metacheck also has a range of modules that allow users to check data and code in a folder, and automatically suggest improvements to the repository, data, and code.</p>
 <p>One line checks the folder you just downloaded:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository</a></span><span class="op">(</span><span class="st">"how_many_registered_studies_are_published"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/report_repository.html">report_repository</a></span><span class="op">(</span><span class="st">"how_many_registered_studies_are_published"</span>,</span>
+<span>                  output_file <span class="op">=</span> <span class="st">"how_many_registered_studies_are_published_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This writes a report <code>how_many_registered_studies_are_published_report.html</code> into your working directory. Open it in a browser and read it as a list of suggestions: a missing README to write, a column to document, a stray file to remove. It covers what files are there, what the analysis code looks like, what is in the data, and whether the data columns are documented anywhere. The <a href="../chapters/creating-a-report.html">Creating a Report</a> chapter explains the function and its arguments in full.</p>
+<p>This writes the report <code>how_many_registered_studies_are_published_report.html</code> into your working directory. Without <code>output_file</code>, the report goes to the R session’s temporary folder, which R removes when it closes, and a message says where. Open it in a browser and read it as a list of suggestions: a missing README to write, a column to document, a stray file to remove. It covers what files are there, what the analysis code looks like, what is in the data, and whether the data columns are documented anywhere. The <a href="../chapters/creating-a-report.html">Creating a Report</a> chapter explains the function and its arguments in full.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -731,7 +732,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The arguments you may want to change:</p>
 <ul>
 <li>
-<code>download_to</code> is the folder to save into. It is created if it does not exist, but create it yourself before the first download, as described above, so that each project goes into a folder named after its OSF ID. In this example the files go into the R working directory, in a new folder called <code>my_osf_archive</code>.</li>
+<code>download_to</code> is the folder to save into. It has no default, so you must always name it (<code>"."</code> for the working directory). It is created if it does not exist, but create it yourself before the first download, as described above, so that each project goes into a folder named after its OSF ID. In this example the files go into the R working directory, in a new folder called <code>my_osf_archive</code>.</li>
 <li>
 <code>mode</code> decides how much work is done before downloading. See the next section; the default is right for archiving your own account.</li>
 <li>

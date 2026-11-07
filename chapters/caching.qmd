@@ -21,23 +21,23 @@ This chapter explains what each cache stores, where it lives, how entries are ke
 ::: callout-tip
 ## The short version
 
-- **LLM responses** are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with `llm_cache()`; wipe with `llm_cache_clear()`.
+- **LLM responses** are stored automatically, but by default only for the R session: within a session, asking the same question again replays the stored answer instead of re-billing the provider. `llm_cache(TRUE)` keeps the answers between sessions, `llm_cache(FALSE)` stores none; wipe them with `llm_cache_clear()`.
 - **Downloaded repository files**, **repository listings**, and **peeked zip archives** are *not* cached by default. `data_check`, `code_check`, and `repo_check` otherwise redo this work every run. Pass `cache = TRUE` to keep it instead.
-- All four caches live in the current working directory, so a project's cache sits with the project. See where most of them are with `metacheck_cache_info()`.
+- A cache you ask to keep lives in the current working directory, so a project's cache sits with the project. See where most of them are with `metacheck_cache_info()`.
 :::
 
 ## Where the caches live
 
-All four on-disk caches default to a folder in your **current working directory**, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.
+Nothing is kept between sessions unless you ask for it: without `cache = TRUE` or `llm_cache(TRUE)`, Metacheck writes only to the R session's temporary folder, which R removes when the session ends. A cache you ask to keep goes in a folder in your **current working directory**, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.
 
 | Cache | Folder (in the working directory) | Contents |
 |---|---|---|
-| LLM responses | `.metacheck_llm_cache/` | one `.rds` per distinct LLM call |
+| LLM responses (with `llm_cache(TRUE)`) | `.metacheck_llm_cache/` | one `.rds` per distinct LLM call |
 | Repository files | `.metacheck_repo_cache/` | one sub-folder per repository, mirroring its files |
 | Repository listings | `.metacheck_repo_info_cache/` | one `.rds` per repository, caching what the host's API said it contains |
 | Peeked zip archives | `.metacheck_zip_peek_cache/` | one `.rds` per zip URL, caching what a range-request peek found inside it |
 
-You never need to create these directories by hand; Metacheck creates them on first use. To see where they are and how much space they take, use `metacheck_cache_info()`, which returns the location and size of the LLM, repository-file, and repository-listing caches at once (the zip-peek cache is not currently included in this summary — see [Clearing it](#clearing-the-zip-peek-cache) below for how to inspect or clear that one on its own):
+You never need to create these directories by hand; Metacheck creates them the first time it stores something in them. To see where they are and how much space they take, use `metacheck_cache_info()`, which returns the location and size of the LLM, repository-file, and repository-listing caches at once (while `llm_cache()` is `FALSE`, the LLM row shows this session's temporary folder) (the zip-peek cache is not currently included in this summary — see [Clearing it](#clearing-the-zip-peek-cache) below for how to inspect or clear that one on its own):
 
 ```{r}
 #| eval: false
@@ -90,20 +90,21 @@ Each entry stores not just the parsed answer (the data frame `llm()` returns) bu
 
 ### Turning it on and off
 
-The cache is **on by default**. Query or set it with `llm_cache()`:
+By default the answers are stored in the R session's temporary folder, so they are replayed within the session and removed when R closes. Query or set this with `llm_cache()`:
 
 ```{r}
 #| eval: false
-llm_cache()          # is the cache on? (TRUE by default)
-llm_cache(FALSE)     # force every call to hit the provider afresh
-llm_cache(TRUE)      # re-enable
+llm_cache()          # are answers kept between sessions? (FALSE by default)
+llm_cache(TRUE)      # keep answers between sessions, in .metacheck_llm_cache/
+llm_cache(FALSE)     # store no answers: every call asks the provider again
+options(metacheck.llm.cache = NULL)  # back to the default: this session only
 ```
 
-Disabling it is mostly useful when you are deliberately testing provider behaviour or measuring latency, and want to be sure no answer is being replayed.
+Before Metacheck 0.4.3 the answers were kept between sessions by default; this changed because CRAN does not allow a package to keep files outside the session's temporary folder unless the user asks for it. Turning the cache off is mostly useful when you are deliberately testing provider behaviour or measuring how long calls take, and want to be sure no answer is being replayed.
 
 ### Clearing it
 
-To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use `llm_cache_clear()`, which deletes all cache entries and returns how many it removed:
+To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use `llm_cache_clear()`, which deletes all entries of the cache in use (the lasting one when `llm_cache()` is `TRUE`, otherwise this session's temporary one) and returns how many it removed:
 
 ```{r}
 #| eval: false
@@ -114,7 +115,7 @@ You do not normally need to clear the cache to pick up a *changed* prompt or mod
 
 ### What this means in practice
 
-Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module's *non-LLM* code, or to regenerate a report, without watching your API bill climb. Note that the [`llm_max_calls()`](llms.qmd) cap still counts cached replays: `llm()` checks the number of texts against the cap before it looks in the cache.
+Re-running a report on the same paper is close to free on the LLM side: the first run fills the cache, and every later run in the same session replays it, as does every run in a later session when you set `llm_cache(TRUE)`. This is what makes it comfortable to iterate on a module's *non-LLM* code, or to regenerate a report, without watching your API bill climb. Note that the [`llm_max_calls()`](llms.qmd) cap still counts cached replays: `llm()` checks the number of texts against the cap before it looks in the cache.
 
 ## The repository-file download cache
 
@@ -132,7 +133,7 @@ Reuse is decided by a simple, robust test: if the target path already exists **a
 
 ### Turning it on
 
-Unlike the LLM cache, which is on by default, the download cache is **off by default**. Both `data_check` and `code_check` take a `cache` argument that is `FALSE` unless you say otherwise:
+Unlike the LLM cache, which stores answers for the session by default, the download cache keeps nothing between sessions by default. Both `data_check` and `code_check` take a `cache` argument that is `FALSE` unless you say otherwise:
 
 ```{r}
 #| eval: false
@@ -156,7 +157,7 @@ The download cache stores whatever the modules fetch, and `data_check` gives you
 - **`download`** — `"data"` (the default) fetches only the machine-readable files the checks analyse (tabular data plus codebook/README files); `"all"` fetches every file in the repository, which is the right choice when building a complete archive; `FALSE`/`"none"` downloads nothing and classifies files by name only.
 - **`skip_types`** — a vector of file *types* never to download even under `download = "all"`. When left as `NULL`, the default, `"materials"` and `"unknown"` are skipped: stimuli and software, and the classifier's collection of manuscripts, logs and unrecognised content, which would only inflate an archive. Pass an explicit vector to override this, or `character(0)` to download every type. The six types are `"data"`, `"code"`, `"documentation"`, `"materials"`, `"output"` and `"unknown"`. Skipped files still appear in the manifest, with the reason.
 - **`peek_zips`** — look *inside* each `.zip` using an HTTP range request, without downloading the whole archive, and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead. It defaults to `TRUE` in both `data_check` and `repo_check`. In `repo_check` the peek is used slightly differently: it lists each archive's contents in place of the archive itself, without downloading anything. Peeking itself has its own cache — see [below](#the-zip-peek-cache).
-- **`max_file_size`** / **`max_download_size`** — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository's total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.
+- **`max_file_size`** / **`max_download_size`** — size limits (in MB) on what may be downloaded, so that one very large file or one enormous repository cannot fill your disk. A file larger than `max_file_size` is skipped, and the rest of the repository is still downloaded. `max_download_size` limits the total size of a repository's files on your disk: files already saved are kept, and then the smallest of the remaining files are added until the next one would pass the limit. A file whose size the repository does not give is also downloaded, but the download is stopped when the file becomes larger than `max_file_size` or than what is left of `max_download_size`, and the file is then reported as too large, like a file whose size was known. Every skipped file appears in the manifest, with the reason.
 
 These arguments decide *what enters the cache*; once a file is in, it stays and is reused. See the [data_check](mod-data-check.qmd) chapter for full details and examples.
 
@@ -224,7 +225,7 @@ When you run several modules on a paper — or build an archive across a corpus 
 2. If `repo_check` needs to look inside a `.zip` (`peek_zips = TRUE`, the default), that peek is itself cached when `cache = TRUE` is passed through.
 3. `data_check` / `code_check` download the files they need; a second module reading the same file in the same run reuses that copy. With `cache = TRUE` the copies are kept for later sessions as well.
 4. When an LLM is enabled, `data_check`, `codebook_check`, and other LLM-using modules send text to `llm()`, whose answers are stored in the **LLM response cache**.
-5. Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the listings, zip peeks, and downloads too if you ran with `cache = TRUE`; without it, all three are redone, because the previous session's copies were discarded. This is the main reason to turn caching on for an archive build you expect to resume.
+5. Re-running the whole pipeline in the same session replays the LLM cache, so no answer is paid for twice; in a later session it does so only with `llm_cache(TRUE)`. It replays the listings, zip peeks, and downloads too if you ran with `cache = TRUE`; without it, all three are redone, because the previous session's copies were discarded. This is the main reason to turn caching on for an archive build you expect to resume.
 
 Modules such as `codebook_check` do not have a *separate* results cache of their own — their re-run savings come entirely from these shared caches (the listings, peeks, files, and LLM answers they request). This keeps the caching story simple: there are four on-disk caches, and every module benefits from the ones relevant to it without needing its own.
 
@@ -236,7 +237,7 @@ One module, [funding_check](mod-funding-check.qmd), builds a list of organisatio
 
 | Cache | Scope | On by default | Key | Toggle | Clear |
 |---|---|---|---|---|---|
-| LLM responses | on disk, cross-session | yes | model + prompt + text + type + params | `llm_cache()` | `llm_cache_clear()` |
+| LLM responses | on disk; for the session, or between sessions with `llm_cache(TRUE)` | for the session only | model + prompt + text + type + params | `llm_cache()` | `llm_cache_clear()` |
 | Repository files | on disk, cross-session | **no** (`cache = TRUE` to enable) | repo URL + relative path | `cache` argument of `data_check` / `code_check` | `repo_cache_clear()` |
 | Repository listings | on disk, cross-session | **no** (`cache = TRUE` to enable) | host + repository id | `cache` argument of `repo_check` / `code_check` / `data_check` | `repo_info_cache_clear()` |
 | Peeked zip archives | on disk, cross-session | **no** (`cache = TRUE` to enable) | zip URL | `cache` argument of the peeking function | `zip_peek_cache_clear()` |

@@ -504,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">json_file</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span>file_path <span class="op">=</span> <span class="st">"good_paper.pdf"</span>, save_path <span class="op">=</span> <span class="st">"."</span><span class="op">)</span></span>
 <span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="va">json_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>convert()</code> sends the PDF to a free conversion server that runs GROBID and gets back a structured file; this needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can <code>read()</code> the saved file directly, without converting again.</p>
+<p><code>convert()</code> sends the PDF to a free conversion server and gets back a structured file, which it saves in the folder named in <code>save_path</code> (here <code>"."</code>, the working directory; you must always name one). This needs an internet connection and takes a few seconds. You only need to do this once per paper — after that, you can <code>read()</code> the saved file directly, without converting again.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -516,6 +516,19 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p><code>convert()</code> defaults to Metacheck’s own server on SURF Research Cloud in the Netherlands, which deletes your PDF once it is converted, and the result an hour later. See <a href="../chapters/reading-a-paper.html">Reading in a Paper</a> if you would rather run your own, fully local conversion server.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The good paper also comes with Metacheck, so you can try the steps below without downloading or converting anything: <code>paper &lt;- demopaper("stroop_effect")</code> gives the paper object, and <code>demofile("repo")</code> gives the path to a copy of its repository on your computer.</p>
 </div>
 </div>
 </section><section id="step-2-run-one-check" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="step-2-run-one-check">
@@ -534,7 +547,7 @@ Note
 <span><span class="va">bad_paper</span> <span class="op">&lt;-</span> <span class="fu">read</span><span class="op">(</span><span class="va">json_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">bad_paper</span>, <span class="st">"stat_effect_size"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Effect Sizes in t-tests and F-tests: All effect sizes were reported, but some appear inconsistent with the test statistic. This can be because the effect size is not clearly labeled (e.g., d, instead of d_rm), because the effect sizes is not reported with enough precisions (e.g., 0.3 instead of 0.32), or because the effect size is incorrectly reported.</p>
+<p>Effect Sizes in t-tests and F-tests: We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes.</p>
 <p>This comes back as a red traffic light, which indicates something is wrong: it reports the same <em>t</em>-test, <em>t</em>(130) = 18.04, but with a Cohen’s <em>d<sub>z</sub></em> of 0.25 — a value nowhere near what that test statistic implies. Metacheck does not know which number was typed wrong, but it correctly flags that the two do not agree, which is exactly the kind of inconsistency a reader re-typing numbers by hand is likely to miss.</p>
 <section id="getting-specific-pieces-of-information-out" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="getting-specific-pieces-of-information-out">
 <span class="header-section-number">3.2.1</span> Getting specific pieces of information out</h3>
@@ -547,7 +560,7 @@ Note
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo_bad</span><span class="op">$</span><span class="va">summary_text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] "All effect sizes were reported, but some appear inconsistent with the test statistic. This can be because the effect size is not clearly labeled (e.g., d, instead of d_rm), because the effect sizes is not reported with enough precisions (e.g., 0.3 instead of 0.32), or because the effect size is incorrectly reported."</code></pre>
+<pre><code>#&gt; [1] "We found 1 t-test and/or F-test where effect sizes are not reported. Check these tests in the table below, and consider adding effect sizes."</code></pre>
 </div>
 </div>
 <p><code>mo_bad$traffic_light</code> gives you just the colour, and <code>mo_bad$summary_text</code> gives you just the plain-language summary — the same two pieces of text that were part of the printed report above. Every module’s result has more than this; see <a href="../chapters/mod-power.html">Running the module</a> in the Modules part of this book for what else is in there.</p>
@@ -580,7 +593,7 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report_repository</span><span class="op">(</span><span class="st">"bad_repo/stroop_effect_paper_bad-main"</span>,</span>
 <span>                  output_file <span class="op">=</span> <span class="st">"bad_repo_report.html"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Open <code>bad_repo_report.html</code>, and you will see a <strong>yellow</strong> light on the repository’s overall organisation: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper’s repository (<a href="https://github.com/Lakens/stroop_effect_paper" class="uri">https://github.com/Lakens/stroop_effect_paper</a>) and compare the result — it is organised into clearly labelled <code>data/</code>, <code>code/</code>, <code>output/</code>, and <code>documentation/</code> folders, with a complete codebook, which is exactly what this check is designed to reward.</p>
+<p>Open <code>bad_repo_report.html</code>, and you will see a <strong>yellow</strong> light on the repository’s overall organisation: among other things, Metacheck cannot confidently classify every file it finds, and flags a file naming problem. Try the same two lines on the good paper’s repository (<a href="https://github.com/Lakens/stroop_effect_paper" class="uri">https://github.com/Lakens/stroop_effect_paper</a>) and compare the result — it is organised into clearly labelled <code>data/</code>, <code>code/</code>, <code>output/</code>, and <code>documentation/</code> folders, with a complete codebook, which is exactly what this check is designed to reward. Metacheck includes a small copy of that repository, without its <code>output/</code> folder, so <code>report_repository(demofile("repo"), output_file = "good_repo_report.html")</code> checks it without a download.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

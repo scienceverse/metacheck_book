@@ -43,7 +43,7 @@ length(jdm)
 jdm <- papers_load("jdm", cache = TRUE)
 ```
 
-If you expect to use a corpus repeatedly across sessions -- for example, while developing and testing a new module -- set `cache = TRUE` so the file is saved to your user data directory and reused on subsequent calls instead of being re-downloaded every time:
+If you expect to use a corpus repeatedly across sessions -- for example, while developing and testing a new module -- set `cache = TRUE` so the file is saved to your user data folder, `tools::R_user_dir("metacheck", "data")`, and reused on subsequent calls instead of being re-downloaded every time. Before Metacheck 0.4.3 this folder was elsewhere (where the rappdirs package put it), and copies saved there are not found: load such a corpus again with `cache = TRUE`.
 
 ```{r}
 #| eval: false

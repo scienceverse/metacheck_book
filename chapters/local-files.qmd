@@ -480,3 +480,22 @@ Or, since there is no manuscript involved at this point, skip the manual `test_p
 #| eval: false
 report_repository("pngda")
 ```
+
+---
+
+## Preparing your own folder before you share it: `FAIR_repo()`
+
+The checks above tell you what could be improved in a folder. `FAIR_repo()` goes one step further for your own work: it writes a reorganised copy of the folder that you can share. Nothing is downloaded and no link is followed, and the folder you name is not changed. The checks of `report_repository()` run on a temporary copy of it (`repo_check`, `code_check`, `data_check`, `codebook_check`, and `reproducibility_check` without running any code, unless you set `execute = TRUE`), and the new copy is written to `output_dir`, which you must name:
+
+```{r}
+#| eval: false
+FAIR_repo("my_project", output_dir = "my_project_FAIR")
+
+# the demo repository that comes with Metacheck, with its paper for the
+# title, authors and funding
+FAIR_repo(demofile("repo"),
+          output_dir = file.path(tempdir(), "stroop_effect_paper_FAIR"),
+          paper = demopaper("stroop_effect"))
+```
+
+In the copy, every file is placed where the [Psych-DS](mod-psychds-check.qmd) layout puts it: data in `data/`, code in `analysis/`, materials in `materials/`, documentation in `documentation/`, and one `study-<group>/` folder per study when there are several. A data file that needs particular software, such as an Excel or SPSS file, is also written as a CSV file. R and Python scripts are changed so that they still find their files in the new places, and a `setwd()` line that sets a folder written out in the script is replaced by a line that does nothing, with the original line kept in a comment. Next to the files, `FAIR_repo()` writes a description of the data (`dataset_description.json`), an RO-Crate metadata file, a README (unless the folder has its own), a `requirements.txt` with the Python packages the code imports (when it has Python code), the results of the checks in `logs/`, and `CHANGES.md`, which lists every change it made. Read `CHANGES.md` and the README before you share the copy: where only you can give the answer, such as the licence, the authors' roles, or how the data were collected, the metadata say "unknown".

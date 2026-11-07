@@ -518,16 +518,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <ul>
 <li>
-<strong>LLM responses</strong> are cached automatically (on by default). Re-running a report on the same paper replays the stored answers instead of re-billing the provider. Toggle with <code>llm_cache()</code>; wipe with <code>llm_cache_clear()</code>.</li>
+<strong>LLM responses</strong> are stored automatically, but by default only for the R session: within a session, asking the same question again replays the stored answer instead of re-billing the provider. <code>llm_cache(TRUE)</code> keeps the answers between sessions, <code>llm_cache(FALSE)</code> stores none; wipe them with <code>llm_cache_clear()</code>.</li>
 <li>
 <strong>Downloaded repository files</strong>, <strong>repository listings</strong>, and <strong>peeked zip archives</strong> are <em>not</em> cached by default. <code>data_check</code>, <code>code_check</code>, and <code>repo_check</code> otherwise redo this work every run. Pass <code>cache = TRUE</code> to keep it instead.</li>
-<li>All four caches live in the current working directory, so a project’s cache sits with the project. See where most of them are with <code>metacheck_cache_info()</code>.</li>
+<li>A cache you ask to keep lives in the current working directory, so a project’s cache sits with the project. See where most of them are with <code>metacheck_cache_info()</code>.</li>
 </ul>
 </div>
 </div>
 <section id="where-the-caches-live" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="where-the-caches-live">
 <span class="header-section-number">7.1</span> Where the caches live</h2>
-<p>All four on-disk caches default to a folder in your <strong>current working directory</strong>, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.</p>
+<p>Nothing is kept between sessions unless you ask for it: without <code>cache = TRUE</code> or <code>llm_cache(TRUE)</code>, Metacheck writes only to the R session’s temporary folder, which R removes when the session ends. A cache you ask to keep goes in a folder in your <strong>current working directory</strong>, rather than a hidden per-user location elsewhere on the machine. This is deliberate: these caches are per-analysis rather than shared between projects, so keeping them beside the project makes them easy to find, easy to inspect, and easy to delete, and they disappear when you delete the project folder. A hidden cache is exactly the kind that gets silently lost.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -541,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>LLM responses</td>
+<td>LLM responses (with <code>llm_cache(TRUE)</code>)</td>
 <td><code>.metacheck_llm_cache/</code></td>
 <td>one <code>.rds</code> per distinct LLM call</td>
 </tr>
@@ -562,7 +562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>You never need to create these directories by hand; Metacheck creates them on first use. To see where they are and how much space they take, use <code>metacheck_cache_info()</code>, which returns the location and size of the LLM, repository-file, and repository-listing caches at once (the zip-peek cache is not currently included in this summary — see <a href="#clearing-the-zip-peek-cache">Clearing it</a> below for how to inspect or clear that one on its own):</p>
+<p>You never need to create these directories by hand; Metacheck creates them the first time it stores something in them. To see where they are and how much space they take, use <code>metacheck_cache_info()</code>, which returns the location and size of the LLM, repository-file, and repository-listing caches at once (while <code>llm_cache()</code> is <code>FALSE</code>, the LLM row shows this session’s temporary folder) (the zip-peek cache is not currently included in this summary — see <a href="#clearing-the-zip-peek-cache">Clearing it</a> below for how to inspect or clear that one on its own):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">metacheck_cache_info</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -601,23 +601,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Each entry stores not just the parsed answer (the data frame <code>llm()</code> returns) but also the raw provider result and, where the provider exposes it, the model’s reasoning/thinking trace — so nothing is lost by going through the cache.</p>
 </section><section id="turning-it-on-and-off" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="turning-it-on-and-off">
 <span class="header-section-number">7.2.3</span> Turning it on and off</h3>
-<p>The cache is <strong>on by default</strong>. Query or set it with <code>llm_cache()</code>:</p>
+<p>By default the answers are stored in the R session’s temporary folder, so they are replayed within the session and removed when R closes. Query or set this with <code>llm_cache()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># is the cache on? (TRUE by default)</span></span>
-<span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>     <span class="co"># force every call to hit the provider afresh</span></span>
-<span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># re-enable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache</span><span class="op">(</span><span class="op">)</span>          <span class="co"># are answers kept between sessions? (FALSE by default)</span></span>
+<span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span>      <span class="co"># keep answers between sessions, in .metacheck_llm_cache/</span></span>
+<span><span class="fu">llm_cache</span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span>     <span class="co"># store no answers: every call asks the provider again</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>metacheck.llm.cache <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  <span class="co"># back to the default: this session only</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Disabling it is mostly useful when you are deliberately testing provider behaviour or measuring latency, and want to be sure no answer is being replayed.</p>
+<p>Before Metacheck 0.4.3 the answers were kept between sessions by default; this changed because CRAN does not allow a package to keep files outside the session’s temporary folder unless the user asks for it. Turning the cache off is mostly useful when you are deliberately testing provider behaviour or measuring how long calls take, and want to be sure no answer is being replayed.</p>
 </section><section id="clearing-it" class="level3" data-number="7.2.4"><h3 data-number="7.2.4" class="anchored" data-anchor-id="clearing-it">
 <span class="header-section-number">7.2.4</span> Clearing it</h3>
-<p>To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use <code>llm_cache_clear()</code>, which deletes all cache entries and returns how many it removed:</p>
+<p>To wipe every stored answer — for example after upgrading a model, or to reclaim disk space — use <code>llm_cache_clear()</code>, which deletes all entries of the cache in use (the lasting one when <code>llm_cache()</code> is <code>TRUE</code>, otherwise this session’s temporary one) and returns how many it removed:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_cache_clear</span><span class="op">(</span><span class="op">)</span>    <span class="co"># returns the number of entries deleted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You do not normally need to clear the cache to pick up a <em>changed</em> prompt or model: because those are part of the key, a change produces a fresh call automatically. Clearing is for reclaiming space or forcing a clean slate.</p>
 </section><section id="what-this-means-in-practice" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="what-this-means-in-practice">
 <span class="header-section-number">7.2.5</span> What this means in practice</h3>
-<p>Re-running a report on the same paper is close to free on the LLM side: the first run populates the cache, and every subsequent run replays it. This is what makes it comfortable to iterate on a module’s <em>non-LLM</em> code, or to regenerate a report, without watching your API bill climb. Note that the <a href="../chapters/llms.html"><code>llm_max_calls()</code></a> cap still counts cached replays: <code>llm()</code> checks the number of texts against the cap before it looks in the cache.</p>
+<p>Re-running a report on the same paper is close to free on the LLM side: the first run fills the cache, and every later run in the same session replays it, as does every run in a later session when you set <code>llm_cache(TRUE)</code>. This is what makes it comfortable to iterate on a module’s <em>non-LLM</em> code, or to regenerate a report, without watching your API bill climb. Note that the <a href="../chapters/llms.html"><code>llm_max_calls()</code></a> cap still counts cached replays: <code>llm()</code> checks the number of texts against the cap before it looks in the cache.</p>
 </section></section><section id="the-repository-file-download-cache" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="the-repository-file-download-cache">
 <span class="header-section-number">7.3</span> The repository-file download cache</h2>
 <section id="what-it-does" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="what-it-does">
@@ -630,7 +631,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Reuse is decided by a simple, robust test: if the target path already exists <strong>and is non-empty</strong>, it is treated as already downloaded and reused. A zero-byte file (the fingerprint of a download that failed partway) is <em>not</em> trusted — it is re-fetched. This means a broken partial download never silently poisons later runs.</p>
 </section><section id="turning-it-on" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="turning-it-on">
 <span class="header-section-number">7.3.3</span> Turning it on</h3>
-<p>Unlike the LLM cache, which is on by default, the download cache is <strong>off by default</strong>. Both <code>data_check</code> and <code>code_check</code> take a <code>cache</code> argument that is <code>FALSE</code> unless you say otherwise:</p>
+<p>Unlike the LLM cache, which stores answers for the session by default, the download cache keeps nothing between sessions by default. Both <code>data_check</code> and <code>code_check</code> take a <code>cache</code> argument that is <code>FALSE</code> unless you say otherwise:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the default: files go to a temporary folder, discarded when R exits</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"data_check"</span><span class="op">)</span></span>
@@ -652,7 +653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <strong><code>peek_zips</code></strong> — look <em>inside</em> each <code>.zip</code> using an HTTP range request, without downloading the whole archive, and only fetch zips that actually contain data or a codebook, leaving a zip of pure stimuli to be linked instead. It defaults to <code>TRUE</code> in both <code>data_check</code> and <code>repo_check</code>. In <code>repo_check</code> the peek is used slightly differently: it lists each archive’s contents in place of the archive itself, without downloading anything. Peeking itself has its own cache — see <a href="#the-zip-peek-cache">below</a>.</li>
 <li>
-<strong><code>max_file_size</code></strong> / <strong><code>max_download_size</code></strong> — size caps (in MB) that gate what may be fetched, so one runaway file or one enormous repository cannot fill your disk. These are an upfront, all-or-nothing gate per repository: if a file or a repository’s total exceeds the cap, that repository is refused (nothing downloaded) and the reason is reported.</li>
+<strong><code>max_file_size</code></strong> / <strong><code>max_download_size</code></strong> — size limits (in MB) on what may be downloaded, so that one very large file or one enormous repository cannot fill your disk. A file larger than <code>max_file_size</code> is skipped, and the rest of the repository is still downloaded. <code>max_download_size</code> limits the total size of a repository’s files on your disk: files already saved are kept, and then the smallest of the remaining files are added until the next one would pass the limit. A file whose size the repository does not give is also downloaded, but the download is stopped when the file becomes larger than <code>max_file_size</code> or than what is left of <code>max_download_size</code>, and the file is then reported as too large, like a file whose size was known. Every skipped file appears in the manifest, with the reason.</li>
 </ul>
 <p>These arguments decide <em>what enters the cache</em>; once a file is in, it stays and is reused. See the <a href="../chapters/mod-data-check.html">data_check</a> chapter for full details and examples.</p>
 </section><section id="inspecting-and-clearing-it" class="level3" data-number="7.3.5"><h3 data-number="7.3.5" class="anchored" data-anchor-id="inspecting-and-clearing-it">
@@ -702,7 +703,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>data_check</code> / <code>code_check</code> download the files they need; a second module reading the same file in the same run reuses that copy. With <code>cache = TRUE</code> the copies are kept for later sessions as well.</li>
 <li>When an LLM is enabled, <code>data_check</code>, <code>codebook_check</code>, and other LLM-using modules send text to <code>llm()</code>, whose answers are stored in the <strong>LLM response cache</strong>.</li>
-<li>Re-running the whole pipeline replays the LLM cache, so no answer is paid for twice. It replays the listings, zip peeks, and downloads too if you ran with <code>cache = TRUE</code>; without it, all three are redone, because the previous session’s copies were discarded. This is the main reason to turn caching on for an archive build you expect to resume.</li>
+<li>Re-running the whole pipeline in the same session replays the LLM cache, so no answer is paid for twice; in a later session it does so only with <code>llm_cache(TRUE)</code>. It replays the listings, zip peeks, and downloads too if you ran with <code>cache = TRUE</code>; without it, all three are redone, because the previous session’s copies were discarded. This is the main reason to turn caching on for an archive build you expect to resume.</li>
 </ol>
 <p>Modules such as <code>codebook_check</code> do not have a <em>separate</em> results cache of their own — their re-run savings come entirely from these shared caches (the listings, peeks, files, and LLM answers they request). This keeps the caching story simple: there are four on-disk caches, and every module benefits from the ones relevant to it without needing its own.</p>
 </section><section id="a-note-on-the-in-memory-synonym-cache" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="a-note-on-the-in-memory-synonym-cache">
@@ -730,8 +731,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td>LLM responses</td>
-<td>on disk, cross-session</td>
-<td>yes</td>
+<td>on disk; for the session, or between sessions with <code>llm_cache(TRUE)</code>
+</td>
+<td>for the session only</td>
 <td>model + prompt + text + type + params</td>
 <td><code>llm_cache()</code></td>
 <td><code>llm_cache_clear()</code></td>

@@ -15,7 +15,7 @@ llm_use(FALSE)
 ::: callout-warning
 ## Conversion not yet available
 
-The `psychds_check` module is part of the package you install, and the examples that run it in this chapter work. It only *checks* a repository against Psych-DS. The functions that would act on the result do not exist yet: `convert_psychds()`, `psychds_validate()`, `convert_codebook()`, `convert_behaverse()`, and `data_catalog()`. Before they can move forward, the project first needs to settle on a metadata scheme to convert to and validate against, and that decision isn't made yet, so the code in this chapter that calls them will not run.
+The `psychds_check` module is part of the package you install, and the examples that run it in this chapter work. It only *checks* a repository against Psych-DS. To write a reorganised copy of a folder on your own computer, use `FAIR_repo()`, described [below](#writing-a-reorganised-copy-of-your-own-folder-fair_repo); it is available now. The functions that would convert a repository found through a paper, described later in this chapter, do not exist yet: `convert_psychds()`, `psychds_validate()`, `convert_codebook()`, `convert_behaverse()`, and `data_catalog()`. Before they can move forward, the project first needs to settle on a metadata scheme to convert to and validate against, and that decision isn't made yet, so the code in this chapter that calls them will not run.
 
 The sections about these functions are published now because the design is settled and worth describing, even though work on it is on hold. If you are interested in the metadata scheme question, reach out to Lisa DeBruine.
 
@@ -90,6 +90,8 @@ cat(tree_html)
 
 Reading this top to bottom is a complete migration plan: create the two missing metadata files, move the data file into `data/` (renamed to the Psych-DS form `study-<name>_data.csv`, since Psych-DS requires at least one keyword before `_data.csv`) and the script into `analysis/`, and the repository will comply. The `convert_psychds()` function is designed to perform exactly these steps automatically, but is not yet available.
 
+A file keeps its own folders below `data/`, `analysis/`, `materials/` and `documentation/`, counted from the folder that all files of that kind in a study share: `Code/utils/helpers.py` next to `Code/main.py` goes to `analysis/utils/helpers.py`, and `Data/scenario_lb/forcing.csv` goes to `data/scenario_lb/study-forcing_data.csv` when other data files sit in other folders of `Data/`. Two files with one name therefore do not collide, and code that finds its own modules by folder still works. A README in a subfolder goes to `documentation/`, named after its folder (`nest-1/README.md` becomes `documentation/nest-1_README.md`), so several READMEs do not replace each other.
+
 ## The summary counts
 
 ```{r}
@@ -115,6 +117,23 @@ On a list of papers, each paper is checked against Psych-DS from its own files, 
 | **na** | there were no files to assess |
 
 Misplaced files and missing recommended elements are listed in the report, but do not change the light. On a list of papers the light is `info`; each paper's own result is counted in the summary text.
+
+## Writing a reorganised copy of your own folder: `FAIR_repo()`
+
+`FAIR_repo()` is meant for researchers who want to tidy their own data and code before they share them. It reads a folder on your own computer, and writes a reorganised copy into a folder you name in `output_dir`. Nothing is downloaded, no link is followed, and your folder is not changed: it is copied to a temporary folder, and the checks run on that copy, as in `report_repository()` (`repo_check`, `code_check`, `data_check`, `codebook_check`, and `reproducibility_check` with `execute = FALSE`, so no code is run unless you set `execute = TRUE`).
+
+Every file is placed where the Psych-DS layout puts it (`data/`, `analysis/`, `materials/`, `documentation/`, and one `study-<group>/` folder per study when there are several), keeping its own subfolders below those. A file that a script writes and no script reads goes to `outputs/`. A data file in a format that needs particular software (`.xlsx`, `.sav`, `.dta`, ...) is also written as a CSV file, with the original kept next to it; an Excel file with several sheets gets one CSV file per sheet. R and Python scripts are changed so they still find their files in the new layout, and every change is listed in `CHANGES.md`. Next to the files it writes a `dataset_description.json` (Psych-DS), an `ro-crate-metadata.json` (RO-Crate 1.3), a `README.md` unless the folder has its own, a `requirements.txt` for Python code, and a `logs/` folder with the results of the checks.
+
+Metacheck comes with a small demo repository, a copy of the Stroop study in `demofile("repo")`, and its paper, `demopaper("stroop_effect")`:
+
+```{r}
+out <- file.path(tempdir(), "stroop_effect_paper_FAIR")
+res <- FAIR_repo(demofile("repo"), output_dir = out,
+                 paper = demopaper("stroop_effect"))
+list.files(out, recursive = TRUE)
+```
+
+Without `paper`, the title is taken from the folder's own README, and the authors, DOI and funding are listed in the README as still to be filled in. `output_dir` has no default, so that nothing is written into your working folder unless you ask for it; when it exists already, nothing is written unless `overwrite = TRUE`.
 
 ## From gap report to a compliant dataset: `convert_psychds()`
 

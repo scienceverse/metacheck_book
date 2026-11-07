@@ -119,6 +119,8 @@ mo$summary_table
 
 DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.
 
+A full stop, comma, semicolon or colon at the end of a repository address is dropped, since it usually ends the sentence the address stands in: "https://doi.org/10.5063/f1mc8x92." is the same repository as "https://doi.org/10.5063/f1mc8x92", and its files are listed once.
+
 Several of these platforms need an access token before Metacheck can download their files — Dryad requires one even for a fully public dataset. See [Getting API Tokens for Other Repositories](repository-tokens.qmd), or [Downloading an OSF Account](archiving-osf.qmd) for OSF specifically.
 
 ### OSF registrations follow their source project
@@ -215,6 +217,16 @@ E-Prime's `.edat`/`.edat2` (and `.emrg`/`.emrg2` merge files) are proprietary bi
 ### Restricted-access files
 
 A DSpace (legacy) item flagged `restrictedAccess`/`embargoedAccess` — most often seen on PsychArchives — hides its files behind institutional (SSO) login — they cannot be fetched programmatically. `repo_check` flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.
+
+Dataverse has two ways to hold files back. A file the depositor restricted is served only on request, so Metacheck does not ask for it, and the data manifest lists it as skipped, "access restricted by the depositor". A file behind a guestbook, a form the depositor wants filled in before a download, is reported as such; Metacheck does not fill in the form.
+
+### Files Dataverse converted on upload
+
+Dataverse converts an uploaded SPSS `.sav`, Stata `.dta` or `.csv` file into its own tab-separated `.tab` format. Metacheck lists and downloads such a file as it was uploaded, under the listed name with the original's extension (such as `Study1_June2017manuscript.sav`). That is the name the authors' code reads, the file then matches the checksum Dataverse lists, and an SPSS file keeps its value labels for `data_check`.
+
+### File names that cannot be written on every computer
+
+A file or folder name that some operating system does not allow (with a colon, one of the characters `* ? " < > |`, a control character, a final dot or space, or a name such as `CON` or `NUL`) is changed in the same way on every computer wherever Metacheck saves a file, so a check does not stop on it, and the result does not depend on the computer it ran on.
 
 ### Archives, and looking inside a `.zip`
 

@@ -82,6 +82,16 @@ After installation, you can load the Metacheck library.
 library(metacheck)
 ```
 
+Metacheck also has an app that opens in your web browser: you upload a PDF and get a report with one click. The app needs three packages that are not installed with Metacheck: shiny, shinydashboard and shinyjs. Install them once, and then start the app:
+
+```{r}
+#| eval: false
+install.packages(c("shiny", "shinydashboard", "shinyjs"))
+report_app()
+```
+
+Like `report()`, the app needs [Quarto](https://quarto.org) to write the report.
+
 ### Installing the development version
 
 Metacheck is under active development. The development version often has new modules or functions before they reach the stable release. R-universe only ever hosts one build per package name per universe, so the development version is not available as a pre-compiled binary; install it directly from [GitHub](https://github.com/scienceverse/metacheck) instead. Installing this way builds Metacheck from source, which requires a compiler toolchain that does not ship with R by default:
@@ -123,7 +133,7 @@ Metacheck has been developed so that it can run locally, without sending any inf
 
 When such privacy concerns are not an issue (for example when running Metacheck on a publicly available preprint) you can use online servers for specific tasks, such as converting a pdf to xml. This offers an easier user experience. 
 
-By default, `convert()` sends a PDF to Metacheck's own server on SURF Research Cloud in the Netherlands, which converts it with bibr when bibr is available, and otherwise with GROBID on the same server. That server needs no API key, deletes the uploaded PDF once it is converted, and deletes the result an hour later. Only when that server cannot be reached does Metacheck look for a local GROBID server, then a local bibr server, and then the first available server in a [list of active servers](https://www.scienceverse.org/metacheck/convert.json).
+By default, `convert()` sends a PDF to Metacheck's own server on SURF Research Cloud in the Netherlands, which converts it with bibr when bibr is available, and otherwise with GROBID on the same server. That server needs no API key, deletes the uploaded PDF once it is converted, and deletes the result an hour later. Only when that server cannot be reached does Metacheck try the GROBID server of Eindhoven University of Technology, then a GROBID server on your own computer, and then the public GROBID servers on Hugging Face from a [list of active servers](https://www.scienceverse.org/metacheck/convert.json).
 
 If you cannot send manuscripts to an external server, the easiest way to run all of Metacheck on your own computer is the [Docker installation](#docker-installation), with GROBID on your computer. To use Metacheck from R with your own GROBID server, start GROBID with Docker (the official image, version 0.9.1, without deep-learning models; it needs about 4 GB of memory); see <https://grobid.readthedocs.io/> for other ways to run it:
 
@@ -131,7 +141,7 @@ If you cannot send manuscripts to an external server, the easiest way to run all
 docker run --rm --init --ulimit core=0 -p 8070:8070 grobid/grobid:0.9.1-crf
 ```
 
-A running local GROBID server is **not** chosen automatically while the SURF server can be reached, so to keep the manuscript on your computer, name the local server when you convert: `convert(pdf_file, method = "grobid", api_url = "http://localhost:8070")`. The same principle applies to large language models: the recommended setup runs a model locally so no data is sent to an external service (see [Using Large Language Models](llms.qmd)).
+A running local GROBID server is **not** chosen automatically while the SURF server or the GROBID server of Eindhoven University of Technology answers, so to keep the manuscript on your computer, name the local server when you convert: `convert(pdf_file, save_path = "converted", method = "grobid", api_url = "http://localhost:8070")`. The same principle applies to large language models: the recommended setup runs a model locally so no data is sent to an external service (see [Using Large Language Models](llms.qmd)).
 
 See the [Reading in a Paper](reading-a-paper.qmd) chapter for the full details of converting and reading papers, including how to point `convert()` at a local server.
 

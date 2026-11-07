@@ -510,7 +510,7 @@ Note
 </div>
 </section><section id="running-the-module" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="running-the-module">
 <span class="header-section-number">12.3</span> Running the module</h2>
-<p><code>reg_check</code> builds on <code>prereg_check</code>: it needs the preregistration(s) for a paper. If you run it on its own it calls <code>prereg_check</code> for you first; you can also chain them so the preregistrations are retrieved only once:</p>
+<p><code>reg_check</code> builds on <code>prereg_check</code>: it needs the preregistration(s) for a paper. If you run it on its own it calls <code>prereg_check</code> for you first; you can also chain them so the preregistrations are retrieved only once. A preregistration that <code>prereg_check</code> could not read is named in its report and is not compared. AsPredicted’s preregistrations are read reliably only with a ResearchBox API key (see <a href="../chapters/mod-prereg-check.html#aspredicted-and-the-researchbox-key">Preregistration Check</a>).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">module_run</span><span class="op">(</span><span class="st">"prereg_check"</span><span class="op">)</span> <span class="op">|&gt;</span></span>

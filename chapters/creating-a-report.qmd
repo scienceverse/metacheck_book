@@ -45,7 +45,7 @@ Everything below works on this single `paper` object. The same functions also ac
 report(paper)
 ```
 
-By default the report is saved as `"<paper_id>_report.html"` in the working directory; set `output_file` to choose your own name and location. The function returns the output of the modules, without printing it, and the path of the file it wrote is stored with that output: `attr(result, "save_path")`. For a list of papers, `report()` writes one report per paper, named `"<paper_id>_<output_file>"`, and `save_path` holds one path per paper. Papers in a list that share a `paper_id` are first renamed `"<paper_id>~2"`, `"<paper_id>~3"`, and so on, with a warning, so that each gets its own report.
+Without `output_file`, the report is saved as `"<paper_id>_report.html"` in the R session's temporary folder, which R removes when it closes, and a message says where it is; set `output_file` to keep the report, for example `output_file = "my_report.html"` for a file in the working directory. The function returns the output of the modules, without printing it, and the path of the file it wrote is stored with that output: `attr(result, "save_path")`. For a list of papers, `report()` writes one report per paper, named `"<paper_id>_<output_file>"`, and `save_path` holds one path per paper. Papers in a list that share a `paper_id` are first renamed `"<paper_id>~2"`, `"<paper_id>~3"`, and so on, with a warning, so that each gets its own report.
 
 ### Choosing modules
 
@@ -118,7 +118,7 @@ It runs the four modules that read a repository's files, in the order they depen
 | [`data_check`](mod-data-check.qmd) | What is in the data? It describes every column and runs [data-quality checks](mod-data-validate.qmd), including a screen for columns that may hold personal information. |
 | [`codebook_check`](mod-codebook-check.qmd) | Are those columns documented anywhere? |
 
-The report is named after the folder, so the call above writes `my_downloaded_project_report.html` into your working directory. Name the file yourself to put it elsewhere, and pass `modules` to run fewer of them:
+The report is named after the folder, so the call above writes `my_downloaded_project_report.html` into the R session's temporary folder, and a message says where; R removes that folder when it closes. Name the file yourself to keep it, and pass `modules` to run fewer of them:
 
 ```{r}
 #| eval: false

@@ -19,6 +19,18 @@ The `prereg_check` module finds links to **preregistrations** on the OSF and AsP
 This module makes **live network calls** to the OSF and AsPredicted to retrieve preregistration content. You need an internet connection to run the code below. (When this book is built, these calls run against the live services.)
 :::
 
+## AsPredicted and the ResearchBox key
+
+Metacheck reads the OSF's preregistrations through the OSF's API. It reads an AsPredicted preregistration through ResearchBox's API when a ResearchBox API key is set, with one request for each preregistration. Without a key, or when the API fails, it reads the preregistration's web page on AsPredicted. AsPredicted asks for a captcha after several pages, and after that no more pages are read, so a paper set with many AsPredicted links needs the key. Make a key at <https://researchbox.org/api> and set it with `rbox_token()`:
+
+```{r, eval = FALSE}
+rbox_token("your-researchbox-key")
+```
+
+Without a key, the report says that the AsPredicted preregistrations were read from the web pages, and how to set a key. ResearchBox allows 200 AsPredicted preregistrations a day for each key. On the website, you can enter your own key under "Your own API keys". [Getting API Tokens](repository-tokens.qmd) explains the keys of the other services.
+
+AsPredicted's form has had several versions. Metacheck finds each answer by the wording of its question, so it also reads version 1.05, which asks about secondary analyses (in the column `exploratory_analyses`) where version 2.00 asks about outliers.
+
 ## Running the module
 
 ::: {.callout-note}
@@ -60,7 +72,11 @@ t(prereg) |>
 
 ## Options and limitations
 
-`prereg_check` takes only the `paper` argument. It **cannot** extract information from:
+`prereg_check` takes the `paper` and one option, `cache`. With `cache = TRUE`, an AsPredicted preregistration that was read before is taken from the saved copy instead of being read again; it is `FALSE` by default, like Metacheck's other caches (see [Caching](caching.qmd)).
+
+A link that could not be read, such as a private OSF registration or an AsPredicted page that did not answer, is named in the report with the reason. It does not count as a preregistration that was found. A link to AsPredicted's home page is not looked up.
+
+The module **cannot** extract information from:
 
 - unstructured preregistration templates (where everything is in one free-text field), or
 - preregistrations stored as uploaded text documents on the OSF rather than in the structured form.

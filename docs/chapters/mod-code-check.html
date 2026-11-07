@@ -510,7 +510,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 32 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  We found 31 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
 #&gt; -  All your code files had comments.
 #&gt; -  Libraries/imports were loaded in multiple places in bad.R, bad.Rmd.
 #&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found. Consider adding a solution to improve computational reproducibility.</code></pre>
@@ -781,14 +781,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Study 1.r</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.1666667</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">utils.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
@@ -891,7 +883,7 @@ Note
 </tbody>
 </table>
 <p>A <code>.ipynb</code> notebook is JSON, not a plain script: its code cells are extracted from the <code>source</code> array of each cell (the same way <code>.Rmd</code>/<code>.qmd</code> are purled to R code below) before any text-based check runs. <code>.py</code> and <code>.m</code> are plain text and are checked on the same terms as SAS/SPSS/Stata: every text-based check applies, but <em>running</em> the code stays out of scope (that is <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s job, and it runs R and Python code, not MATLAB).</p>
-<p>Some file types are never code themselves but <em>contain</em> the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS <code>.spv</code> (rendered output) has its syntax recovered as a <code>.sps</code> file, a Stata <code>.smcl</code> log has its echoed commands recovered as a <code>.do</code> file, an Mplus <code>.out</code> file has its “INPUT INSTRUCTIONS” section recovered as an <code>.inp</code> file, and an <code>.html</code> file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page.</p>
+<p>Some file types are never code themselves but <em>contain</em> the exact syntax that produced a piece of output, and the module recovers that syntax as a proper sibling code file before checking it: an SPSS <code>.spv</code> (rendered output) has its syntax recovered as a <code>.sps</code> file, a Stata <code>.smcl</code> log has its echoed commands recovered as a <code>.do</code> file, an Mplus <code>.out</code> file has its “INPUT INSTRUCTIONS” section recovered as an <code>.inp</code> file, and an <code>.html</code> file is sniffed to tell a rendered R Markdown/Quarto report (whose R source is recovered) apart from an unrelated web page. A page of an R package’s website made by pkgdown is not taken for a rendered analysis. The recovered code of a file Metacheck downloaded is saved next to the download; for a file in a folder of your own it is saved in R’s temporary folder, which is removed when R closes, so <code>code_check</code> never writes into your folder.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_lang</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"analysis.R"</span>, <span class="st">"clean.do"</span>, <span class="st">"model.sas"</span>, <span class="st">"survey.sps"</span>, <span class="st">"study.jasp"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -901,7 +893,7 @@ Note
 </section><section id="reading-code-code_read-and-code_extract_r" class="level2" data-number="23.4"><h2 data-number="23.4" class="anchored" data-anchor-id="reading-code-code_read-and-code_extract_r">
 <span class="header-section-number">23.4</span> Reading code: <code>code_read()</code> and <code>code_extract_r()</code>
 </h2>
-<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module recognises an Rmd/qmd file by its extension and routes it through <code>code_extract_r()</code> automatically (a <code>.qmd</code> that declares Python has its Python chunks extracted instead).</p>
+<p>Code is read with <code>code_read()</code>, which guesses the file encoding (<code><a href="https://readr.tidyverse.org/reference/encoding.html">readr::guess_encoding()</a></code>), reads the lines, and converts everything to UTF-8, replacing invalid bytes so a mixed-encoding script never crashes the checks. A file that is not text, such as R data saved under a name ending in <code>.R</code>, gives no lines, with an attribute <code>binary</code> saying what it is (for example “compressed with gzip (as R saves data)”), so it is not checked as code. For R Markdown and Quarto files, <code>code_extract_r()</code> first purls the document (<code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::purl</a></code>) down to just its R code, so prose and chunk options are not mistaken for code. The module recognises an Rmd/qmd file by its extension and routes it through <code>code_extract_r()</code> automatically (a <code>.qmd</code> that declares Python has its Python chunks extracted instead).</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu">demofile</span><span class="op">(</span><span class="st">"qmd"</span><span class="op">)</span></span>
 <span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu">code_extract_r</span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span>   <span class="co"># R code only, prose stripped</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -939,7 +931,7 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 32 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  We found 31 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
 #&gt; -  All your code files had comments.
 #&gt; -  Libraries/imports were loaded in multiple places in bad.R, bad.Rmd.
 #&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found. Consider adding a solution to improve computational reproducibility.</code></pre>
@@ -1210,14 +1202,6 @@ Note
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Study 1.r</td>
-<td style="text-align: left;">R</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0.1666667</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">utils.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
@@ -1328,7 +1312,7 @@ Note
 </section><section id="missing-loaded-files-code_file_refs" class="level3" data-number="23.6.7"><h3 data-number="23.6.7" class="anchored" data-anchor-id="missing-loaded-files-code_file_refs">
 <span class="header-section-number">23.6.7</span> Missing loaded files: <code>code_file_refs()</code>
 </h3>
-<p><code>code_file_refs()</code> extracts the files a script reads or loads — from read/load calls (<code>read.csv</code>, <code>read_csv</code>, <code>fread</code>, <code>readRDS</code>, <code>load</code>, <code>fromJSON</code>, <code>source</code>, and their SAS/SPSS/Stata equivalents like <code>proc import</code>, <code>infile</code>, <code>GET DATA /FILE=</code>, <code>use</code>, <code>import delimited</code>) — by capturing the quoted filename argument. The module compares each referenced file (by basename) against the files actually present in the same repository; anything not found is reported as a <strong>missing loaded file</strong>, so a reader can check whether the input data were shared. There can be valid reasons a file is not shared (e.g.&nbsp;it holds personal data), which the module cannot evaluate, so it always reports rather than judges.</p>
+<p><code>code_file_refs()</code> extracts the files a script reads or loads — from read/load calls (<code>read.csv</code>, <code>read_csv</code>, <code>fread</code>, <code>readRDS</code>, <code>load</code>, <code>fromJSON</code>, <code>source</code>, and their SAS/SPSS/Stata equivalents like <code>proc import</code>, <code>infile</code>, <code>GET DATA /FILE=</code>, <code>use</code>, <code>import delimited</code>) — by capturing the quoted filename argument, also when it stands on a line after the call, as in <code>read.csv(</code> followed by <code>"./data.csv")</code>. The module compares each referenced file (by basename) against the files actually present in the same repository; anything not found is reported as a <strong>missing loaded file</strong>, so a reader can check whether the input data were shared. There can be valid reasons a file is not shared (e.g.&nbsp;it holds personal data), which the module cannot evaluate, so it always reports rather than judges.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"source('functions.R')"</span>, <span class="st">"d &lt;- read.csv('study.csv')"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1338,7 +1322,7 @@ Note
 </section><section id="packages-loaded-code_library_names" class="level3" data-number="23.6.8"><h3 data-number="23.6.8" class="anchored" data-anchor-id="packages-loaded-code_library_names">
 <span class="header-section-number">23.6.8</span> Packages loaded: <code>code_library_names()</code>
 </h3>
-<p><code>code_library_names()</code> extracts the names of the packages/libraries a file loads (R <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code>/<code>::</code>; Python <code>import</code>/<code>from … import</code>). The module unions and de-duplicates these across all of a paper’s code files (<code>code_packages()</code>), giving the full list of dependencies the analysis relies on — with no version information, since that is static analysis of source text, not an installed environment.</p>
+<p><code>code_library_names()</code> extracts the names of the packages/libraries a file loads (R <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code>/<code>::</code>; Python <code>import</code>/<code>from … import</code>). The module unions and de-duplicates these across all of a paper’s code files (<code>code_packages()</code>), giving the full list of dependencies the analysis relies on — with no version information, since it reads the code’s text and does not look at an installed environment. It returns a table with the package, the kind of call it was found in (<code>source</code>), and the line. Packages loaded through a function of the code’s own, as in <code>lapply(pkgs, function(x) library(x, character.only = TRUE))</code>, are found, and so are the packages of <code>groundhog.library()</code>, with the <code>source</code> value <code>groundhog</code>; a function with another name, such as <code>my.library()</code>, is not read as <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1352,8 +1336,8 @@ Note
 <p>Knowing <em>which</em> packages were loaded (above) is not the same as knowing <em>which versions</em>. The module separately checks whether the repository <strong>pins</strong> the exact R/package environment the analysis depended on, via any of:</p>
 <ul>
 <li>an <strong><code>renv.lock</code></strong> file — parsed for the declared R version and every locked package’s name, version, and source;</li>
-<li>a <strong><code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code></strong> / <code><a href="https://sessioninfo.r-lib.org/reference/session_info.html">sessioninfo::session_info()</a></code> text dump — matched by filename (<code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar) or found embedded in a README, and read for its declared R version; or</li>
-<li>a <strong><code><a href="https://rdrr.io/pkg/groundhog/man/groundhog.library.html">groundhog::groundhog.library()</a></code></strong> or <strong><code>checkpoint::checkpoint()</code></strong> date-pin call in the code — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code>/<code><a href="https://rdrr.io/r/base/library.html">library(checkpoint)</a></code> does not count; the actual pinning call (with its date argument) must be present.</li>
+<li>a <strong><code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code></strong> / <code><a href="https://sessioninfo.r-lib.org/reference/session_info.html">sessioninfo::session_info()</a></code> text dump — matched by filename (<code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar), found embedded in a README, or pasted into an R script (usually as comments) when it lists packages, and read for its declared R version and the versions of the packages it lists; or</li>
+<li>a <strong><code><a href="https://rdrr.io/pkg/groundhog/man/groundhog.library.html">groundhog::groundhog.library()</a></code></strong> or <strong><code>checkpoint::checkpoint()</code></strong> date-pin call in the code — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code>/<code><a href="https://rdrr.io/r/base/library.html">library(checkpoint)</a></code> does not count; the actual pinning call (with its date argument) must be present. The date may also be held in a variable or given as <code>snapshot_date</code>, and a call inside a comment does not count. A README in a <code>revdep</code> folder does not count as a record: it gives the R version used to test other packages against an R package.</li>
 </ul>
 <p>Without one of these, package versions can silently drift between when the analysis was run and any later reproduction attempt — a script that works today may fail or produce different results a year from now if <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> pulls whatever the CRAN snapshot happens to be at that time.</p>
 <p>Python code gets Python advice. For Python, the module looks for a list of the packages the code needs: <code>requirements*.txt</code>, <code>environment.yml</code>, <code>Pipfile</code> or <code>Pipfile.lock</code>, <code>poetry.lock</code>, <code>uv.lock</code>, or <code>pyproject.toml</code>. These are returned as <code>python_files</code> and <code>python_pinned</code> in <code>$version_pin</code>, next to <code>pinned</code>, which stays about R. Python code without such a list is told to add a <code>requirements.txt</code>, R code keeps the R advice, and a repository with code in both languages needs both. Code in neither language is judged as before. The traffic light and <code>code_version_pinned</code> follow this. In the same way, the advice that goes with an <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> call names <code>requirements.txt</code> for Python next to R’s <code>renv.lock</code> and <code>DESCRIPTION</code>.</p>
@@ -1565,12 +1549,6 @@ Note
 <td style="text-align: left;">FALSE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Study 1.r</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">FALSE</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">utils.R</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>

@@ -137,7 +137,7 @@ families <- list(
   ),
   "Building a report" = c(
     "report", "report_module_run", "module_report", "report_qmd",
-    "report_app", "report_repository", "report_type"
+    "report_app", "report_repository", "report_type", "FAIR_repo"
   ),
   "Report-building helpers" = c(
     "scroll_table", "report_table", "collapse_section", "link", "plural",
@@ -145,7 +145,7 @@ families <- list(
   ),
   "Looking up DOIs and bibliographic metadata" = c(
     "doi_clean", "doi_valid_format", "doi_resolves", "doi_lookup",
-    "crossref_doi", "crossref_query", "openalex_doi", "openalex_query",
+    "crossref_doi", "crossref_query", "openalex_doi", "openalex_query", "openalex_key",
     "datacite_doi", "add_bib_match"
   ),
   "Databases of comments, replications, retractions" = c(
@@ -161,11 +161,12 @@ families <- list(
     "osf_check_id", "osf_api_check", "osf_delay", "osf_get_all_pages",
     "osf_preprint_list", "osf_pat", "osf_app", "osf_cache_clear",
     "osf_user_projects",
-    "github_links", "github_info", "github_repo", "github_files",
+    "github_links", "github_info", "github_repo", "github_files", "github_pat",
     "github_languages", "github_readme", "github_tree_files",
     "zenodo_links", "zenodo_info", "zenodo_file_download", "zenodo_pat",
     "zenodo_upload",
-    "rbox_links", "rbox_info", "rbox_file_download",
+    "rbox_links", "rbox_info", "rbox_files", "rbox_search", "rbox_file_download",
+    "rbox_token",
     "aspredicted_links", "aspredicted_info",
     "dataverse_links", "dataverse_info", "dataverse_file_download",
     "dataverse_pat",
@@ -186,7 +187,7 @@ families <- list(
     "dryad_auth",
     "local_files", "download_repo_files",
     "repo_cache_clear", "repo_cache_dir", "repo_cache_size",
-    "repo_info_cache", "repo_info_cache_clear"
+    "repo_info_cache_clear"
   ),
   "Asking a large language model" = c(
     "llm", "llm_use", "llm_model", "llm_model_list", "llm_max_calls",
@@ -247,6 +248,7 @@ families <- list(
     "validate", "accuracy", "cap_gate_count"
   ),
   "General utilities" = c(
+    "api_key_status", "api_keys_use",
     "email", "online", "verbose", "pb", "rep_if", "path_sanitize",
     "message", "logger", "logpath", "lastlog", "%empty_or%"
   )

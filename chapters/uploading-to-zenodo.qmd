@@ -263,11 +263,13 @@ a good reason to choose it.
 
 For anyone working from R, however, metacheck removes the problem.
 `zenodo_file_download()` takes an `unzip_types` argument, and when you use it,
-files are read out of an archive **without downloading the archive**:
+files are read out of an archive **without downloading the archive**. The
+folder to save into must be named in `download_to`; `"."` is the working
+directory:
 
 ```{r}
 # only the data files, out of whatever archives the record contains
-zenodo_file_download("21918913", unzip_types = "data")
+zenodo_file_download("21918913", download_to = ".", unzip_types = "data")
 ```
 
 This works because of two facts about how ZIP archives and Zenodo happen to
@@ -300,10 +302,10 @@ whatever part you need, and combine them:
 
 ```{r}
 # just the code, to see how an analysis was done
-zenodo_file_download("21918913", unzip_types = "code")
+zenodo_file_download("21918913", download_to = ".", unzip_types = "code")
 
 # data and documentation together, so you get the codebook with the data
-zenodo_file_download("21918913", unzip_types = c("data", "documentation"))
+zenodo_file_download("21918913", download_to = ".", unzip_types = c("data", "documentation"))
 ```
 
 On the record used here, the second of those writes 13 files rather than 11.
@@ -319,7 +321,7 @@ taking everything else:
 
 ```{r}
 # data files, but nothing above 5 MB
-zenodo_file_download("21918913", unzip_types = "data", max_file_size = 5)
+zenodo_file_download("21918913", download_to = ".", unzip_types = "data", max_file_size = 5)
 ```
 
 Note that `zenodo_file_download()` has different defaults from
@@ -329,7 +331,7 @@ somebody else's record, where you rarely want their largest files by accident.
 If you are retrieving a record in full, set both to `NULL`:
 
 ```{r}
-zenodo_file_download("21918913", max_file_size = NULL, max_download_size = NULL)
+zenodo_file_download("21918913", download_to = ".", max_file_size = NULL, max_download_size = NULL)
 ```
 
 Leaving `unzip_types` unset keeps the old behaviour: archives are downloaded

@@ -217,7 +217,7 @@ A `.jasp` or `.omv` archive already contains a fully rendered `index.html` — t
 export_jasp_html("example.jasp")
 ```
 
-By default, the HTML file is written next to the source archive with the same name (`example.jasp` → `example.html`). Pass `out = ` to choose a different destination:
+Without `out`, the HTML file is written to the R session's temporary folder with the same name (`example.jasp` → `example.html`), and a message says where; R removes that folder when it closes. Pass `out = ` to keep the file where you choose (all five export functions in this chapter work this way):
 
 ```{r}
 export_jasp_html("example.jasp", out = "example-jasp-output.html")

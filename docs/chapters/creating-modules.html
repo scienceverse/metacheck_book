@@ -517,7 +517,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you want to learn more about how to build a module, the information below should be helpful. But if you are mainly interested in using Metacheck, we recommend skipping the rest of this chapter.</p>
 <section id="how-to-create-a-metacheck-module" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="how-to-create-a-metacheck-module">
 <span class="header-section-number">9.1</span> How to create a Metacheck module</h2>
-<p>Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. <code>module_template("name")</code> writes the template below to <code>modules/name.R</code>, ready for you to edit.</p>
+<p>Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. <code>module_template("name", path = "modules")</code> writes the template below to <code>modules/name.R</code>, ready for you to edit. You must name the folder in <code>path</code>; it is created when it does not exist.</p>
 <div class="cell">
 <pre><code>#' Module Title
 #'
@@ -553,7 +553,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #'
 #' @returns report list
 module_name &lt;- function(paper, ...) {
-  # see https://www.scienceverse.org/metacheck/articles/creating_modules.html
+  # see https://www.scienceverse.org/metacheck_book/chapters/creating-modules.html
 
   # module code ----
   pattern &lt;- "significant"
@@ -994,7 +994,7 @@ Important
 <p>You can get a bibentry citation for any package with code.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bib</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"metacheck"</span><span class="op">)</span></span>
 <span><span class="fu">format_ref</span><span class="op">(</span><span class="va">bib</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>[1] “DeBruine L, Mesquida C, Werner J, Lakens D (2026). <em>metacheck: Check Research Outputs for Best Practices</em>. <a href="\&quot;https://doi.org/10.5281/zenodo.20704754\&quot;">doi:10.5281/zenodo.20704754</a>, R package version 0.4.0, <a href="\&quot;https://scienceverse.org/metacheck\&quot;">https://scienceverse.org/metacheck</a>.”</p>
+<p>[1] “DeBruine L, Mesquida C, Werner J, Lakens D (2026). <em>metacheck: Check Research Outputs for Best Practices</em>. <a href="\&quot;https://doi.org/10.5281/zenodo.20704754\&quot;">doi:10.5281/zenodo.20704754</a>, R package version 0.4.3.6, <a href="\&quot;https://www.scienceverse.org/metacheck/\&quot;">https://www.scienceverse.org/metacheck/</a>.”</p>
 <p>The function can also handle references in bibtex format.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bibtex</span> <span class="op">&lt;-</span> <span class="st">"@Article{,</span></span>
 <span><span class="st">  title = {Improving transparency, falsifiability, and rigor by making hypothesis tests machine-readable},</span></span>
@@ -1202,7 +1202,7 @@ Important
 <span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   paper_id       strains_mentioned</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                      &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 bf6a623c7c3401                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 1 a37052ee06d0c3                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>On a paper that does not study animals — such as the bundled <code>demopaper()</code> — no strains are found and the traffic light is <code>"na"</code>, meaning the check simply does not apply:</p>
 <div class="cell">
@@ -1228,7 +1228,7 @@ Important
 <span>                  modules <span class="op">=</span> <span class="st">"tue_datamanager_check"</span>,</span>
 <span>                  report_type <span class="op">=</span> <span class="st">"checklist"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>module_install()</code> downloads the repository’s default branch, or the branch, tag or commit given as <code>ref</code>, and saves it in the Metacheck user data folder, where downloaded paper corpora are also kept. Every <code>.R</code> file with a roxygen header in the repository’s top folder, or in a folder called <code>modules/</code>, becomes a module that <code>module_run()</code>, <code>report()</code>, <code>module_info()</code> and <code>module_help()</code> find by its name. Other files, such as helper code or data, are saved with it but are not listed as modules. Nothing is saved when a module in the repository has the same name as a built-in module, as a module from another installed repository, or as another module in the same repository. Installing a module means its code runs whenever you use it, so only install modules from repositories you trust.</p>
+<p><code>module_install()</code> downloads the repository’s default branch, or the branch, tag or commit given as <code>ref</code>, and saves it in the Metacheck user data folder, <code>tools::R_user_dir("metacheck", "data")</code>, where downloaded paper corpora are also kept (modules installed with a Metacheck older than 0.4.3 were saved elsewhere and must be installed again). Every <code>.R</code> file with a roxygen header in the repository’s top folder, or in a folder called <code>modules/</code>, becomes a module that <code>module_run()</code>, <code>report()</code>, <code>module_info()</code> and <code>module_help()</code> find by its name. Other files, such as helper code or data, are saved with it but are not listed as modules. Nothing is saved when a module in the repository has the same name as a built-in module, as a module from another installed repository, or as another module in the same repository. Installing a module means its code runs whenever you use it, so only install modules from repositories you trust.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">

@@ -494,24 +494,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_available.html">papers_available</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           name                    tag size_mb cached</span></span>
 <span><span class="co">#&gt; 1     psychsci               psychsci     8.2   TRUE</span></span>
-<span><span class="co">#&gt; 2         ece3        ece3-2026-06-21    55.3   TRUE</span></span>
+<span><span class="co">#&gt; 2         ece3        ece3-2026-06-21    55.3  FALSE</span></span>
 <span><span class="co">#&gt; 3        elife       elife-2026-06-21    51.9  FALSE</span></span>
 <span><span class="co">#&gt; 4     openmind    openmind-2026-06-21    12.6  FALSE</span></span>
-<span><span class="co">#&gt; 5    frontiers   frontiers-2026-06-21    35.7   TRUE</span></span>
-<span><span class="co">#&gt; 6          jdm         jdm-2026-06-21    24.9   TRUE</span></span>
+<span><span class="co">#&gt; 5    frontiers   frontiers-2026-06-21    35.7  FALSE</span></span>
+<span><span class="co">#&gt; 6          jdm         jdm-2026-06-21    24.9  FALSE</span></span>
 <span><span class="co">#&gt; 7        iperc       iperc-2026-06-21    12.4  FALSE</span></span>
 <span><span class="co">#&gt; 8         scan        scan-2026-06-21    29.1  FALSE</span></span>
 <span><span class="co">#&gt; 9          joc         joc-2026-06-20    15.6  FALSE</span></span>
 <span><span class="co">#&gt; 10     natcomm     natcomm-2026-06-20    39.2  FALSE</span></span>
-<span><span class="co">#&gt; 11 psychsci_oa psychsci_oa-2026-06-20     8.2   TRUE</span></span>
+<span><span class="co">#&gt; 11 psychsci_oa psychsci_oa-2026-06-20     8.2  FALSE</span></span>
 <span><span class="co">#&gt; 12        jssm        jssm-2026-06-20    25.5  FALSE</span></span>
 <span><span class="co">#&gt; 13     plosone     plosone-2026-06-20    30.3  FALSE</span></span>
-<span><span class="co">#&gt; 14     plosbio     plosbio-2026-06-19    40.5   TRUE</span></span>
+<span><span class="co">#&gt; 14     plosbio     plosbio-2026-06-19    40.5  FALSE</span></span>
 <span><span class="co">#&gt; 15     bmcoral     bmcoral-2026-06-19    21.4  FALSE</span></span>
 <span><span class="co">#&gt; 16        ijos        ijos-2026-06-19    22.0  FALSE</span></span>
 <span><span class="co">#&gt; 17      bmcmed      bmcmed-2026-06-19    30.5  FALSE</span></span>
-<span><span class="co">#&gt; 18     plosmed     plosmed-2026-06-19    30.2   TRUE</span></span>
-<span><span class="co">#&gt; 19    collabra    collabra-2026-06-19    31.7   TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 18     plosmed     plosmed-2026-06-19    30.2  FALSE</span></span>
+<span><span class="co">#&gt; 19    collabra    collabra-2026-06-19    31.7  FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="loading-a-corpus" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="loading-a-corpus">
 <span class="header-section-number">8.2</span> Loading a corpus</h2>
@@ -520,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"jdm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">jdm</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If you expect to use a corpus repeatedly across sessions – for example, while developing and testing a new module – set <code>cache = TRUE</code> so the file is saved to your user data directory and reused on subsequent calls instead of being re-downloaded every time:</p>
+<p>If you expect to use a corpus repeatedly across sessions – for example, while developing and testing a new module – set <code>cache = TRUE</code> so the file is saved to your user data folder, <code>tools::R_user_dir("metacheck", "data")</code>, and reused on subsequent calls instead of being re-downloaded every time. Before Metacheck 0.4.3 this folder was elsewhere (where the rappdirs package put it), and copies saved there are not found: load such a corpus again with <code>cache = TRUE</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">jdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scienceverse.github.io/metacheck/reference/papers_load.html">papers_load</a></span><span class="op">(</span><span class="st">"jdm"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

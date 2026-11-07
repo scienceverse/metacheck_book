@@ -37,7 +37,7 @@ Currently, it is not possible to request API keys through the RegCheck website y
 
 ## Running the module
 
-`reg_check` builds on `prereg_check`: it needs the preregistration(s) for a paper. If you run it on its own it calls `prereg_check` for you first; you can also chain them so the preregistrations are retrieved only once:
+`reg_check` builds on `prereg_check`: it needs the preregistration(s) for a paper. If you run it on its own it calls `prereg_check` for you first; you can also chain them so the preregistrations are retrieved only once. A preregistration that `prereg_check` could not read is named in its report and is not compared. AsPredicted's preregistrations are read reliably only with a ResearchBox API key (see [Preregistration Check](mod-prereg-check.qmd#aspredicted-and-the-researchbox-key)).
 
 ```{r}
 #| eval: false

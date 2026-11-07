@@ -24,7 +24,7 @@ If you want to learn more about how to build a module, the information below sho
 
 ## How to create a Metacheck module
 
-Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. `module_template("name")` writes the template below to `modules/name.R`, ready for you to edit.
+Module specifications are written in the same format as functions in R packages, using roxygen2 for documentation. `module_template("name", path = "modules")` writes the template below to `modules/name.R`, ready for you to edit. You must name the folder in `path`; it is created when it does not exist.
 
 ```{r, echo = FALSE, comment = ""}
 code_lines <- system.file("templates/_module.R", package = "metacheck") |>
@@ -670,7 +670,7 @@ report_repository("path/to/my_package",
                   report_type = "checklist")
 ```
 
-`module_install()` downloads the repository's default branch, or the branch, tag or commit given as `ref`, and saves it in the Metacheck user data folder, where downloaded paper corpora are also kept. Every `.R` file with a roxygen header in the repository's top folder, or in a folder called `modules/`, becomes a module that `module_run()`, `report()`, `module_info()` and `module_help()` find by its name. Other files, such as helper code or data, are saved with it but are not listed as modules. Nothing is saved when a module in the repository has the same name as a built-in module, as a module from another installed repository, or as another module in the same repository. Installing a module means its code runs whenever you use it, so only install modules from repositories you trust.
+`module_install()` downloads the repository's default branch, or the branch, tag or commit given as `ref`, and saves it in the Metacheck user data folder, `tools::R_user_dir("metacheck", "data")`, where downloaded paper corpora are also kept (modules installed with a Metacheck older than 0.4.3 were saved elsewhere and must be installed again). Every `.R` file with a roxygen header in the repository's top folder, or in a folder called `modules/`, becomes a module that `module_run()`, `report()`, `module_info()` and `module_help()` find by its name. Other files, such as helper code or data, are saved with it but are not listed as modules. Nothing is saved when a module in the repository has the same name as a built-in module, as a module from another installed repository, or as another module in the same repository. Installing a module means its code runs whenever you use it, so only install modules from repositories you trust.
 
 | Function | What it does |
 |---|---|

@@ -465,7 +465,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#figshare" id="toc-figshare" class="nav-link" data-scroll-target="#figshare"><span class="header-section-number">C.3</span> Figshare</a></li>
   <li><a href="#tu.researchdata" id="toc-tu.researchdata" class="nav-link" data-scroll-target="#tu.researchdata"><span class="header-section-number">C.4</span> 4TU.ResearchData</a></li>
   <li><a href="#gitlab" id="toc-gitlab" class="nav-link" data-scroll-target="#gitlab"><span class="header-section-number">C.5</span> GitLab</a></li>
-  <li><a href="#when-something-goes-wrong" id="toc-when-something-goes-wrong" class="nav-link" data-scroll-target="#when-something-goes-wrong"><span class="header-section-number">C.6</span> When something goes wrong</a></li>
+  <li><a href="#github" id="toc-github" class="nav-link" data-scroll-target="#github"><span class="header-section-number">C.6</span> GitHub</a></li>
+  <li><a href="#researchbox" id="toc-researchbox" class="nav-link" data-scroll-target="#researchbox"><span class="header-section-number">C.7</span> ResearchBox</a></li>
+  <li><a href="#openalex" id="toc-openalex" class="nav-link" data-scroll-target="#openalex"><span class="header-section-number">C.8</span> OpenAlex</a></li>
+  <li><a href="#checking-which-keys-are-set" id="toc-checking-which-keys-are-set" class="nav-link" data-scroll-target="#checking-which-keys-are-set"><span class="header-section-number">C.9</span> Checking which keys are set</a></li>
+  <li><a href="#when-something-goes-wrong" id="toc-when-something-goes-wrong" class="nav-link" data-scroll-target="#when-something-goes-wrong"><span class="header-section-number">C.10</span> When something goes wrong</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/repository-tokens.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -485,7 +489,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><p>Metacheck can read files directly from several online repositories: the Open Science Framework (OSF), Zenodo, Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab, among others. For most of these, an access token is optional, and only raises how many requests you may make per hour or gives you access to your own private material. For one of them, Dryad, a token is required even to download files from a fully public dataset.</p>
-<p>The <a href="../chapters/archiving-osf.html">Downloading an OSF Account</a> and <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a> chapters already explain, with screenshots, how to create and store a token for those two services. This chapter does the same for the remaining repositories: Dataverse, Dryad, Figshare, 4TU.ResearchData, and GitLab.</p>
+<p>The <a href="../chapters/archiving-osf.html">Downloading an OSF Account</a> and <a href="../chapters/uploading-to-zenodo.html">Uploading Files to Zenodo</a> chapters already explain, with screenshots, how to create and store a token for those two services. This chapter does the same for the remaining repositories: Dataverse, Dryad, Figshare, 4TU.ResearchData, GitLab, GitHub and ResearchBox, and for OpenAlex, which some modules use to look up references. The last section shows how to check which keys Metacheck finds.</p>
 <p>An access token is a long string of letters and numbers that proves to a website that a program is acting on your behalf. It works like a password that you give to one specific program, and that you can revoke without changing your real password.</p>
 <p>Every token in this chapter is stored the same way: in a file called <code>.Renviron</code>, which R reads when it starts. Open it with:</p>
 <div class="cell">
@@ -502,7 +506,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Every function below that reads a token (<code>dataverse_pat()</code>, <code>dryad_pat()</code>, <code>figshare_pat()</code>, <code>researchdata4tu_pat()</code>, <code>gitlab_pat()</code>) also sets it when you pass a value as an argument, for the rest of the current session only:</p>
+<p>Every function below that reads a token (<code>dataverse_pat()</code>, <code>dryad_pat()</code>, <code>figshare_pat()</code>, <code>researchdata4tu_pat()</code>, <code>gitlab_pat()</code>, <code>github_pat()</code>, <code>rbox_token()</code>, <code>openalex_key()</code>) also sets it when you pass a value as an argument, for the rest of the current session only:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">figshare_pat</span><span class="op">(</span><span class="st">"paste-your-token-here"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -590,8 +594,43 @@ DRYAD_CLIENT_SECRET="paste-your-secret-here"</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">gitlab_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="when-something-goes-wrong" class="level2" data-number="C.6"><h2 data-number="C.6" class="anchored" data-anchor-id="when-something-goes-wrong">
-<span class="header-section-number">C.6</span> When something goes wrong</h2>
+</section><section id="github" class="level2" data-number="C.6"><h2 data-number="C.6" class="anchored" data-anchor-id="github">
+<span class="header-section-number">C.6</span> GitHub</h2>
+<p>A token is optional: public repositories can be read without one, but GitHub then allows only 60 requests per hour, and a token raises this to 5,000. A fine-grained token that may only read public repositories gives Metacheck nothing that is not public anyway. Make one at <a href="https://github.com/settings/personal-access-tokens/new" class="uri">https://github.com/settings/personal-access-tokens/new</a>, choose <strong>Public repositories</strong> under <strong>Repository access</strong>, and add no permissions.</p>
+<p>Store it as:</p>
+<pre><code>GITHUB_PAT="paste-your-token-here"</code></pre>
+<p>Check it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">github_pat</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Without <code>GITHUB_PAT</code>, <code>github_pat()</code> finds a token the way git does, in git’s own store of passwords.</p>
+</section><section id="researchbox" class="level2" data-number="C.7"><h2 data-number="C.7" class="anchored" data-anchor-id="researchbox">
+<span class="header-section-number">C.7</span> ResearchBox</h2>
+<p>ResearchBox’s API needs a personal key, which you make at <a href="https://researchbox.org/api" class="uri">https://researchbox.org/api</a>. Without a key, Metacheck reads a box’s web page instead, and the search and file-list functions of the API are not available. The key is also used for AsPredicted: ResearchBox’s API serves AsPredicted’s public preregistrations, which the <a href="../chapters/mod-prereg-check.html">prereg_check</a> module reads. Without a key, they are read from AsPredicted’s web pages, and AsPredicted asks for a captcha after several pages, after which no more are read.</p>
+<p>Store it as:</p>
+<pre><code>RESEARCHBOX_API_KEY="paste-your-key-here"</code></pre>
+<p>Check it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rbox_token</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="openalex" class="level2" data-number="C.8"><h2 data-number="C.8" class="anchored" data-anchor-id="openalex">
+<span class="header-section-number">C.8</span> OpenAlex</h2>
+<p>OpenAlex works without a key, with a budget of US$0.10 per day: about 1,000 searches, while looking up a work by its DOI or OpenAlex ID is free. A free key raises the budget to US$1 per day. Sign up at <a href="https://openalex.org/signup" class="uri">https://openalex.org/signup</a> and copy the key from <a href="https://openalex.org/settings/api-key" class="uri">https://openalex.org/settings/api-key</a>.</p>
+<p>Store it as:</p>
+<pre><code>OPENALEX_API_KEY="paste-your-key-here"</code></pre>
+<p>Check it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">openalex_key</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section id="checking-which-keys-are-set" class="level2" data-number="C.9"><h2 data-number="C.9" class="anchored" data-anchor-id="checking-which-keys-are-set">
+<span class="header-section-number">C.9</span> Checking which keys are set</h2>
+<p><code>api_key_status()</code> lists the services for which Metacheck uses a key (GitHub, OSF, Dryad, ResearchBox, GitLab and OpenAlex), whether a key is set, and whether a key was recently refused or reached its limit, with the address where you can make one:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">api_key_status</span><span class="op">(</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"service"</span>, <span class="st">"key"</span>, <span class="st">"problem"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>When a service refuses a key, or the key reaches its limit, Metacheck records this in a file in its state folder, in <code>tools::R_user_dir("metacheck", "data")</code>. Every R session of the same user on the computer reads that file, so another session knows about the problem before it sends a request.</p>
+</section><section id="when-something-goes-wrong" class="level2" data-number="C.10"><h2 data-number="C.10" class="anchored" data-anchor-id="when-something-goes-wrong">
+<span class="header-section-number">C.10</span> When something goes wrong</h2>
 <p><strong>A <code>*_pat()</code> function returns <code>""</code>.</strong> R cannot find your token. Restart R, then check <code>.Renviron</code> has the line with quotation marks and a blank line at the end of the file, exactly as described in the <a href="../chapters/archiving-osf.html#storing-the-osf-token">Downloading an OSF Account</a> chapter — the same cause and the same fix apply to every token in this chapter.</p>
 <p><strong>Dryad downloads fail with files listed but none retrieved.</strong> This is expected without a token: Dryad allows listing a public dataset’s files without one, but refuses to send the file contents. Set <code>DRYAD_PAT</code>, or use <code>dryad_auth()</code>, and try again.</p>
 <p><strong>A Dryad token stops working after it used to work.</strong> Every Dryad token expires after 10 hours, including the initial one from account creation. If you are storing it with <code>DRYAD_PAT</code>, sign in again and get a new one. Switch to <code>dryad_auth()</code> with your account ID and secret so this stops happening.</p>

@@ -10,7 +10,7 @@ regenerated from the package's documentation, so it matches the package's
 exports as of the last time it was regenerated, from metacheck's
 development version.
 
-As of this build, that is **280 functions** across **20 groups**.
+As of this build, that is **287 functions** across **20 groups**.
 
 ## Getting a paper to work with
 
@@ -19,8 +19,13 @@ As of this build, that is **280 functions** across **20 groups**.
 *Get demo paper*
 
 ```r
-demopaper()
+demopaper(paper = c("to_err_is_human", "stroop_effect"))
 ```
+
+`"to_err_is_human"` (the default) is a short paper written to show
+metacheck's checks. `"stroop_effect"` is a small reproducible analysis
+whose data and code are bundled as a demo repository (see
+`demofile("repo")`); the paper is its manuscript, converted with Grobid.
 
 **Returns:** paper object
 
@@ -41,12 +46,12 @@ Create a paper object with the specified text (mainly for testing/demos).
 *Get a demo file*
 
 ```r
-demofile(ext = c("json", "pdf", "docx", "doc", "xml", "qmd"))
+demofile(ext = c("json", "pdf", "docx", "doc", "xml", "qmd", "repo"))
 ```
 
 Return the file path for various versions of the demo paper. Use `demopaper()` to directly read it as a paper object from the json file.
 
-**Returns:** file path
+**Returns:** file path (a folder for `"repo"`)
 
 ### `read`
 
@@ -133,7 +138,7 @@ Checks if a paper object conforms to the JSON schema.
 *Write paper*
 
 ```r
-paper_write(paper, file_name = NULL, save_path = ".", schema_version = NULL)
+paper_write(paper, file_name = NULL, save_path, schema_version = NULL)
 ```
 
 Save a paper as a JSON file.
@@ -229,7 +234,7 @@ Deletes the locally cached RDS file for a corpus to free disk space.
 ```r
 convert(
 file_path,
-save_path = ".",
+save_path,
 method = c("auto", "bibr", "grobid", "xml"),
 crossref_lookup = FALSE,
 keep_xml = TRUE,
@@ -248,7 +253,7 @@ Uses grobid or bibr to convert a file to paper format.
 ```r
 convert_grobid(
 file_path,
-save_path = ".",
+save_path,
 api_url = "https://grobid.hti.ieis.tue.nl",
 start_page = -1,
 end_page = -1,
@@ -258,7 +263,7 @@ consolidate_funders = 0
 )
 ```
 
-This function uses a GDPR-compliant public grobid server maintained by Eindhoven Technical University. You can set up your own local grobid server following instructions from <https://grobid.readthedocs.io/> and set the argument `api_url` to its path (probably <http://localhost:8070>). See <https://github.com/grobidOrg/grobid#demo> for other publicly available servers (we cannot guarantee their privay).
+This function uses a GDPR-compliant public grobid server maintained by Eindhoven Technical University. You can set up your own local grobid server following instructions from <https://grobid.readthedocs.io/> and set the argument `api_url` to its path (probably `http://localhost:8070`). See <https://github.com/grobidOrg/grobid#demo> for other publicly available servers (we cannot guarantee their privay).
 
 **Returns:** XML object
 
@@ -269,7 +274,7 @@ This function uses a GDPR-compliant public grobid server maintained by Eindhoven
 ```r
 convert_bibr(
 file_path,
-save_path = ".",
+save_path,
 backend = c("auto", "surf", "scivrs", "selfhosted"),
 api_key = NULL,
 api_url = NULL,
@@ -297,7 +302,7 @@ for direct API access.
 ```r
 grobid_to_bibr(
 xml_path,
-save_path = ".",
+save_path,
 crossref_lookup = FALSE,
 schema_version = NULL
 )
@@ -615,7 +620,7 @@ module_info(module)
 *Create a Module from a Template*
 
 ```r
-module_template(module_name, path = "./modules")
+module_template(module_name, path)
 ```
 
 **Returns:** the file path (invisibly)
@@ -702,9 +707,9 @@ paper,
 modules = c("prereg_check", "funding_check", "coi_check", "power", "repo_check",
 "code_check", "stat_check", "stat_p_exact", "stat_p_nonsig", "stat_effect_size",
 "marginal", "ref_replication", "ref_retraction", "ref_pubpeer", "ref_summary"),
-output_file = paste0(paper$paper_id, "_report.", output_format),
+output_file = file.path(tempdir(), paste0(paper$paper_id, "_report.", output_format)),
 output_format = c("html", "qmd"),
-report_type = c("full", "simple"),
+report_type = c("full", "brief", "simple", "simple_brief", "checklist"),
 args = list()
 )
 ```
@@ -769,7 +774,7 @@ report_repository(
 path,
 output_file = NULL,
 output_format = c("html", "qmd"),
-report_type = c("full", "simple"),
+report_type = c("full", "brief", "simple", "simple_brief", "checklist"),
 modules = c("repo_check", "code_check", "data_check", "codebook_check"),
 args = list()
 )
@@ -809,6 +814,38 @@ validation note. This is the "brief" setting, for getting to "what to
 improve" as fast as possible.
 
 **Returns:** the current option value
+
+### `FAIR_repo`
+
+*Convert a research folder into a clean, FAIR copy*
+
+```r
+FAIR_repo(path, output_dir, paper = NULL, overwrite = FALSE, execute = FALSE)
+```
+
+Writes a reorganised copy of a folder of research files (data, code,
+materials, documentation) on your own computer. Nothing is downloaded and
+no link is followed: only the folder you name is read, and it is not
+changed. The folder is first copied to a temporary folder, and the checks
+run on that copy, so nothing they write (such as code recovered from an
+output file) can reach your folder; the copy is removed at the end. The
+checks run the way `report_repository()` runs them: `repo_check` takes an
+inventory of the folder, and `code_check`, `data_check`, `codebook_check`
+and `reproducibility_check` (with `execute = FALSE`, so no code is run,
+unless you set `execute`) build on it. Whether a language model is used is
+decided by `llm_use()`.
+
+**Returns:** (invisibly) a list with `output_dir`, `n_files_copied`,
+`n_studies`, `plan` (the file plan, with a `written` column: the path
+each file was written to, NA when it was not), `scripts` (one row per
+changed script: `target_path`, `paths_changed`, `setwd_removed`,
+`setwd_paths`, `libraries_added`), `skipped` (files that could not be
+read), `copy_failed`
+and `renamed` (a file whose target another file already took),
+`empty_plan` (TRUE when the folder had no files), and the paths of the
+metadata written: `descriptions`, `rocrate`, `requirements`, `logs` and
+`readme_changes`. When an existing `output_dir` was kept, the list has
+only `output_dir`, the counts, and `existed = TRUE`.
 
 ## Report-building helpers
 
@@ -995,6 +1032,22 @@ openalex_query(title, source = NA, authors = NA, strict = TRUE)
 ```
 
 **Returns:** A data frame with citation info
+
+### `openalex_key`
+
+*Set or get an OpenAlex API key*
+
+```r
+openalex_key(key = NULL)
+```
+
+OpenAlex works without a key, with a budget of US$0.10 per day: about
+1,000 searches, while looking up a work by its DOI or OpenAlex ID is free.
+A free key raises the budget to US$1 per day. Make one by signing up at
+`https://openalex.org/signup` and copying the key from
+`https://openalex.org/settings/api-key`.
+
+**Returns:** the current key (character; `""` when none is set)
 
 ### `datacite_doi`
 
@@ -1262,7 +1315,7 @@ with `osf_cache_clear()` or disable it with
 ```r
 osf_file_download(
 osf_id,
-download_to = ".",
+download_to,
 max_file_size = NULL,
 max_download_size = NULL,
 max_folder_length = Inf,
@@ -1337,6 +1390,8 @@ osf_delay(delay = NULL)
 ```
 
 Sometimes the OSF gets fussy if you make too many calls, so you can set a delay of a few seconds before each call. Use `osf_delay()` to get or set the OSF delay.
+
+**Returns:** the delay in seconds (numeric); invisibly when setting it
 
 ### `osf_get_all_pages`
 
@@ -1468,6 +1523,22 @@ github_files(repo, dir = "", recursive = FALSE)
 
 **Returns:** a data frame of files
 
+### `github_pat`
+
+*Set or get a GitHub token*
+
+```r
+github_pat(pat = NULL)
+```
+
+A token raises GitHub's limit from 60 to 5,000 requests per hour. A
+fine-grained token with access to public repositories only reads nothing
+that is not public: make one at
+<https://github.com/settings/personal-access-tokens/new>, choose "Public
+repositories" under "Repository access", and add no permissions.
+
+**Returns:** the current token (character; `""` when none is set)
+
 ### `github_languages`
 
 *Get Languages from GitHub Repo*
@@ -1499,6 +1570,20 @@ github_tree_files(repo)
 Fetches the complete file tree of a GitHub repository in two API calls
 (repo metadata + recursive tree), rather than the N-request recursive
 `/contents/` crawl used by `github_files()`.
+
+**Returns:** a list with:
+
+- `gated`logical; `TRUE` only when the repository could
+not be listed at all (invalid/inaccessible, or a truncated tree)
+
+- `reason`character reason, or `NA`
+
+- `files`data.frame shaped like `github_files()` output,
+or `NULL` when the tree could not be fetched
+
+- `default_branch`character
+
+- `license`character licence key, or NA
 
 ### `zenodo_links`
 
@@ -1534,7 +1619,7 @@ zenodo_info(zenodo_url, id_col = 1, pb = NULL, cache = FALSE)
 ```r
 zenodo_file_download(
 zenodo_id,
-download_to = ".",
+download_to,
 max_file_size = 10,
 max_download_size = 100,
 unzip_types = NULL,
@@ -1617,20 +1702,90 @@ uses for GitHub.
 *Retrieve info from ResearchBox by URL*
 
 ```r
-rbox_info(rb_url, id_col = 1, pb = NULL)
+rbox_info(rb_url, id_col = 1, pb = NULL, cache = FALSE)
 ```
 
+With an API key set (see `rbox_token()`), each box costs two API requests:
+its details and its file list. A peer-review link's passcode is sent along.
+Without a key, or when the API refuses (ResearchBox limits how often the
+same box can be requested per hour), the box's web page is read instead.
+
 **Returns:** a data frame of information
+
+### `rbox_files`
+
+*List the Files in a ResearchBox*
+
+```r
+rbox_files(rb_url, pb = NULL, cache = FALSE)
+```
+
+Lists every file in one or more boxes without downloading them, using one
+API request per box. A peer-review link's passcode is sent along. Needs an
+API key (see `rbox_token()`).
+
+**Returns:** a data frame with one row per file: `rb_url`, `name`, `file_id`,
+`section`, `type`, `description`, `extension`, `size` (bytes) and `md5`,
+plus an `error` column when a box could not be listed
+
+### `rbox_search`
+
+*Search ResearchBox*
+
+```r
+rbox_search(q, type = c("data", "code", "paper"), limit = 100, offset = 0)
+```
+
+Searches the data, code or papers in ResearchBox's public boxes. A data
+search returns one row per matching variable, a code search one row per
+matching file, and a paper search one row per matching box. Needs an API
+key (see `rbox_token()`).
+
+**Returns:** a data frame with one row per hit: `rb_url` and the columns
+ResearchBox gives for that type (`box_id`, `formatted_reference`, and for
+data `file_id`, `var_id`, `var_name`, `var_description`, `original_name`
+and `upload_time`; for code `file_id`, `original_name` and `upload_time`;
+for papers `box_title`). The attribute `"total"` is the number of hits
+ResearchBox found, which can be more than were returned.
 
 ### `rbox_file_download`
 
 *Retrieve files from ResearchBox by URL*
 
 ```r
-rbox_file_download(rb_url, pb = NULL)
+rbox_file_download(
+rb_url,
+pb = NULL,
+file_ids = "all",
+subfolders = c("type", "section"),
+cache = FALSE
+)
 ```
 
-**Returns:** a data frame of information
+Downloads the boxes as zips and unpacks them into the repository cache (see
+`repo_cache_dir()`), so a later call for the same box reuses the files
+without asking ResearchBox again.
+
+**Returns:** a data frame with one row per file (`rb_url`, `name`,
+`file_location`, `size`, `isdir`, `checksum_ok`, plus the file type
+columns of file_types), and a `"failed"` attribute: a data frame with
+`rb_url`, `name` (`NA` when the whole box failed) and `error` for each box
+or file that could not be retrieved. An error starting "API rate limit
+exhausted: " is expected to succeed when run again later.
+
+### `rbox_token`
+
+*Get or Set the ResearchBox API Key*
+
+```r
+rbox_token(token = NULL)
+```
+
+ResearchBox's API (`https://researchbox.org/api_call.php`) needs a personal
+key, which you can make at `https://researchbox.org/api`. metacheck reads it from the `RESEARCHBOX_API_KEY` environment variable,
+which you can set in your `.Renviron` file (`usethis::edit_r_environ()`):
+
+**Returns:** the current key (character; `""` when none is set)
 
 ### `aspredicted_links`
 
@@ -1647,8 +1802,15 @@ aspredicted_links(paper)
 *Retrieve info from AsPredicted by URL*
 
 ```r
-aspredicted_info(ap_url, id_col = 1, wait = 1)
+aspredicted_info(ap_url, id_col = 1, wait = 1, cache = FALSE)
 ```
+
+With a ResearchBox API key set (see `rbox_token()`), each preregistration
+is read through ResearchBox's API, which serves AsPredicted's public
+preregistrations, with one request each. Without a key, or when the API
+fails, the preregistration's web page on AsPredicted is read instead;
+AsPredicted asks for a captcha after several pages, and no page is read
+after that.
 
 **Returns:** a data frame of information
 
@@ -1687,7 +1849,7 @@ dataverse_info(dataverse_url, id_col = 1, pb = NULL, cache = FALSE)
 dataverse_file_download(
 host,
 doi,
-download_to = ".",
+download_to,
 max_file_size = 10,
 max_download_size = 100,
 unzip_types = NULL,
@@ -1759,7 +1921,7 @@ could not be found does.
 ```r
 dryad_file_download(
 dryad_doi,
-download_to = ".",
+download_to,
 max_file_size = 10,
 max_download_size = 100,
 unzip_types = NULL,
@@ -1833,7 +1995,7 @@ cache = FALSE
 ```r
 figshare_file_download(
 figshare_id,
-download_to = ".",
+download_to,
 max_file_size = 10,
 max_download_size = 100,
 unzip_types = NULL,
@@ -1901,7 +2063,7 @@ reshare_info(reshare_url, id_col = 1, pb = NULL, cache = FALSE)
 ```r
 reshare_file_download(
 reshare_id,
-download_to = ".",
+download_to,
 max_file_size = 10,
 max_download_size = 100,
 unzip_types = NULL,
@@ -1955,7 +2117,7 @@ platform can reuse the Figshare-family implementation directly.
 ```r
 researchdata4tu_file_download(
 researchdata4tu_id,
-download_to = ".",
+download_to,
 max_file_size = 10,
 max_download_size = 100,
 unzip_types = NULL,
@@ -2088,6 +2250,21 @@ single-request Git Trees API), its detected licence, and default branch.
 File sizes are backfilled with a single batched GraphQL
 `repository.blobs(paths: [...])` query, since the REST tree listing does
 not include size.
+
+**Returns:** a list with:
+
+- `gated`logical; `TRUE` only when the project could
+not be listed at all (invalid/inaccessible)
+
+- `reason`character reason, or `NA`
+
+- `files`data.frame with repo/clean_repo/name/path/
+download_url/size/type, or `NULL` when the tree could not be
+fetched
+
+- `default_branch`character
+
+- `license`character SPDX-style key (e.g. "mit"), or NA
 
 ### `dspace_links`
 
@@ -2381,9 +2558,10 @@ repo_cache_dir()
 ```
 
 Files fetched from OSF/GitHub/Zenodo/ResearchBox by `data_check` and
-`code_check` are stored in a persistent on-disk cache so they are reused
-across modules and R sessions (never re-downloaded). This returns that
-cache's root directory.
+`code_check` with `cache = TRUE` are stored in a lasting on-disk cache so
+they are reused across modules and R sessions (never re-downloaded). This
+returns that cache's root directory. With `cache = FALSE` (the default) the
+files are kept in a temporary folder that R removes when the session ends.
 
 **Returns:** the cache root directory path (character), invisibly
 
@@ -2398,25 +2576,6 @@ repo_cache_size()
 **Returns:** total size of the cache in bytes (numeric). 0 when the cache is
 empty or absent.
 
-### `repo_info_cache`
-
-*Enable, disable, or query the repository-listing cache*
-
-```r
-repo_info_cache(enabled = NULL)
-```
-
-When enabled, `dryad_info()` and `zenodo_info()` (via `repo_check()`'s own
-`cache` parameter) store each repository's listing result (dataset
-metadata + file list) on disk and reuse it on a later call for the same
-repository, instead of re-querying the host's API. This is a SEPARATE
-cache from the downloaded-file-bytes cache (see `repo_cache_dir()`) --
-listing a repository and downloading its files are different costs, and a
-restart that has nothing new to download would otherwise still re-pay the
-full listing cost every time.
-
-**Returns:** the current setting (logical), invisibly when setting
-
 ### `repo_info_cache_clear`
 
 *Clear the on-disk repository-listing cache*
@@ -2425,9 +2584,8 @@ full listing cost every time.
 repo_info_cache_clear()
 ```
 
-Deletes all cached repository listings (see `repo_info_cache()`). Safe at
-any time -- a cleared entry is simply re-fetched from the host's API the
-next time it is needed.
+Deletes all cached repository listings. Safe at any time -- a cleared entry
+is simply re-fetched from the host's API the next time it is needed.
 
 **Returns:** the number of cache entries removed, invisibly
 
@@ -2479,6 +2637,9 @@ llm_model(model = NULL)
 
 Use `llm_model_list()` to get a list of available models
 
+**Returns:** the name of the default model, or `NULL` when none is set;
+invisibly when setting it
+
 ### `llm_model_list`
 
 *List LLM Models*
@@ -2498,6 +2659,8 @@ List available LLM models for the specified platform.
 ```r
 llm_max_calls(n = NULL)
 ```
+
+**Returns:** the maximum number of calls (integer); invisibly when setting it
 
 ### `llm_max_tokens`
 
@@ -2562,18 +2725,18 @@ hanging.
 
 ### `llm_cache`
 
-*Enable, disable, or query the LLM response cache*
+*Turn the lasting LLM response cache on or off, or query it*
 
 ```r
 llm_cache(enabled = NULL)
 ```
 
-When enabled (the default), `llm()` stores each structured or free-text
-response on disk and replays it on identical later calls, so re-running a
-report on the same paper does not re-issue (or re-bill) the LLM requests.
-Because `llm()` runs at temperature 0 the replayed answer matches a fresh
-call. Cached entries are keyed by model, system prompt, input text, type
-spec, and params; changing any of these produces a fresh call.
+`llm()` stores each structured or free-text response and replays it on
+identical later calls, so asking the same question again does not re-issue
+(or re-bill) the LLM request. Because `llm()` runs at temperature 0 the
+replayed answer matches a fresh call. Cached entries are keyed by model,
+system prompt, input text, type spec, and params; changing any of these
+produces a fresh call.
 
 **Returns:** the current setting (logical), invisibly when setting
 
@@ -2585,7 +2748,8 @@ spec, and params; changing any of these produces a fresh call.
 llm_cache_clear()
 ```
 
-Deletes all cached LLM responses (see `llm_cache()`).
+Deletes all cached LLM responses in the cache that is in use: the lasting
+cache when `llm_cache()` is `TRUE`, otherwise this session's temporary one.
 
 **Returns:** the number of cache entries removed, invisibly
 
@@ -2599,11 +2763,14 @@ metacheck_cache_info()
 
 Prints the location and size of all three on-disk caches — the downloaded
 repository-FILE cache, the repository-LISTING cache (dataset/record
-metadata, off by default -- see `repo_info_cache()`), and the LLM-response
-cache — so they are never hidden. By default each sits in a folder in the
-current working directory (`.metacheck_repo_cache`,
-`.metacheck_repo_info_cache`, and `.metacheck_llm_cache`); relocate all
-three with `options(metacheck.cache.dir = "/some/path")`.
+metadata, off by default -- see `repo_info_cache_clear()`), and the LLM-response
+cache — so they are never hidden. Files are kept between sessions only when
+you ask for it (`cache = TRUE` in a module, or `llm_cache(TRUE)`); each
+lasting cache then sits in a folder in the current working directory
+(`.metacheck_repo_cache`, `.metacheck_repo_info_cache`, and
+`.metacheck_llm_cache`); relocate all three with
+`options(metacheck.cache.dir = "/some/path")`. While `llm_cache()` is
+`FALSE`, the LLM row shows this session's temporary folder.
 
 **Returns:** a data.frame (`cache`, `path`, `size_mb`), invisibly.
 
@@ -2793,8 +2960,8 @@ they are grouped), this returns the actual package identifiers so they can be
 catalogued and searched, or written to a `requirements.txt`.
 
 **Returns:** a data frame with columns `package`, `source` (how the package was
-referenced: `library`, `require`, `requireNamespace`, `p_load`, `namespace`,
-`install`, or `import`), and `line` (the line number). Rows are unique on
+referenced: `library`, `require`, `requireNamespace`, `p_load`, `groundhog`,
+`namespace`, `install`, or `import`), and `line` (the line number). Rows are unique on
 `package` + `source` + `line`. An empty frame (same columns) when none found.
 
 ### `code_line_stats`
@@ -3196,7 +3363,7 @@ few rows) has no fixed range and is not flagged here -- unbounded variables
 (age, reaction time) have no principled "valid range" to violate.
 
 **Returns:** list(problem, message, values, lower, upper, classes) where `classes`
-labels each flagged value "missing", "typo:", or "unexplained"
+labels each flagged value "missing", `"typo:<intended>"`, or "unexplained"
 
 ### `data_check_spss_filter`
 
@@ -3609,8 +3776,8 @@ papers with a cryptic `docker run` error. Used as the guard for
 the process backend.
 
 **Returns:** a list `ok` (logical) and `msg` (character, empty on success —
-otherwise a human-readable reason, e.g. Docker not installed or the
-daemon not running)
+otherwise a human-readable reason, e.g. Docker not installed, the
+daemon not running, or the daemon too busy to answer)
 
 ### `repro_file_io`
 
@@ -3634,7 +3801,12 @@ lowercased basenames.
 *Install a paper's declared dependencies into a throwaway library*
 
 ```r
-repro_install_deps(install_deps, lib_dir, cran_to_main_lib = FALSE)
+repro_install_deps(
+install_deps,
+lib_dir,
+cran_to_main_lib = FALSE,
+deadline = NULL
+)
 ```
 
 Installs each non-base dependency into `lib_dir` (a temp library, never the
@@ -3649,9 +3821,11 @@ package build/configure scripts, so this is part of the gated execute phase.
 
 **Returns:** a data frame with `package`, `source`, `installed` (logical),
 `message` (error text on failure, else ""), `via_archive` (logical,
-TRUE when installed from the CRAN Archive after a live-CRAN failure), and
+TRUE when installed from the CRAN Archive after a live-CRAN failure),
 `category` (see `.repro_classify_install_message()`; `NA` for a
-successful install).
+successful install), `version_recorded` (the version asked for, or `NA`),
+`version_installed` (the version now in the libraries, or `NA`) and
+`version_note` (why the recorded version was not installed, else "").
 
 ### `repro_install_deps_docker`
 
@@ -3675,23 +3849,27 @@ mounts the same `lib_dir` with the network off, finds the packages already
 there.
 
 **Returns:** a data frame with `package`, `source`, `installed` (logical),
-`message` (error text on failure, else ""), `via_archive` (always FALSE
-— the CRAN Archive retry `repro_install_deps()` does is not duplicated
-here; a package unavailable on live CRAN is simply recorded as failed),
-and `category` (see `.repro_classify_install_message()`; `NA` for a
-successful install) — same columns as `repro_install_deps()` so callers
-do not need to branch on which backend ran.
+`message` (error text on failure, else ""), `via_archive` (`TRUE` when the
+package was not on CRAN and came from the CRAN Archive; a package not on
+CRAN is first looked for on Bioconductor, see
+`.repro_docker_elsewhere_lines()`),
+`category` (see `.repro_classify_install_message()`; `NA` for a
+successful install), `version_recorded`, `version_installed` and
+`version_note` — same columns as `repro_install_deps()` so callers
+do not need to branch on which backend ran. A row with a `version` is
+treated as there (see `repro_install_deps()`).
 
 ### `repro_materialize_layout`
 
-*Materialise the Psych-DS layout for a paper into a throwaway directory*
+*Copy a paper's files into a throwaway directory, as a plan places them*
 
 ```r
 repro_materialize_layout(plan, structure_df, root)
 ```
 
-The execute phase runs the paper's code against the Psych-DS layout, but the
-module has only the *plan* (`psychds_check`'s file → `target_path`) and the
+The execute phase runs the paper's code in the repository as the authors
+organised it (`.repro_package_plan()`: every file at its own path), but the
+module has only the *plan* (file → `target_path`) and the
 current on-disk location of each source file (`data_check`'s `structure`).
 This builds the tree the plan describes inside a fresh temp directory: for
 each planned file with a real target and an available source copy, the source
@@ -3732,7 +3910,8 @@ code_text,
 file_name,
 plan,
 lang = "R",
-structure_df = NULL
+structure_df = NULL,
+script_path = NULL
 )
 ```
 
@@ -3747,7 +3926,10 @@ path as written, or the full call text when `is_call`), `basename`,
 or NA), `ambiguous` (logical, several plan files matched and the study
 could not disambiguate), `n_candidates`, and `is_call` (logical, TRUE when
 `ref` is a whole `sprintf()`/`paste()`-family call rather than a literal
-path — see above). Empty frame when the script references no files.
+path — see above), and `name_in_code` and `name_in_deposit` (both names when
+they differ, else NA). A reference with no exact match also matches the one
+plan file with the same extension and the same name apart from case, spaces
+and punctuation. Empty frame when the script references no files.
 
 ### `repro_run_order`
 
@@ -3828,7 +4010,8 @@ timeout = 600,
 skip = character(0),
 parses = NULL,
 failed_deps = character(0),
-deadline = NULL
+deadline = NULL,
+net = NULL
 )
 ```
 
@@ -3836,8 +4019,8 @@ The Docker-backed twin of `repro_run_scripts()`: same return contract, same
 per-script semantics (skip on missing inputs / parse failure, timeout,
 undefined-variable / dependency-unavailable classification, captured
 result objects), but each script runs via `docker run --network none --read-only --user <non-root>` instead of a `callr` subprocess — so the
-code cannot reach the network or touch anything outside the mounted
-sandbox and library, even deliberately. See this file's header comment for
+code cannot reach the network (unless `net` is given) or touch anything
+outside the mounted sandbox and library, even deliberately. See this file's header comment for
 the two-phase (install-then-run) design and why the library is mounted at
 `/rlib`, not `/lib`.
 
@@ -3858,7 +4041,10 @@ root,
 inject_libs = NULL,
 lang = "R",
 script_paths = NULL,
-writes_in_place = FALSE
+writes_in_place = FALSE,
+replace_env_calls = FALSE,
+run_dirs = NULL,
+prepend = NULL
 )
 ```
 
@@ -3874,6 +4060,12 @@ still runnable). A reference left ambiguous or unmatched is written unchanged
 `run_dir` (the working directory a run should use — always `root`),
 `setwd_removed` (count of `setwd()`/`os.chdir()` calls replaced with a
 statement that does nothing),
+`env_calls_replaced` (count of groundhog, checkpoint and renv calls replaced),
+`slashes_fixed` (the quoted Windows paths given `/`, as they were, joined by
+"; "; see `.repro_slash_paths()`),
+`setwd_folder_removed` (the paths made relative to the working folder
+because they lay under the folder of a removed `setwd()`, as
+"before -> after", joined by "; "; see `.repro_strip_setwd_folder()`),
 `setwd_paths` (comma-joined paths those calls named, for the warning),
 `family_replaced` (count of `family =`/`base_family =` named-font
 arguments replaced with `"sans"`, so a plot call does not fail with
@@ -3950,7 +4142,7 @@ language ran.
 repro_install_deps_py_docker(
 install_deps,
 lib_dir,
-image = .repro_docker_default_image_py,
+image = getOption("metacheck.docker_image_py", .repro_docker_default_image_py),
 timeout = 600
 )
 ```
@@ -4011,20 +4203,22 @@ run_tbl,
 order,
 sandbox_root,
 lib_dir = NULL,
-image = .repro_docker_default_image_py,
+image = getOption("metacheck.docker_image_py", .repro_docker_default_image_py),
 timeout = 600,
 skip = character(0),
 parses = NULL,
 failed_deps = character(0),
-deadline = NULL
+deadline = NULL,
+net = NULL
 )
 ```
 
 The Docker-backed twin of `repro_run_scripts_py()`: same return contract,
 same per-script semantics (skip on missing inputs / parse failure,
 timeout, error classification), but each script runs via `docker run --network none --read-only --user <non-root>` instead of a `processx`
-subprocess on the host — so the code cannot reach the network or touch
-anything outside the mounted sandbox and library, even deliberately.
+subprocess on the host — so the code cannot reach the network (unless `net`
+is given) or touch anything outside the mounted sandbox and library, even
+deliberately.
 
 **Returns:** a data frame — identical columns to `repro_run_scripts_py()`'s
 return: `file_name`, `outcome`, `error`, `error_type`, `undefined_var`,
@@ -4665,6 +4859,40 @@ Returns `NULL` when within the cap.
 
 ## General utilities
 
+### `api_key_status`
+
+*Check the API keys metacheck uses*
+
+```r
+api_key_status()
+```
+
+Lists the services for which metacheck uses an API key, whether a key is
+set, and whether one was recently refused or reached its limit. On a shared
+server (the metacheck apps and API) the keys are the server's own; the apps
+show the `message` to visitors so they can enter their own key.
+
+**Returns:** a data frame with one row per service: `service`, `label`, `key`
+(`"user"`, `"server"` or `"none"`, see `api_keys_use()`), `problem`
+(`NA`, `"rejected"` or `"limit"`), `until` (when a limit ends), `url`
+(where a key is made) and `message` (`NA` without a problem)
+
+### `api_keys_use`
+
+*Use your own API keys*
+
+```r
+api_keys_use(keys = list(), shared = FALSE)
+```
+
+Sets keys for the rest of the R session, in place of the keys set as
+environment variables. The metacheck apps and API call this inside each
+visitor's own job with the keys the visitor entered, so the keys are used
+for that job only.
+
+**Returns:** invisibly, the previous values of the options that were set, to
+restore them with `options()`
+
 ### `email`
 
 *Set or get email*
@@ -4736,6 +4964,9 @@ rep_if(x, y, replace = NULL)
 
 Replace values if NULL, NA, or specified value
 
+**Returns:** `x`, with each `NULL` element and each value in `replace` replaced
+by the matching value of `y`
+
 ### `path_sanitize`
 
 *Sanitize File Path*
@@ -4787,7 +5018,10 @@ Adds a logging message to the log. Keeps the log as a maximum of 1000 rows.
 logpath()
 ```
 
-Checks the most recent log file created that day and creates a new one if missing.
+Returns the log file of this R session, and creates it if missing. The log
+is kept in the session's temporary folder, which R removes when the session
+ends: CRAN does not allow a package to keep files elsewhere unless the user
+asks for it.
 
 **Returns:** the log file path
 

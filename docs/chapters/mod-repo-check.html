@@ -478,7 +478,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#proprietary-e-prime-files" id="toc-proprietary-e-prime-files" class="nav-link" data-scroll-target="#proprietary-e-prime-files"><span class="header-section-number">22.8.1</span> Proprietary E-Prime files</a></li>
   <li><a href="#restricted-access-files" id="toc-restricted-access-files" class="nav-link" data-scroll-target="#restricted-access-files"><span class="header-section-number">22.8.2</span> Restricted-access files</a></li>
-  <li><a href="#archives-and-looking-inside-a-.zip" id="toc-archives-and-looking-inside-a-.zip" class="nav-link" data-scroll-target="#archives-and-looking-inside-a-.zip"><span class="header-section-number">22.8.3</span> Archives, and looking inside a <code>.zip</code></a></li>
+  <li><a href="#files-dataverse-converted-on-upload" id="toc-files-dataverse-converted-on-upload" class="nav-link" data-scroll-target="#files-dataverse-converted-on-upload"><span class="header-section-number">22.8.3</span> Files Dataverse converted on upload</a></li>
+  <li><a href="#file-names-that-cannot-be-written-on-every-computer" id="toc-file-names-that-cannot-be-written-on-every-computer" class="nav-link" data-scroll-target="#file-names-that-cannot-be-written-on-every-computer"><span class="header-section-number">22.8.4</span> File names that cannot be written on every computer</a></li>
+  <li><a href="#archives-and-looking-inside-a-.zip" id="toc-archives-and-looking-inside-a-.zip" class="nav-link" data-scroll-target="#archives-and-looking-inside-a-.zip"><span class="header-section-number">22.8.5</span> Archives, and looking inside a <code>.zip</code></a></li>
   </ul>
 </li>
   <li><a href="#files-that-do-not-belong-in-a-repository" id="toc-files-that-do-not-belong-in-a-repository" class="nav-link" data-scroll-target="#files-that-do-not-belong-in-a-repository"><span class="header-section-number">22.9</span> Files that do not belong in a repository</a></li>
@@ -524,7 +526,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; -  We found 73 files in 5 repositories.
 #&gt; -  We found 6 README files and 2 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 9 file naming problems to fix.
+#&gt; -  We found 7 file naming problems to fix.
 #&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
@@ -674,7 +676,7 @@ Note
 #&gt; -  We found 73 files in 5 repositories.
 #&gt; -  We found 6 README files and 2 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 9 file naming problems to fix.
+#&gt; -  We found 7 file naming problems to fix.
 #&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
@@ -884,6 +886,7 @@ Note
 </tbody>
 </table>
 <p>DSpace, Dataverse, and Figshare each recognise more than one address because the same software (or, for Figshare, the same underlying service under a branded address) is run by many organisations. That list is maintained, not exhaustive — an installation not yet on it simply goes unrecognised rather than misidentified, so it is always safe to ask for one to be added.</p>
+<p>A full stop, comma, semicolon or colon at the end of a repository address is dropped, since it usually ends the sentence the address stands in: “https://doi.org/10.5063/f1mc8x92.” is the same repository as “https://doi.org/10.5063/f1mc8x92”, and its files are listed once.</p>
 <p>Several of these platforms need an access token before Metacheck can download their files — Dryad requires one even for a fully public dataset. See <a href="../chapters/repository-tokens.html">Getting API Tokens for Other Repositories</a>, or <a href="../chapters/archiving-osf.html">Downloading an OSF Account</a> for OSF specifically.</p>
 <section id="osf-registrations-follow-their-source-project" class="level3" data-number="22.5.1"><h3 data-number="22.5.1" class="anchored" data-anchor-id="osf-registrations-follow-their-source-project">
 <span class="header-section-number">22.5.1</span> OSF registrations follow their source project</h3>
@@ -1040,8 +1043,15 @@ Note
 </section><section id="restricted-access-files" class="level3" data-number="22.8.2"><h3 data-number="22.8.2" class="anchored" data-anchor-id="restricted-access-files">
 <span class="header-section-number">22.8.2</span> Restricted-access files</h3>
 <p>A DSpace (legacy) item flagged <code>restrictedAccess</code>/<code>embargoedAccess</code> — most often seen on PsychArchives — hides its files behind institutional (SSO) login — they cannot be fetched programmatically. <code>repo_check</code> flags any repository with restricted files, since metacheck cannot examine them and other researchers cannot reuse them without requesting access.</p>
-</section><section id="archives-and-looking-inside-a-.zip" class="level3" data-number="22.8.3"><h3 data-number="22.8.3" class="anchored" data-anchor-id="archives-and-looking-inside-a-.zip">
-<span class="header-section-number">22.8.3</span> Archives, and looking inside a <code>.zip</code>
+<p>Dataverse has two ways to hold files back. A file the depositor restricted is served only on request, so Metacheck does not ask for it, and the data manifest lists it as skipped, “access restricted by the depositor”. A file behind a guestbook, a form the depositor wants filled in before a download, is reported as such; Metacheck does not fill in the form.</p>
+</section><section id="files-dataverse-converted-on-upload" class="level3" data-number="22.8.3"><h3 data-number="22.8.3" class="anchored" data-anchor-id="files-dataverse-converted-on-upload">
+<span class="header-section-number">22.8.3</span> Files Dataverse converted on upload</h3>
+<p>Dataverse converts an uploaded SPSS <code>.sav</code>, Stata <code>.dta</code> or <code>.csv</code> file into its own tab-separated <code>.tab</code> format. Metacheck lists and downloads such a file as it was uploaded, under the listed name with the original’s extension (such as <code>Study1_June2017manuscript.sav</code>). That is the name the authors’ code reads, the file then matches the checksum Dataverse lists, and an SPSS file keeps its value labels for <code>data_check</code>.</p>
+</section><section id="file-names-that-cannot-be-written-on-every-computer" class="level3" data-number="22.8.4"><h3 data-number="22.8.4" class="anchored" data-anchor-id="file-names-that-cannot-be-written-on-every-computer">
+<span class="header-section-number">22.8.4</span> File names that cannot be written on every computer</h3>
+<p>A file or folder name that some operating system does not allow (with a colon, one of the characters <code>* ? " &lt; &gt; |</code>, a control character, a final dot or space, or a name such as <code>CON</code> or <code>NUL</code>) is changed in the same way on every computer wherever Metacheck saves a file, so a check does not stop on it, and the result does not depend on the computer it ran on.</p>
+</section><section id="archives-and-looking-inside-a-.zip" class="level3" data-number="22.8.5"><h3 data-number="22.8.5" class="anchored" data-anchor-id="archives-and-looking-inside-a-.zip">
+<span class="header-section-number">22.8.5</span> Archives, and looking inside a <code>.zip</code>
 </h3>
 <p>An archive shared as a single file hides what is in it. By default <code>repo_check</code> therefore reads each <code>.zip</code>’s own listing and reports the files inside it, in place of the archive as one opaque row. This costs one HTTP range request per archive and downloads none of its contents: a <code>.zip</code> stores a directory of what it holds at the end of the file, and a server that honours range requests will return just that stretch of bytes. The helper that does this is <code>zip_peek()</code>, and you can call it yourself on any archive URL.</p>
 <p>Turn it off to leave archives as single rows and make no per-archive request at all:</p>
@@ -1142,7 +1152,7 @@ Note
 #&gt; -  We found 73 files in 5 repositories.
 #&gt; -  We found 6 README files and 2 repositories without READMEs.
 #&gt; -  We could not classify 1 file.
-#&gt; -  We found 9 file naming problems to fix.
+#&gt; -  We found 7 file naming problems to fix.
 #&gt; -  We left out 5 files that do not belong in a repository: operating system (5). Remove them from the repository.</code></pre>
 </div>
 </div>
@@ -1183,12 +1193,12 @@ Note
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">73</td>
-<td style="text-align: right;">22</td>
+<td style="text-align: right;">21</td>
 <td style="text-align: right;">35</td>
 <td style="text-align: right;">6</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">7</td>
 <td style="text-align: left;">FALSE</td>
 </tr></tbody>
 </table>

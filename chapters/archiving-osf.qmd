@@ -248,11 +248,13 @@ Metacheck is designed to assist researchers though automated checks. One way it 
 One line checks the folder you just downloaded:
 
 ```{r}
-report_repository("how_many_registered_studies_are_published")
+report_repository("how_many_registered_studies_are_published",
+                  output_file = "how_many_registered_studies_are_published_report.html")
 ```
 
-This writes a report `how_many_registered_studies_are_published_report.html` into your
-working directory. Open it in a browser and read it as a list of suggestions: a
+This writes the report `how_many_registered_studies_are_published_report.html` into your
+working directory. Without `output_file`, the report goes to the R session's
+temporary folder, which R removes when it closes, and a message says where. Open it in a browser and read it as a list of suggestions: a
 missing README to write, a column to document, a stray file to remove. It covers
 what files are there, what the analysis code looks like, what is in the data,
 and whether the data columns are documented anywhere. The [Creating a
@@ -282,7 +284,8 @@ this function exists to download a repository in full.
 
 The arguments you may want to change:
 
-- `download_to` is the folder to save into. It is created if it does not exist,
+- `download_to` is the folder to save into. It has no default, so you must
+  always name it (`"."` for the working directory). It is created if it does not exist,
   but create it yourself before the first download, as described above, so
   that each project goes into a folder named after its OSF ID. In this example
   the files go into the R working directory, in a new folder called

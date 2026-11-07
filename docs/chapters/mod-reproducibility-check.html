@@ -465,27 +465,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#dependencies-repro_dependencies" id="toc-dependencies-repro_dependencies" class="nav-link" data-scroll-target="#dependencies-repro_dependencies"><span class="header-section-number">29.7.1</span> Dependencies: <code>repro_dependencies()</code></a></li>
   <li><a href="#paths" id="toc-paths" class="nav-link" data-scroll-target="#paths"><span class="header-section-number">29.7.2</span> Paths: <code>repro_rewrite_paths()</code></a></li>
   <li><a href="#run-order-repro_file_io-and-repro_run_order" id="toc-run-order-repro_file_io-and-repro_run_order" class="nav-link" data-scroll-target="#run-order-repro_file_io-and-repro_run_order"><span class="header-section-number">29.7.3</span> Run order: <code>repro_file_io()</code> and <code>repro_run_order()</code></a></li>
-  <li><a href="#missing-inputs-repro_missing_inputs" id="toc-missing-inputs-repro_missing_inputs" class="nav-link" data-scroll-target="#missing-inputs-repro_missing_inputs"><span class="header-section-number">29.7.4</span> Missing inputs: <code>repro_missing_inputs()</code></a></li>
+  <li><a href="#missing-inputs" id="toc-missing-inputs" class="nav-link" data-scroll-target="#missing-inputs"><span class="header-section-number">29.7.4</span> Missing inputs: <code>repro_missing_inputs()</code></a></li>
   <li><a href="#two-more-static-helpers-you-may-not-need-directly" id="toc-two-more-static-helpers-you-may-not-need-directly" class="nav-link" data-scroll-target="#two-more-static-helpers-you-may-not-need-directly"><span class="header-section-number">29.7.5</span> Two more static helpers you may not need directly</a></li>
   </ul>
 </li>
   <li><a href="#two-ways-to-run-the-code" id="toc-two-ways-to-run-the-code" class="nav-link" data-scroll-target="#two-ways-to-run-the-code"><span class="header-section-number">29.8</span> Two ways to run the code</a></li>
   <li><a href="#the-pre-built-docker-image-and-why-it-exists" id="toc-the-pre-built-docker-image-and-why-it-exists" class="nav-link" data-scroll-target="#the-pre-built-docker-image-and-why-it-exists"><span class="header-section-number">29.9</span> The pre-built Docker image, and why it exists</a></li>
-  <li><a href="#declared-r-versions-and-why-they-matter-for-docker" id="toc-declared-r-versions-and-why-they-matter-for-docker" class="nav-link" data-scroll-target="#declared-r-versions-and-why-they-matter-for-docker"><span class="header-section-number">29.10</span> Declared R versions, and why they matter for Docker</a></li>
+  <li>
+<a href="#declared-r-versions-and-why-they-matter-for-docker" id="toc-declared-r-versions-and-why-they-matter-for-docker" class="nav-link" data-scroll-target="#declared-r-versions-and-why-they-matter-for-docker"><span class="header-section-number">29.10</span> Declared R versions, and why they matter for Docker</a>
+  <ul class="collapse">
+<li><a href="#recorded-versions" id="toc-recorded-versions" class="nav-link" data-scroll-target="#recorded-versions"><span class="header-section-number">29.10.1</span> Recorded package versions</a></li>
+  </ul>
+</li>
   <li><a href="#batch-mode" id="toc-batch-mode" class="nav-link" data-scroll-target="#batch-mode"><span class="header-section-number">29.11</span> Checking many papers at once: batch mode</a></li>
   <li>
 <a href="#running-the-code-what-happens-during-execution" id="toc-running-the-code-what-happens-during-execution" class="nav-link" data-scroll-target="#running-the-code-what-happens-during-execution"><span class="header-section-number">29.12</span> Running the code: what happens during execution</a>
   <ul class="collapse">
-<li><a href="#two-layouts" id="toc-two-layouts" class="nav-link" data-scroll-target="#two-layouts"><span class="header-section-number">29.12.1</span> Two layouts</a></li>
+<li><a href="#two-layouts" id="toc-two-layouts" class="nav-link" data-scroll-target="#two-layouts"><span class="header-section-number">29.12.1</span> Where the code runs</a></li>
   <li><a href="#time-limits" id="toc-time-limits" class="nav-link" data-scroll-target="#time-limits"><span class="header-section-number">29.12.2</span> Time limits</a></li>
-  <li><a href="#outcomes" id="toc-outcomes" class="nav-link" data-scroll-target="#outcomes"><span class="header-section-number">29.12.3</span> Outcomes</a></li>
+  <li><a href="#internet" id="toc-internet" class="nav-link" data-scroll-target="#internet"><span class="header-section-number">29.12.3</span> Scripts that download their data</a></li>
+  <li><a href="#outcomes" id="toc-outcomes" class="nav-link" data-scroll-target="#outcomes"><span class="header-section-number">29.12.4</span> Outcomes</a></li>
+  <li><a href="#running-again" id="toc-running-again" class="nav-link" data-scroll-target="#running-again"><span class="header-section-number">29.12.5</span> Running scripts again</a></li>
   </ul>
 </li>
   <li><a href="#python-code" id="toc-python-code" class="nav-link" data-scroll-target="#python-code"><span class="header-section-number">29.13</span> Python code</a></li>
   <li><a href="#what-if-theres-no-r-or-python-code-at-all" id="toc-what-if-theres-no-r-or-python-code-at-all" class="nav-link" data-scroll-target="#what-if-theres-no-r-or-python-code-at-all"><span class="header-section-number">29.14</span> What if there’s no R or Python code at all?</a></li>
   <li><a href="#extracting-the-statistical-output" id="toc-extracting-the-statistical-output" class="nav-link" data-scroll-target="#extracting-the-statistical-output"><span class="header-section-number">29.15</span> Extracting the statistical output</a></li>
   <li><a href="#matching-the-reported-results-against-the-output" id="toc-matching-the-reported-results-against-the-output" class="nav-link" data-scroll-target="#matching-the-reported-results-against-the-output"><span class="header-section-number">29.16</span> Matching the reported results against the output</a></li>
-  <li><a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">29.17</span> The traffic light and what you get back</a></li>
+  <li>
+<a href="#the-traffic-light-and-what-you-get-back" id="toc-the-traffic-light-and-what-you-get-back" class="nav-link" data-scroll-target="#the-traffic-light-and-what-you-get-back"><span class="header-section-number">29.17</span> The traffic light and what you get back</a>
+  <ul class="collapse">
+<li><a href="#guidance-for-the-authors" id="toc-guidance-for-the-authors" class="nav-link" data-scroll-target="#guidance-for-the-authors"><span class="header-section-number">29.17.1</span> Guidance for the authors</a></li>
+  </ul>
+</li>
   <li><a href="#options" id="toc-options" class="nav-link" data-scroll-target="#options"><span class="header-section-number">29.18</span> Options</a></li>
   <li><a href="#notes-and-limitations" id="toc-notes-and-limitations" class="nav-link" data-scroll-target="#notes-and-limitations"><span class="header-section-number">29.19</span> Notes and limitations</a></li>
   <li><a href="#open-for-feedback" id="toc-open-for-feedback" class="nav-link" data-scroll-target="#open-for-feedback"><span class="header-section-number">29.20</span> Open for feedback</a></li>
@@ -511,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header><p>When authors share their data and analysis code, the idea is that anyone should be able to run that code on that data and get the results reported in the paper. But sharing data and code in a way that results are reproducible is difficult, and researchers have often not received training in how to share data and code. As a consequence, there are often basic mistakes in public repositories that stand in the way of computationally reproducible results. Automated checks can help researchers identify and fix these mistakes, such as not sharing all files that are loaded in code, using absolute instead of relative filepaths, using values that are not computed in the code that is shared, changing file names so they no longer match the code, or not loading all libraries.</p>
 <p>Checking whether data and code is reproducible is tedious. It also often requires repeated back and forths between the person performing the checks, and the researchers sharing data and code. Ideally, checks do not just focus on whether code runs, but also whether all results in a manuscript are reproduced by the code, but this takes a lot of time.</p>
-<p>Metacheck’s <code>reproducibility_check</code> module attempts to perform all these checks automatically. When it succeeds, researchers and/or reviewers, data managers, or editors know that data and code is shared in a reproducible manner, and they do not need to perform manual checks. This saves everyone time, and leads to data and code repositories that are more useful for science. Our reproducibility check module is completely code-based. It uses no AI (although modules it builds on, such as <code>data_check</code>, can optionally use a large language model, by setting <code>llm_use(TRUE)</code>, to better understand the files in a repository, such as which files belong to which study), and it can run locally on your computer without sending information to an external server.</p>
+<p>Metacheck’s <code>reproducibility_check</code> module attempts to perform all these checks automatically. When it succeeds, researchers and/or reviewers, data managers, or editors know that data and code is shared in a reproducible manner, and they do not need to perform manual checks. This saves everyone time, and leads to data and code repositories that are more useful for science. Our reproducibility check module is completely code-based. It uses no AI: when it runs the modules it builds on, such as <code>data_check</code>, it turns the use of a large language model off for them, also when you have set <code>llm_use(TRUE)</code>. It can run locally on your computer without sending information to an external server.</p>
 <p>This chapter starts with the module at work on two versions of the same small study: one where every reported result can be reproduced, and one where several cannot. The sections after the example describe each step of the check in detail.</p>
 <section id="computationally-reproducing-a-simple-stroop-experiment" class="level2" data-number="29.1"><h2 data-number="29.1" class="anchored" data-anchor-id="computationally-reproducing-a-simple-stroop-experiment">
 <span class="header-section-number">29.1</span> Computationally reproducing a simple Stroop experiment</h2>
@@ -524,8 +536,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The reproducibility check runs code that other people wrote. That is not without risk. A script can delete files, read files that have nothing to do with the project, or send information over the internet, by accident or on purpose. By default, <code>execute = TRUE</code> runs each script in a separate R process on your own computer. This prevents a script that crashes from taking your own R session down with it, but the script can still reach every file on your computer, and the internet. That is fine for the two repositories in this chapter, which we made ourselves, but not for code from a repository you have not created, as a bad actor might insert problematic code.</p>
 <p>For such code, add <code>sandbox = "docker"</code>. <a href="https://www.docker.com/">Docker</a> is a program that runs software in a <em>container</em>: a closed environment on your computer, separated from the rest of the system. Metacheck runs every script in its own container, and has set up these containers so that the code can do as little harm as possible:</p>
 <ul>
-<li>The container has no internet connection while the code runs. Only the step before it, which installs the packages the code needs, is connected to the internet, and in that step none of the paper’s own code runs.</li>
-<li>The code runs on a copy of the repository’s files, in a temporary folder. That folder is the only place on your computer it can write to, and the files on the rest of your computer are not visible inside the container.</li>
+<li>The container has no internet connection while the code runs, unless you allow it with <code>internet = TRUE</code> (see <a href="#internet">Scripts that download their data</a>). Only the step before it, which installs the packages the code needs, is connected to the internet, and in that step none of the paper’s own code runs.</li>
+<li>The code runs on a copy of the repository’s files, in a temporary folder. That folder, and the folder of packages installed for this paper, which is removed after the check, are the only places it can write to, and the files on the rest of your computer are not visible inside the container.</li>
 <li>The code runs as an ordinary user without administrator rights, cannot obtain extra rights, and can start only a limited number of processes.</li>
 <li>Each script is stopped after a time limit, 10 minutes by default.</li>
 </ul>
@@ -563,7 +575,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We assessed AND ran 2 R code files for reproducibility (each in an isolated subprocess).
-#&gt; -  2 files appear runnable so far (parses, inputs resolve, placeable in the run order).
 #&gt; -  2 of 2 scripts ran without error when executed.
 #&gt; -  5 installable dependencies detected.
 #&gt; - 39 statistics stored from the extracted output; 11 of 11 reported tests matched (100%).</code></pre>
@@ -697,7 +708,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; -  We assessed AND ran 1 R code file for reproducibility (each in an isolated subprocess).
-#&gt; -  1 file appears runnable so far (parses, inputs resolve, placeable in the run order).
 #&gt; -  0 of 1 script ran without error when executed.
 #&gt; -  3 installable dependencies detected.
 #&gt; - 10 statistics stored from the extracted output; 2 of 6 reported tests matched (33.3%).</code></pre>
@@ -842,7 +852,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This module builds on <code>code_check</code>, <code>psychds_check</code>, and <code>data_check</code>, and inherits their <strong>live network calls</strong> to retrieve the repository files. You need an internet connection to run the code below.</p>
+<p>This module builds on <code>repo_check</code>, <code>data_check</code>, and <code>code_check</code>, and inherits their <strong>live network calls</strong> to retrieve the repository files. When you have not run <code>data_check</code> and <code>code_check</code> on the paper first, the module runs them itself. You need an internet connection to run the code below.</p>
 </div>
 </div>
 </section><section id="the-static-phase-without-running-code" class="level2" data-number="29.5"><h2 data-number="29.5" class="anchored" data-anchor-id="the-static-phase-without-running-code">
@@ -857,7 +867,7 @@ Note
 <span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt; -  We assessed 6 R code files for reproducibility (static analysis; no code was run).</span></span>
 <span><span class="co">#&gt; -  3 files appear runnable so far (parses, inputs resolve, placeable in the run order).</span></span>
-<span><span class="co">#&gt; -  25 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).</span></span>
+<span><span class="co">#&gt; -  26 files skipped as byte-identical duplicates of another file already in the run (the paper links more than one repository/component).</span></span>
 <span><span class="co">#&gt; -  2 referenced inputs unavailable (0 withheld due to size).</span></span>
 <span><span class="co">#&gt; -  6 installable dependencies detected.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -929,7 +939,7 @@ Note
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">none</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
@@ -943,7 +953,7 @@ Note
 </tr>
 </tbody>
 </table>
-<p>A file is marked <code>runnable</code> only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a <em>static</em> check: <code>runnable = FALSE</code> does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place. When it <em>is</em> <code>FALSE</code>, the column <code>not_runnable_reason</code> names exactly why — one of <code>parse_error</code>, <code>unplaceable</code>, or <code>missing_input</code>, checked in that priority order — and <code>unresolved_inputs</code> names the specific file(s) that could not be resolved. Two further reasons apply only to an R file that does not parse as R: <code>not_r_content</code> when its content is not R at all (for example a JSON or HTML file saved with a <code>.R</code> extension), and <code>jags_model</code> when it is a JAGS/BUGS model definition. Neither counts as a parse error, because the file is not broken R code, and neither is run.</p>
+<p>A file is marked <code>runnable</code> only when it parses, all of its referenced inputs resolve (they are present, or produced by an earlier script), and it can be placed in the run order. That is a deliberately strict bar for a <em>static</em> check: <code>runnable = FALSE</code> does not mean the code is broken, it means the module could not confirm, without running it, that everything the script needs is in place. When it <em>is</em> <code>FALSE</code>, the column <code>not_runnable_reason</code> names exactly why — one of <code>parse_error</code>, <code>unplaceable</code>, or <code>missing_input</code>, checked in that priority order — and <code>unresolved_inputs</code> names the specific file(s) that could not be resolved. Two further reasons apply only to an R file that does not parse as R: <code>not_r_content</code> when its content is not R at all (for example a JSON or HTML file saved with a <code>.R</code> extension), and <code>jags_model</code> when it is a JAGS/BUGS model definition. Neither counts as a parse error, because the file is not broken R code, and neither is run. Three more reasons name files that are not run as scripts of their own: <code>defines_functions</code> (a file that only defines functions, apart from <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls and constants; <code>used_by</code> names the scripts that use it), <code>not_analysis</code> (a file of software rather than of the paper’s analysis, such as a package’s own code or tests, a copy of a tool, a web application, or a script a program wrote; <code>not_analysis_why</code> says which), and <code>needs_a_person</code> (an R file that starts an app, such as a Shiny application). For Python, <code>python2</code> marks code written for Python 2.</p>
 <p>Two further list-columns, <code>reads</code> and <code>writes</code>, carry the basenames each script reads and writes (as <code>repro_file_io()</code> extracted them) directly on the table — useful if you want the code↔︎data provenance for a file without recomputing it yourself:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">reads</span></span>
@@ -985,7 +995,7 @@ Note
 </div>
 </section><section id="worked-example-building-a-small-reproducible-fixture" class="level2" data-number="29.6"><h2 data-number="29.6" class="anchored" data-anchor-id="worked-example-building-a-small-reproducible-fixture">
 <span class="header-section-number">29.6</span> Worked example: building a small reproducible fixture</h2>
-<p>To see every static assessment concretely, it helps to build a tiny, self-contained example rather than rely on whatever a real deposit happens to contain. The example below creates two scripts — one that writes an intermediate file, one that reads it back — and a plan that tells the module where a Psych-DS release would put the data.</p>
+<p>To see every static assessment concretely, it helps to build a tiny, self-contained example rather than rely on whatever a real deposit happens to contain. The example below creates two scripts — one that writes an intermediate file, one that reads it back — and a data file.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_tempfile.html">local_tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -1032,8 +1042,8 @@ Note
 </section><section id="paths" class="level3" data-number="29.7.2"><h3 data-number="29.7.2" class="anchored" data-anchor-id="paths">
 <span class="header-section-number">29.7.2</span> Paths: <code>repro_rewrite_paths()</code>
 </h3>
-<p>A script reads and writes data by relative path — <code>read_csv("raw/x.csv")</code>, <code>saveRDS(m, "../out/model.rds")</code>. When the release is re-laid-out into the Psych-DS structure, with data under <code>data/</code> and per-study <code>study-&lt;group&gt;/data/</code> folders, those paths no longer resolve. <code>repro_rewrite_paths()</code> maps each referenced path to its new location, using the file plan that <a href="../chapters/mod-psychds-check.html">psychds_check</a> produces.</p>
-<p>Matching is by <strong>basename</strong>: a script’s <code>../data/x.csv</code> and the repository’s <code>raw/x.csv</code> are the same file seen from different working directories, so the prefix is ignored. When several files share a basename — a <code>demographics.csv</code> in more than one study — the ambiguity is resolved by <strong>study group</strong>: the candidate whose target path is in the same study as the script wins. Only when that still leaves more than one candidate is the reference left unrewritten and flagged as ambiguous, rather than guessed.</p>
+<p>A script reads and writes data by relative path — <code>read_csv("raw/x.csv")</code>, <code>saveRDS(m, "../out/model.rds")</code>. The module runs the code in a copy of the repository as the authors organised it (see <a href="#two-layouts">Where the code runs</a>), so most such paths work as written. Some do not: an absolute path on the authors’ computer, a path from another folder than the one the script runs in, or the name of a file that is elsewhere in the repository. <code>repro_rewrite_paths()</code> maps each referenced path to a file in a <em>plan</em>, a table with one row per file and the path it has in the copy. Inside the module, that plan is the repository itself, and only a path that does not work is rewritten. The function also accepts another plan, such as the one <a href="../chapters/mod-psychds-check.html">psychds_check</a> makes for a Psych-DS release, as in the example below.</p>
+<p>Matching is by <strong>basename</strong>: a script’s <code>../data/x.csv</code> and the repository’s <code>raw/x.csv</code> are the same file seen from different working directories, so the prefix is ignored. A name that has no exact match also matches the one file with the same extension and the same name apart from case, spaces and punctuation, so code that reads <code>relative cover.csv</code> reads <code>relative_cover.csv</code> (repositories such as Dryad change names in this way on deposit); <code>table$names_corrected</code> and <code>$modifications</code> (<code>name_corrected</code>) record such a change. When several files share a basename — a <code>demographics.csv</code> in more than one study — the ambiguity is resolved by <strong>study group</strong>: the candidate whose target path is in the same study as the script wins. Only when that still leaves more than one candidate is the reference left unrewritten and flagged as ambiguous, rather than guessed. A path is only changed where it stands in quotes in the code.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"demographics.csv"</span>, <span class="st">"scores.csv"</span><span class="op">)</span>,</span>
@@ -1047,7 +1057,9 @@ Note
 <pre><code>#&gt;                     ref         basename matched
 #&gt; 1 data/demographics.csv demographics.csv    TRUE
 #&gt;                                        target ambiguous n_candidates is_call
-#&gt; 1 study-ex1/data/source-demographics_data.csv     FALSE            1   FALSE</code></pre>
+#&gt; 1 study-ex1/data/source-demographics_data.csv     FALSE            1   FALSE
+#&gt;   name_in_code name_in_deposit in_join in_here
+#&gt; 1         &lt;NA&gt;            &lt;NA&gt;   FALSE   FALSE</code></pre>
 </div>
 </div>
 <p>Two refinements worth knowing about if you inspect this output closely:</p>
@@ -1068,8 +1080,8 @@ Note
 <span><span class="va">io</span> <span class="op">&lt;-</span> <span class="fu">repro_file_io</span><span class="op">(</span><span class="va">code_text_list</span><span class="op">)</span></span>
 <span><span class="va">io</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;      file_name            reads           writes sources
-#&gt; 1     0_prep.R         data.csv intermediate.csv        
+<pre><code>#&gt;      file_name            reads           writes sources source_refs
+#&gt; 1     0_prep.R         data.csv intermediate.csv                    
 #&gt; 2 1_analysis.R intermediate.csv</code></pre>
 </div>
 </div>
@@ -1093,7 +1105,7 @@ Note
 </div>
 </div>
 <p><code>0_prep.R</code> runs first even though its own name sorts it that way anyway — but critically, the <code>order_basis</code> column reads <code>"dependency"</code>, not <code>"numeric"</code>, because the <em>real</em> reason is the data dependency: <code>1_analysis.R</code> reads <code>intermediate.csv</code>, which <code>0_prep.R</code> writes. <code>order_basis</code> is recorded on the file that has the <strong>incoming</strong> edge (the dependent file), not the file it depends on — so it is <code>1_analysis.R</code>’s row that carries <code>"dependency"</code> and names <code>0_prep.R</code> in <code>depends_on</code>.</p>
-</section><section id="missing-inputs-repro_missing_inputs" class="level3" data-number="29.7.4"><h3 data-number="29.7.4" class="anchored" data-anchor-id="missing-inputs-repro_missing_inputs">
+</section><section id="missing-inputs" class="level3" data-number="29.7.4"><h3 data-number="29.7.4" class="anchored" data-anchor-id="missing-inputs">
 <span class="header-section-number">29.7.4</span> Missing inputs: <code>repro_missing_inputs()</code>
 </h3>
 <p>When a script reads a file that is not present, the reason matters. <code>repro_missing_inputs()</code> cross-references each unresolved read against the file plan and the download records, and classifies it as one of:</p>
@@ -1103,11 +1115,12 @@ Note
 <li>
 <code>in_repo_not_downloaded</code> — listed in the repository but not present locally for another reason.</li>
 <li>
-<code>in_archive</code> — the file is in the repository only inside a <code>.zip</code> or <code>.tar</code> (for example <code>data.zip/data/x.csv</code>), and the code reads it at the path unpacking would give (<code>data/x.csv</code>). The reason reads “only inside data.zip; unpack it so the code finds it”, and the script is not run.</li>
+<code>in_archive</code> — the file is in the repository only inside a <code>.zip</code> or <code>.tar</code> (for example <code>data.zip/data/x.csv</code>), and the code reads it at the path unpacking would give (<code>data/x.csv</code>). The reason reads “only inside data.zip; unpack it so the code finds it”.</li>
 <li>
-<code>absent</code> — not in the repository at all. The script reads a file the authors did not share (or that an earlier, un-captured step was meant to produce).</li>
+<code>absent</code> — not in the repository at all. The script reads a file the authors did not share (or that an earlier, un-captured step was meant to produce). For such a file, <code>similar_to</code> names a file in the repository with a similar name, if there is one, such as the same name with a piece added at its start or end; the report names it, but the module does not use it.</li>
 </ul>
-<p>A file that a script writes itself, and then reads back, is not a missing input.</p>
+<p>A file that a script writes itself, and then reads back, is not a missing input. Neither is a name the module cannot check before the code runs: a <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code> or <code><a href="https://rdrr.io/r/base/sprintf.html">sprintf()</a></code> call that holds a variable, a name with a placeholder such as <code>{name}.csv</code>, or a piece of a name such as <code>_field.csv</code>.</p>
+<p>These are predictions. With <code>execute = TRUE</code>, a script with a predicted missing input is still run, because the prediction is often wrong (the file may be read only inside <code>if (file.exists(...))</code>, or its name may be built while the script runs), and the run gives the script’s real outcome and error. After a run, a predicted missing input only counts for a script that did not run to the end.</p>
 <p>This distinction is the reason the static phase is worth running before a manual reproduction attempt: a run that fails because a 3 GB data file was skipped by the size gate is a completely different situation from a run that fails because the input data were never shared, and only the latter is a genuine openness problem.</p>
 </section><section id="two-more-static-helpers-you-may-not-need-directly" class="level3" data-number="29.7.5"><h3 data-number="29.7.5" class="anchored" data-anchor-id="two-more-static-helpers-you-may-not-need-directly">
 <span class="header-section-number">29.7.5</span> Two more static helpers you may not need directly</h3>
@@ -1116,7 +1129,7 @@ Note
 <li>
 <strong><code>repro_defined_vars(code_text_list)</code></strong> returns, for each R file, the variable names it assigns at its <em>top level</em> (not inside a function). This is what powers the corrective re-run for R described below: when a script fails with <code>object 'x' not found</code>, the module looks for exactly one other file whose <code>repro_defined_vars()</code> result includes <code>x</code>, and — if there is exactly one — infers that it must run first.</li>
 <li>
-<strong><code>repro_materialize_layout()</code></strong> and <strong><code>repro_write_scripts()</code></strong> build the throwaway Psych-DS-shaped directory the execution phase actually runs against, and write the path-rewritten scripts into it. You will see their effects described below (the <code>data/</code>, <code>output/</code>, and <code>statistical_output/</code> folders), but you would only call them directly if you were building your own execution pipeline on top of metacheck’s static analysis. <code>repro_write_scripts()</code>’s <code>inject_libs</code> argument adds one or more <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls to the top of a named R script; the corrective re-run uses it.</li>
+<strong><code>repro_materialize_layout()</code></strong> and <strong><code>repro_write_scripts()</code></strong> build the throwaway copy of the repository the execution phase actually runs against, and write the path-rewritten scripts into it. You will see their effects described below (the copied files, and the <code>output/</code> and <code>statistical_output/</code> folders), but you would only call them directly if you were building your own execution pipeline on top of metacheck’s static analysis. <code>repro_write_scripts()</code>’s <code>inject_libs</code> argument adds one or more <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls to the top of a named R script; the corrective re-run uses it.</li>
 </ul></section></section><section id="two-ways-to-run-the-code" class="level2" data-number="29.8"><h2 data-number="29.8" class="anchored" data-anchor-id="two-ways-to-run-the-code">
 <span class="header-section-number">29.8</span> Two ways to run the code</h2>
 <p>Set <code>execute = TRUE</code> to actually run the paper’s code. A second argument, <code>sandbox</code>, decides <strong>where</strong>:</p>
@@ -1160,14 +1173,15 @@ Note
 <td>
 <strong>No</strong> — the code can read, write, or delete anywhere your R session can</td>
 <td>
-<strong>Yes</strong> — <code>--read-only</code>, with only the throwaway sandbox directory writable</td>
+<strong>Yes</strong> — <code>--read-only</code>, with only the throwaway sandbox directory, the paper’s own package library and <code>/tmp</code> writable</td>
 </tr>
 <tr class="even">
 <td>Isolates the network?</td>
 <td>
 <strong>No</strong> — the code can reach the internet freely</td>
 <td>
-<strong>Yes</strong> — <code>--network none</code> during the run phase</td>
+<strong>Yes</strong> — <code>--network none</code> during the run phase, unless you set <code>internet = TRUE</code>
+</td>
 </tr>
 <tr class="odd">
 <td>Runs as</td>
@@ -1187,12 +1201,13 @@ Note
 </tbody>
 </table>
 <p><code>sandbox = "docker"</code> achieves real containment with these <code>docker run</code> flags, applied to every script individually during the run phase:</p>
-<pre><code>--network none --read-only --tmpfs /tmp
+<pre><code>--network none --read-only --tmpfs /tmp:exec
 --user 1000:1000 --cap-drop ALL
---security-opt no-new-privileges --pids-limit 512
--v &lt;sandbox&gt;:/sandbox -v &lt;library&gt;:/rlib:ro                       (R)
--v &lt;sandbox&gt;:/sandbox -v &lt;library&gt;:/pylib:ro -e PYTHONPATH=/pylib  (Python)</code></pre>
-<p>Network is fully disabled, the filesystem is read-only outside the mounted sandbox (with only <code>/tmp</code> and the sandbox itself writable), the container runs as a fixed non-root user, all Linux capabilities are dropped, privilege escalation is blocked, and the number of processes the container can spawn is capped. Before checking any of this, call <code>repro_docker_available()</code> to confirm Docker is installed and its daemon is actually running — <code>reproducibility_check()</code> calls this for you and stops with a clear message if it is not, rather than failing partway through a batch of papers with a cryptic error.</p>
+--security-opt no-new-privileges --pids-limit 512 --ulimit core=1
+-v &lt;sandbox&gt;:/sandbox -v &lt;library&gt;:/rlib                       (R)
+-v &lt;sandbox&gt;:/sandbox -v &lt;library&gt;:/pylib
+   -e PYTHONPATH=&lt;the repository's own module folders&gt;:/pylib     (Python)</code></pre>
+<p>Network is fully disabled (<code>--network none</code> is left out only when you set <code>internet = TRUE</code>), the filesystem is read-only outside the mounted sandbox (with only <code>/tmp</code>, the sandbox itself, and the library of packages installed for this paper writable), the container runs as a fixed non-root user, all Linux capabilities are dropped, privilege escalation is blocked, the number of processes the container can start is limited, and R cannot write a crash file (on Windows, each R crash in a container wrote a file of about 2.5 GB). Programs in <code>/tmp</code> may run, because code that is compiled while a script runs, such as an <code>rstan</code> model or <code><a href="https://rdrr.io/pkg/Rcpp/man/sourceCpp.html">Rcpp::sourceCpp()</a></code>, is loaded from there. The library is writable because some packages keep data in their own folder; it belongs to this paper only and is removed after the check. It is kept in a Docker volume rather than in a folder of your computer, because a Windows drive does not tell file names apart by case. Before checking any of this, call <code>repro_docker_available()</code> to confirm Docker is installed and its daemon is actually running — <code>reproducibility_check()</code> calls this for you and stops with a clear message if it is not, rather than failing partway through a batch of papers with a cryptic error. When Docker is slow to answer, because other containers are busy, it asks again, waiting up to 30 and then 60 seconds, and when Docker still does not answer, the message says so instead of saying that Docker is not running. A script whose container never started, or that Docker lost while it ran, gets the outcome <code>docker_failed</code>, which says nothing about the script.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">repro_docker_available</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $ok</span></span>
@@ -1229,14 +1244,15 @@ Tip
 </section><section id="the-pre-built-docker-image-and-why-it-exists" class="level2" data-number="29.9"><h2 data-number="29.9" class="anchored" data-anchor-id="the-pre-built-docker-image-and-why-it-exists">
 <span class="header-section-number">29.9</span> The pre-built Docker image, and why it exists</h2>
 <p>The first time you think through what <code>sandbox = "docker"</code> needs to do to run a real paper’s code, an obvious problem appears: most papers’ scripts <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> several packages that are not part of base R, and a container starts with nothing installed. Naively, every single <code>reproducibility_check()</code> call would need to install a paper’s entire dependency list from scratch, inside a freshly-started container, before it could run a single script — for R packages with compiled C++ code (<code>rstan</code>, <code>lme4</code>, and dozens of others), that can mean minutes of compilation <em>per paper</em>.</p>
-<p>To avoid that, Docker containers under <code>sandbox = "docker"</code> default to a <strong>pre-built image</strong>, <code>ghcr.io/scienceverse/metacheck_r_large:latest</code>, rather than a bare R installation. That image already has R, Quarto, JAGS, Java, the GDAL/GEOS/PROJ libraries for geographic data, and the roughly 750 most common packages a real corpus of psychology-science papers’ code actually uses — found by scanning thousands of real <code>.R</code>/<code>.Rmd</code>/<code>.qmd</code> files for their <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper’s dependencies are already in that list — which, for an ordinary <code>tidyverse</code>-and-<code>lme4</code>-shaped analysis, they usually are — the install phase does almost nothing, because <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace()</a></code> already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install. A smaller variant, <code>metacheck_r_small</code> (about 390 packages, each seen in at least three files of that scan, without the geographic libraries), is also published, but <code>reproducibility_check()</code> has no argument to choose it. Python code runs in a separate image, <code>ghcr.io/scienceverse/metacheck_py_small:latest</code> — see <a href="#python-code">Python code</a>.</p>
+<p>To avoid that, Docker containers under <code>sandbox = "docker"</code> default to a <strong>pre-built image</strong>, <code>ghcr.io/scienceverse/metacheck_r_large:latest</code>, rather than a bare R installation. That image already has R, Quarto, JAGS, Java, the GDAL/GEOS/PROJ libraries for geographic data, and the roughly 750 most common packages a real corpus of psychology-science papers’ code actually uses — found by scanning thousands of real <code>.R</code>/<code>.Rmd</code>/<code>.qmd</code> files for their <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code> calls and pre-installing everything that showed up often enough to be worth the build cost. When a paper’s dependencies are already in that list — which, for an ordinary <code>tidyverse</code>-and-<code>lme4</code>-shaped analysis, they usually are — the install phase does almost nothing, because <code><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace()</a></code> already finds the package. Only genuinely uncommon or paper-specific dependencies still need a real, from-source install. A smaller variant, <code>metacheck_r_small</code> (about 390 packages, each seen in at least three files of that scan, without the geographic libraries), is also published, but <code>reproducibility_check()</code> has no argument to choose it. Python code runs in a separate image, <code>ghcr.io/scienceverse/metacheck_py_small:latest</code> by default — see <a href="#python-code">Python code</a>.</p>
+<p>When a package is not in the image, the install looks for it in this order: CRAN, Bioconductor, the latest version in the CRAN Archive (for a package CRAN has removed, such as <code>rgdal</code>, <code>rgeos</code> and <code>maptools</code>, which compile when the image has the GDAL and GEOS header files), and then, in Docker only, a table of known places (such as <code>rethinking</code> on GitHub or <code>INLA</code>’s own repository) and R-universe’s search for that exact name. A package that could not be installed is reported with the reason from the install’s own output. When the code loads a package that is on neither CRAN nor Bioconductor and does not say where it comes from, the report says so. Only the packages of the files that are run are installed, not those of a package’s own code or tests, or of a tool the authors copied into the repository. While it installs, the module shows the package, the count, the time so far and an estimate of the time left.</p>
 <p>The container’s home folder cannot be written to, so R’s cache, configuration and data folders are placed in <code>/tmp</code>. This lets a script run <code><a href="https://rstudio.github.io/renv/reference/restore.html">renv::restore()</a></code>, which needs to write its cache. <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html">rmarkdown::render()</a></code> finds the Pandoc program that Quarto bundles in the image, through the <code>RSTUDIO_PANDOC</code> environment variable.</p>
 <p>The image, its Dockerfile, the full package list, and detailed notes on how it was built (including some genuinely non-obvious bugs found along the way — a package can report a successful install and still fail to <em>load</em>, because a runtime shared library it needs is missing from a minimal image) are all in a dedicated repository: <a href="https://github.com/scienceverse/metacheck_docker_reproducibility">scienceverse/metacheck_docker_reproducibility</a>. If you want to build your own variant — a smaller image with only the most common packages, or one that adds LaTeX for PDF rendering, or CmdStan for <code>cmdstanr</code>-based Bayesian models — that repository is the starting point, and its README documents exactly which levers actually reduce image size and which ones (surprisingly) do not.</p>
 </section><section id="declared-r-versions-and-why-they-matter-for-docker" class="level2" data-number="29.10"><h2 data-number="29.10" class="anchored" data-anchor-id="declared-r-versions-and-why-they-matter-for-docker">
 <span class="header-section-number">29.10</span> Declared R versions, and why they matter for Docker</h2>
 <p>This section applies to R code only; metacheck does not read a declared Python version, and Python code always runs in the pre-built Python image.</p>
 <p>The pre-built image is fast, but it was built against one specific R version. A paper that deposited an <code>renv.lock</code> file, or a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> text dump, or that pins its environment with <code>groundhog</code>/<code>checkpoint</code>, has told you <em>exactly</em> which R version its authors actually used — and that might not be the version the pre-built image happens to run.</p>
-<p><a href="../chapters/mod-code-check.html">code_check</a> is where this gets detected, as part of its own “Reproducible Environment” check: it looks for an <code>renv.lock</code> file anywhere in the repository (parsing its declared R version and every locked package + version), a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>/<code>session_info()</code> dump (matched by filename — <code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar, or embedded in a README), or an actual <code><a href="https://rdrr.io/pkg/groundhog/man/groundhog.library.html">groundhog::groundhog.library()</a></code>/<code>checkpoint::checkpoint()</code> date-pin call in the code — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code> with no pinning call does not count, since loading the package is not evidence anything was actually pinned.</p>
+<p><a href="../chapters/mod-code-check.html">code_check</a> is where this gets detected, as part of its own “Reproducible Environment” check: it looks for an <code>renv.lock</code> file anywhere in the repository (parsing its declared R version and every locked package + version), a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>/<code>session_info()</code> dump (matched by filename — <code>sessionInfo.txt</code>, <code>session_info.txt</code>, and similar — or embedded in a README, or pasted into an R script, usually as comments, when it lists packages; the package versions it lists are kept as well as the R version), or an actual <code><a href="https://rdrr.io/pkg/groundhog/man/groundhog.library.html">groundhog::groundhog.library()</a></code>/<code>checkpoint::checkpoint()</code> date-pin call in the code, also when the date is held in a variable or given as <code>snapshot_date</code> — a bare <code><a href="https://groundhogr.com/">library(groundhog)</a></code> with no pinning call does not count, since loading the package is not evidence anything was actually pinned, and neither does a call in a comment.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span><span class="op">)</span></span>
 <span><span class="va">cc</span><span class="op">$</span><span class="va">traffic_light</span></span>
@@ -1263,13 +1279,24 @@ uses the pre-built metacheck_r_large image's own R version instead, for speed.
 Set docker_use_declared_version = TRUE to match the paper's declared
 version exactly -- slower, since every dependency then installs from
 scratch rather than using the pre-built image.</code></pre>
-<p>Setting <code>docker_use_declared_version = TRUE</code> switches to a bare <code>rocker/r-ver:&lt;declared version&gt;</code> image with nothing pre-installed — genuinely slower, since every dependency now installs from source, but it matches the paper’s own environment exactly. When a paper declared <em>no</em> version at all, this option falls back to bare <code>rocker/r-ver:latest</code> rather than silently reusing the pre-built image either — if you explicitly asked for version-matching, getting the fast pre-built image back through the back door when there was nothing to match against would defeat the point of asking.</p>
-</section><section id="batch-mode" class="level2" data-number="29.11"><h2 data-number="29.11" class="anchored" data-anchor-id="batch-mode">
+<p>Setting <code>docker_use_declared_version = TRUE</code> switches to a bare <code>rocker/r-ver:&lt;declared version&gt;</code> image with nothing pre-installed — genuinely slower, since every dependency now installs from source, but it matches the R version the paper’s authors used. When a paper declared <em>no</em> version at all, this option falls back to bare <code>rocker/r-ver:latest</code> rather than silently reusing the pre-built image either — if you explicitly asked for version-matching, getting the fast pre-built image back through the back door when there was nothing to match against would defeat the point of asking. For an R version before 4.0, whose images name MRAN, a copy of CRAN that closed in 2023, the packages come from the same dated copy of CRAN at Posit.</p>
+<section id="recorded-versions" class="level3" data-number="29.10.1"><h3 data-number="29.10.1" class="anchored" data-anchor-id="recorded-versions">
+<span class="header-section-number">29.10.1</span> Recorded package versions</h3>
+<p>The R version is one thing; the versions of the packages are another. With <code>recorded_versions = TRUE</code> (and <code>execute = TRUE</code>), when the repository records package versions — in an <code>renv.lock</code> file, in a <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code> or <code>session_info()</code> record, or as a date in a <code>groundhog.library()</code> or <code>checkpoint()</code> call — the R packages the scripts load are installed at those versions:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
+<span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, sandbox <span class="op">=</span> <span class="st">"docker"</span>,</span>
+<span>                 recorded_versions <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This works under both <code>sandbox</code> settings, and also when you did not set <code>install_missing</code> (see <a href="#options">Options</a>). Only the packages the scripts load are installed at their recorded version; a loaded package the record does not list gets its current version, and the packages these depend on, and those that come with R, are not at their recorded versions. The R version is not changed, so an old package may not install, or may behave differently; a warning and the report say so. After installing, the module checks in a new R process that each package loads: an old version next to current packages can keep one from loading, as a current <code>ggplot2</code> next to a recorded <code>scales</code> did. A recorded version that cannot be installed, or that keeps a package from loading, is replaced by the current one, and the report names it. <code>$recorded_versions</code> holds which recorded versions the run used.</p>
+<p><code>recorded_versions = FALSE</code> is the default, because on 16 repositories this took about 2.7 times as long, and no failing script started working. When scripts fail and the repository records versions, the report, the summary and the checklist recommend a new run with <code>recorded_versions = TRUE</code>. Recorded versions are not used when several papers run as one; run the papers one at a time, or in <a href="#batch-mode">batch mode</a>.</p>
+<p>When packages are installed before the run, or the run is in Docker, where the network is off, a script’s calls to <code>groundhog</code>, <code>checkpoint</code> and <code>renv</code> would fail, so they are replaced: <code>groundhog.library()</code> becomes <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>, and <code><a href="https://rstudio.github.io/renv/reference/restore.html">renv::restore()</a></code> and the like become a statement that does nothing. <code>$modifications</code> records this as <code>env_call_replaced</code>, and the report says so.</p>
+</section></section><section id="batch-mode" class="level2" data-number="29.11"><h2 data-number="29.11" class="anchored" data-anchor-id="batch-mode">
 <span class="header-section-number">29.11</span> Checking many papers at once: batch mode</h2>
 <p>Everything so far runs one paper through <code>reproducibility_check()</code> at a time. If you are working through a whole corpus — a <code>paperlist</code> of dozens or hundreds of papers — calling it once per paper in a loop means only one Docker container is ever running: paper 2 does not start until paper 1’s containers (install, then run) have both finished. For <code>sandbox = "docker"</code>, where each paper’s own work is a slow, external <code>docker run</code> rather than in-memory R computation, that is time left on the table on any machine with more than one CPU core to spare.</p>
 <p>Passing a <code>paperlist</code> together with <code>workers &gt; 1</code> (and <code>execute = TRUE, sandbox = "docker"</code>) switches to <strong>batch mode</strong>: up to <code>workers</code> papers run their Docker checks at the same time, and the moment one paper finishes, the next paper in the list starts — never fewer than <code>workers</code> running while papers remain queued, never more.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">papers</span> <span class="op">&lt;-</span> <span class="fu">papers_load</span><span class="op">(</span><span class="st">"psychsci"</span>, cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">papers</span>, <span class="st">"reproducibility_check"</span>,</span>
 <span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, sandbox <span class="op">=</span> <span class="st">"docker"</span>,</span>
@@ -1288,7 +1315,7 @@ scratch rather than using the pre-built image.</code></pre>
 <strong><code>results_dir</code> writes each paper’s full result to disk as soon as that paper finishes</strong> — one <code>&lt;paper_id&gt;.rds</code> file per paper, in the same format <code>capture_module_tables()</code> uses elsewhere in Metacheck for a corpus build. This matters for a batch that might take hours: if it is interrupted partway through (a crash, a machine restart, you stopping it deliberately), every paper that had already finished is safely on disk, not lost along with the ones still running. Read them back with <code>metacheck:::collect_module_tables("repro_results", "reproducibility_check")</code> — both <code>capture_module_tables()</code> and <code>collect_module_tables()</code> are internal helpers, not exported, so they need the <code>metacheck:::</code> prefix rather than a plain call.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"repro_ran_ok"</span>, <span class="st">"repro_deps"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">summary_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"repro_ran_ok"</span>, <span class="st">"repro_deps"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span></span>
 <span><span class="co">#&gt; Ran the reproducibility check on 20 papers (up to 4 at a time): 17 ok, 2 red, 1 error.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -1311,40 +1338,36 @@ Note
 <p>Whichever <code>sandbox</code> you choose, the mechanics are the same:</p>
 <ol type="1">
 <li>
-<strong>lays out the files</strong> in a throwaway temporary directory (see <a href="#two-layouts">Two layouts</a> below), so the run never touches your real archive or the download cache;</li>
+<strong>copies the repository’s files</strong> into a throwaway temporary directory (see <a href="#two-layouts">Where the code runs</a> below), so the run never touches your real archive or the download cache. The files the code names are downloaded with the others, also when <code>download</code> would leave them out;</li>
 <li>
-<strong>writes the path-rewritten scripts</strong> into that layout, so their reads and writes resolve;</li>
-<li>optionally <strong>installs the declared dependencies</strong> into a throwaway library (<code>install_missing = TRUE</code>), never your main R library — under <code>sandbox = "docker"</code> this is <em>always</em> into a throwaway library inside the container, since a container has no access to your host library at all (Python packages are installed with <code>pip install --target</code> into a throwaway folder in the same way);</li>
+<strong>writes the path-rewritten scripts</strong> into that copy, so their reads and writes resolve;</li>
+<li>optionally <strong>installs the declared dependencies</strong> into a throwaway library (<code>install_missing = TRUE</code>, or recorded versions, see <a href="#recorded-versions">Recorded package versions</a>), never your main R library — under <code>sandbox = "docker"</code> this is <em>always</em> into a throwaway library for the container, since a container has no access to your host library at all. Python packages are installed with <code>pip</code> into a throwaway folder in the same way (with <code>pip install --target</code> under <code>sandbox = "process"</code>, and with <code>pip install --prefix</code> inside the container under <code>sandbox = "docker"</code>, so that <code>pip</code> uses the packages the image already has). <code>install_timeout</code> limits the time for installing, R and Python together;</li>
 <li>
-<strong>runs each script in run order</strong>, each in its own subprocess or container with a per-script <code>timeout</code>, capturing the outcome and the console output. An R script that another script runs with <code><a href="https://rdrr.io/r/base/source.html">source()</a></code> is not run on its own, but only as part of the script that sources it, and the same holds for a Python file that other files import.</li>
+<strong>runs each script in run order</strong>, each in its own subprocess or container with a per-script <code>timeout</code>, capturing the outcome and the console output. An R script that another script runs with <code><a href="https://rdrr.io/r/base/source.html">source()</a></code> is not run on its own, but only as part of the script that sources it, and the same holds for a Python file that other files import. Every script that parses is run, also when an input it seems to need was predicted to be missing (see <a href="#missing-inputs">Missing inputs</a>).</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"reproducibility_check"</span>,</span>
 <span>                 execute <span class="op">=</span> <span class="cn">TRUE</span>, install_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                 timeout <span class="op">=</span> <span class="fl">600</span>, keep_sandbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="two-layouts" class="level3" data-number="29.12.1"><h3 data-number="29.12.1" class="anchored" data-anchor-id="two-layouts">
-<span class="header-section-number">29.12.1</span> Two layouts</h3>
-<p>The <code>layout</code> argument sets which files the code runs against:</p>
-<ul>
-<li>
-<strong><code>"package"</code></strong> copies every file the run has (every file of a local folder; for a repository, every file that was downloaded, see <code>download</code>) to its own path, so a path that works in the package works in the sandbox. Only a path that cannot work as written is rewritten: an absolute path on the author’s computer or a path out of the package, to the file with that name, and a path that counts from the script’s own folder (<code>source("helpers.R")</code>, <code>"../data/x.csv"</code>) or from its RStudio project’s (<code>.Rproj</code>) folder, to the file’s path from the top of the package. This also applies to files the code makes: a script in <code>Study 2/</code> writing <code>"Data/processed.csv"</code> writes into <code>Study 2/Data/</code>. Any other relative path is left as written, also when other files share its name, since code commonly joins it with a folder of its own. A script’s writes stay where the code puts them, so a later script reads the file where it expects it (only a write to an absolute path or out of the package goes to <code>output/</code>), and the copied files are writable, so a script can save over a file the package holds.</li>
-<li>
-<strong><code>"psychds"</code></strong> copies only the data files the module recognised, renamed and placed as a Psych-DS release, and rewrites the code’s paths to match (see <a href="#paths">Paths</a>). That suits a study whose scripts read a few tables, but code that reads folders of images or scan files, or imports its own helper modules from a subfolder, fails there for files that are in the package.</li>
-<li>
-<strong><code>"auto"</code></strong> (the default) uses <code>"package"</code> for a local folder (<code>local_path</code>, as <code>report_repository()</code> and the repository apps give it) and <code>"psychds"</code> otherwise.</li>
-</ul>
+<span class="header-section-number">29.12.1</span> Where the code runs</h3>
+<p>The module always runs the code in a copy of the repository as the authors organised it. Earlier versions could also run it in a reorganised Psych-DS copy, chosen with a <code>layout</code> argument; that argument is gone, because a run in a reorganised copy says little about whether the authors’ own deposit works.</p>
+<p>Every file the run has (every file of a local folder; for a repository, every file that was downloaded, see <code>download</code>) is copied to its own path, so a path that works in the repository works in the copy. Each script runs from the folder where its paths work, which is not always the top of the repository, since the folder the authors ran it from is not recorded. Only a path that cannot work as written is rewritten: an absolute path on the author’s computer or a path out of the repository, to the file with that name; a path that counts from the script’s own folder (<code>source("helpers.R")</code>, <code>"../data/x.csv"</code>) or from its RStudio project’s (<code>.Rproj</code>) folder, to the file’s path from the top of the repository; a path to a file at the top of the repository, from a script that runs in a folder below; and a bare file name read directly, as in <code>read.csv("x.csv")</code>, to the one file of that name in a folder below. A path that is the one argument of <code>here()</code> counts from the folder <code>here()</code> starts in. A Windows path (<code>"Data\\x.txt"</code>) gets <code>/</code> between its folders, since on Linux a backslash is part of a file name. This also applies to files the code makes: a script in <code>Study 2/</code> writing <code>"Data/processed.csv"</code> writes into <code>Study 2/Data/</code>. Any other relative path is left as written, also when other files share its name, since code commonly joins it with a folder of its own. A script’s writes stay where the code puts them, so a later script reads the file where it expects it (only a write to an absolute path or out of the repository goes to <code>output/</code>), and the copied files are writable, so a script can save over a file the repository holds. The folder of a write is made when it does not exist, also when the folder is held in a variable (<code>dirF &lt;- "../Figures/"</code> with <code>ggsave(paste0(dirF, "plot.png"))</code>).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="cn">NULL</span>, <span class="st">"reproducibility_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/folder"</span>,</span>
-<span>           execute <span class="op">=</span> <span class="cn">TRUE</span>, layout <span class="op">=</span> <span class="st">"package"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="cn">NULL</span>, <span class="st">"reproducibility_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/folder"</span>,</span>
+<span>           execute <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="time-limits" class="level3" data-number="29.12.2"><h3 data-number="29.12.2" class="anchored" data-anchor-id="time-limits">
 <span class="header-section-number">29.12.2</span> Time limits</h3>
-<p><code>timeout</code> limits each script (600 seconds by default). <code>total_timeout</code> limits all scripts together, R and Python: by default one hour (3600 seconds), counted from when the first script starts. Use <code>NULL</code> or <code>Inf</code> for no limit, or give a clock time (<code>POSIXct</code>) by which all scripts must be done, such as a server’s job limit minus the time its report needs. Once the time has run out, a running script is stopped and no further script is started, so a package with many slow scripts still gets a report. A script that was not started gets the outcome <code>skipped_time_limit</code>, which the report names, and the light is then at least yellow. A script the corrective second run (see below) has no time for keeps its first result.</p>
+<p><code>timeout</code> limits each script (600 seconds by default). <code>total_timeout</code> limits all scripts together, R and Python: by default one hour (3600 seconds), counted from when the first script starts. Use <code>NULL</code> or <code>Inf</code> for no limit, or give a clock time (<code>POSIXct</code>) by which all scripts must be done, such as a server’s job limit minus the time its report needs. Once the time has run out, a running script is stopped and no further script is started, so a package with many slow scripts still gets a report. A script that was not started gets the outcome <code>skipped_time_limit</code>, which the report names, and the light is then at least yellow. A script that a later run (see <a href="#running-again">Running scripts again</a> below) was to run with a change, but which had no time left, is also <code>skipped_time_limit</code>, not the first run’s failure that the change was meant to fix. In the first run, a script stopped by <code>total_timeout</code> is <code>timed_out</code>.</p>
 <p>To find the statistical results in what a script printed, the module searches only the first 20,000 lines of each script’s printed output, and the report says when it stopped there. The search reads about 700 lines a second, so a script that prints a growing table in a loop could otherwise take longer to search than to run. Set another number with <code>options(metacheck.repro_output_max_lines = ...)</code>.</p>
-</section><section id="outcomes" class="level3" data-number="29.12.3"><h3 data-number="29.12.3" class="anchored" data-anchor-id="outcomes">
-<span class="header-section-number">29.12.3</span> Outcomes</h3>
-<p>Each script gets one of nine outcomes, added to the <code>$table</code> in an <code>outcome</code> column:</p>
+</section><section id="internet" class="level3" data-number="29.12.3"><h3 data-number="29.12.3" class="anchored" data-anchor-id="internet">
+<span class="header-section-number">29.12.3</span> Scripts that download their data</h3>
+<p>Some scripts download their data while they run. In Docker the network is off while the code runs, so such a script stops, with the outcome <code>needs_internet</code>. <code>internet = TRUE</code> (or <code>options(metacheck.repro_internet = TRUE)</code>) lets the scripts use the internet, under <code>sandbox = "docker"</code> only. What they download follows the limits for the repository’s own files: a script is stopped, with the outcome <code>download_too_large</code>, when the paper’s scripts together have downloaded more than <code>max_download_size</code>, or when a file larger than <code>max_file_size</code> appears. The report then says that the scripts could use the internet, so what they downloaded may differ from what the authors had. <code>internet = FALSE</code> is the default, because nobody has checked the code before it runs. With <code>sandbox = "process"</code> scripts always have the internet, without these limits.</p>
+</section><section id="outcomes" class="level3" data-number="29.12.4"><h3 data-number="29.12.4" class="anchored" data-anchor-id="outcomes">
+<span class="header-section-number">29.12.4</span> Outcomes</h3>
+<p>Each script gets one outcome, in the <code>outcome</code> column of <code>$table</code> and <code>$run_results</code>:</p>
 <table class="caption-top table">
 <thead><tr class="header">
 <th>Outcome</th>
@@ -1364,34 +1387,82 @@ Note
 <td>still running at the <code>timeout</code> cutoff — <strong>not</strong> a failure, just slow; raise <code>timeout</code> for legitimately long analyses (e.g.&nbsp;Bayesian sampling)</td>
 </tr>
 <tr class="even">
-<td><code>skipped_missing_inputs</code></td>
-<td>not run, because an input it needs is unavailable</td>
+<td><code>not_parsed</code></td>
+<td>not run, because the script does not parse (for Python, checked with Python’s own parser)</td>
 </tr>
 <tr class="odd">
-<td><code>not_parsed</code></td>
-<td>not run, because the script does not parse (for Python, checked with Python’s own parser; code written for Python 2 fails this check)</td>
+<td><code>python2</code></td>
+<td>Python code written for Python 2 (a <code>print</code> or <code>exec</code> statement, <code>except E, e</code>, or tabs mixed with spaces). Under <code>sandbox = "docker"</code> it runs with Python 2.7, in the official image <code>python:2.7-slim</code> (option <code>metacheck.docker_image_py2</code>; <code>FALSE</code> turns this off), with, when packages are installed, the last versions of its packages that support Python 2, and then gets the outcome of that run. The code is never converted, since that can change results</td>
 </tr>
 <tr class="even">
 <td><code>dependency_unavailable</code></td>
-<td>not run (or failed immediately), because a package the script needs is missing: with <code>install_missing = TRUE</code>, it could not be installed from live CRAN, the CRAN Archive, <em>or</em> a named GitHub/URL source; with <code>install_missing = FALSE</code>, it is simply not installed on the computer or in the container that ran the script. Either way this is a limitation of where the code ran, not a defect in the paper’s code. For Python: the script stopped with <code>No module named ...</code> for a package <code>pip</code> could not install, or that was not installed</td>
+<td>not run (or failed immediately), because a package the script needs is missing: when packages are installed, it could not be installed from any source the install tries (see <a href="#the-pre-built-docker-image-and-why-it-exists">The pre-built Docker image</a>); when they are not, it is simply not installed on the computer or in the container that ran the script. Either way this is a limitation of where the code ran, not a defect in the paper’s code. For Python: the script stopped with <code>No module named ...</code> for a package <code>pip</code> could not install, or that was not installed</td>
 </tr>
 <tr class="odd">
-<td><code>run_by_source</code></td>
-<td>an R script that another script runs with <code><a href="https://rdrr.io/r/base/source.html">source()</a></code>. It is run only inside that script, because on its own it lacks the packages and objects the sourcing script sets up first; its result is part of that script’s result. A sourced script that does not parse or lacks an input keeps its own outcome instead</td>
+<td><code>not_downloaded</code></td>
+<td>the script stopped on a file the repository lists but that was not downloaded, such as one over <code>max_file_size</code>. It could not be tried, so it is not counted as a script that did not reproduce</td>
 </tr>
 <tr class="even">
-<td><code>run_by_import</code></td>
-<td>a Python file that other files import, such as <code>utils/data_handling.py</code>: a module that defines functions for the scripts that import it, which fails or does nothing on its own. It is not run, and not counted among the scripts that ran. A file with an <code>if __name__ == "__main__":</code> block still runs</td>
+<td><code>needs_a_person</code></td>
+<td>the script stopped because it asks a person to choose a file or answer a question, or because it is a program that needs arguments from the person who runs it (R’s <code><a href="https://rdrr.io/r/base/commandArgs.html">commandArgs()</a></code>, Python’s <code>sys.argv</code> or <code>argparse</code>), or it starts an app, a window or a server, which would wait for a person until the time limit; such an app is not run</td>
+</tr>
+<tr class="odd">
+<td><code>needs_internet</code></td>
+<td>the script stopped because the network is off in a Docker run, or, with <code>internet = TRUE</code>, could not reach what it asked for</td>
+</tr>
+<tr class="even">
+<td><code>download_too_large</code></td>
+<td>the script was stopped for downloading more than the limits allow (see <a href="#internet">Scripts that download their data</a>)</td>
+</tr>
+<tr class="odd">
+<td><code>out_of_memory</code></td>
+<td>the script, or a program it started (such as a compiler), ran out of the memory each script may use</td>
+</tr>
+<tr class="even">
+<td><code>docker_failed</code></td>
+<td>the script’s container never started, or Docker lost it while it ran; this says nothing about the script</td>
 </tr>
 <tr class="odd">
 <td><code>skipped_time_limit</code></td>
-<td>not run, because <code>total_timeout</code> had run out (see <a href="#time-limits">Time limits</a>)</td>
+<td>not started, or, in a later run, stopped early, because <code>total_timeout</code> had run out (see <a href="#time-limits">Time limits</a>)</td>
+</tr>
+<tr class="even">
+<td><code>run_by_source</code></td>
+<td>an R script that another script runs with <code><a href="https://rdrr.io/r/base/source.html">source()</a></code>. It is run only inside that script, because on its own it lacks the packages and objects the sourcing script sets up first; its result is part of that script’s result. A sourced script that does not parse keeps its own outcome instead</td>
+</tr>
+<tr class="odd">
+<td><code>run_by_import</code></td>
+<td>a Python file that other files import, such as <code>utils/data_handling.py</code>: a module that defines functions for the scripts that import it, which fails or does nothing on its own. It is not run, and not counted among the scripts that ran. A file with an <code>if __name__ == "__main__":</code> block still runs. Only <code>.py</code> files count as imported</td>
+</tr>
+<tr class="even">
+<td><code>defines_functions</code></td>
+<td>a file that only defines functions (apart from <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls and constants); it is used by the scripts that load it (<code>used_by</code> names them), not run on its own</td>
+</tr>
+<tr class="odd">
+<td><code>not_analysis</code></td>
+<td>a file of software rather than of the paper’s analysis: a package’s own code, tests or documentation, a copy of a tool, a web application, a script a program wrote (<code>not_analysis_why</code> says which). It is not run and not counted as a script</td>
+</tr>
+<tr class="even">
+<td>
+<code>jags_model</code>, <code>not_r_content</code>
+</td>
+<td>a JAGS or BUGS model saved with an R extension, which another script reads, or a file with an R extension that is not R at all; not run, and not failures</td>
 </tr>
 </tbody>
 </table>
-<p><code>dependency_unavailable</code> is deliberately <strong>excluded</strong> from forcing the traffic light red, unlike <code>errored</code>/<code>timed_out</code> — a package that has genuinely vanished from every source metacheck tries is not evidence the paper’s own analysis is broken.</p>
-<p>Two R errors lead to one corrective re-run. An error whose message is <code>object '...' not found</code> usually means the script expects a variable another script defines. When exactly one other script in the repository defines that variable — checked via <code>repro_defined_vars()</code> — the module places that script first (adding a “definer runs first” edge and re-sorting). An error whose message is <code>could not find function "..."</code>, for a function no script of the paper defines, usually means a package was never loaded. The module then adds <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls to the top of the failing script: all the packages the project’s other scripts load, when one of them provides the function (such a script was usually written to run after those scripts, in the same R session); otherwise the one package, among the paper’s own dependencies and a short list of very common packages, that exports the function; otherwise, for <code>%&gt;%</code>, magrittr. Each added call is recorded in <code>$modifications</code>, and a script that then runs is reported as reproducible only after adding <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls it should make itself. The module re-runs <strong>once</strong> and reports the corrected outcome. It does not iterate further: a second such error after that one corrective pass is accepted as the final result rather than chased indefinitely.</p>
-<p>Python scripts get no corrective re-run; see <a href="#python-code">Python code</a>.</p>
+<p><code>dependency_unavailable</code> is deliberately <strong>excluded</strong> from forcing the traffic light red, unlike <code>errored</code>/<code>timed_out</code> — a package that has genuinely vanished from every source metacheck tries is not evidence the paper’s own analysis is broken. <code>not_downloaded</code>, <code>needs_a_person</code>, <code>needs_internet</code>, <code>download_too_large</code>, <code>out_of_memory</code>, <code>docker_failed</code> and <code>skipped_time_limit</code> do not make the light red either, but keep it from being green.</p>
+<p>For each script that did not run to the end, the <code>reason</code> column of <code>$table</code> and <code>$run_results</code> says why, in one word, taken from the error that stopped the script (not from a warning before it): <code>file</code> (a file it could not open), <code>package</code> (a missing package), <code>undefined</code> (an object or function that was never defined), <code>syntax</code>, <code>environment</code> (something the computer that ran it lacks, such as a program the code starts, a screen, or memory; the report names a missing program), <code>internet</code>, <code>download</code>, <code>interactive</code>, <code>time</code>, <code>no_message</code> (the script stopped without a message), or <code>other</code>. <code>$summary_table</code> counts the scripts per reason.</p>
+</section><section id="running-again" class="level3" data-number="29.12.5"><h3 data-number="29.12.5" class="anchored" data-anchor-id="running-again">
+<span class="header-section-number">29.12.5</span> Running scripts again</h3>
+<p>Two R errors lead to one corrective re-run. An error whose message is <code>object '...' not found</code> usually means the script expects a variable another script defines. When exactly one other script in the repository defines that variable — checked via <code>repro_defined_vars()</code> — the module places that script first (adding a “definer runs first” edge and re-sorting), and, because each script has an R session of its own, runs the defining script at the start of the failing script’s session (recorded in <code>$modifications</code> as <code>loaded_first</code>). Authors often run scripts one after another in one session, so that one script’s objects are there for the next. An error whose message is <code>could not find function "..."</code>, for a function no script of the paper defines, usually means a package was never loaded. The module then adds <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls to the top of the failing script: all the packages the project’s other scripts load, when one of them provides the function (such a script was usually written to run after those scripts, in the same R session); otherwise the one package, among the paper’s own dependencies and a short list of very common packages, that exports the function; otherwise, for <code>%&gt;%</code>, magrittr. Each added call is recorded in <code>$modifications</code>, and a script that then runs is reported as reproducible only after adding <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls it should make itself. This second run runs only what it changes: the scripts that got <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> lines or another script to load first, the scripts the new order moves, and the scripts that read what those write. An unchanged script keeps its first result, so a script that ran out of time does not use the paper’s time a second time. These two repairs are decided only once, from the errors of the first run: a second such error after that is accepted as the final result rather than chased indefinitely.</p>
+<p>Some scripts then run once more, each for a reason of its own:</p>
+<ul>
+<li>A script that stopped on a default of R that has changed since the code was written — before R 4.0, <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html">read.table()</a></code> and <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> read text as factors — runs once more with the old default set at its top (<code>old_default</code>), and so do the scripts that stopped on a file it writes.</li>
+<li>A file a script could not open, which the repository lists but which was not downloaded, is downloaded then, and the scripts that stopped on it run once more.</li>
+<li>A script that stopped on a file another script wrote later in the run runs once more (<code>run_again</code>): a name built while a script runs, such as <code>paste0("input", i, ".txt")</code>, cannot be seen before the run, so the order missed it. A file written in another folder is copied to where the script looked (<code>output_copied</code>).</li>
+<li>A script that stopped on a file the repository holds in another folder gets a copy of that file where it looked, and runs once more (<code>file_placed</code>). This covers a path built while the script runs, with <code><a href="https://rdrr.io/r/base/file.path.html">file.path()</a></code>, <code><a href="https://rdrr.io/r/base/paste.html">paste0()</a></code> or a variable, which cannot be rewritten beforehand.</li>
+</ul>
+<p>A script runs once more each time it stops on a file it did not stop on before, up to five times: a figure script that loads the files of four analysis scripts stops on each of them in turn. These later runs apply to R and Python scripts alike, except the one with R’s old defaults. A Python script that fails with a <code>NameError</code> is not run again; see <a href="#python-code">Python code</a>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1424,14 +1495,14 @@ Note
 <p>The static phase differs from R in three ways:</p>
 <ul>
 <li>
-<strong>Syntax check.</strong> Each file is read by Python’s own parser, which checks the syntax without running the code. This needs a Python interpreter (<code>python</code>, or else <code>python3</code>) on your computer; without one, every file is counted as parsing and the report says that the check could not be done. Code written for Python 2 (for example <code>print "x"</code>) fails this check.</li>
+<strong>Syntax check.</strong> Each file is read by Python’s own parser, which checks the syntax without running the code. This needs a Python interpreter (<code>python</code>, or else <code>python3</code>) on your computer; without one, every file is counted as parsing and the report says that the check could not be done. Code written for Python 2 (for example <code>print "x"</code>) gets the outcome <code>python2</code> instead of counting as a parse error, and is run with Python 2.7 under <code>sandbox = "docker"</code> (see <a href="#outcomes">Outcomes</a>).</li>
 <li>
 <strong>Dependencies.</strong> <code>repro_dependencies_py()</code> reads the packages from the <code>import</code> lines. Modules of Python’s standard library are tagged <code>base</code>, the rest <code>pypi</code>. When the name a package is imported under differs from the name <code>pip</code> installs, the <code>pip</code> name is reported: <code>sklearn</code> becomes <code>scikit-learn</code>, <code>cv2</code> becomes <code>opencv-python</code>, <code>PIL</code> becomes <code>Pillow</code>, <code>yaml</code> becomes <code>PyYAML</code>, <code>bs4</code> becomes <code>beautifulsoup4</code>, and so on for about twenty such names. Unlike for R, versions can be known: when the repository has a <code>requirements.txt</code> (or, if not, a <code>pyproject.toml</code>), the requirement it states for a package is kept in <code>ref</code> and used when installing it.</li>
 <li>
 <strong>Run order.</strong> Python scripts are ordered by read-after-write and by the numbers in their filenames only.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">code_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"import numpy as np"</span>,</span>
 <span>  <span class="st">"from sklearn.linear_model import LinearRegression"</span>,</span>
 <span>  <span class="st">"import os"</span></span>
@@ -1446,9 +1517,10 @@ Note
 </div>
 <p>With <code>execute = TRUE</code>:</p>
 <ul>
-<li>Each Python script runs whole, as its own <code>python</code> process. With <code>sandbox = "process"</code> this needs the <code>processx</code> package and a Python interpreter on your computer; if no interpreter is found, or installing or running stops with an error, the Python files are reported as not run, with the reason, and the R results are still returned. With <code>sandbox = "docker"</code>, each script runs in its own container from the image <code>ghcr.io/scienceverse/metacheck_py_small:latest</code>, which has about 45 common packages (numpy, pandas, scipy, matplotlib, seaborn, scikit-learn, statsmodels, and others) already installed. <code>reproducibility_check()</code> has no argument to choose another Python image; only <code>repro_install_deps_py_docker()</code> and <code>repro_run_scripts_py_docker()</code>, called directly, take an <code>image</code> argument.</li>
-<li>With <code>install_missing = TRUE</code>, packages are installed with <code>pip install --target</code> into a throwaway folder, never into your own Python installation.</li>
-<li>Because each script runs in its own process, a name (a variable, function, or class) that one script defines is never available to another, whatever the order. A script that fails with a <code>NameError</code> is therefore not re-run; the report names the script or scripts that define the missing name instead.</li>
+<li>Each Python script runs whole, as its own <code>python</code> process. With <code>sandbox = "process"</code> this needs the <code>processx</code> package and a Python interpreter on your computer; if no interpreter is found, or installing or running stops with an error, the Python files are reported as not run, with the reason, and the R results are still returned. With <code>sandbox = "docker"</code>, each script runs in its own container from the image <code>ghcr.io/scienceverse/metacheck_py_small:latest</code>, which has about 45 common packages (numpy, pandas, scipy, matplotlib, seaborn, scikit-learn, statsmodels, and others) already installed. <code>reproducibility_check()</code> has no argument to choose another Python image, but the option <code>metacheck.docker_image_py</code> names one, such as <code>"ghcr.io/scienceverse/metacheck_py_large:latest"</code>, which adds about 70 packages and <code>torch</code> and <code>tensorflow</code> for ordinary processors; Metacheck’s server uses that image. <code>repro_install_deps_py_docker()</code> and <code>repro_run_scripts_py_docker()</code>, called directly, also take an <code>image</code> argument.</li>
+<li>With <code>install_missing = TRUE</code>, packages are installed with <code>pip</code> into a throwaway folder, never into your own Python installation: with <code>pip install --target</code> under <code>sandbox = "process"</code>, and with <code>pip install --prefix</code> inside the container under <code>sandbox = "docker"</code>, where <code>pip</code> also looks in PyTorch’s own collection of versions for ordinary processors.</li>
+<li>A script finds the repository’s own modules: the folder that holds each module a script imports, also the modules the files it imports need, is added to the places Python looks, so <code>from maad import sound</code> works when the repository has a <code>maad/</code> folder.</li>
+<li>Because each script runs in its own process, a name (a variable, function, or class) that one script defines is never available to another, whatever the order. A script that fails with a <code>NameError</code> is therefore not re-run; the report names the script or scripts that define the missing name instead. The later runs for files (see <a href="#running-again">Running scripts again</a>) do apply to Python scripts.</li>
 <li>What a script prints is read with the same reader used for notebook outputs. A printed scipy result such as <code>TtestResult(statistic=4.89, pvalue=6.75e-05, df=22)</code> becomes a t-statistic, a p-value, and degrees of freedom, which are compared with the paper together with the R output (see <a href="#matching-the-reported-results-against-the-output">Matching the reported results against the output</a>). Only the printed text is read: unlike for R, the result objects themselves are not recorded, so a value a script computes but never prints is not seen.</li>
 </ul></section><section id="what-if-theres-no-r-or-python-code-at-all" class="level2" data-number="29.14"><h2 data-number="29.14" class="anchored" data-anchor-id="what-if-theres-no-r-or-python-code-at-all">
 <span class="header-section-number">29.14</span> What if there’s no R or Python code at all?</h2>
@@ -1467,7 +1539,7 @@ Note
 </ul>
 <p>When a paper does have R or Python code, the same findings about SPSS/Stata files, self-reproducible output, and code in other languages are added to the report after the code sections (under the heading “All code and output” when there is Python code).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># a paper whose only "code" is a jamovi file</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># a paper whose only "code" is a jamovi file</span></span>
 <span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">jamovi_only_paper</span>, <span class="st">"reproducibility_check"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span>
 <span><span class="co">#&gt; [1] "yellow"</span></span>
@@ -1496,7 +1568,7 @@ Note
 </ul>
 <p>Every extracted statistic is typed with the <strong>STATO</strong> ontology (the <em>Statistical Methods Ontology</em>), so a <code>t</code>-value carries the accession for “t-statistic”, a <code>p</code>-value the accession for “p-value”, and so on; a statistic with no STATO class keeps its own column header as a plain label, so nothing is dropped.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read the result tables out of a jamovi or JASP file directly</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># read the result tables out of a jamovi or JASP file directly</span></span>
 <span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu">read_stat_tables</span><span class="op">(</span><span class="st">"analysis.omv"</span><span class="op">)</span></span>
 <span><span class="va">long</span>   <span class="op">&lt;-</span> <span class="fu">stat_results_long</span><span class="op">(</span><span class="va">tables</span>, paper_id <span class="op">=</span> <span class="st">"example"</span>,</span>
 <span>                            source_file <span class="op">=</span> <span class="st">"analysis.omv"</span><span class="op">)</span></span>
@@ -1511,7 +1583,7 @@ Note
 <p>As the example at the start of this chapter showed, matching whole tests, rather than lone numbers, prevents a value from being found by coincidence.</p>
 <p>Inside the module, this comparison is made once, after both the R and the Python code have run, so it uses the output of both languages together with any self-reproducible output. A printed scipy result names its values <code>statistic</code> and <code>pvalue</code>, which say nothing about the kind of test, so the kind is taken from the result’s class name: <code>TtestResult</code> gives a t-statistic, <code>F_onewayResult</code> an F-statistic, <code>PearsonRResult</code> Pearson’s r, and <code>Chi2ContingencyResult</code> a chi-squared statistic with its degrees of freedom (<code>dof</code>). <code>spearmanr()</code> and <code>kendalltau()</code> return the same class, so their coefficient is left without a type.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">match_reported_output</span><span class="op">(</span><span class="va">paper</span>, <span class="va">mo</span><span class="op">$</span><span class="va">stat_output</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">match_reported_output</span><span class="op">(</span><span class="va">paper</span>, <span class="va">mo</span><span class="op">$</span><span class="va">stat_output</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">m</span>, <span class="st">"summary"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $n_tests   19</span></span>
 <span><span class="co">#&gt; $n_found   14</span></span>
@@ -1521,7 +1593,7 @@ Note
 </div>
 <p>Each row of the result is one recomposed reported test, with <strong>where it was found</strong>. The full column set is <code>text_id</code>, <code>grp_id</code>, <code>reported</code>, <code>n_components</code>, <code>n_matched</code>, <code>found</code> (logical), <code>match_values</code>, <code>not_matched</code>, <code>source_file</code>, <code>analysis</code>, <code>confidence</code> (<code>"full"</code>, <code>"partial"</code>, or <code>"none"</code>), and <code>plausible_split</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span><span class="op">[</span><span class="va">m</span><span class="op">$</span><span class="va">found</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"reported"</span>, <span class="st">"n_matched"</span>, <span class="st">"confidence"</span>, <span class="st">"source_file"</span>, <span class="st">"analysis"</span><span class="op">)</span><span class="op">]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span><span class="op">[</span><span class="va">m</span><span class="op">$</span><span class="va">found</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"reported"</span>, <span class="st">"n_matched"</span>, <span class="st">"confidence"</span>, <span class="st">"source_file"</span>, <span class="st">"analysis"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                      reported n_matched confidence          source_file                 analysis</span></span>
 <span><span class="co">#&gt;  M=1.93 SD=0.76 W=183.5 ...           5       full  experiment_1.omv   One Sample T-Test</span></span>
 <span><span class="co">#&gt;  p=0.001 d=0.46                       2       full  across_all.omv     Paired Samples ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1548,7 +1620,8 @@ Note
 </tr>
 <tr class="even">
 <td><strong>yellow</strong></td>
-<td>some obstacle short of a full reproduction failure — a parse error, an unresolved input, an ambiguous path or order, or a self-reproducible output file present with no R or Python code to run</td>
+<td>some obstacle short of a full reproduction failure — a parse error, an unresolved input, an ambiguous path or order, a self-reproducible output file present with no R or Python code to run, or (when executed) a script that could not be tried or completed for a reason that says nothing about the code, such as <code>not_downloaded</code>, <code>needs_a_person</code>, <code>needs_internet</code> or <code>skipped_time_limit</code>
+</td>
 </tr>
 <tr class="odd">
 <td><strong>red</strong></td>
@@ -1567,10 +1640,6 @@ Note
 <p>The static-only red condition is worth stating precisely, since it is easy to over-read: it fires when there <strong>are</strong> missing inputs and <strong>every single one</strong> of them is classified <code>withheld_size</code> — not merely when <em>some</em> inputs are size-withheld. Once code is actually executed (<code>execute = TRUE</code>), an execution error or timeout overrides the static signal and forces red regardless — a script that crashes on its own analysis is a genuine reproduction failure, whatever the static assessment said.</p>
 <p>R code and Python code each get their own light by these rules, and the paper gets the more serious of the two (red before yellow before green). SPSS or Stata data without syntax then turns the paper’s light red, whatever language its code is in.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
 <thead><tr class="header">
 <th>Element</th>
 <th>What it contains</th>
@@ -1578,56 +1647,64 @@ Note
 <tbody>
 <tr class="odd">
 <td><code>$table</code></td>
-<td>one row per R or Python file: <code>parses</code>, <code>run_order</code>, <code>order_basis</code>, <code>depends_on</code>, <code>paths_rewritten</code>, <code>paths_ambiguous</code>, <code>setwd_removed</code> (for Python, the number of <code>os.chdir()</code> calls removed), <code>runnable</code>, <code>not_runnable_reason</code>, <code>unresolved_inputs</code>, <code>reads</code>, <code>writes</code>, and (when executed) <code>outcome</code>, <code>error_type</code>, <code>undefined_var</code>
+<td>one row per R or Python file: <code>file_path</code>, <code>parses</code>, <code>run_order</code>, <code>order_basis</code>, <code>depends_on</code>, <code>paths_rewritten</code>, <code>paths_ambiguous</code>, <code>setwd_removed</code> (for Python, the number of <code>os.chdir()</code> calls removed), <code>runnable</code>, <code>not_runnable_reason</code>, <code>unresolved_inputs</code>, <code>reads</code>, <code>writes</code>, <code>names_corrected</code>, <code>used_by</code>, <code>not_analysis_why</code>, <code>paper_link</code>, <code>repo_name</code> (the repository the file comes from, when a paper links several), and (when executed) <code>outcome</code>, <code>error_type</code>, <code>undefined_var</code>, <code>reason</code>
 </td>
 </tr>
 <tr class="even">
 <td><code>$summary_table</code></td>
-<td>per-paper aggregates (<code>repro_code_n</code>, <code>repro_runnable</code>, <code>repro_missing_inputs</code>, <code>repro_deps</code>, <code>repro_ran_ok</code>, <code>repro_tests_reported</code>, <code>repro_tests_matched</code>); the first five add up the R and the Python counts</td>
+<td>per-paper aggregates (<code>repro_code_n</code>, <code>repro_runnable</code>, <code>repro_missing_inputs</code>, <code>repro_deps</code>, <code>repro_ran_ok</code>, <code>repro_tests_reported</code>, <code>repro_tests_matched</code>; the first five add up the R and the Python counts), and, when executed, <code>repro_scripts_n</code> (the scripts with a result of their own), <code>repro_not_analysis_n</code> (files of software that were not run), <code>repro_not_downloaded_n</code>, and one <code>repro_fail_&lt;reason&gt;</code> column per reason (see <a href="#outcomes">Outcomes</a>)</td>
 </tr>
 <tr class="odd">
 <td><code>$run_results</code></td>
-<td>per-script execution record: <code>outcome</code>, <code>error</code>, <code>error_type</code>, <code>undefined_var</code>, captured <code>stdout</code> / <code>stderr</code>, <code>elapsed</code> time, <code>script_lines</code>, <code>captures</code> (the raw captured R objects; always empty for Python)</td>
+<td>per-script execution record: <code>outcome</code>, <code>reason</code>, <code>error</code>, <code>error_type</code>, <code>undefined_var</code>, captured <code>stdout</code> / <code>stderr</code>, <code>elapsed</code> time, <code>script_lines</code>, <code>captures</code> (the raw captured R objects; always empty for Python)</td>
 </tr>
 <tr class="even">
 <td><code>$install_results</code></td>
 <td>per-dependency install record: <code>package</code>, <code>source</code>, <code>installed</code>, <code>message</code>, <code>via_archive</code>, <code>category</code> (for Python, always <code>FALSE</code> and <code>NA</code>)</td>
 </tr>
 <tr class="odd">
+<td><code>$recorded_versions</code></td>
+<td>the recorded package versions the run used (see <a href="#recorded-versions">Recorded package versions</a>); <code>NULL</code> when none were used</td>
+</tr>
+<tr class="even">
 <td><code>$stat_output</code></td>
 <td>per-file extracted statistical output: the structured JSON document and the flattened result rows</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>$match_table</code></td>
 <td>the full <code>match_reported_output()</code> result, when there was output to match against</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>$modifications</code></td>
-<td>per-file modification detail: <code>file_name</code>, <code>change_type</code>, <code>detail</code> — path rewrites (<code>path_rewrite</code>, listed even when <code>execute = FALSE</code>), and, when executed, <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> or <code>os.chdir()</code> removal (<code>setwd_removed</code>), font substitution (<code>font_replaced</code>, R only), and added <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls (<code>library_injected</code>, R only). Empty when nothing needed modifying</td>
+<td>per-file modification detail: <code>file_name</code>, <code>change_type</code>, <code>detail</code> — path rewrites (<code>path_rewrite</code>) and names spelled otherwise than in the deposit (<code>name_corrected</code>), listed even when <code>execute = FALSE</code>, and, when executed, among others: <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> or <code>os.chdir()</code> removal (<code>setwd_removed</code>), font substitution (<code>font_replaced</code>, R only), added <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> calls (<code>library_injected</code>, R only), a script loaded first (<code>loaded_first</code>), <code>groundhog</code>, <code>checkpoint</code> or <code>renv</code> calls replaced (<code>env_call_replaced</code>), Windows paths given <code>/</code> (<code>windows_path</code>), R’s old defaults (<code>old_default</code>), Stan code given the syntax of Stan 2.33 and later (<code>stan_syntax</code>), a deposit copy used for a Git LFS pointer (<code>lfs_pointer</code>), and the later runs of <a href="#running-again">Running scripts again</a> (<code>run_again</code>, <code>output_copied</code>, <code>file_placed</code>). Empty when nothing needed modifying</td>
+</tr>
+<tr class="odd">
+<td><code>$report</code></td>
+<td>formatted report sections, including per-script output and the self-reproducible JASP/jamovi results; the R sections come first, then a “Python code” section when there is Python code. When a paper links several repositories, a line per repository gives its scripts and how many ran to the end, so a reader can see when failures lie in software by others</td>
 </tr>
 <tr class="even">
-<td><code>$report</code></td>
-<td>formatted report sections, including per-script output and the self-reproducible JASP/jamovi results; the R sections come first, then a “Python code” section when there is Python code</td>
-</tr>
-<tr class="odd">
 <td><code>$summary_text</code></td>
 <td>plain-text bulleted summary, as one text also when the paper has R and Python code</td>
 </tr>
-<tr class="even">
-<td><code>$checklist_section</code></td>
-<td>(only when <code>execute = TRUE</code>) the section the checklist report (<code>report_type = "checklist"</code>) shows for this check: how the scripts were run, what happened to each script in run order, other problems in the files, and how many of the paper’s reported tests were found in the output of the code</td>
-</tr>
 <tr class="odd">
+<td><code>$checklist_section</code></td>
+<td>(only when <code>execute = TRUE</code>) the section the checklist report (<code>report_type = "checklist"</code>) shows for this check: how the scripts were run, what happened to each script in run order, other problems in the files, how many of the paper’s reported tests were found in the output of the code, and, when scripts did not run to the end, guidance under “How to make your code run on another computer” (see below)</td>
+</tr>
+<tr class="even">
 <td><code>$brief</code></td>
 <td>
 <code>TRUE</code> when code was run and at least one script ran to the end, stopped with an error, or ran out of time; the brief report then keeps this check whatever its light</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>$sandbox</code></td>
 <td>(only present when <code>keep_sandbox = TRUE</code>) the path to the materialised throwaway directory — see below</td>
 </tr>
 </tbody>
-</table></section><section id="options" class="level2" data-number="29.18"><h2 data-number="29.18" class="anchored" data-anchor-id="options">
+</table>
+<section id="guidance-for-the-authors" class="level3" data-number="29.17.1"><h3 data-number="29.17.1" class="anchored" data-anchor-id="guidance-for-the-authors">
+<span class="header-section-number">29.17.1</span> Guidance for the authors</h3>
+<p>When scripts did not run to the end, the checklist section guides the authors in making their code run, under the heading “How to make your code run on another computer”. Each problem gets a block: what is wrong, the scripts it affects with the file, package or object involved, why the script fails, and the steps to fix it, written so that a student can follow them. The blocks come in the order in which to fix them, because a problem near the top can cause the ones below it: a file another script should have made, files missing from the deposit, a location that exists only on the authors’ computer, a renamed file, a file only inside a zip file, code written for older versions of its packages (with how to record the versions with <code>renv</code> or <code>pip freeze</code>), a package that could not be installed (with the successor of a package removed from CRAN, such as <code>sf</code> or <code>terra</code> for <code>rgdal</code>), a program or other software the code needs, an API key, a Microsoft Access database, something the script does not create or load itself, a syntax error, the time and memory limits, downloads, and a person’s choice. Where the output does not show the cause, the block says so.</p>
+</section></section><section id="options" class="level2" data-number="29.18"><h2 data-number="29.18" class="anchored" data-anchor-id="options">
 <span class="header-section-number">29.18</span> Options</h2>
 <table class="caption-top table">
 <thead><tr class="header">
@@ -1654,29 +1731,41 @@ Note
 </tr>
 <tr class="even">
 <td><code>install_missing</code></td>
+<td><code>NULL</code></td>
+<td>
+<code>TRUE</code> installs declared dependencies into a throwaway library before running (Python packages with <code>pip</code>, see <a href="#running-the-code-what-happens-during-execution">Running the code</a>); <code>FALSE</code> installs nothing; <code>NULL</code> installs nothing, except the R packages the scripts load when <code>recorded_versions = TRUE</code> and the repository records their versions</td>
+</tr>
+<tr class="odd">
+<td><code>recorded_versions</code></td>
 <td><code>FALSE</code></td>
-<td>install declared dependencies into a throwaway library before running (Python packages with <code>pip install --target</code>)</td>
+<td>install the R packages the scripts load at the versions the repository records — see <a href="#recorded-versions">Recorded package versions</a>
+</td>
+</tr>
+<tr class="even">
+<td><code>install_timeout</code></td>
+<td><code>NULL</code></td>
+<td>time in seconds for installing a paper’s R and Python packages; <code>NULL</code> uses <code>timeout</code>, or an hour when recorded versions are installed. With a clock time as <code>total_timeout</code>, installing takes at most half of the time that is left</td>
 </tr>
 <tr class="odd">
 <td><code>cran_install_main</code></td>
 <td><code>FALSE</code></td>
-<td>(only for R code, under <code>sandbox = "process"</code>) install CRAN-source dependencies into your real default library instead of a throwaway one, so they persist across papers in a batch run; ignored under <code>sandbox = "docker"</code>, where a container never has access to your host library</td>
+<td>(only for R code, under <code>sandbox = "process"</code>) install CRAN-source dependencies into your real default library instead of a throwaway one, so they persist across papers in a batch run; ignored under <code>sandbox = "docker"</code>, where a container never has access to your host library. A recorded version always goes into the throwaway library</td>
 </tr>
 <tr class="even">
-<td><code>layout</code></td>
-<td><code>"auto"</code></td>
-<td>which files the code runs against: <code>"package"</code>, <code>"psychds"</code>, or <code>"auto"</code> (<code>"package"</code> for a local folder) — see <a href="#two-layouts">Two layouts</a>
-</td>
-</tr>
-<tr class="odd">
 <td><code>timeout</code></td>
 <td><code>600</code></td>
 <td>per-script timeout in seconds</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>total_timeout</code></td>
 <td><code>3600</code></td>
 <td>time for all scripts together, in seconds from when the first script starts, or a clock time (<code>POSIXct</code>); <code>NULL</code> or <code>Inf</code> for no limit — see <a href="#time-limits">Time limits</a>
+</td>
+</tr>
+<tr class="even">
+<td><code>internet</code></td>
+<td><code>FALSE</code></td>
+<td>(only under <code>sandbox = "docker"</code>) let the scripts use the internet while they run, within the download limits; the default can be set with <code>options(metacheck.repro_internet = TRUE)</code> — see <a href="#internet">Scripts that download their data</a>
 </td>
 </tr>
 <tr class="odd">
@@ -1708,8 +1797,7 @@ Note
 <code>model</code>, <code>params</code>
 </td>
 <td></td>
-<td>passed through to the upstream modules’ LLM calls (<code>data_check</code>, <code>psychds_check</code>), only used when <code>llm_use(TRUE)</code>
-</td>
+<td>passed on to the internal <code>data_check</code> run; since this module runs <code>data_check</code> with the use of a language model turned off, they have no effect at present</td>
 </tr>
 <tr class="even">
 <td><code>cache</code></td>
@@ -1731,7 +1819,7 @@ Note
 <tr class="odd">
 <td><code>tables_dir</code></td>
 <td><code>NULL</code></td>
-<td>a directory of per-paper <code>.rds</code> files from a prior full corpus build (written by the internal <code>capture_module_tables()</code>); when set, a reproducibility-only re-run reads that paper’s already-computed <code>data_check</code>/<code>code_check</code>/<code>psychds_check</code> results from disk instead of re-running them</td>
+<td>a directory of per-paper <code>.rds</code> files from a prior full corpus build (written by the internal <code>capture_module_tables()</code>); when set, a reproducibility-only re-run reads that paper’s already-computed <code>data_check</code>/<code>code_check</code> results from disk instead of re-running them</td>
 </tr>
 </tbody>
 </table>
@@ -1745,10 +1833,10 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>download</code>, <code>skip_types</code>, and <code>peek_zips</code> are also part of the key the LLM response cache uses for <code>data_check</code>’s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.</p>
+<p>These arguments only take effect when <code>data_check</code> has not already been run for this paper. If you ran <code>data_check</code> yourself first, with other arguments, the module uses that run’s files as they are. When you ran it yourself with <code>llm_use(TRUE)</code>, <code>download</code>, <code>skip_types</code>, and <code>peek_zips</code> are also part of the key the LLM response cache uses for <code>data_check</code>’s column classification — changing any of them between runs on the same paper produces a different file set and therefore a cache miss, even though the paper and the underlying question are identical.</p>
 </div>
 </div>
-<p><code>keep_sandbox = TRUE</code> is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (<code>data/</code> for the Psych-DS layout, or a copy of the whole package for the package layout), <code>output/</code> (anything a script’s write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/<code>.spv</code>/<code>.smcl</code>/<code>.out</code> file — a <code>statistical_output/</code> folder with the structured results documents. <code>convert_psychds()</code>, which is meant to put this folder into a Psych-DS archive, is not yet available in the released version or in <code>dev</code>; see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</p>
+<p><code>keep_sandbox = TRUE</code> is worth using deliberately rather than as a debugging afterthought: the directory it preserves contains the files the code ran against (a copy of the repository, with the rewritten scripts), <code>output/</code> (anything a script’s write calls were redirected into), and — whenever there is any extracted statistical output at all, whether from execution or from a self-contained JASP/jamovi/<code>.spv</code>/<code>.smcl</code>/<code>.out</code> file — a <code>statistical_output/</code> folder with the structured results documents. <code>convert_psychds()</code>, which is meant to put this folder into a Psych-DS archive, is not yet available in the released version or in <code>dev</code>; see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</p>
 </section><section id="notes-and-limitations" class="level2" data-number="29.19"><h2 data-number="29.19" class="anchored" data-anchor-id="notes-and-limitations">
 <span class="header-section-number">29.19</span> Notes and limitations</h2>
 <p>Honest limits worth keeping in mind:</p>
@@ -1756,7 +1844,7 @@ Warning
 <li>The static phase cannot always tell that a file a script reads is an <strong>intermediate produced by another script</strong> under a different name, so it may report it as an “absent” input.</li>
 <li>Helper scripts <code><a href="https://rdrr.io/r/base/source.html">source()</a></code>d through a <strong>dynamically built path</strong> do not get a source edge, so they order arbitrarily with basis <code>none</code>.</li>
 <li>Only <strong>R</strong> and <strong>Python</strong> are executed. SPSS syntax, Stata syntax, SAS, and MATLAB are reported but not run; SPSS/Stata/JASP/jamovi/Mplus results are read from their own output files, and a notebook’s saved results from the notebook, rather than recomputed.</li>
-<li>Each Python script runs in its own process, so a script written to run after another one in the same Python session fails on the names that other script defines; there is no corrective re-run for Python. Python dependencies come only from <code>import</code> lines, so a package imported under a name other than its <code>pip</code> name is installed correctly only when that name is in the module’s built-in list.</li>
+<li>Each Python script runs in its own process, so a script written to run after another one in the same Python session fails on the names that other script defines; there is no corrective re-run for a <code>NameError</code> in Python. Python dependencies come only from <code>import</code> lines, so a package imported under a name other than its <code>pip</code> name is installed correctly only when that name is in the module’s built-in list.</li>
 <li>The output parser handles the common R output shapes (one-line tests like <code>t.test</code>; fixed-width tables like <code>summary(lm)</code> and <code>aov</code>), printed Python results such as scipy’s, and JASP/jamovi/SPSS-Viewer/Mplus/notebook result tables. Unusual or bespoke output may parse incompletely; statistics with no STATO class are kept under their own header rather than semantically typed.</li>
 <li>Extracted values inherit the <strong>display precision</strong> the software reported (<code>p = "&lt; .001"</code> is a threshold, <code>t = 2.77</code> is rounded), so matching is precision-aware rather than exact — it compares what was <em>reported</em>, which is what you want for a reproducibility check.</li>
 <li>
