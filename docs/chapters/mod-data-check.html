@@ -321,62 +321,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../chapters/mod-psychds-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Psych-DS Check</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../chapters/importing-exporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Importing and Exporting JASP, jamovi, and SPSS Viewer Files</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-reproducibility-check.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Reproducibility Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-consistency.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Reference Consistency</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-pubpeer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">PubPeer Comments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-retraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Retraction Watch</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-replication.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Replication Check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-accuracy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Reference Accuracy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/mod-ref-summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Reference Summary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/creating-a-report.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Creating a Metacheck Report</span></span></a>
   </div>
 </li>
       </ul>
@@ -393,13 +387,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/local-files.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Checking Local Files with repo_check and code_check</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/ollama.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Local AI with Ollama</span></span></a>
   </div>
 </li>
       </ul>
@@ -617,7 +611,7 @@ Warning
 <li>
 <strong>Runs data-quality checks</strong> on those columns and on the raw workbook of every spreadsheet, and checks whether any <code>.csv</code> file is separated by spaces instead of commas, described in <a href="../chapters/mod-data-validate.html">Data Quality Checks</a>. These were formerly two separate modules, <code>data_validate</code> and <code>excel_check</code>; both are now part of <code>data_check</code>.</li>
 <li>
-<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>codebook_check</code> builds on <code>data_check</code>’s output rather than re-reading the files, <code>psychds_check</code> uses its classification and study grouping to compare the repository with the Psych-DS layout, and <code>convert_psychds()</code> (not yet available) is designed to use them to build a Psych-DS archive (see <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>).</li>
+<strong>Makes the extracted columns and read data frames available</strong> to the other data modules — <code>codebook_check</code> builds on <code>data_check</code>’s output rather than re-reading the files, <code>psychds_check</code> uses its classification and study grouping to compare the repository with the Psych-DS layout, and <code>convert_psychds()</code> (not yet available) is designed to use them to build a Psych-DS archive.</li>
 </ol>
 <p>On its own, <code>data_check</code> gives you a machine-readable inventory of what was shared and what each data column contains. It is also the first module in the data pipeline: run it once, and the downstream modules reuse its results.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -802,13 +796,13 @@ Note
 #&gt; └── analysis.R     💻 code ex1
 #&gt;     Unit = c("years", "", "", "", "milliseconds", ""), Rows = c(20L, 
 #&gt;     20L, 20L, 20L, 20L, 20L), "% Missing" = c(0, 0, 0, 0, 0, 
-#&gt;     0), "N Unique" = c(17L, 2L, 20L, 2L, 19L, 20L), Mean = c(47.05, 
-#&gt;     NA, NA, NA, 601.65, 49.205), SD = c(14.877, NA, NA, NA, 178.554, 
-#&gt;     9.706), Min = c(23, NA, NA, NA, 344, 33.4), Max = c(65, NA, 
-#&gt;     NA, NA, 884, 63.5)), row.names = c("age", "condition", "participant_id",</code></pre>
+#&gt;     0), "N Unique" = c(15L, 2L, 20L, 2L, 19L, 19L), Mean = c(44.45, 
+#&gt;     NA, NA, NA, 639.3, 51.405), SD = c(14.674, NA, NA, NA, 162.201, 
+#&gt;     11.091), Min = c(23, NA, NA, NA, 317, 31.9), Max = c(65, 
+#&gt;     NA, NA, NA, 883, 76.9)), row.names = c("age", "condition",</code></pre>
 </div>
 </div>
-<p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a>, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
+<p>On a real repository this is often the quickest way to spot problems: data scattered across many ad-hoc folders, deeply nested paths, or files sitting loose at the top level. This same tree is the starting point for the <code>psychds_check</code> module, which compares a repository’s actual tree against the tree the Psych-DS standard says it <em>should</em> have.</p>
 </section><section id="column-facets" class="level2" data-number="24.6"><h2 data-number="24.6" class="anchored" data-anchor-id="column-facets">
 <span class="header-section-number">24.6</span> Column facets</h2>
 <p>For every readable tabular file, <code>data_check</code> reads the data and describes each column. Earlier versions gave each column a single <code>col_type</code> value — but that conflated things that are not really alternatives: <em>how</em> a value is stored, <em>what level</em> it is measured on, and <em>what it actually measures</em>. Following the <a href="https://ddialliance.org/">DDI</a> metadata standard, <code>data_check</code> now describes each column with several <strong>orthogonal facets</strong>, computed by the exported helper <code>data_col_facets()</code>:</p>
@@ -1050,7 +1044,7 @@ Note
 <li>
 <strong><code>.txt</code> reclassification</strong> (<code>txt_classify_content()</code>): a <code>.txt</code> is ambiguous by name (an E-Prime export, a task log, a codebook, or prose all ship as <code>.txt</code>), so all <code>.txt</code> files are fetched under <code>download = "data"</code> and reclassified from their <em>content</em> once on disk. Only ever an <em>upgrade</em> to <code>data</code> (an E-Prime header block, or a delimited table with a real header row); an unrecognised <code>.txt</code> keeps whatever its name implied, so prose is never mistaken for data. A name-based README/codebook verdict is authoritative and never overridden.</li>
 <li>
-<strong>Trial-level files</strong> (<code>.bh_is_trial_level_file()</code>): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file <em>per participant per block</em>. Treating each as its own dataset would produce hundreds of fragmented “datasets” for one instrument, so they are held out of the tabular extractor, recorded, and are designed to be later <strong>merged per instrument</strong> into <code>paradata/&lt;instrument&gt;.json</code> by <code>convert_psychds()</code> (not yet available), following the <a href="https://behaverse.github.io/data-model/">Behaverse Data Model</a> <code>trial</code> standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. To recognise an Inquisit, jsPsych or Behaverse file, <code>data_check</code> reads only the file’s first line (the column names), so the check stays fast even on a table with thousands of columns; an E-Prime export is recognised from the header block in its first lines. The Behaverse schema is described in full in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter.</li>
+<strong>Trial-level files</strong> (<code>.bh_is_trial_level_file()</code>): E-Prime, Inquisit, jsPsych, and native Behaverse files publish one file <em>per participant per block</em>. Treating each as its own dataset would produce hundreds of fragmented “datasets” for one instrument, so they are held out of the tabular extractor, recorded, and are designed to be later <strong>merged per instrument</strong> into <code>paradata/&lt;instrument&gt;.json</code> by <code>convert_psychds()</code> (not yet available), following the <a href="https://behaverse.github.io/data-model/">Behaverse Data Model</a> <code>trial</code> standard (a source-agnostic, tidy, trial-level schema). Nothing is deleted. To recognise an Inquisit, jsPsych or Behaverse file, <code>data_check</code> reads only the file’s first line (the column names), so the check stays fast even on a table with thousands of columns; an E-Prime export is recognised from the header block in its first lines.</li>
 </ul></section><section id="qualtrics-survey-exports" class="level2" data-number="24.11"><h2 data-number="24.11" class="anchored" data-anchor-id="qualtrics-survey-exports">
 <span class="header-section-number">24.11</span> Qualtrics survey exports</h2>
 <p>Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved response-metadata columns (<code>StartDate</code>, <code>Duration (in seconds)</code>, <code>Finished</code>, <code>ResponseId</code>, …) and, for the “use choice text” export, extra header rows (question text and an <code>ImportId</code> JSON row) as the first <em>data</em> rows, which force every column to text. <code>data_check</code> detects these files with <code>data_check_is_qualtrics()</code> (matching ≥4 reserved metadata names and/or the <code>ImportId</code> row), strips the extra header rows with <code>data_strip_qualtrics_header()</code> so the columns type correctly, and tags each metadata column with its semantic role via <code>.qualtrics_tag_cols()</code>. The reserved-name → tag map is the schema <code>.qualtrics_meta_cols</code> (<code>startdate → qualtrics_start</code>, <code>durationinseconds → qualtrics_duration</code>, <code>finished → qualtrics_finished</code>, …), matched case-insensitively after stripping non-alphanumerics so <code>Duration (in seconds)</code> and the R-mangled <code>Duration..in.seconds.</code> both hit. The substantive question columns are deliberately <em>not</em> interpreted here — that is the job of the Qualtrics metadata summary and the scale-block detection in <code>codebook_check</code>.</p>
@@ -1196,10 +1190,10 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>convert_psychds()</code> is not yet available in the released version or in <code>dev</code>. This section describes what <code>data_check</code>’s output is <em>for</em>; see the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter for the current state of that work. For a folder on your own computer, <code>FAIR_repo()</code> already writes a copy in the Psych-DS layout; it is described in the same chapter.</p>
+<p><code>convert_psychds()</code> is not yet available in the released version or in <code>dev</code>. This section describes what <code>data_check</code>’s output is <em>for</em>. For a folder on your own computer, <code>FAIR_repo()</code> already writes a copy in the Psych-DS layout; see <a href="../chapters/local-files.html">Checking Local Files</a>.</p>
 </div>
 </div>
-<p><code>data_check</code>’s classification, facets, study groups, and read data frames are what make it possible to <em>rebuild</em> a repository as a standard-compliant dataset. That will be the job of <code>convert_psychds()</code>, which is documented in full — together with the <strong>Psych-DS</strong>, <strong>OpenScales OSD</strong>, and <strong>Behaverse</strong> schemas it writes — in the <a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> chapter. In short: run <code>data_check</code> with <code>download = "all"</code> (so every file is on disk), then <code>convert_psychds(paper)</code> copies each file to its standard Psych-DS location, generates a <code>dataset_description.json</code> (with <code>variableMeasured</code> built from these facets and the codebook labels), splits multi-study repositories into <code>study-&lt;group&gt;/</code> datasets under a <code>collection.json</code>, writes identified scales as <code>scales/&lt;code&gt;.osd</code> files, and normalises trial-level data into <code>paradata/&lt;instrument&gt;.json</code>.</p>
+<p><code>data_check</code>’s classification, facets, study groups, and read data frames are what make it possible to <em>rebuild</em> a repository as a standard-compliant dataset. That will be the job of <code>convert_psychds()</code>, which is planned to write the <strong>Psych-DS</strong>, <strong>OpenScales OSD</strong>, and <strong>Behaverse</strong> schemas. As planned: run <code>data_check</code> with <code>download = "all"</code> (so every file is on disk), then <code>convert_psychds(paper)</code> copies each file to its standard Psych-DS location, generates a <code>dataset_description.json</code> (with <code>variableMeasured</code> built from these facets and the codebook labels), splits multi-study repositories into <code>study-&lt;group&gt;/</code> datasets under a <code>collection.json</code>, writes identified scales as <code>scales/&lt;code&gt;.osd</code> files, and normalises trial-level data into <code>paradata/&lt;instrument&gt;.json</code>.</p>
 </section><section id="related" class="level2" data-number="24.16"><h2 data-number="24.16" class="anchored" data-anchor-id="related">
 <span class="header-section-number">24.16</span> Related</h2>
 <ul>
@@ -1207,8 +1201,6 @@ Note
 <a href="../chapters/mod-data-validate.html">Data Quality Checks</a> describes the automated data-quality checks that <code>data_check</code> runs on the columns it extracts, including spreadsheet-formatting checks (colour coding, merged cells, empty rows/columns) for <code>.xlsx</code>/<code>.xls</code>/<code>.ods</code>/<code>.fods</code> files.</li>
 <li>
 <a href="../chapters/mod-codebook-check.html">Codebook Check</a> checks whether the columns are documented.</li>
-<li>
-<a href="../chapters/mod-psychds-check.html">Psych-DS Check</a> describes checking a repository against the Psych-DS standard with <code>psychds_check</code>, and hosts <code>convert_psychds()</code> and the schema reference; <code>convert_psychds()</code> is not available yet.</li>
 </ul>
 
 
