@@ -162,6 +162,10 @@ ldbase_links(paper)
 
 A repository that is linked but cannot be retrieved is kept, as a repository that could not be checked, and is never counted as an empty repository or as one without a README. Its reason is recorded in `$gated_repos`. For the OSF, the reasons say whether the OSF did not answer (HTTP 503, for example during an outage), the project was not found (HTTP 404), was deleted or withdrawn (HTTP 410), or the rate limit was reached (HTTP 429). A failed OSF lookup is not stored in the cache, so a later run asks again. The summary and report name each repository that could not be checked, the summary table counts them in `repo_unchecked`, and the traffic light is not green while any could not be checked.
 
+### Private OSF projects linked through a view-only link
+
+A view-only link (an OSF address ending in `?view_only=` and a key) lets anyone with the link see the files of a private OSF project. Such links are made for peer review, and a paper that keeps them after publication often links the same project twice: once plainly, and once with the view-only key. `repo_check` reads the files through the view-only link and checks the project once. The plain link to the same project is left out, so it is not reported as a repository that could not be checked ("private"), and not counted as a second repository. The summary and report name the project instead: "The OSF project ... is private. Metacheck examined the files through the view_only link. As the preprint is public, and the OSF Files are accessible to anyone, consider making the OSF project public." The traffic light is then not green. The summary table counts these projects in `repo_view_only`, and the result's `$view_only` table lists, for each paper, the view-only link (`repo_url`) and the project it leads to (`project`).
+
 Some links are recognised but lead to no single repository:
 
 - a link to a **GitHub account or organisation** (`https://github.com/OneZoom/`) instead of to one repository is reported as "links to a GitHub account, not to a specific repository"; a GitLab address with one path segment is reported the same way;
@@ -339,14 +343,15 @@ module_run(paper, "repo_check", model = "gpt-4o-mini", params = list(temperature
 | Element | What it contains |
 |---|---|
 | `$table` | one row per file across all repositories: `repo_url`, `repo_name`, `file_name`, `file_path`, `file_url`, `file_location`, `file_size`, `file_type`, `data_type`, `doc_role`, `group`, `paper_id` |
-| `$summary_table` | per-paper aggregates: `repo_n`, `repo_unchecked` (repositories linked but not retrieved, so "no repository linked" and "a repository could not be checked" can be told apart), `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch` |
+| `$summary_table` | per-paper aggregates: `repo_n`, `repo_unchecked` (repositories linked but not retrieved, so "no repository linked" and "a repository could not be checked" can be told apart), `files_n`, `files_data`, `files_code`, `files_readme`, `files_zip`, `files_unknown`, `naming_issues`, `roster_mismatch`, `repo_view_only` (private OSF projects checked through a view-only link) |
 | `$naming_issues` | full output of `check_file_naming()` — one row per issue, with severity |
 | `$roster_check` | the manuscript-vs-file study roster comparison (`roster`, `missing`, `extra`), or `NULL` if not applicable |
 | `$gated_repos` | repositories found but not listed (e.g. a GitHub repository too large for GitHub to list in one request, a private OSF component, an OSF link during an OSF outage, or an LDbase link that could not be read), with the reason |
+| `$view_only` | private OSF projects checked through a view-only link in the paper: `paper_id`, `repo_url` (the view-only link), `project` |
 | `$useless_files` | files that do not belong in a repository: `paper_id`, `repo_url`, `file_path`, `kind`, `severity` |
 | `$repo_metadata` | one row per repository (not per file): `paper_id`, `repo_url`, `doi`, `license` |
 | `$group_no_evidence` | `TRUE` if study grouping had no evidence to work from |
-| `$report` | formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown |
+| `$report` | formatted report sections: repositories, files, README, archives, E-Prime, restricted access, private projects checked through a view-only link, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown |
 | `$summary_text` | plain-text bulleted summary of each check |
 
 ## Related

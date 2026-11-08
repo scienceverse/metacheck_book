@@ -36,7 +36,11 @@ This judgment is made by an internal helper that searches the text for sentences
 - **sample descriptions** — "our participants", student samples, or participant/patient inclusion and exclusion criteria;
 - **animal data collection** — equivalent phrasing for animal subjects.
 
-The patterns are deliberately **conservative**: they require explicit participant- or recruitment-language rather than generic words like "sample", so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged. The result is stored in the `needs_ethics` column of the summary table, and the traffic light only turns red for papers where `needs_ethics` is `TRUE` *and* no approval statement was found.
+The patterns are deliberately **conservative**: they require explicit participant- or recruitment-language rather than generic words like "sample", so that papers re-analysing existing survey data or running computational experiments are not mistakenly flagged.
+
+A paper that states that no human or animal subjects took part does not need an ethics statement, whatever participant phrase it also contains. The module looks for statements such as "no human subjects were involved", "did not involve human participants", "no animals nor human participants were involved", or that people took part "not as subjects" (as in a paper whose professionals "described their own work as collaborators in the projects, not as subjects recruited for a study", where "subjects recruited" alone would count as recruiting participants). Such a statement is recorded in the `states_no_participants` column of the summary table, and the report quotes it. A negation near a participant phrase is not enough on its own: "No participants were minors" and "No participants were excluded" describe studies that did have participants, so the statement must name human or animal subjects, or say "not as subjects".
+
+The result is stored in the `needs_ethics` column of the summary table, which is `FALSE` for a paper that states no participants took part. The traffic light only turns red for papers where `needs_ethics` is `TRUE` *and* no approval statement was found.
 
 This module is **fully offline** — it uses only regular expressions, so all the code below runs with just the Metacheck package.
 
@@ -55,10 +59,11 @@ mo$traffic_light
 mo$summary_text
 ```
 
-The `summary_table` has one row per paper, with an `ethics_approved` flag and the matched statement(s):
+The `summary_table` has one row per paper, with an `ethics_approved` flag, whether the paper appears to need a statement (`needs_ethics`), whether it states that no participants took part (`states_no_participants`), and the matched statement(s):
 
 ```{r}
-mo$summary_table[, c("paper_id", "ethics_approved")] |>
+mo$summary_table[, c("paper_id", "ethics_approved", "needs_ethics",
+                     "states_no_participants")] |>
   knitr::kable()
 ```
 

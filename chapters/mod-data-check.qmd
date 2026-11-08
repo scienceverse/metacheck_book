@@ -266,6 +266,8 @@ Two guards make the result trustworthy. `data_study_roster()` reads the manuscri
 - **UTF-16 text files**, such as E-Prime and other Windows exports, are read in that encoding.
 - **Invalid UTF-8** bytes (a Latin-1/Windows-1252 export) are re-interpreted as Latin-1 rather than failing (`.utf8_repair_df()`), and the per-column repair count is recorded in a `utf8_repaired` attribute so the mixed encoding can be reported.
 
+Two kinds of files that once stopped the whole check are now read. An `.rds` or `.RData` file with a labelled text column made by the haven package, such as PISA's three-digit country codes, needs haven to be turned into text; `readRDS()` and `load()` do not load it, so the reader now loads haven when a column is labelled. A `.tar` archive made on a Mac holds binary records of each file's extended attributes; these records are skipped, and only each file's path and size are read.
+
 Qualtrics exports get special handling on read (see below).
 
 ## What the module holds back or reclassifies after reading
@@ -282,13 +284,26 @@ Several file types read as a data frame but are not straightforward datasets. `d
 
 Qualtrics CSV/TSV exports have a fixed, recognisable shape: a set of reserved response-metadata columns (`StartDate`, `Duration (in seconds)`, `Finished`, `ResponseId`, …) and, for the "use choice text" export, extra header rows (question text and an `ImportId` JSON row) as the first *data* rows, which force every column to text. `data_check` detects these files with `data_check_is_qualtrics()` (matching ≥4 reserved metadata names and/or the `ImportId` row), strips the extra header rows with `data_strip_qualtrics_header()` so the columns type correctly, and tags each metadata column with its semantic role via `.qualtrics_tag_cols()`. The reserved-name → tag map is the schema `.qualtrics_meta_cols` (`startdate → qualtrics_start`, `durationinseconds → qualtrics_duration`, `finished → qualtrics_finished`, …), matched case-insensitively after stripping non-alphanumerics so `Duration (in seconds)` and the R-mangled `Duration..in.seconds.` both hit. The substantive question columns are deliberately *not* interpreted here — that is the job of the Qualtrics metadata summary and the scale-block detection in `codebook_check`.
 
+## Keys in the repository
+
+A repository sometimes holds a key: an API key, an access token or a private key. Anyone who downloads the files can then use a paid service at the authors' cost. A preprint's OSF project, for example, held a key for a language model service in the survey flow of two Qualtrics surveys (`.qsf` files), as embedded data, and the Qualtrics export also wrote that key into every response of the data files. `data_check` therefore searches the files for keys:
+
+- The files the authors wrote (code, settings files such as `.env`, survey definitions, documentation, outputs) are searched whole. Of a local folder, the hidden files are searched too.
+- Of a tabular data file, whose values come from participants, only the column names and the first 3 rows of the table as read are searched. These hold a key that was set for a whole survey.
+- Files over 25 MB and binary files are not searched, and neither is encoded data (an unbroken run of 1,000 or more base64 characters, such as an image inside a knitted HTML page).
+
+The search uses the rules of high and medium confidence of the secret scanner [betterleaks](https://github.com/betterleaks/betterleaks), with its filters against placeholders and examples. A rule made for some files only, such as a Terraform password for `.tf` files, is tried on those files only.
+
+A key found turns the traffic light red. The report gives, for each key, the files and lines (or, for a data table, the rows) it is on, its type, and only its first characters, and says what to do: revoke the key with its provider, make a new one, and then remove the key from the files. Deleting the file or the line alone does not remove the key, because GitHub keeps every earlier version of a repository, and the OSF keeps earlier versions of a file. The same information is in the `$keys` table, and `key_n` in `$summary_table` counts the different keys found for each paper. A key is never tested with its provider. Every module's result, not only that of `data_check`, has any key it holds replaced by "[key removed]" (see [Creating Modules](creating-modules.qmd)), so Metacheck never copies a key into its own reports, tables or saved results.
+
 ## What you get back
 
 | Element | What it contains |
 |---|---|
-| `$traffic_light` | the worse of two separately computed lights: whether files were actually read (`"green"`/`"yellow"` when some tabular files had no local copy/`"na"` when there is nothing to check), and the data-quality checks on the columns that *were* read (`"green"` with no issues, `"yellow"` below 25% of columns flagged — or any careless-responding, spreadsheet-formatting or space-separated `.csv` finding at all — `"red"` at 25% or more). A clean extraction never hides a real data-quality problem, and a quality problem on the columns that loaded never gets hidden by an otherwise-successful read |
-| `$summary_text` | plain-text bulleted summary: files classified, columns extracted, study groups, and any held-back files |
-| `$summary_table` | per-paper counts (`data_file_n`, `column_n`, `empty_col_n`, plus wide per-representation counts) |
+| `$traffic_light` | the worse of two separately computed lights: whether files were actually read (`"green"`/`"yellow"` when some tabular files had no local copy/`"na"` when there is nothing to check), and the data-quality checks on the columns that *were* read (`"green"` with no issues, `"yellow"` below 25% of columns flagged — or any careless-responding, spreadsheet-formatting or space-separated `.csv` finding at all — `"red"` at 25% or more). A clean extraction never hides a real data-quality problem, and a quality problem on the columns that loaded never gets hidden by an otherwise-successful read. A key found in the files (see [Keys in the repository](#keys-in-the-repository)) always makes the light red |
+| `$summary_text` | plain-text bulleted summary: keys found, files classified, columns extracted, study groups, and any held-back files |
+| `$summary_table` | per-paper counts (`data_file_n`, `column_n`, `empty_col_n`, `key_n`, plus wide per-representation counts) |
+| `$keys` | one row per place a key was found: `file`, `line` (or `row` for a data table, 0 for its column names), `key` (a number for each different key), `rule` (the type of key) and `shown` (its first characters) |
 | `$table` | one row per column, with the facets, `sample_values`, `utf8_repaired`, `needs_package`, and summary statistics |
 | `$structure` | one row per file, with `data_type`, `data_format`, `group`, `tabular_usable` / `non_tabular_reason`, and `source_file` (see below) |
 | `$previews` | the full data frames that were read |

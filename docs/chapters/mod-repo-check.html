@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+      <img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
@@ -458,6 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#github-repositories-are-listed-in-full" id="toc-github-repositories-are-listed-in-full" class="nav-link" data-scroll-target="#github-repositories-are-listed-in-full"><span class="header-section-number">22.5.2</span> GitHub repositories are listed in full</a></li>
   <li><a href="#ldbase-is-read-from-its-web-pages" id="toc-ldbase-is-read-from-its-web-pages" class="nav-link" data-scroll-target="#ldbase-is-read-from-its-web-pages"><span class="header-section-number">22.5.3</span> LDbase is read from its web pages</a></li>
   <li><a href="#links-that-could-not-be-checked" id="toc-links-that-could-not-be-checked" class="nav-link" data-scroll-target="#links-that-could-not-be-checked"><span class="header-section-number">22.5.4</span> Links that could not be checked</a></li>
+  <li><a href="#private-osf-projects-linked-through-a-view-only-link" id="toc-private-osf-projects-linked-through-a-view-only-link" class="nav-link" data-scroll-target="#private-osf-projects-linked-through-a-view-only-link"><span class="header-section-number">22.5.5</span> Private OSF projects linked through a view-only link</a></li>
   </ul>
 </li>
   <li>
@@ -918,6 +919,9 @@ Note
 </section><section id="links-that-could-not-be-checked" class="level3" data-number="22.5.4"><h3 data-number="22.5.4" class="anchored" data-anchor-id="links-that-could-not-be-checked">
 <span class="header-section-number">22.5.4</span> Links that could not be checked</h3>
 <p>A repository that is linked but cannot be retrieved is kept, as a repository that could not be checked, and is never counted as an empty repository or as one without a README. Its reason is recorded in <code>$gated_repos</code>. For the OSF, the reasons say whether the OSF did not answer (HTTP 503, for example during an outage), the project was not found (HTTP 404), was deleted or withdrawn (HTTP 410), or the rate limit was reached (HTTP 429). A failed OSF lookup is not stored in the cache, so a later run asks again. The summary and report name each repository that could not be checked, the summary table counts them in <code>repo_unchecked</code>, and the traffic light is not green while any could not be checked.</p>
+</section><section id="private-osf-projects-linked-through-a-view-only-link" class="level3" data-number="22.5.5"><h3 data-number="22.5.5" class="anchored" data-anchor-id="private-osf-projects-linked-through-a-view-only-link">
+<span class="header-section-number">22.5.5</span> Private OSF projects linked through a view-only link</h3>
+<p>A view-only link (an OSF address ending in <code>?view_only=</code> and a key) lets anyone with the link see the files of a private OSF project. Such links are made for peer review, and a paper that keeps them after publication often links the same project twice: once plainly, and once with the view-only key. <code>repo_check</code> reads the files through the view-only link and checks the project once. The plain link to the same project is left out, so it is not reported as a repository that could not be checked (“private”), and not counted as a second repository. The summary and report name the project instead: “The OSF project … is private. Metacheck examined the files through the view_only link. As the preprint is public, and the OSF Files are accessible to anyone, consider making the OSF project public.” The traffic light is then not green. The summary table counts these projects in <code>repo_view_only</code>, and the result’s <code>$view_only</code> table lists, for each paper, the view-only link (<code>repo_url</code>) and the project it leads to (<code>project</code>).</p>
 <p>Some links are recognised but lead to no single repository:</p>
 <ul>
 <li>a link to a <strong>GitHub account or organisation</strong> (<code>https://github.com/OneZoom/</code>) instead of to one repository is reported as “links to a GitHub account, not to a specific repository”; a GitLab address with one path segment is reported the same way;</li>
@@ -1157,17 +1161,18 @@ Note
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 4%">
+<col style="width: 10%">
 <col style="width: 5%">
-<col style="width: 11%">
-<col style="width: 5%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 9%">
 <col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 9%">
 <col style="width: 10%">
 <col style="width: 10%">
-<col style="width: 11%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;">paper_id</th>
@@ -1180,6 +1185,7 @@ Note
 <th style="text-align: right;">files_zip</th>
 <th style="text-align: right;">files_unknown</th>
 <th style="text-align: right;">naming_issues</th>
+<th style="text-align: right;">repo_view_only</th>
 <th style="text-align: left;">roster_mismatch</th>
 </tr></thead>
 <tbody><tr class="odd">
@@ -1193,6 +1199,7 @@ Note
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: left;">FALSE</td>
 </tr></tbody>
 </table>
@@ -1342,8 +1349,7 @@ Note
 </tr>
 <tr class="even">
 <td><code>$summary_table</code></td>
-<td>per-paper aggregates: <code>repo_n</code>, <code>repo_unchecked</code> (repositories linked but not retrieved, so “no repository linked” and “a repository could not be checked” can be told apart), <code>files_n</code>, <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, <code>files_zip</code>, <code>files_unknown</code>, <code>naming_issues</code>, <code>roster_mismatch</code>
-</td>
+<td>per-paper aggregates: <code>repo_n</code>, <code>repo_unchecked</code> (repositories linked but not retrieved, so “no repository linked” and “a repository could not be checked” can be told apart), <code>files_n</code>, <code>files_data</code>, <code>files_code</code>, <code>files_readme</code>, <code>files_zip</code>, <code>files_unknown</code>, <code>naming_issues</code>, <code>roster_mismatch</code>, <code>repo_view_only</code> (private OSF projects checked through a view-only link)</td>
 </tr>
 <tr class="odd">
 <td><code>$naming_issues</code></td>
@@ -1358,25 +1364,30 @@ Note
 <td>repositories found but not listed (e.g.&nbsp;a GitHub repository too large for GitHub to list in one request, a private OSF component, an OSF link during an OSF outage, or an LDbase link that could not be read), with the reason</td>
 </tr>
 <tr class="even">
+<td><code>$view_only</code></td>
+<td>private OSF projects checked through a view-only link in the paper: <code>paper_id</code>, <code>repo_url</code> (the view-only link), <code>project</code>
+</td>
+</tr>
+<tr class="odd">
 <td><code>$useless_files</code></td>
 <td>files that do not belong in a repository: <code>paper_id</code>, <code>repo_url</code>, <code>file_path</code>, <code>kind</code>, <code>severity</code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>$repo_metadata</code></td>
 <td>one row per repository (not per file): <code>paper_id</code>, <code>repo_url</code>, <code>doi</code>, <code>license</code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>$group_no_evidence</code></td>
 <td>
 <code>TRUE</code> if study grouping had no evidence to work from</td>
 </tr>
-<tr class="odd">
-<td><code>$report</code></td>
-<td>formatted report sections: repositories, files, README, archives, E-Prime, restricted access, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown</td>
-</tr>
 <tr class="even">
+<td><code>$report</code></td>
+<td>formatted report sections: repositories, files, README, archives, E-Prime, restricted access, private projects checked through a view-only link, closed registrations, unclassified files, roster mismatch, naming, files that do not belong in the repository, and a full classification breakdown</td>
+</tr>
+<tr class="odd">
 <td><code>$summary_text</code></td>
 <td>plain-text bulleted summary of each check</td>
 </tr>
@@ -1805,7 +1816,7 @@ Note
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-repo-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
+<p><a href="https://www.scienceverse.org/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

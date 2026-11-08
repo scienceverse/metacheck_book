@@ -185,6 +185,14 @@ code_library_lines(c("library(dplyr)", "x <- 1", "library(tidyr)"), "R")
 code_file_refs(c("source('functions.R')", "d <- read.csv('study.csv')"), "R")
 ```
 
+A file the code writes is not a file the repository should hold, so it is not reported as missing. Python's `open()` and MATLAB's `fopen()` can both read and write: a call whose mode creates the file (Python's `"w"`, `"a"` or `"x"`, MATLAB's `"w"` or `"a"`) is left out, while a call that reads, or that opens with `"r+"` (which needs the file to exist already), still counts. In Mplus, the `FILE =` of the `SAVEDATA:` command names a file the model writes, and is left out too. Below, only `data.csv` is a file the script reads:
+
+```{r}
+code_file_refs(c("d = open('data.csv')", "out = open('results.txt', 'w')"), "Python")
+```
+
+SAS, SPSS and Mplus do not tell capital letters from small ones, and their commands are found however they are written, so `PROC IMPORT DATAFILE=` and `proc import datafile=` in SAS, `GET FILE=` and `get file=` in SPSS, and `FILE =` and `file =` in Mplus are all checked against the repository. Stata does tell them apart, and its commands are found only as Stata writes them.
+
 ### Packages loaded: `code_library_names()`
 
 `code_library_names()` extracts the names of the packages/libraries a file loads (R `library()`/`require()`/`::`; Python `import`/`from … import`). The module unions and de-duplicates these across all of a paper's code files (`code_packages()`), giving the full list of dependencies the analysis relies on — with no version information, since it reads the code's text and does not look at an installed environment. It returns a table with the package, the kind of call it was found in (`source`), and the line. Packages loaded through a function of the code's own, as in `lapply(pkgs, function(x) library(x, character.only = TRUE))`, are found, and so are the packages of `groundhog.library()`, with the `source` value `groundhog`; a function with another name, such as `my.library()`, is not read as `library()`.

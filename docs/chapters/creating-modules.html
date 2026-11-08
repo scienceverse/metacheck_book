@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+      <img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
@@ -834,7 +834,7 @@ Important
 ℹ️ informational only;<br>
 ⬜️ not applicable;<br>
 ☠️️ check failed</p>
-<p>You will need to write some code to determine which traffic lights apply to your case. If you don’t include a traffic light in the returned list, <code>module_run()</code> sets it to <code>"info"</code>. If your code produces an error, <code>module_run()</code> stops with that error; when the module runs in <code>report()</code> or <code>report_module_run()</code>, the error is caught and the module gets the failed traffic light. The template uses the following rule:</p>
+<p>You will need to write some code to determine which traffic lights apply to your case. If you don’t include a traffic light in the returned list, <code>module_run()</code> sets it to <code>"info"</code>. If your code produces an error, <code>module_run()</code> stops with that error; when the module runs in <code>report()</code> or <code>report_module_run()</code>, the error is caught, the module gets the failed traffic light, and the report shows the whole error message. The template uses the following rule:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="co">## traffic light ----</span></span>
 <span>  <span class="co"># displayed in reports, possible values: </span></span>
@@ -988,7 +988,7 @@ Important
 <p>You can get a bibentry citation for any package with code.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bib</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"metacheck"</span><span class="op">)</span></span>
 <span><span class="fu">format_ref</span><span class="op">(</span><span class="va">bib</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>[1] “DeBruine L, Mesquida C, Werner J, Lakens D (2026). <em>metacheck: Check Research Outputs for Best Practices</em>. <a href="\&quot;https://doi.org/10.5281/zenodo.20704754\&quot;">doi:10.5281/zenodo.20704754</a>, R package version 0.4.3.6, <a href="\&quot;https://www.scienceverse.org/metacheck/\&quot;">https://www.scienceverse.org/metacheck/</a>.”</p>
+<p>[1] “DeBruine L, Mesquida C, Werner J, Lakens D (2026). <em>metacheck: Check Research Outputs for Best Practices</em>. <a href="\&quot;https://doi.org/10.5281/zenodo.20704754\&quot;">doi:10.5281/zenodo.20704754</a>, R package version 0.4.3.19, <a href="\&quot;https://www.scienceverse.org/metacheck/\&quot;">https://www.scienceverse.org/metacheck/</a>.”</p>
 <p>The function can also handle references in bibtex format.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bibtex</span> <span class="op">&lt;-</span> <span class="st">"@Article{,</span></span>
 <span><span class="st">  title = {Improving transparency, falsifiability, and rigor by making hypothesis tests machine-readable},</span></span>
@@ -1054,6 +1054,7 @@ Important
 </tr>
 </tbody>
 </table>
+<p>Before <code>module_run()</code> returns a module’s result, it replaces any key in it (an API key, an access token, a private key, found with the same rules <code>data_check</code> uses; see <a href="../chapters/mod-data-check.html#keys-in-the-repository">Keys in the repository</a>) by “[key removed]”, in its report, its tables and their names. A module that reads files from a repository may otherwise copy a key into Metacheck’s output, where anyone who reads the report or the saved result could use it. Your module does not need to do anything for this.</p>
 <p>The checklist report sorts every check of every module by its result. A module that returns no <code>checks</code> is shown as one check: its traffic light gives the result (red: to fix, yellow: to improve, green: fine), its summary text says what was found, and its report becomes the folded details. To list several checks, return a <code>checks</code> data frame with these columns:</p>
 <table class="caption-top table">
 <colgroup>
@@ -1196,7 +1197,7 @@ Important
 <span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   paper_id       strains_mentioned</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                      &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 a37052ee06d0c3                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="co">#&gt; 1 4f054c6b272ccf                 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>On a paper that does not study animals — such as the bundled <code>demopaper()</code> — no strains are found and the traffic light is <code>"na"</code>, meaning the check simply does not apply:</p>
 <div class="cell">
@@ -1677,7 +1678,7 @@ Important
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/creating-modules.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
+<p><a href="https://www.scienceverse.org/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

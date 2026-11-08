@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+      <img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
@@ -504,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 31 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  We found 32 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
 #&gt; -  All your code files had comments.
 #&gt; -  Libraries/imports were loaded in multiple places in bad.R, bad.Rmd.
 #&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found. Consider adding a solution to improve computational reproducibility.</code></pre>
@@ -775,6 +775,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">utils.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
@@ -925,7 +933,7 @@ Note
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">summary_text</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
-#&gt; -  We found 31 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
+#&gt; -  We found 32 R, 0 Python, 0 SAS, 0 SPSS, 0 Stata, 0 Mplus, 0 MATLAB, and 0 JASP code files.
 #&gt; -  All your code files had comments.
 #&gt; -  Libraries/imports were loaded in multiple places in bad.R, bad.Rmd.
 #&gt; -  No pinned R/package environment (renv.lock, sessionInfo(), or groundhog/checkpoint) was found. Consider adding a solution to improve computational reproducibility.</code></pre>
@@ -1196,6 +1204,14 @@ Note
 <td style="text-align: right;">3</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1666667</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">utils.R</td>
 <td style="text-align: left;">R</td>
 <td style="text-align: left;">FALSE</td>
@@ -1313,12 +1329,20 @@ Note
 <pre><code>#&gt; [1] "functions.R" "study.csv"</code></pre>
 </div>
 </div>
+<p>A file the code writes is not a file the repository should hold, so it is not reported as missing. Python’s <code><a href="https://rdrr.io/r/base/connections.html">open()</a></code> and MATLAB’s <code>fopen()</code> can both read and write: a call whose mode creates the file (Python’s <code>"w"</code>, <code>"a"</code> or <code>"x"</code>, MATLAB’s <code>"w"</code> or <code>"a"</code>) is left out, while a call that reads, or that opens with <code>"r+"</code> (which needs the file to exist already), still counts. In Mplus, the <code>FILE =</code> of the <code>SAVEDATA:</code> command names a file the model writes, and is left out too. Below, only <code>data.csv</code> is a file the script reads:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_file_refs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d = open('data.csv')"</span>, <span class="st">"out = open('results.txt', 'w')"</span><span class="op">)</span>, <span class="st">"Python"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] "data.csv"</code></pre>
+</div>
+</div>
+<p>SAS, SPSS and Mplus do not tell capital letters from small ones, and their commands are found however they are written, so <code>PROC IMPORT DATAFILE=</code> and <code>proc import datafile=</code> in SAS, <code>GET FILE=</code> and <code>get file=</code> in SPSS, and <code>FILE =</code> and <code>file =</code> in Mplus are all checked against the repository. Stata does tell them apart, and its commands are found only as Stata writes them.</p>
 </section><section id="packages-loaded-code_library_names" class="level3" data-number="23.6.8"><h3 data-number="23.6.8" class="anchored" data-anchor-id="packages-loaded-code_library_names">
 <span class="header-section-number">23.6.8</span> Packages loaded: <code>code_library_names()</code>
 </h3>
 <p><code>code_library_names()</code> extracts the names of the packages/libraries a file loads (R <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>/<code><a href="https://rdrr.io/r/base/library.html">require()</a></code>/<code>::</code>; Python <code>import</code>/<code>from … import</code>). The module unions and de-duplicates these across all of a paper’s code files (<code>code_packages()</code>), giving the full list of dependencies the analysis relies on — with no version information, since it reads the code’s text and does not look at an installed environment. It returns a table with the package, the kind of call it was found in (<code>source</code>), and the line. Packages loaded through a function of the code’s own, as in <code>lapply(pkgs, function(x) library(x, character.only = TRUE))</code>, are found, and so are the packages of <code>groundhog.library()</code>, with the <code>source</code> value <code>groundhog</code>; a function with another name, such as <code>my.library()</code>, is not read as <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">code_library_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"library(dplyr)"</span>, <span class="st">"import numpy as np"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;   package  source line
 #&gt; 1   dplyr library    1</code></pre>
@@ -1336,7 +1360,7 @@ Note
 <p>Without one of these, package versions can silently drift between when the analysis was run and any later reproduction attempt — a script that works today may fail or produce different results a year from now if <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> pulls whatever the CRAN snapshot happens to be at that time.</p>
 <p>Python code gets Python advice. For Python, the module looks for a list of the packages the code needs: <code>requirements*.txt</code>, <code>environment.yml</code>, <code>Pipfile</code> or <code>Pipfile.lock</code>, <code>poetry.lock</code>, <code>uv.lock</code>, or <code>pyproject.toml</code>. These are returned as <code>python_files</code> and <code>python_pinned</code> in <code>$version_pin</code>, next to <code>pinned</code>, which stays about R. Python code without such a list is told to add a <code>requirements.txt</code>, R code keeps the R advice, and a repository with code in both languages needs both. Code in neither language is judged as before. The traffic light and <code>code_version_pinned</code> follow this. In the same way, the advice that goes with an <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> call names <code>requirements.txt</code> for Python next to R’s <code>renv.lock</code> and <code>DESCRIPTION</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">.code_version_pin_check</span><span class="op">(</span><span class="va">all_files</span>, code_text_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">r_script_lines</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is also exposed for <a href="../chapters/mod-reproducibility-check.html">reproducibility_check</a>’s Docker backend, which uses the declared R version (when found) to pick a matching base image — see <code>docker_use_declared_version</code> in that chapter.</p>
 </section></section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="23.7"><h2 data-number="23.7" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
@@ -1351,7 +1375,7 @@ Note
 <strong>Parse errors</strong> (<code>parse_error == TRUE</code>) — the file is not valid R code.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"file_name"</span>, <span class="st">"code_abs_path"</span>, <span class="st">"loaded_files_missing"</span>, <span class="st">"parse_error"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1543,6 +1567,12 @@ Note
 <td style="text-align: left;">FALSE</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Study 1.r</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">utils.R</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">0</td>
@@ -1556,7 +1586,7 @@ Note
 <span class="header-section-number">23.8</span> Downloading and options</h2>
 <p><code>code_check</code> downloads the code files it will check (<code>download = TRUE</code>, the default) so their contents are read locally rather than streamed from the repository URL each time. They are reused on later runs only if you also pass <code>cache = TRUE</code>; otherwise they are discarded when the session ends. It shares <code>data_check</code>’s size caps (<code>max_file_size</code>, which skips each file larger than it, and <code>max_download_size</code>, a budget per repository that is filled with the smallest files first) and the persistent-cache switch (<code>cache</code>, default <code>FALSE</code>). It also shares <code>repo_check</code>’s local-file options:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># check code in a local folder only, no online lookups</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, local_path <span class="op">=</span> <span class="st">"path/to/files"</span>, local_only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># stream files from their URLs instead of downloading</span></span>
@@ -1565,7 +1595,7 @@ Note
 <p>See the <a href="../chapters/local-files.html">Local Files</a> chapter for a full walkthrough of checking local code, including cloud-synced folders. If there is no manuscript at all, <code>report_repository("path/to/folder")</code> runs <code>code_check</code> together with <code>repo_check</code>, <code>data_check</code>, and <code>codebook_check</code> on the folder in one step — see <a href="../chapters/get-started.html#starting-from-a-manuscript-or-from-a-folder">Getting Started</a>.</p>
 <p><code>manifest</code> merges the distinct packages loaded across a paper’s code into a metacheck manifest’s <code>code</code> section, alongside whatever <code>data_check</code> already wrote there:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, manifest <span class="op">=</span> <span class="st">"path/to/manifest/dir"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"code_check"</span>, manifest <span class="op">=</span> <span class="st">"path/to/manifest/dir"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="the-traffic-light-and-what-you-get-back" class="level2" data-number="23.9"><h2 data-number="23.9" class="anchored" data-anchor-id="the-traffic-light-and-what-you-get-back">
 <span class="header-section-number">23.9</span> The traffic light and what you get back</h2>
@@ -2050,7 +2080,7 @@ Note
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-code-check.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
+<p><a href="https://www.scienceverse.org/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

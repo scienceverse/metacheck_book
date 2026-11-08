@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://scienceverse.github.io/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
+      <img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none"><img src="https://www.scienceverse.org/metacheck/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none"></a>
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Metacheck Manual</a> 
         <div class="sidebar-tools-main">
@@ -484,6 +484,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Each detected value carries an <code>imprecise</code> flag and a <code>zero</code> flag, and either kind turns the traffic light <strong>red</strong>. When a <code>p = .000</code> is found, the report includes its own guidance explaining why exactly-zero p-values should be reported as <code>p &lt; .001</code>.</p>
 <p>Detection is case-insensitive, so an upper-case <code>P = .04</code> is found just as reliably as <code>p = .04</code>.</p>
+<p>A p-value that is not the result of a test is not flagged as imprecise:</p>
+<ul>
+<li>a <strong>table note</strong>, such as “* p &lt; .05, ** p &lt; .01”, “ns: p &gt; .05” or “† p &lt; .10”;</li>
+<li>a <strong>figure legend</strong>, such as “Asterisks indicate significant differences (p &lt; .05)” or “Values in bold are significant at p &lt; .05”;</li>
+<li>a <strong>stated threshold</strong>, such as “p &lt; .05 was considered significant”, “thresholded at P &lt; .001” or “a Bonferroni-corrected alpha of p &lt; .02”.</li>
+</ul>
+<p>GROBID often puts table notes and figure legends into the running text, so the section a sentence is in cannot tell them apart from results. Each p-value is therefore judged by the words of its own clause (the text up to a “;” or a full stop), and is never left out when a test statistic belongs to it (“F(1, 7) = 8.03, # p &lt; .05”). The column <code>not_a_test</code> of the table says why a p-value was left out (<code>"marker"</code>, <code>"threshold"</code> or <code>"legend"</code>), and is <code>NA</code> for the p-values that were judged. Notes in other forms, such as a marker after the p-value (“p &lt; .05 (*)”), are still flagged.</p>
+<p>The words that mark a threshold cannot always tell a sentence that sets a threshold from one that reports a result against it. The module therefore sometimes flags false positives when sentences discuss how p-value thresholds were set, and it can miss an imprecise p-value that is reported against a threshold, such as “decreased at the p &lt; .05 significance threshold”. The report says so when it lists imprecise p-values.</p>
 <p>Reporting exact p-values is an APA Journal Article Reporting Standard (JARS). It also lets readers include results in p-curve or z-curve meta-analyses and check internal consistency with tools like Statcheck.</p>
 <p>This module is <strong>fully offline</strong>.</p>
 </section><section id="running-the-module" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="running-the-module">
@@ -504,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paper</span> <span class="op">&lt;-</span> <span class="fu">demopaper</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 3 detected <em>p</em> values.</p>
-<p>The <code>table</code> lists every detected p-value, with <code>imprecise</code> and <code>zero</code> flags:</p>
+<p>The <code>table</code> lists every detected p-value, with <code>imprecise</code> and <code>zero</code> flags, and in <code>not_a_test</code> the reason a p-value was left out:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">module_run</span><span class="op">(</span><span class="va">paper</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span>
 <span><span class="va">mo</span><span class="op">$</span><span class="va">traffic_light</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -515,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; [1] "We found 1 imprecise *p* value out of 3 detected *p* values."</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"imprecise"</span>, <span class="st">"zero"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"p_comp"</span>, <span class="st">"p_value"</span>, <span class="st">"imprecise"</span>, <span class="st">"zero"</span>, <span class="st">"not_a_test"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -525,6 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th style="text-align: right;">p_value</th>
 <th style="text-align: left;">imprecise</th>
 <th style="text-align: left;">zero</th>
+<th style="text-align: left;">not_a_test</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -533,6 +542,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">0.005</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">p =0.152</td>
@@ -540,6 +550,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">0.152</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">p &gt; .05</td>
@@ -547,6 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">0.050</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">NA</td>
 </tr>
 </tbody>
 </table>
@@ -600,12 +612,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td style="text-align: left;">0956797614527830</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">0956797614557697</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">7</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
@@ -622,16 +634,88 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p>The p-values in these papers that were left out because they are not the result of a test:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">not_tests</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">mo</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="va">not_a_test</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"paper_id"</span>, <span class="st">"expanded"</span>, <span class="st">"not_a_test"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">not_tests</span>, <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 91%">
+<col style="width: 3%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;">paper_id</th>
+<th style="text-align: left;">expanded</th>
+<th style="text-align: left;">not_a_test</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0956797614527830</td>
+<td style="text-align: left;">(Statistical significance was tested against a threshold of p &lt; .05; bootstrapped models that provided 95% confidence intervals for the coefficients described below can be found in Table S2 in the Supplemental Material.)</td>
+<td style="text-align: left;">threshold</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797614527830</td>
+<td style="text-align: left;">Asterisks indicate a significant difference between conditions ( * * * p &lt; .005).</td>
+<td style="text-align: left;">marker</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797614557697</td>
+<td style="text-align: left;">Asterisks indicate a significant difference between TMS conditions (p &lt; .05).</td>
+<td style="text-align: left;">legend</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797614557697</td>
+<td style="text-align: left;">Asterisks indicate a significant difference between conditions (p &lt; .01).</td>
+<td style="text-align: left;">legend</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797615569001</td>
+<td style="text-align: left;">Social Class I was the reference group. *p &lt; .05. **p &lt;.01.</td>
+<td style="text-align: left;">marker</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797615569001</td>
+<td style="text-align: left;">Social Class I was the reference group. *p &lt; .05. **p &lt;.01.</td>
+<td style="text-align: left;">marker</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797615569001</td>
+<td style="text-align: left;">Low self-control was defined as scoring 1 standard deviation below the mean on the standardized self-control measure, medium self-control was defined as scoring at the mean on this measure, and high self-control was defined as scoring at the maximum of 0.83 standard deviations above the mean. **p &lt;.01.</td>
+<td style="text-align: left;">marker</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797615569889</td>
+<td style="text-align: left;">Asterisks indicate significant differences between conditions (<em>p &lt; .05; <strong>p &lt; .01; </strong></em>p &lt; .001).</td>
+<td style="text-align: left;">marker</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0956797615569889</td>
+<td style="text-align: left;">Asterisks indicate significant differences between conditions (<em>p &lt; .05; <strong>p &lt; .01; </strong></em>p &lt; .001).</td>
+<td style="text-align: left;">marker</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0956797615569889</td>
+<td style="text-align: left;">Asterisks indicate significant differences between conditions (<em>p &lt; .05; <strong>p &lt; .01; </strong></em>p &lt; .001).</td>
+<td style="text-align: left;">marker</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section><section id="a-clean-example-and-one-with-problems" class="level2" data-number="19.4"><h2 data-number="19.4" class="anchored" data-anchor-id="a-clean-example-and-one-with-problems">
 <span class="header-section-number">19.4</span> A clean example and one with problems</h2>
 <p>A known paper that reports imprecise p-values:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797614560771`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797614560771`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found 1 imprecise <em>p</em> value out of 4 detected <em>p</em> values.</p>
 <p>A paper that reports a p-value as exactly zero (<code>p = .000</code>). This is flagged separately from imprecise values, with its own guidance that exactly-zero p-values should be reported as <code>p &lt; .001</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797615603702`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797615603702`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found 1 <em>p</em> value reported as exactly zero out of 8 detected <em>p</em> values.</p>
 <p>A paper that reports all p-values exactly returns green:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797616665351`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">module_run</span><span class="op">(</span><span class="va">psychsci</span><span class="op">$</span><span class="va">`0956797616665351`</span>, <span class="st">"stat_p_exact"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Exact P-Values: We found no imprecise <em>p</em> values or <em>p</em>-values of exactly zero out of 8 detected.</p>
 </section><section id="options" class="level2" data-number="19.5"><h2 data-number="19.5" class="anchored" data-anchor-id="options">
 <span class="header-section-number">19.5</span> Options</h2>
@@ -1062,7 +1146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       &nbsp;
     <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/scienceverse/metacheck_book/edit/main/chapters/mod-stat-p-exact.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/scienceverse/metacheck_book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
-<p><a href="https://scienceverse.github.io/metacheck/">Metacheck package</a></p>
+<p><a href="https://www.scienceverse.org/metacheck/">Metacheck package</a></p>
 </div>
   </div>
 </footer>

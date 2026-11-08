@@ -310,7 +310,7 @@ The traffic lights are used in single-paper reports to give a quick visual overv
 `r emojis$tl_na`️ not applicable;  
 `r emojis$tl_fail`️ check failed
 
-You will need to write some code to determine which traffic lights apply to your case. If you don't include a traffic light in the returned list, `module_run()` sets it to `"info"`. If your code produces an error, `module_run()` stops with that error; when the module runs in `report()` or `report_module_run()`, the error is caught and the module gets the failed traffic light. The template uses the following rule:
+You will need to write some code to determine which traffic lights apply to your case. If you don't include a traffic light in the returned list, `module_run()` sets it to `"info"`. If your code produces an error, `module_run()` stops with that error; when the module runs in `report()` or `report_module_run()`, the error is caught, the module gets the failed traffic light, and the report shows the whole error message. The template uses the following rule:
 
 ```{r, eval = FALSE}
   ## traffic light ----
@@ -523,6 +523,8 @@ A module can also return these optional elements, which only change how reports 
 | `intro` | a paragraph shown at the top of a checklist report |
 | `logo` | the path of an image shown next to Metacheck's logo in a checklist report |
 | `checklist_section` | markdown for a section of its own in a checklist report, under the module's title, after the results and before "More detail". The module's check then links to that section, and its report is folded at the end of it. `reproducibility_check` gives one when it ran the code |
+
+Before `module_run()` returns a module's result, it replaces any key in it (an API key, an access token, a private key, found with the same rules `data_check` uses; see [Keys in the repository](mod-data-check.qmd#keys-in-the-repository)) by "[key removed]", in its report, its tables and their names. A module that reads files from a repository may otherwise copy a key into Metacheck's output, where anyone who reads the report or the saved result could use it. Your module does not need to do anything for this.
 
 The checklist report sorts every check of every module by its result. A module that returns no `checks` is shown as one check: its traffic light gives the result (red: to fix, yellow: to improve, green: fine), its summary text says what was found, and its report becomes the folded details. To list several checks, return a `checks` data frame with these columns:
 
